@@ -47,6 +47,8 @@ COMMENT ON COLUMN "IGTP"."CITIES"."CITY_CO"        IS 'Codigo de la ciudad';
 COMMENT ON COLUMN "IGTP"."CITIES"."DESCRIPTION"    IS 'Descripcion o nombre de la ciudad';
 COMMENT ON COLUMN "IGTP"."CITIES"."POSTAL_CO"      IS 'Codigo Postal';
 COMMENT ON COLUMN "IGTP"."CITIES"."TELEPHONE_CO"   IS 'Codigo discal telefonico';
+COMMENT ON COLUMN "IGTP"."CITIES"."NU_GPS_LAT"     IS 'Latitud geografica';
+COMMENT ON COLUMN "IGTP"."CITIES"."NU_GPS_LON"     IS 'Longitud geografica';
 COMMENT ON COLUMN "IGTP"."CITIES"."SLUG"           IS 'Forma especifica un lugar determinado de una p�gina Web';
 COMMENT ON COLUMN "IGTP"."CITIES"."UUID"           IS 'Identificador unico de la base de datos';
 COMMENT ON COLUMN "IGTP"."CITIES"."USER_ID"        IS 'Usuario que ha creado el registro';
