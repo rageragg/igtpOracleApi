@@ -11,8 +11,8 @@ CREATE TABLE "IGTP"."PROVINCES"
 										CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE , 
    "PROVINCE_CO"  VARCHAR2(10 BYTE), 
    "DESCRIPTION"  VARCHAR2(80 BYTE), 
-   "SLUG"         VARCHAR2(60 BYTE), 
    "UUID"         VARCHAR2(60 BYTE), 
+   "SLUG"         VARCHAR2(60 BYTE), 
    "REGION_ID"    NUMBER(8,0), 
    "USER_ID"      NUMBER(8,0), 
    "CREATED_AT"   DATE DEFAULT sysdate, 
@@ -35,3 +35,15 @@ CREATE TABLE "IGTP"."PROVINCES"
       FLASH_CACHE DEFAULT 
       CELL_FLASH_CACHE DEFAULT
 ) TABLESPACE "TS_IGTP_DAT" ;
+--
+COMMENT ON TABLE "IGTP"."PROVINCES"                 IS 'Provincias de una region';
+--
+COMMENT ON COLUMN "IGTP"."PROVINCES"."ID"             IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."PROVINCE_CO"    IS 'Codigo externo';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."DESCRIPTION"    IS 'Descripcion de la provincia';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."UUID"           IS 'Identificador unico y universal';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."SLUG"           IS 'Identificativo de URL';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."USER_ID"        IS 'Usuario que actualiza el registro';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."CREATED_AT"     IS 'Fecha que se creo el registro';
+COMMENT ON COLUMN "IGTP"."PROVINCES"."UPDATED_AT"     IS 'Fecha que se actualizo el registro';
+/

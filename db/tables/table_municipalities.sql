@@ -34,3 +34,15 @@ CREATE TABLE "IGTP"."MUNICIPALITIES"(
       FLASH_CACHE DEFAULT 
       CELL_FLASH_CACHE DEFAULT
 ) TABLESPACE "TS_IGTP_DAT" ;
+
+COMMENT ON TABLE "IGTP"."MUNICIPALITIES"                 IS 'Provincias de una region';
+--
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."ID"             IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."DESCRIPTION"    IS 'Descripcion de la Municipalidad';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."PROVINCE_ID"    IS 'Identificador de la provincia a que pertenece';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."UUID"           IS 'Codigo Unico Universal';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."SLUG"           IS 'Identificativo de URL';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."USER_ID"        IS 'Usuario que actualiza el registro';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."CREATED_AT"     IS 'Fecha que se creo el registro';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."UPDATED_AT"     IS 'Fecha que se actualizo el registro';
+/

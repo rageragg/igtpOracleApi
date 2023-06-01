@@ -34,3 +34,16 @@ CREATE TABLE "IGTP"."REGIONS" (
       FLASH_CACHE DEFAULT 
       CELL_FLASH_CACHE DEFAULT
 ) TABLESPACE "TS_IGTP_DAT" ;
+--
+COMMENT ON TABLE "IGTP"."REGIONS"                   IS 'Regiones';
+--
+COMMENT ON COLUMN "IGTP"."REGIONS"."ID"             IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."REGIONS"."REGION_CO"      IS 'Codigo externo de la region';
+COMMENT ON COLUMN "IGTP"."REGIONS"."DESCRIPTION"    IS 'Descripcion de la Region';
+COMMENT ON COLUMN "IGTP"."REGIONS"."COUNTRY_ID"     IS 'Identificador del pais al que pertenece';
+COMMENT ON COLUMN "IGTP"."REGIONS"."UUID"           IS 'Codigo Unico Universal';
+COMMENT ON COLUMN "IGTP"."REGIONS"."SLUG"           IS 'Identificativo de URL';
+COMMENT ON COLUMN "IGTP"."REGIONS"."USER_ID"        IS 'Usuario que actualiza el registro';
+COMMENT ON COLUMN "IGTP"."REGIONS"."CREATED_AT"     IS 'Fecha que se creo el registro';
+COMMENT ON COLUMN "IGTP"."REGIONS"."UPDATED_AT"     IS 'Fecha que se actualizo el registro';
+/
