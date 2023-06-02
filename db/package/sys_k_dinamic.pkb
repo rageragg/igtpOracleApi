@@ -9,7 +9,7 @@
     || cuciones de procedimientos, sentencias, etc.
     */ -----------------------------------------------------
     --
-    /* -------------------- VERSION = 1.11 -------------------- */
+    /* -------------------- VERSION = 1.01 -------------------- */
     --
     /* --------------------------------------------------------
     || Aqui comienza la declaracion de tablas GLOBALES
@@ -671,7 +671,7 @@
         EXCEPTION
             WHEN g_error_n_parameters THEN
                 --
-                g_cod_message := 99900037;
+                g_cod_message := -20252;
                 g_anx_message := NULL;
                 --
                 p_return_error;     
@@ -1076,7 +1076,7 @@
         EXCEPTION
             WHEN g_error_n_parameters THEN
                 --
-                g_cod_message := 99900037;
+                g_cod_message := -20503;
                 g_anx_message := NULL;
                 --
                 p_return_error;     
