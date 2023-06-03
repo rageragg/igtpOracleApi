@@ -4,19 +4,11 @@
 
 CREATE OR REPLACE PACKAGE cfg_api_k_region IS
     --
-    TYPE regions_tapi_rec IS RECORD (
-        id              regions.id%TYPE, 
-        region_co       regions.region_co%TYPE,
-        description     regions.description%TYPE,
-        country_id      regions.country_id%TYPE,
-        uuid            regions.uuid%TYPE,
-        slug            regions.slug%TYPE,
-        user_id         regions.user_id%TYPE,
-        created_at      regions.created_at%TYPE,
-        updated_at      regions.updated_at%TYPE
-    );
+    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'REGIONS'; 
     --
-    TYPE regions_tapi_tab IS TABLE OF regions_tapi_rec;
+    -- get record
+    FUNCTION get_record( p_id IN regions.id%TYPE ) RETURN regions%ROWTYPE;
     --
     -- insert
     PROCEDURE ins (
@@ -31,6 +23,9 @@ CREATE OR REPLACE PACKAGE cfg_api_k_region IS
         p_updated_at      regions.updated_at%TYPE
     );
     --
+    -- insert by records
+    PROCEDURE ins ( p_rec IN OUT regions%ROWTYPE ); 
+    --
     -- update
     PROCEDURE upd (
         p_id              regions.id%TYPE, 
@@ -44,9 +39,10 @@ CREATE OR REPLACE PACKAGE cfg_api_k_region IS
         p_updated_at      regions.updated_at%TYPE
     );
     --
+    -- update
+    PROCEDURE upd ( p_rec IN OUT regions%ROWTYPE );
+    --
     -- delete
-    PROCEDURE del (
-        p_id    regions.id%TYPE
-    );
+    PROCEDURE del ( p_id  regions.id%TYPE );
     --
 END cfg_api_k_region;

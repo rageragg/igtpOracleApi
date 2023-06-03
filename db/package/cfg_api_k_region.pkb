@@ -4,6 +4,26 @@
 
 CREATE OR REPLACE PACKAGE BODY cfg_api_k_region IS
     --
+    -- get record
+    FUNCTION get_record( p_id IN regions.id%TYPE ) RETURN regions%ROWTYPE IS 
+        --
+        l_rec regions%ROWTYPE;
+        --
+    BEGIN 
+        --
+        SELECT *
+          INTO l_rec
+          FROM regions 
+         WHERE id = p_id;
+        --
+        RETURN l_rec;
+        --
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RETURN NULL;  
+        --
+    END get_record;
+    --
     -- insert
     PROCEDURE ins (
         p_id              regions.id%TYPE, 
@@ -43,6 +63,18 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_region IS
         --
     END ins;
     --
+    -- insert by records
+    PROCEDURE ins ( p_rec IN OUT regions%ROWTYPE ) IS 
+    BEGIN 
+        --
+        p_rec.created_at := sysdate;
+        --
+        INSERT INTO regions 
+             VALUES p_rec
+             RETURNING id, created_at INTO p_rec.id, p_rec.created_at;
+        --
+    END ins;
+    --
     -- update
     PROCEDURE upd (
         p_id              regions.id%TYPE, 
@@ -68,7 +100,20 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_region IS
             updated_at  = p_updated_at
         WHERE id = p_id;
         --
-    END;
+    END upd;
+    --
+    -- update
+    PROCEDURE upd ( p_rec IN OUT regions%ROWTYPE ) IS 
+    BEGIN  
+        --
+        p_rec.updated_at := sysdate;
+        --
+        UPDATE regions 
+           SET ROW = p_rec
+         WHERE id = p_rec.id
+         RETURNING updated_at INTO p_rec.updated_at;
+        --
+    END upd;     
     --
     -- del
     PROCEDURE del (
