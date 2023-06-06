@@ -75,7 +75,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_province IS
     END ins;    
     --
     -- update
-    procedure upd (
+    PROCEDURE upd (
         p_id              provinces.id%TYPE,
         p_province_co     provinces.province_co%TYPE,
         p_description     provinces.description%TYPE,
@@ -122,4 +122,4 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_province IS
               WHERE id = p_id;
     END del;
     --
-end cfg_api_k_province;
+END cfg_api_k_province;
