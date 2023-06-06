@@ -12,5 +12,8 @@ DataBase for igtp 5.0 Server (Oracle PLSQL)
     6. Locaciones 
 2. Datos Logisticos
     1. Clientes
+    2. Tipos de Cargas
+    3. Tipos de Tractomulas
+    4. Tipos de Remolques
 3. Datos Facturacion a Clientes
 4. Datos Pagos a Conductores
