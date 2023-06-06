@@ -8,6 +8,9 @@ DataBase for igtp 5.0 Server (Oracle PLSQL)
     2. Provincias 
     3. Municipalidades
     4. Ciudades  
+    5. Rutas 
+    6. Locaciones 
 2. Datos Logisticos
+    1. Clientes
 3. Datos Facturacion a Clientes
 4. Datos Pagos a Conductores
