@@ -32,3 +32,8 @@ CREATE TABLE "IGTP"."TYPE_CARGOS" (
         FLASH_CACHE DEFAULT 
         CELL_FLASH_CACHE DEFAULT
 ) TABLESPACE "TS_IGTP_DAT" ;
+--
+COMMENT ON TABLE "IGTP"."TYPE_CARGOS"                   IS 'Tipos de cargos';
+--
+COMMENT ON COLUMN "IGTP"."TYPE_CARGOS"."ID"             IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."TYPE_CARGO_CO"."ID"           IS 'Codigo externo del tipo de carga';
