@@ -58,6 +58,48 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_geo AS
         --  
         RETURN l_result;
         --
-    END f_distance_points;                          
+    END f_distance_points;        
+    --
+    FUNCTION get_ecliptic_degree( p_degree    IN NUMBER,
+                                  p_direction IN VARCHAR2
+                                ) RETURN NUMBER IS
+        --
+        l_returnvalue number;
+        --
+    BEGIN
+        --   
+        IF p_direction in (K_LONGITUDE_DIRECTION_WEST, K_LATITUDE_DIRECTION_SOUTH) then
+            l_returnvalue := 360 - p_degree;
+        ELSE
+            l_returnvalue := p_degree;
+        END IF;
+        --
+        RETURN l_returnvalue;
+        --
+    END get_ecliptic_degree;  
+    --
+    FUNCTION get_ecliptic_distance( p_from_latitude     IN NUMBER,
+                                    p_from_longitude    IN NUMBER,
+                                    p_to_latitude       IN NUMBER,
+                                    p_to_longitude      IN NUMBER,
+                                    p_radius            IN NUMBER := K_RADIUS_EARTH_MILES
+                                  ) RETURN NUMBER
+    AS
+        --
+        l_returnvalue NUMBER;
+    BEGIN
+        --
+        BEGIN
+            l_returnvalue := (p_radius * acos((sin(p_from_latitude / K_DEGREES_TO_RADIANS_FACTOR) * sin(p_to_latitude / K_DEGREES_TO_RADIANS_FACTOR)) +
+                (cos(p_from_latitude / K_DEGREES_TO_RADIANS_FACTOR) * cos(p_to_latitude /K_DEGREES_TO_RADIANS_FACTOR) *
+                cos(p_to_longitude / K_DEGREES_TO_RADIANS_FACTOR - p_from_longitude/ K_DEGREES_TO_RADIANS_FACTOR))));
+        EXCEPTION
+            WHEN OTHERS THEN
+            l_returnvalue := NULL;
+        END;
+        --            
+        RETURN l_returnvalue;
+        --
+    END get_ecliptic_distance;                
     --
 END sys_k_geo;

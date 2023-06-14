@@ -214,7 +214,7 @@ AS
     FUNCTION str_to_num (p_str IN VARCHAR2,
                         p_decimal_separator IN VARCHAR2 := NULL,
                         p_thousand_separator IN VARCHAR2 := NULL,
-                        p_raise_error_if_parse_error IN boolean := false,
+                        p_raise_error_if_parse_error IN BOOLEAN := false,
                         p_value_name IN VARCHAR2 := NULL) RETURN NUMBER 
     AS 
     l_returnvalue           NUMBER;
@@ -397,9 +397,9 @@ AS
     END get_param_value_from_list;                                   
     --
     FUNCTION remove_whitespace (p_str IN VARCHAR2,
-                                p_preserve_single_blanks IN boolean := false,
-                                p_remove_line_feed IN boolean := false,
-                                p_remove_tab IN boolean := false) RETURN VARCHAR2
+                                p_preserve_single_blanks IN BOOLEAN := false,
+                                p_remove_line_feed IN BOOLEAN := false,
+                                p_remove_tab IN BOOLEAN := false) RETURN VARCHAR2
     AS 
     l_temp_char                    constant VARCHAR2(1) := chr(0);
     l_returnvalue                  t_max_pl_varchar2;
@@ -486,9 +486,9 @@ AS
 
     END remove_non_alpha_chars;
     --
-    FUNCTION is_str_alpha (p_str IN VARCHAR2) RETURN boolean
+    FUNCTION is_str_alpha (p_str IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
 
     /*
@@ -507,9 +507,9 @@ AS
 
     END is_str_alpha;
     --    
-    FUNCTION is_str_alphanumeric (p_str IN VARCHAR2) RETURN boolean
+    FUNCTION is_str_alphanumeric (p_str IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
 
     /*
@@ -528,9 +528,9 @@ AS
 
     END is_str_alphanumeric;
     --
-    FUNCTION is_str_empty (p_str IN VARCHAR2) RETURN boolean
+    FUNCTION is_str_empty (p_str IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
 
     /*
@@ -559,10 +559,10 @@ AS
     --
     FUNCTION is_str_number (p_str IN VARCHAR2,
                             p_decimal_separator IN VARCHAR2 := NULL,
-                            p_thousand_separator IN VARCHAR2 := NULL) RETURN boolean 
+                            p_thousand_separator IN VARCHAR2 := NULL) RETURN BOOLEAN 
     AS 
     l_number                NUMBER;
-    l_returnvalue           boolean;
+    l_returnvalue           BOOLEAN;
     BEGIN
 
     /*
@@ -596,9 +596,9 @@ AS
 
     END is_str_number;
     --
-    FUNCTION is_str_integer (p_str IN VARCHAR2) RETURN boolean
+    FUNCTION is_str_integer (p_str IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
 
     /*
@@ -711,14 +711,14 @@ AS
 
     END add_item_to_list;     
     --
-    FUNCTION str_to_bool (p_str IN VARCHAR2) RETURN boolean
+    FUNCTION str_to_bool (p_str IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean := false;
+    l_returnvalue BOOLEAN := false;
     BEGIN
 
     /*
 
-    Purpose:    convert string to boolean
+    Purpose:    convert string to BOOLEAN
 
     Remarks:  
 
@@ -743,7 +743,7 @@ AS
 
     /*
 
-    Purpose:    convert string to (application-defined) boolean string
+    Purpose:    convert string to (application-defined) BOOLEAN string
 
     Remarks:    
 
@@ -968,9 +968,9 @@ AS
     --
     FUNCTION is_item_in_list (p_item IN VARCHAR2,
                             p_list IN VARCHAR2,
-                            p_separator IN VARCHAR2 := g_default_separator) RETURN boolean
+                            p_separator IN VARCHAR2 := g_default_separator) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
         /*
             Purpose:    RETURN true IF item is contained IN list
@@ -1023,9 +1023,9 @@ AS
     END randomize_array;
     --
     FUNCTION value_has_changed (p_old IN VARCHAR2,
-                                p_new IN VARCHAR2) RETURN boolean
+                                p_new IN VARCHAR2) RETURN BOOLEAN
     AS 
-    l_returnvalue boolean;
+    l_returnvalue BOOLEAN;
     BEGIN
     
         /*
