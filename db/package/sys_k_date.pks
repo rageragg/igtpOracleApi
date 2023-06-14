@@ -101,13 +101,14 @@ CREATE OR REPLACE PACKAGE sys_k_date IS
 
     -- returns collection of dates IN specified month
     FUNCTION explode_month (p_year IN NUMBER,
-                            p_month IN NUMBER) RETURN t_period_date_tab pipelined;
+                            p_month IN NUMBER
+                           ) RETURN t_period_date_tab pipelined;
     --
     -- get table of dates based on specified calendar string
-    /*
-    FUNCTION get_date_tab (p_calendar_string IN varchar2,
+    FUNCTION get_date_tab ( p_calendar_string IN varchar2,
                             p_from_date IN DATE := null,
-                            p_to_date IN DATE := null) RETURN t_date_array pipelined;
-    */
+                            p_to_date IN DATE := null
+                          ) RETURN t_date_array pipelined;
+
 end sys_k_date;
 /

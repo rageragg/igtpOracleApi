@@ -397,7 +397,6 @@ CREATE OR REPLACE PACKAGE BODY sys_k_date IS
     END explode_month;
     --
     -- get table of dates based on specified calendar string
-    /*
     FUNCTION get_date_tab ( p_calendar_string IN VARCHAR2,
                             p_from_date IN DATE := null,
                             p_to_date IN DATE := null
@@ -420,7 +419,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_date IS
                 return_date_after => l_date_after,
                 next_run_date     => l_next_date
             );
-            -
+            --
             EXIT WHEN l_next_date > l_to_date;
             --
             PIPE ROW (l_next_date);
@@ -432,7 +431,6 @@ CREATE OR REPLACE PACKAGE BODY sys_k_date IS
         RETURN;
         --
     END get_date_tab;
-    */
     --
 END sys_k_date;
 /
