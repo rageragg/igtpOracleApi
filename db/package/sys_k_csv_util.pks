@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE sys_k_csv_util IS
   
-    g_default_separator            constant varchar2(1) := ',';
+    g_default_separator            constant varchar2(1) := ';';
 
     -- convert CSV line to array of values
     function csv_to_array (p_csv_line in varchar2,
