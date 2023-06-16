@@ -70,5 +70,5 @@ CREATE OR REPLACE PACKAGE dsc_api_k_truck IS
     -- delete
     procedure del ( p_ID IN TRUCKS.ID%type  );
     --
-end dsc_api_k_truck;
+END dsc_api_k_truck;
 /

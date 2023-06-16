@@ -1,3 +1,7 @@
+--------------------------------------------------------
+--  DDL for Package Body TRUCK_API
+--------------------------------------------------------
+
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_truck IS
     --
     -- get DATA RETURN RECORD
@@ -203,3 +207,4 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_truck IS
     END del;
     --
 END dsc_api_k_truck;
+/
