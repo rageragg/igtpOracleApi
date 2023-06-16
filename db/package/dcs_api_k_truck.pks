@@ -1,73 +1,74 @@
-create or replace package dcs_k_api_truck
-is
+--------------------------------------------------------
+--  DDL for Package Body TRUCK_API
+--------------------------------------------------------
 
-type TRUCKS_tapi_rec is record (
-EMPLOYEE_ID  TRUCKS.EMPLOYEE_ID%type
-,CREATED_AT  TRUCKS.CREATED_AT%type
-,USER_ID  TRUCKS.USER_ID%type
-,MODEL  TRUCKS.MODEL%type
-,TRUCK_CO  TRUCKS.TRUCK_CO%type
-,SERIAL_CHASSIS  TRUCKS.SERIAL_CHASSIS%type
-,SERIAL_ENGINE  TRUCKS.SERIAL_ENGINE%type
-,K_STATUS  TRUCKS.K_STATUS%type
-,YEAR  TRUCKS.YEAR%type
-,COLOR  TRUCKS.COLOR%type
-,TRANSFER_ID  TRUCKS.TRANSFER_ID%type
-,EXTERNAL_CO  TRUCKS.EXTERNAL_CO%type
-,TYPE_VEHICLE_ID  TRUCKS.TYPE_VEHICLE_ID%type
-,K_TYPE_GAS  TRUCKS.K_TYPE_GAS%type
-,LOCATION_ID  TRUCKS.LOCATION_ID%type
-,UPDATED_AT  TRUCKS.UPDATED_AT%type
-,ID  TRUCKS.ID%type
-,PARTNER_ID  TRUCKS.PARTNER_ID%type
-);
-type TRUCKS_tapi_tab is table of TRUCKS_tapi_rec;
-
--- insert
-procedure ins (
-p_EMPLOYEE_ID in TRUCKS.EMPLOYEE_ID%type default null 
-,p_CREATED_AT in TRUCKS.CREATED_AT%type default null 
-,p_USER_ID in TRUCKS.USER_ID%type default null 
-,p_MODEL in TRUCKS.MODEL%type default null 
-,p_TRUCK_CO in TRUCKS.TRUCK_CO%type default null 
-,p_SERIAL_CHASSIS in TRUCKS.SERIAL_CHASSIS%type default null 
-,p_SERIAL_ENGINE in TRUCKS.SERIAL_ENGINE%type default null 
-,p_K_STATUS in TRUCKS.K_STATUS%type default null 
-,p_YEAR in TRUCKS.YEAR%type default null 
-,p_COLOR in TRUCKS.COLOR%type default null 
-,p_TRANSFER_ID in TRUCKS.TRANSFER_ID%type default null 
-,p_EXTERNAL_CO in TRUCKS.EXTERNAL_CO%type default null 
-,p_TYPE_VEHICLE_ID in TRUCKS.TYPE_VEHICLE_ID%type default null 
-,p_K_TYPE_GAS in TRUCKS.K_TYPE_GAS%type default null 
-,p_LOCATION_ID in TRUCKS.LOCATION_ID%type default null 
-,p_UPDATED_AT in TRUCKS.UPDATED_AT%type default null 
-,p_ID in TRUCKS.ID%type
-,p_PARTNER_ID in TRUCKS.PARTNER_ID%type default null 
-);
--- update
-procedure upd (
-p_EMPLOYEE_ID in TRUCKS.EMPLOYEE_ID%type default null 
-,p_CREATED_AT in TRUCKS.CREATED_AT%type default null 
-,p_USER_ID in TRUCKS.USER_ID%type default null 
-,p_MODEL in TRUCKS.MODEL%type default null 
-,p_TRUCK_CO in TRUCKS.TRUCK_CO%type default null 
-,p_SERIAL_CHASSIS in TRUCKS.SERIAL_CHASSIS%type default null 
-,p_SERIAL_ENGINE in TRUCKS.SERIAL_ENGINE%type default null 
-,p_K_STATUS in TRUCKS.K_STATUS%type default null 
-,p_YEAR in TRUCKS.YEAR%type default null 
-,p_COLOR in TRUCKS.COLOR%type default null 
-,p_TRANSFER_ID in TRUCKS.TRANSFER_ID%type default null 
-,p_EXTERNAL_CO in TRUCKS.EXTERNAL_CO%type default null 
-,p_TYPE_VEHICLE_ID in TRUCKS.TYPE_VEHICLE_ID%type default null 
-,p_K_TYPE_GAS in TRUCKS.K_TYPE_GAS%type default null 
-,p_LOCATION_ID in TRUCKS.LOCATION_ID%type default null 
-,p_UPDATED_AT in TRUCKS.UPDATED_AT%type default null 
-,p_ID in TRUCKS.ID%type
-,p_PARTNER_ID in TRUCKS.PARTNER_ID%type default null 
-);
--- delete
-procedure del (
-p_ID in TRUCKS.ID%type
-);
+CREATE OR REPLACE PACKAGE dcs_k_api_truck IS
+    --
+    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'TRUCKS';
+    K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
+    K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
+    --
+    TYPE trucks_api_tab IS TABLE OF trucks%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD
+    FUNCTION get_record( p_id IN trucks.id%TYPE ) RETURN trucks%ROWTYPE;    
+    --
+    -- get DATA Array
+    FUNCTION get_list RETURN trucks_api_tab;  
+    --
+    -- insert
+    procedure ins (
+        p_id                IN trucks.id%TYPE,
+        p_truck_co          IN trucks.truck_co%TYPE DEFAULT NULL,
+        p_external_co       IN trucks.external_co%TYPE DEFAULT NULL,
+        p_type_vehicle_id   IN trucks.type_vehicle_id%TYPE DEFAULT NULL, 
+        p_k_type_gas        IN trucks.k_type_gas%TYPE DEFAULT 'DIESEL',
+        p_year              IN trucks.year%TYPE DEFAULT NULL, 
+        p_model             IN trucks.model%TYPE DEFAULT NULL,
+        p_color             IN trucks.color%TYPE DEFAULT NULL, 
+        p_serial_engine     IN trucks.serial_engine%TYPE DEFAULT NULL, 
+        p_serial_chassis    IN trucks.serial_chassis%TYPE DEFAULT NULL, 
+        p_k_status          IN trucks.k_status%TYPE DEFAULT 'AVAILABLE',
+        p_partner_id        IN trucks.partner_id%TYPE DEFAULT NULL, 
+        p_transfer_id       IN trucks.transfer_id%TYPE DEFAULT NULL, 
+        p_employee_id       IN trucks.employee_id%TYPE DEFAULT NULL,
+        p_location_id       IN trucks.location_id%TYPE DEFAULT NULL, 
+        p_user_id           IN trucks.user_id%TYPE DEFAULT NULL, 
+        p_created_at        IN trucks.created_at%TYPE DEFAULT sysdate, 
+        p_updated_at        IN trucks.updated_at%TYPE DEFAULT NULL 
+    );
+    --
+    -- insert RECORD
+    PROCEDURE ins( p_rec IN OUT trucks%ROWTYPE );
+    --
+    -- update
+    procedure upd (
+        p_id                IN trucks.id%TYPE,
+        p_truck_co          IN trucks.truck_co%TYPE DEFAULT NULL,
+        p_external_co       IN trucks.external_co%TYPE DEFAULT NULL,
+        p_type_vehicle_id   IN trucks.type_vehicle_id%TYPE DEFAULT NULL, 
+        p_k_type_gas        IN trucks.k_type_gas%TYPE DEFAULT 'DIESEL',
+        p_year              IN trucks.year%TYPE DEFAULT NULL, 
+        p_model             IN trucks.model%TYPE DEFAULT NULL,
+        p_color             IN trucks.color%TYPE DEFAULT NULL, 
+        p_serial_engine     IN trucks.serial_engine%TYPE DEFAULT NULL, 
+        p_serial_chassis    IN trucks.serial_chassis%TYPE DEFAULT NULL, 
+        p_k_status          IN trucks.k_status%TYPE DEFAULT 'AVAILABLE',
+        p_partner_id        IN trucks.partner_id%TYPE DEFAULT NULL, 
+        p_transfer_id       IN trucks.transfer_id%TYPE DEFAULT NULL, 
+        p_employee_id       IN trucks.employee_id%TYPE DEFAULT NULL,
+        p_location_id       IN trucks.location_id%TYPE DEFAULT NULL, 
+        p_user_id           IN trucks.user_id%TYPE DEFAULT NULL, 
+        p_created_at        IN trucks.created_at%TYPE DEFAULT NULL, 
+        p_updated_at        IN trucks.updated_at%TYPE DEFAULT sysdate 
+    );
+    --
+    -- update RECORD
+    PROCEDURE upd( p_rec IN OUT trucks%ROWTYPE );
+    --
+    -- delete
+    procedure del ( p_ID IN TRUCKS.ID%type  );
+    --
 end dcs_k_api_truck;
 /

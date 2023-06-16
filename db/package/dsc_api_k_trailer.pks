@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE dsc_api_k_trailer IS
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
     type trailers_api_tab is table of trailers%ROWTYPE;
-        --
+    --
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id IN trailers.id%TYPE ) RETURN trailers%ROWTYPE;    
     --
@@ -28,12 +28,12 @@ CREATE OR REPLACE PACKAGE dsc_api_k_trailer IS
         p_year             IN trailers.year%TYPE DEFAULT NULL,
         p_color            IN trailers.color%TYPE DEFAULT NULL, 
         p_partner_id       IN trailers.partner_id%TYPE DEFAULT NULL,
-        p_k_status         IN trailers.k_status%TYPE DEFAULT NULL,
+        p_k_status         IN trailers.k_status%TYPE DEFAULT 'AVAILABLE',
         p_employee_id      IN trailers.employee_id%TYPE DEFAULT NULL, 
         p_location_id      IN trailers.location_id%TYPE DEFAULT NULL,
         p_transfer_id      IN trailers.transfer_id%TYPE DEFAULT NULL, 
         p_user_id          IN trailers.user_id%TYPE DEFAULT NULL, 
-        p_created_at       IN trailers.created_at%TYPE DEFAULT NULL,
+        p_created_at       IN trailers.created_at%TYPE DEFAULT sysdate,
         p_updated_at       IN trailers.updated_at%TYPE DEFAULT NULL
     );
     --
@@ -51,13 +51,13 @@ CREATE OR REPLACE PACKAGE dsc_api_k_trailer IS
         p_year             IN trailers.year%TYPE DEFAULT NULL,
         p_color            IN trailers.color%TYPE DEFAULT NULL, 
         p_partner_id       IN trailers.partner_id%TYPE DEFAULT NULL,
-        p_k_status         IN trailers.k_status%TYPE DEFAULT NULL,
+        p_k_status         IN trailers.k_status%TYPE DEFAULT 'AVAILABLE',
         p_employee_id      IN trailers.employee_id%TYPE DEFAULT NULL, 
         p_location_id      IN trailers.location_id%TYPE DEFAULT NULL,
         p_transfer_id      IN trailers.transfer_id%TYPE DEFAULT NULL, 
         p_user_id          IN trailers.user_id%TYPE DEFAULT NULL, 
         p_created_at       IN trailers.created_at%TYPE DEFAULT NULL,
-        p_updated_at       IN trailers.updated_at%TYPE DEFAULT NULL
+        p_updated_at       IN trailers.updated_at%TYPE DEFAULT sysdate
     );
     --
     -- update RECORD
