@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY dsc_k_api_truck IS
+CREATE OR REPLACE PACKAGE BODY dsc_api_k_truck IS
     --
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id in trucks.id%TYPE ) RETURN trucks%ROWTYPE IS
@@ -202,4 +202,4 @@ CREATE OR REPLACE PACKAGE BODY dsc_k_api_truck IS
         -- 
     END del;
     --
-END dsc_k_api_truck;
+END dsc_api_k_truck;
