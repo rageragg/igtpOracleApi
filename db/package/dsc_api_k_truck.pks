@@ -2,7 +2,7 @@
 --  DDL for Package Body TRUCK_API
 --------------------------------------------------------
 
-CREATE OR REPLACE PACKAGE dcs_k_api_truck IS
+CREATE OR REPLACE PACKAGE dsc_k_api_truck IS
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'TRUCKS';
@@ -70,5 +70,5 @@ CREATE OR REPLACE PACKAGE dcs_k_api_truck IS
     -- delete
     procedure del ( p_ID IN TRUCKS.ID%type  );
     --
-end dcs_k_api_truck;
+end dsc_k_api_truck;
 /
