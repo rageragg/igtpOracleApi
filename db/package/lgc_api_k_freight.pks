@@ -28,8 +28,11 @@ CREATE OR REPLACE PACKAGE lgc_api_k_freight IS
     --
     TYPE freights_api_tab is table of freights%ROWTYPE;
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN freights.id%TYPE ) RETURN freights%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_freight_co IN freights.freight_co%TYPE ) RETURN freights%ROWTYPE;     
     --
     -- get DATA Array
     FUNCTION get_list RETURN freights_api_tab;  

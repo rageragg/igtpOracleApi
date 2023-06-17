@@ -22,7 +22,26 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
         --
         RETURN l_data;
         --
-    END get_record;     
+    END get_record;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_freight_co IN freights.freight_co%TYPE ) RETURN freights%ROWTYPE IS
+        --
+        l_data freights%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.freights WHERE freight_co = p_freight_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;               
     --
     -- get DATA Array
     FUNCTION get_list RETURN freights_api_tab IS
