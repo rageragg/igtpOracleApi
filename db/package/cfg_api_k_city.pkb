@@ -23,8 +23,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         --
     END get_record;
     --
-    -- get DATA RECORD BY ID
-    FUNCTION get_record( p_city_co in cities.city_co%TYPE )  RETURN cities%ROWTYPE IS 
+    -- get DATA RECORD BY CO
+    FUNCTION get_record( p_city_co IN cities.city_co%TYPE ) RETURN cities%ROWTYPE IS 
         --
         l_data cities%ROWTYPE;
         --

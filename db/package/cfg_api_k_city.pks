@@ -15,7 +15,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     FUNCTION get_record( p_id IN cities.id%TYPE ) RETURN cities%ROWTYPE;
     --
     -- get DATA RETURN RECORD by CO
-    FUNCTION get_record( p_city_co IN city_co.id%TYPE ) RETURN cities%ROWTYPE;
+    FUNCTION get_record( p_city_co IN cities.city_co%TYPE ) RETURN cities%ROWTYPE;
     --
     -- get DATA RETURN Array
     FUNCTION get_list RETURN cities_api_tab;
