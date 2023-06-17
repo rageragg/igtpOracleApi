@@ -1,20 +1,16 @@
 /**
-    PROPOSITO: Simular la inclusion de un flete
+    PROPOSITO: Simular la inclusion de una ruta
 */
 DECLARE 
     --
     -- locales
-    l_reg_freight   freights%ROWTYPE        := NULL;
-    l_reg_customer  customers%ROWTYPE       := NULL;
-    l_reg_route     routes%ROWTYPE          := NULL;
-    l_reg_cargo     type_cargos%ROWTYPE     := NULL;
-    l_reg_vehicle   type_vehicles%ROWTYPE   := NULL;
-    l_type_freight  type_freights%ROWTYPE   := NULL;
+    l_reg_city_from   cities%ROWTYPE        := NULL;
+    l_reg_city_to     cities%ROWTYPE        := NULL;
     --
 BEGIN 
     --
-    -- buscamos el cliente
-    l_reg_customer.customer_co := 'MKR';
+    -- buscamos la ciudad origen
+    l_reg_city_from.city_co := 'MKR';
     l_reg_customer := dsc_api_k_customer.get_record( p_customer_co => l_reg_customer.customer_co );
     --
     -- completamos el registro

@@ -1,8 +1,8 @@
 --------------------------------------------------------
---  DDL for Package CITIES_API
+--  DDL for Package CFG_API_K_CITY
 --------------------------------------------------------
 
-CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
+  CREATE OR REPLACE NONEDITIONABLE PACKAGE "IGTP"."CFG_API_K_CITY" IS
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'CITIES';
@@ -11,11 +11,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
     TYPE cities_api_tab IS TABLE OF cities%ROWTYPE;
     --
-    -- get DATA RETURN RECORD by ID
+    -- get DATA RETURN RECORD
     FUNCTION get_record( p_id IN cities.id%TYPE ) RETURN cities%ROWTYPE;
-    --
-    -- get DATA RETURN RECORD by CO
-    FUNCTION get_record( p_city_co IN city_co.id%TYPE ) RETURN cities%ROWTYPE;
     --
     -- get DATA RETURN Array
     FUNCTION get_list RETURN cities_api_tab;
@@ -60,4 +57,5 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     PROCEDURE del ( p_id in cities.id%TYPE );
     --
 END cfg_api_k_city;
+
 /
