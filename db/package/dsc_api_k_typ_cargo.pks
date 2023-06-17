@@ -13,6 +13,9 @@ CREATE OR REPLACE PACKAGE dsc_api_k_typ_cargo IS
     --
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id IN type_cargos.id%TYPE ) RETURN type_cargos%ROWTYPE;    
+    --  
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_type_cargo_co in type_cargos.type_cargo_co%TYPE ) RETURN type_cargos%ROWTYPE;
     --
     -- get DATA Array
     FUNCTION get_list RETURN type_cargos_api_tab;    

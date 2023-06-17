@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in customers.id%TYPE ) RETURN customers%ROWTYPE IS
         --
         l_data customers%ROWTYPE;
@@ -21,7 +21,26 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
         --
         RETURN l_data;
         --
-    END get_record;     
+    END get_record;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_customer_co IN customers.customer_co%TYPE ) RETURN customers%ROWTYPE IS 
+            --
+        l_data customers%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.customers WHERE customer_co = p_customer_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;           
     --
     -- get DATA Array
     FUNCTION get_list RETURN customer_api_tab IS

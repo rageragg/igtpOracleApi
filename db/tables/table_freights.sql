@@ -13,6 +13,7 @@
 	"ROUTE_ID" 	        NUMBER(20,0), 
     "TYPE_CARGO_ID"     NUMBER(20,0), 
     "TYPE_VEHICLE_ID"   NUMBER(20,0), 
+    "TYPE_FREIGHT_ID"   NUMBER(20,0), 
     "K_REGIMEN"         VARCHAR2(20) DEFAULT 'FREIGHT', 
     "UPLOAD_AT" 	    DATE, 
     "START_AT" 	        DATE,  

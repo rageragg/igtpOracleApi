@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE PACKAGE BODY igtp.lgc_api_k_route IS
     --
-    -- get DATA RECORD
+    -- get DATA RECORD by ID
     FUNCTION get_record( p_id in routes.id%TYPE )  RETURN routes%ROWTYPE IS 
         --
         l_data routes%ROWTYPE;
@@ -22,6 +22,25 @@ CREATE OR REPLACE PACKAGE BODY igtp.lgc_api_k_route IS
         RETURN l_data;
         --
     END get_record;    
+    --
+    -- get DATA RECORD by CO
+    FUNCTION get_record( p_route_co in routes.route_co%TYPE )  RETURN routes%ROWTYPE IS 
+        --
+        l_data routes%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.routes WHERE route_co = p_route_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;     
     --
     -- get DATA Array
     FUNCTION get_list RETURN routes_api_tab IS 

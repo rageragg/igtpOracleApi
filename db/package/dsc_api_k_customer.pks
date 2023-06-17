@@ -11,8 +11,11 @@ CREATE OR REPLACE PACKAGE dsc_api_k_customer IS
     --
     TYPE customer_api_tab IS  TABLE OF customers%ROWTYPE;
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN customers.id%TYPE ) RETURN customers%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_customer_co IN customers.customer_co%TYPE ) RETURN customers%ROWTYPE;   
     --
     -- get DATA Array
     FUNCTION get_list RETURN customer_api_tab;

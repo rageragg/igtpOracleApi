@@ -11,8 +11,11 @@ CREATE OR REPLACE package igtp.lgc_api_k_route IS
     --
     TYPE routes_api_tab IS TABLE OF routes%ROWTYPE;
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN routes.id%TYPE ) RETURN routes%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_route_co IN routes.route_co%TYPE ) RETURN routes%ROWTYPE;    
     --
     -- get DATA Array
     FUNCTION get_list RETURN routes_api_tab;

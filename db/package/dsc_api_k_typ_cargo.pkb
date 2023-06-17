@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_typ_cargo IS
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in type_cargos.id%TYPE ) RETURN type_cargos%ROWTYPE IS
         --
         l_data type_cargos%ROWTYPE;
@@ -21,7 +21,26 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_typ_cargo IS
         --
         RETURN l_data;
         --
-    END get_record;     
+    END get_record;   
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_type_cargo_co in type_cargos.type_cargo_co%TYPE ) RETURN type_cargos%ROWTYPE IS
+        --
+        l_data type_cargos%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.type_cargos WHERE type_cargo_co =p_type_cargo_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;        
     --
     -- get DATA Array
     FUNCTION get_list RETURN type_cargos_api_tab IS

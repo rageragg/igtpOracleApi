@@ -11,8 +11,11 @@ CREATE OR REPLACE PACKAGE dsc_api_k_typ_vehicle IS
     --
     TYPE type_vehicles_api_tab IS TABLE OF type_vehicles%ROWTYPE;
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN type_vehicles.id%TYPE ) RETURN type_vehicles%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by ID
+    FUNCTION get_record( p_type_vehicle_co IN type_vehicles.type_vehicle_co%TYPE ) RETURN type_vehicles%ROWTYPE;       
     --
     -- get DATA Array
     FUNCTION get_list RETURN type_vehicles_api_tab;  

@@ -125,7 +125,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
     PROCEDURE ins( p_rec IN OUT freights%ROWTYPE ) IS 
     BEGIN 
         --
-        p_rec.updated_at    := sysdate;
+        p_rec.created_at := sysdate;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
@@ -141,6 +141,10 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
         --
         IF p_rec.k_process IS NULL THEN 
             p_rec.k_process := K_PROCESS_LOGISTY;
+        END IF;
+        --
+        IF p_rec.freights_co IS NULL THEN  
+            p_rec.freights_co := p_rec.id;
         END IF;
         --
         INSERT INTO igtp.freights VALUES p_rec;

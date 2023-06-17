@@ -4,14 +4,31 @@
 
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_typ_vehicle is
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in type_vehicles.id%TYPE ) RETURN type_vehicles%ROWTYPE IS
         --
         l_data type_vehicles%ROWTYPE;
         --
-        --
         CURSOR c_data IS 
             SELECT * FROM igtp.type_vehicles WHERE id = p_id;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record; 
+    --
+    -- get DATA RETURN RECORD by ID
+    FUNCTION get_record( p_type_vehicle_co IN type_vehicles.type_vehicle_co%TYPE ) RETURN type_vehicles%ROWTYPE IS 
+        --
+        l_data type_vehicles%ROWTYPE;
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.type_vehicles WHERE type_vehicle_co = p_type_vehicle_co;
         -- 
     BEGIN 
         --
