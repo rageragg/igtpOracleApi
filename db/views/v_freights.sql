@@ -2,6 +2,7 @@ CREATE OR REPLACE VIEW v_freights AS
 SELECT a.id AS freight_id,
        a.freights_co,
        a.k_regimen,
+       j.description AS type_freight_desc,
        b.customer_co,
        b.description AS customer_desc,
        c.route_co,
