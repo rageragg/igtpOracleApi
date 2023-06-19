@@ -1,5 +1,9 @@
-CREATE OR REPLACE VIEW v_transfers AS
-SELECT a.id AS freight_id,
+--------------------------------------------------------
+--  DDL for View V_TRANSFERS
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_TRANSFERS" ("FREIGHT_ID", "FREIGHT_CO", "SECUENCE_NUMBER", "K_REGIMEN", "K_TYPE_TRANSFER", "CUSTOMER_CO", "CUSTOMER_DESC", "ROUTE_CO", "ROUE_DESC", "DISTANCE_KM", "ESTIMATED_TIME_HRS", "TYPE_CARGO_CO", "TYPE_CARGO_DESC", "TYPE_FREIGHT_CO", "PLANED_AT", "START_AT", "END_AT", "EMPLOYEE_CO", "EMPLOYEE_DESC", "TRAILER_CO", "TRUCK_CO", "K_STATUS") AS 
+  SELECT a.id AS freight_id,
        a.freight_co,
        e.sequence_number secuence_number,
        a.k_regimen,
@@ -13,9 +17,9 @@ SELECT a.id AS freight_id,
        d.type_cargo_co,
        d.description AS type_cargo_desc,
        j.type_freight_co,
-       e.planed_date,
-       e.start_date,
-       e.end_date,
+       e.planed_at,
+       e.start_at,
+       e.end_at,
        i.employee_co,
        i.fullname employee_desc,
        g.trailer_co,
@@ -33,4 +37,5 @@ SELECT a.id AS freight_id,
 WHERE e.sequence_number = ( SELECT MAX(f.sequence_number) 
                               FROM transfers f
 									  WHERE f.freight_id = a.id 	 
-								  ); 
+								  )
+;
