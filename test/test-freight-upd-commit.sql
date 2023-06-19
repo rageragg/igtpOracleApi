@@ -19,7 +19,7 @@ DECLARE
 BEGIN 
     --
     -- buscamos el viaje
-    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71804 );
+    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71798 );
     --
     -- buscamos la ruta
     l_reg_route.id :=l_reg_freight.route_id;
@@ -45,8 +45,8 @@ BEGIN
     dbms_output.put_line( 'Notas       : ' || l_reg_freight.notes );
     --
     -- incluimos iniciamos el viaje
-    l_reg_freight.k_status := lgc_api_k_freight.K_STATUS_EXECUTING;
-    l_reg_freight.start_at := l_reg_freight.upload_at;
+    l_reg_freight.k_status := lgc_api_k_freight.K_STATUS_COMMIT;
+    l_reg_freight.finish_at := l_reg_freight.upload_at+1;
     lgc_api_k_freight.upd( p_rec => l_reg_freight );
     --
     l_tab_transfers.DELETE;
@@ -59,12 +59,12 @@ BEGIN
         --
         l_reg_transfer := l_tab_transfers(i);
         --
-        IF l_reg_transfer.k_status = lgc_api_k_transfer.K_STATUS_PLANNED THEN 
+        IF l_reg_transfer.k_status = lgc_api_k_transfer.K_STATUS_EXECUTING THEN 
             --
-            l_reg_transfer.k_status   := lgc_api_k_transfer.K_STATUS_EXECUTING;
+            l_reg_transfer.k_status   := lgc_api_k_transfer.K_STATUS_COMMIT;
             --
-            IF l_reg_transfer.start_at IS NULL THEN 
-                l_reg_transfer.start_at := l_reg_freight.start_at;
+            IF l_reg_transfer.end_at IS NULL THEN 
+                l_reg_transfer.end_at := l_reg_freight.finish_at;
             END IF;    
             --
             -- incluimos el registro
@@ -72,24 +72,24 @@ BEGIN
             --
             -- actualizamos el empleado
             l_reg_employee := dsc_api_k_employee.get_record( p_id => l_reg_transfer.main_employee_id );
-            l_reg_employee.transfer_id  := l_reg_transfer.id;
-            l_reg_employee.truck_id     := l_reg_transfer.truck_id;
-            l_reg_employee.trailer_id   := l_reg_transfer.trailer_id;
-            l_reg_employee.k_status     := dsc_api_k_employee.K_STATUS_SERVING;
+            l_reg_employee.transfer_id  := NULL;
+            l_reg_employee.truck_id     := NULL;
+            l_reg_employee.trailer_id   := NULL;
+            l_reg_employee.k_status     := dsc_api_k_employee.K_STATUS_AVAILABLE;
             dsc_api_k_employee.upd( p_rec => l_reg_employee );
             --
             -- actualizamos la tractomula
             l_reg_truck := dsc_api_k_truck.get_record( p_id => l_reg_transfer.truck_id );
-            l_reg_truck.transfer_id     := l_reg_transfer.id;
-            l_reg_truck.employee_id     := l_reg_transfer.main_employee_id;
-            l_reg_truck.k_status     := dsc_api_k_truck.K_STATUS_SERVING;
+            l_reg_truck.transfer_id     := NULL;
+            l_reg_truck.employee_id     := NULL;
+            l_reg_truck.k_status     := dsc_api_k_truck.K_STATUS_AVAILABLE;
             dsc_api_k_truck.upd( p_rec => l_reg_truck );
             --
             -- actualizamos el trailer
             l_reg_trailer := dsc_api_k_trailer.get_record( p_id => l_reg_transfer.trailer_id );
-            l_reg_trailer.transfer_id   := l_reg_transfer.id;
-            l_reg_trailer.employee_id   := l_reg_transfer.main_employee_id;    
-            l_reg_trailer.k_status     := dsc_api_k_trailer.K_STATUS_SERVING;
+            l_reg_trailer.transfer_id   := NULL;
+            l_reg_trailer.employee_id   := NULL;    
+            l_reg_trailer.k_status     := dsc_api_k_trailer.K_STATUS_AVAILABLE;
             dsc_api_k_trailer.upd( p_rec => l_reg_trailer );    
             --
             -- actualizamos las transferencias planeadas

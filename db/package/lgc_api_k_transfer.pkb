@@ -125,9 +125,9 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
         p_k_status          IN transfers.k_status%TYPE DEFAULT 'PLANNED',
         p_k_process         IN transfers.k_process%TYPE DEFAULT 'LOGISTIC',
         p_k_type_transfer   IN transfers.k_type_transfer%TYPE DEFAULT 'TRANSFERENCE',
-        p_planed_date       IN transfers.planed_date%TYPE DEFAULT NULL,
-        p_start_date        IN transfers.start_date%TYPE DEFAULT NULL,
-        p_end_date          IN transfers.END_date%TYPE DEFAULT NULL,
+        p_planed_at         IN transfers.planed_at%TYPE DEFAULT NULL,
+        p_start_date        IN transfers.start_at%TYPE DEFAULT NULL,
+        p_end_date          IN transfers.end_at%TYPE DEFAULT NULL,
         p_main_employee_id  IN transfers.main_employee_id%TYPE DEFAULT NULL,
         p_aux_employee_id   IN transfers.aux_employee_id%TYPE DEFAULT NULL,
         p_truck_id          IN transfers.truck_id%TYPE DEFAULT NULL,
@@ -143,15 +143,15 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
             ,route_id
             ,freight_id
             ,k_regimen
-            ,end_date
+            ,end_at
             ,user_id
-            ,start_date
+            ,start_at
             ,k_status
             ,k_process
             ,aux_employee_id
             ,sequence_number
             ,k_order
-            ,planed_date
+            ,planed_at
             ,truck_id
             ,main_employee_id
             ,updated_at
@@ -171,7 +171,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
             ,p_aux_employee_id
             ,p_sequence_number
             ,p_k_order
-            ,p_planed_date
+            ,p_planed_at
             ,p_truck_id
             ,p_main_employee_id
             ,p_updated_at
@@ -234,9 +234,9 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
         p_k_status          IN transfers.k_status%TYPE DEFAULT 'PLANNED',
         p_k_process         IN transfers.k_process%TYPE DEFAULT 'LOGISTIC',
         p_k_type_transfer   IN transfers.k_type_transfer%TYPE DEFAULT NULL,
-        p_planed_date       IN transfers.planed_date%TYPE DEFAULT NULL,
-        p_start_date        IN transfers.start_date%TYPE DEFAULT NULL,
-        p_end_date          IN transfers.END_date%TYPE DEFAULT NULL,
+        p_planed_at       IN transfers.planed_at%TYPE DEFAULT NULL,
+        p_start_date        IN transfers.start_at%TYPE DEFAULT NULL,
+        p_end_date          IN transfers.end_at%TYPE DEFAULT NULL,
         p_main_employee_id  IN transfers.main_employee_id%TYPE DEFAULT NULL,
         p_aux_employee_id   IN transfers.aux_employee_id%TYPE DEFAULT NULL,
         p_truck_id          IN transfers.truck_id%TYPE DEFAULT NULL,
@@ -252,15 +252,15 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
             ,route_id = p_route_id
             ,freight_id = p_freight_id
             ,k_regimen = p_k_regimen
-            ,end_date = p_end_date
+            ,end_at = p_end_date
             ,user_id = p_user_id
-            ,start_date = p_start_date
+            ,start_at = p_start_date
             ,k_status = p_k_status
             ,k_process = p_k_process
             ,aux_employee_id = p_aux_employee_id
             ,sequence_number = p_sequence_number
             ,k_order = p_k_order
-            ,planed_date = p_planed_date
+            ,planed_at = p_planed_at
             ,truck_id = p_truck_id
             ,main_employee_id = p_main_employee_id
             ,updated_at = p_updated_at
