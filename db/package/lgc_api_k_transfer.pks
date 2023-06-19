@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE lgc_api_k_transfer IS
     K_PROCESS_INVOICING     CONSTANT VARCHAR2(20)  := 'INVOICING';
     K_PROCESS_ARCHIVING     CONSTANT VARCHAR2(20)  := 'ARCHIVING';
     --
-    TYPE transfers_api_tab IS TABLE OF transfers%ROWTYPE;
+    TYPE transfers_api_tab IS TABLE OF transfers%ROWTYPE INDEX BY PLS_INTEGER;
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN transfers.id%TYPE ) RETURN transfers%ROWTYPE;    

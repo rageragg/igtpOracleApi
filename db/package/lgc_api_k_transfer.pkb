@@ -74,6 +74,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
     FUNCTION get_list(p_freight_id IN transfers.freight_id%TYPE) RETURN transfers_api_tab IS
         --
         l_data transfers_api_tab;
+        l_idx  NUMBER   := 0;
         --
         CURSOR c_data IS 
             SELECT * 
@@ -83,12 +84,14 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
         -- 
     BEGIN 
         --
-        OPEN c_data;
-        LOOP
-            FETCH c_data BULK COLLECT INTO l_data LIMIT K_LIMIT_LIST;   
-            EXIT WHEN c_data%NOTFOUND;
+        l_data.DELETE;
+        --
+        FOR r_reg IN c_data LOOP
+            --
+            l_idx := l_idx + 1;
+            l_data(l_idx) := r_reg;
+            --
         END LOOP;
-        CLOSE c_data;
         --
         RETURN l_data;
         --
