@@ -11,22 +11,22 @@ DECLARE
 BEGIN 
     --
     -- buscamos la ciudad origen
-    l_reg_from_city.city_co := 'YAR-YRTA';
+    l_reg_from_city.city_co := 'CGUA';
     l_reg_from_city := cfg_api_k_city.get_record( p_city_co => l_reg_from_city.city_co );
     --
     -- buscamos la ciudad destino
-    l_reg_to_city.city_co := 'MIR-GUA';
+    l_reg_to_city.city_co := 'YAR-YRTA';
     l_reg_to_city := cfg_api_k_city.get_record( p_city_co => l_reg_to_city.city_co );    
     --
     -- completamos el registro
     l_reg_route.from_city_id        := l_reg_from_city.id;
     l_reg_route.to_city_id          := l_reg_to_city.id;
-    l_reg_route.description         := 'YARITAGUA - GUARENA';
+    l_reg_route.description         := 'CAGUA - YARITAGUA';
     l_reg_route.route_co            := l_reg_from_city.id ||'-'||l_reg_to_city.id;
     l_reg_route.k_level_co          := 'A';
     l_reg_route.distance_km         :=  372;
     l_reg_route.estimated_time_hrs  :=  4.5;
-    l_reg_route.slug                :=  'yar-gua';
+    l_reg_route.slug                :=  'cag-yrta';
     l_reg_route.uuid                :=  sys_k_utils.f_uuid;
     l_reg_route.user_id             :=  1;
     --

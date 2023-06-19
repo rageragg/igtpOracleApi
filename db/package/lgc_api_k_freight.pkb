@@ -84,7 +84,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
     -- insert
     PROCEDURE ins (
         p_id                IN freights.id%TYPE,
-        p_freights_co       IN freights.freights_co%TYPE DEFAULT NULL,
+        p_freight_co        IN freights.freight_co%TYPE DEFAULT NULL,
         p_customer_id       IN freights.customer_id%TYPE DEFAULT NULL,
         p_route_id          IN freights.route_id%TYPE DEFAULT NULL,
         p_type_cargo_id     IN freights.type_cargo_id%TYPE DEFAULT NULL,
@@ -95,7 +95,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
         p_finish_at         IN freights.finish_at%TYPE DEFAULT NULL,
         p_notes             IN freights.notes%TYPE DEFAULT NULL,
         p_k_status          IN freights.k_status%TYPE DEFAULT 'PLANNED',
-        p_k_process         IN freights.k_process%TYPE DEFAULT 'LOGISTY',
+        p_k_process         IN freights.k_process%TYPE DEFAULT 'LOGISTIC',
         p_user_id           IN freights.user_id%TYPE DEFAULT NULL,
         p_created_at        IN freights.created_at%TYPE DEFAULT NULL,
         p_updated_at        IN freights.updated_at%TYPE DEFAULT NULL 
@@ -111,7 +111,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
             ,k_regimen
             ,user_id
             ,type_cargo_id
-            ,freights_co
+            ,freight_co
             ,k_status
             ,k_process
             ,notes
@@ -128,7 +128,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
             ,p_k_regimen
             ,p_user_id
             ,p_type_cargo_id
-            ,p_freights_co
+            ,p_freight_co
             ,p_k_status
             ,p_k_process
             ,p_notes
@@ -159,11 +159,11 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
         END IF;
         --
         IF p_rec.k_process IS NULL THEN 
-            p_rec.k_process := K_PROCESS_LOGISTY;
+            p_rec.k_process := K_PROCESS_LOGISTIC;
         END IF;
         --
-        IF p_rec.freights_co IS NULL THEN  
-            p_rec.freights_co := p_rec.id;
+        IF p_rec.freight_co IS NULL THEN  
+            p_rec.freight_co := p_rec.id;
         END IF;
         --
         INSERT INTO igtp.freights VALUES p_rec;
@@ -173,7 +173,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
     -- update
     PROCEDURE upd (
         p_id                IN freights.id%TYPE,
-        p_freights_co       IN freights.freights_co%TYPE DEFAULT NULL,
+        p_freight_co        IN freights.freight_co%TYPE DEFAULT NULL,
         p_customer_id       IN freights.customer_id%TYPE DEFAULT NULL,
         p_route_id          IN freights.route_id%TYPE DEFAULT NULL,
         p_type_cargo_id     IN freights.type_cargo_id%TYPE DEFAULT NULL,
@@ -200,7 +200,7 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_freight IS
                 ,k_regimen = p_k_regimen
                 ,user_id = p_user_id
                 ,type_cargo_id = p_type_cargo_id
-                ,freights_co = p_freights_co
+                ,freight_co = p_freight_co
                 ,k_status = p_k_status
                 ,k_process = p_k_process
                 ,notes = p_notes

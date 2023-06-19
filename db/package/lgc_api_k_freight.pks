@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE lgc_api_k_freight IS
     K_STATUS_INVOICED       CONSTANT VARCHAR2(20)  := 'INVOICED';
     K_STATUS_ARCHIVED       CONSTANT VARCHAR2(20)  := 'ARCHIVED';
     --
-    K_PROCESS_LOGISTY       CONSTANT VARCHAR2(20)  := 'LOGISTY';
+    K_PROCESS_LOGISTIC       CONSTANT VARCHAR2(20) := 'LOGISTIC';
     K_PROCESS_INVOICING     CONSTANT VARCHAR2(20)  := 'INVOICING';
     K_PROCESS_ARCHIVING     CONSTANT VARCHAR2(20)  := 'ARCHIVING';
     --
@@ -40,7 +40,7 @@ CREATE OR REPLACE PACKAGE lgc_api_k_freight IS
     -- insert
     PROCEDURE ins (
         p_id                IN freights.id%TYPE,
-        p_freights_co       IN freights.freights_co%TYPE DEFAULT NULL,
+        p_freight_co        IN freights.freight_co%TYPE DEFAULT NULL,
         p_customer_id       IN freights.customer_id%TYPE DEFAULT NULL,
         p_route_id          IN freights.route_id%TYPE DEFAULT NULL,
         p_type_cargo_id     IN freights.type_cargo_id%TYPE DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE OR REPLACE PACKAGE lgc_api_k_freight IS
         p_finish_at         IN freights.finish_at%TYPE DEFAULT NULL,
         p_notes             IN freights.notes%TYPE DEFAULT NULL,
         p_k_status          IN freights.k_status%TYPE DEFAULT 'PLANNED',
-        p_k_process         IN freights.k_process%TYPE DEFAULT 'LOGISTY',
+        p_k_process         IN freights.k_process%TYPE DEFAULT 'LOGISTIC',
         p_user_id           IN freights.user_id%TYPE DEFAULT NULL,
         p_created_at        IN freights.created_at%TYPE DEFAULT NULL,
         p_updated_at        IN freights.updated_at%TYPE DEFAULT NULL 
@@ -63,7 +63,7 @@ CREATE OR REPLACE PACKAGE lgc_api_k_freight IS
     -- update
     PROCEDURE upd (
         p_id                IN freights.id%TYPE,
-        p_freights_co       IN freights.freights_co%TYPE DEFAULT NULL,
+        p_freight_co        IN freights.freight_co%TYPE DEFAULT NULL,
         p_customer_id       IN freights.customer_id%TYPE DEFAULT NULL,
         p_route_id          IN freights.route_id%TYPE DEFAULT NULL,
         p_type_cargo_id     IN freights.type_cargo_id%TYPE DEFAULT NULL,
