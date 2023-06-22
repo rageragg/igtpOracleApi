@@ -23,6 +23,25 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
     END get_record;     
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_location_co in locations.location_co%TYPE ) RETURN locations%ROWTYPE IS
+        --
+        l_data locations%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.locations WHERE location_co = p_location_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;    
+    --
     -- get DATA Array
     FUNCTION get_list RETURN locations_api_tab IS
         --

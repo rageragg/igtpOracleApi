@@ -4,7 +4,7 @@
 
   CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_FREIGHTS" ("FREIGHT_ID", "FREIGHTS_CO", "K_REGIMEN", "TYPE_FREIGHT_DESC", "CUSTOMER_CO", "CUSTOMER_DESC", "ROUTE_CO", "ROUE_DESC", "DISTANCE_KM", "ESTIMATED_TIME_HRS", "TYPE_CARGO_CO", "TYPE_CARGO_DESC", "TYPE_FREIGHT_CO", "UPLOAD_AT", "START_AT", "FINISH_AT", "K_STATUS") AS 
   SELECT a.id AS freight_id,
-       a.freights_co,
+       a.freight_co,
        a.k_regimen,
        j.description AS type_freight_desc,
        b.customer_co,

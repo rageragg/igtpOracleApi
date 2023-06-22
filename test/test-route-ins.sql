@@ -11,22 +11,22 @@ DECLARE
 BEGIN 
     --
     -- buscamos la ciudad origen
-    l_reg_from_city.city_co := 'CGUA';
+    l_reg_from_city.city_co := 'BRNAS';
     l_reg_from_city := cfg_api_k_city.get_record( p_city_co => l_reg_from_city.city_co );
     --
     -- buscamos la ciudad destino
-    l_reg_to_city.city_co := 'YAR-YRTA';
+    l_reg_to_city.city_co := 'MIR-LTQ';
     l_reg_to_city := cfg_api_k_city.get_record( p_city_co => l_reg_to_city.city_co );    
     --
     -- completamos el registro
     l_reg_route.from_city_id        := l_reg_from_city.id;
     l_reg_route.to_city_id          := l_reg_to_city.id;
-    l_reg_route.description         := 'CAGUA - YARITAGUA';
+    l_reg_route.description         := 'BARINAS - LOS TEQUES';
     l_reg_route.route_co            := l_reg_from_city.id ||'-'||l_reg_to_city.id;
-    l_reg_route.k_level_co          := 'A';
-    l_reg_route.distance_km         :=  372;
-    l_reg_route.estimated_time_hrs  :=  4.5;
-    l_reg_route.slug                :=  'cag-yrta';
+    l_reg_route.k_level_co          := 'C';
+    l_reg_route.distance_km         :=  565;
+    l_reg_route.estimated_time_hrs  :=  9;
+    l_reg_route.slug                :=  'brnas-mir-ltq';
     l_reg_route.uuid                :=  sys_k_utils.f_uuid;
     l_reg_route.user_id             :=  1;
     --
@@ -38,6 +38,8 @@ BEGIN
     --
     -- incluimos el registro
     lgc_api_k_route.ins( p_rec => l_reg_route );
+    --
+    dbms_output.put_line( 'Codigo ID: '||l_reg_route.id );
     --
     COMMIT;
     --

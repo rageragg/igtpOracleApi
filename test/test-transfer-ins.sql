@@ -14,7 +14,7 @@ DECLARE
 BEGIN 
     --
     -- buscamos el viaje
-    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71802 );
+    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71819 );
     --
     -- buscamos la ruta
     l_reg_route.id :=l_reg_freight.route_id;
@@ -43,18 +43,18 @@ BEGIN
     l_reg_transfer.freight_id       := l_reg_freight.id;
     l_reg_transfer.k_type_transfer  := lgc_api_k_transfer.K_TYPE_TRANS_BUSSINES;
     -- buscamos la ruta
-    l_reg_route.route_co := '21-15';
-    l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
+    --l_reg_route.route_co := '21-15';
+    --l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
 
-    l_reg_transfer.route_id         := l_reg_route.id;
-    l_reg_transfer.planed_date      := l_reg_freight.upload_at;
+    l_reg_transfer.route_id     := l_reg_route.id;
+    l_reg_transfer.planed_at    := l_reg_freight.upload_at;
     --
     -- TODO: Realizar el proceso de busqueda de conductor por codigo externo
-    l_reg_transfer.main_employee_id := 3;
+    l_reg_transfer.main_employee_id := 12;
     --
     -- TODO: Realizar el proceso de busqueda de tractomula y trailer por codigo externo
-    l_reg_transfer.truck_id     := 3;
-    l_reg_transfer.trailer_id   := 59;
+    l_reg_transfer.truck_id     := 13;
+    l_reg_transfer.trailer_id   := 74;
     l_reg_transfer.user_id      := 1;
     --
     -- ! NO SE PUEDE CREAR UNA TRANSFERENCIAS SI HAY ALGUNA CON ESTATUS=PLANNED

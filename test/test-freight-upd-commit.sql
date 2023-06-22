@@ -19,7 +19,7 @@ DECLARE
 BEGIN 
     --
     -- buscamos el viaje
-    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71800 );
+    l_reg_freight := lgc_api_k_freight.get_record( p_freight_co => 71802 );
     --
     -- buscamos la ruta
     l_reg_route.id :=l_reg_freight.route_id;

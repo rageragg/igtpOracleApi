@@ -1,8 +1,0 @@
---------------------------------------------------------
---  Constraints for Table UNITS_LOCATED
---------------------------------------------------------
-
-  ALTER TABLE "IGTP"."UNITS_LOCATED" MODIFY ("ID" NOT NULL ENABLE);
-  ALTER TABLE "IGTP"."UNITS_LOCATED" ADD CONSTRAINT "UNITS_LOCATED_PK" PRIMARY KEY ("ID")
-  USING INDEX "IGTP"."UNITS_LOCATED_PK"  ENABLE;
-  ALTER TABLE "IGTP"."UNITS_LOCATED" ADD CONSTRAINT "K_STATUS_CHK" CHECK ( k_status IN ('AVAILABLE','DISPOSABLE','REPAIRING') ) ENABLE;

@@ -11,8 +11,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
     --
     TYPE locations_api_tab IS  TABLE OF locations%ROWTYPE;
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in locations.id%TYPE ) RETURN locations%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_location_co in locations.location_co%TYPE ) RETURN locations%ROWTYPE;        
     --
     -- get DATA Array
     FUNCTION get_list RETURN locations_api_tab;
