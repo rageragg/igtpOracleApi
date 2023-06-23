@@ -23,3 +23,7 @@
   TABLESPACE "TS_IGTP_DAT" ;
 
    COMMENT ON TABLE "IGTP"."TRANSFER_SHOPS"  IS 'Documentos asociados a tiendas';
+
+
+ALTER TABLE transfer_shops ADD type_json VARCHAR2(20);
+ALTER TABLE transfer_shops ADD payload_json CLOB;
