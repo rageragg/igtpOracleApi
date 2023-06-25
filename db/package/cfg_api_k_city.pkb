@@ -63,6 +63,23 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         --
     END get_list;    
     --
+    -- create incremental id
+    FUNCTION inc_id RETURN NUMBER IS 
+        --
+        mx  NUMBER(8);
+        --
+    BEGIN
+        --
+        SELECT max(id)
+          INTO mx
+          FROM igtp.cities;
+        --
+        mx := nvl(mx,0) + 1;
+        --
+        RETURN mx;  
+        --
+    END inc_id;    
+    --
     -- insert
     PROCEDURE ins (
             p_id                IN cities.ID%TYPE,
@@ -120,6 +137,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         --
         p_rec.created_at := sysdate;
         --
+        IF p_rec.id IS NULL THEN 
+            p_rec.id := inc_id;
+        END IF;
+        --    
         IF p_rec.uuid IS NULL THEN 
             p_rec.uuid := sys_guid();
         END IF;    

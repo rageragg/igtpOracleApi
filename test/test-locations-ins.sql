@@ -9,15 +9,15 @@ DECLARE
     --
 BEGIN 
     --
-    l_reg_city.city_co := 'LAR-BQTO';
+    l_reg_city.city_co := 'LAR-CDE';
     l_reg_city := cfg_api_k_city.get_record( p_city_co => l_reg_city.city_co );
     --
-    l_reg_location.location_co  := 'BQTO-OES';
-    l_reg_location.description  := 'BARQUISIMETO OESTE';
+    l_reg_location.location_co  := 'CDE-CTRO';
+    l_reg_location.description  := 'CABUDARE CENTRO';
     l_reg_location.postal_co    := l_reg_city.postal_co;
     l_reg_location.city_id      := l_reg_city.id;
     l_reg_location.uuid         := sys_k_utils.f_uuid();
-    l_reg_location.slug         := 'ven-occ-lar-bqto-oes';
+    l_reg_location.slug         := 'ven-occ-lar-cde-ctro';
     l_reg_location.user_id      := 1;
     --
     dbms_output.put_line('Ciudad     : ' || l_reg_city.description );
