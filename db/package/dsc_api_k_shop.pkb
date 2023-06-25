@@ -149,7 +149,7 @@ CREATE OR REPLACE package body dsc_api_k_shop IS
     PROCEDURE ins( p_rec IN OUT shops%ROWTYPE ) IS  
     BEGIN 
         --
-        p_rec.updated_at    := sysdate;
+        p_rec.created_at    := sysdate;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;

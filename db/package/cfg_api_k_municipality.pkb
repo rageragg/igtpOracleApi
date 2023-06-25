@@ -21,8 +21,43 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
         --
         RETURN l_data;
         --
-    END get_record;      
+    END get_record;   
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_municipality_co in municipalities.municipality_co%TYPE ) RETURN municipalities%ROWTYPE IS
+        --
+        l_data municipalities%ROWTYPE;
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.municipalities WHERE municipality_co = p_municipality_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;  
+    --
+    -- create incremental id
+    FUNCTION inc_id RETURN NUMBER IS 
+        --
+        mx  NUMBER(8);
+        --
+    BEGIN
+        --
+        SELECT max(id)
+          INTO mx
+          FROM igtp.municipalities;
+        --
+        mx := nvl(mx,0) + 1;
+        --
+        RETURN mx;  
+        --
+    END inc_id;          
+    --       
     -- insert
     PROCEDURE ins (
         p_id               IN municipalities.id%TYPE,
@@ -65,7 +100,15 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     PROCEDURE ins ( p_rec  IN OUT municipalities%ROWTYPE ) IS 
     BEGIN 
         --
-        p_rec.created_at := sysdate;
+        p_rec.created_at    := sysdate;
+        --
+        IF p_rec.id IS NULL THEN 
+            p_rec.id := inc_id;
+        END IF; 
+        --
+        IF p_rec.uuid IS NULL THEN 
+            p_rec.uuid := sys_guid();
+        END IF;  
         --
         INSERT INTO municipalities 
              VALUES p_rec

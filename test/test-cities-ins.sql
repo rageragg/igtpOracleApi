@@ -4,14 +4,14 @@ DECLARE
         PROPOSITO: Simular la inclusion de una tiendas
     */
     -- locales
-    l_reg_location locations%ROWTYPE    := NULL;
-    l_reg_shops    shops%ROWTYPE        := NULL;
+    l_reg_municipality municipalities%ROWTYPE    := NULL;
+    l_reg_city         cities%ROWTYPE        := NULL;
     --
 BEGIN 
     --
     -- TODO: validaciones de que exista la localidad
-    l_reg_location.location_co := 'BQTO-CTRO';
-    l_reg_location := cfg_api_k_location.get_record( p_location_co => l_reg_location.location_co );
+    l_reg_municipality.municipality_co := 'LAR-AEB';
+    l_reg_municipality := cfg_api_k_municipality.get_record( p_municipality_co => l_reg_municipality.municipality_co );
     --
     -- TODO: validaciones de codigo no se repita
     l_reg_shops.shop_co         := '03-693';

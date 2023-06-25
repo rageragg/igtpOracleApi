@@ -10,6 +10,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id in municipalities.id%TYPE ) RETURN municipalities%ROWTYPE;
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_municipality_co IN municipalities.municipality_co%TYPE ) RETURN municipalities%ROWTYPE;     
+    --
     -- insert
     PROCEDURE ins (
         p_id               IN municipalities.id%TYPE,
