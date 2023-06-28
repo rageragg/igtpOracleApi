@@ -10,14 +10,14 @@ DECLARE
 BEGIN 
     --
     -- TODO: validaciones de que exista la localidad
-    l_reg_location.location_co := 'CARO-CTRO';
+    l_reg_location.location_co := 'SNRE-CTRO';
     l_reg_location := cfg_api_k_location.get_record( p_location_co => l_reg_location.location_co );
     --
     -- TODO: validaciones de codigo no se repita
-    l_reg_shops.shop_co         := '03-657';
-    l_reg_shops.description     := 'SUPER GALAXIA CENTER, C.A';
+    l_reg_shops.shop_co         := '11-126';
+    l_reg_shops.description     := 'VARIEDADES EL SOTANO 1, C.A';
     l_reg_shops.location_id     := l_reg_location.id;
-    l_reg_shops.address         := 'AVENIDA FRANCISCO DE MIRANDA CON AV. 14 DE FEBRERO EDIF POLLOS PISO PB SECTOR 2 CARORA ESTADO LARA';
+    l_reg_shops.address         := 'CALLE JOSE ELIAS SILVA, CRUCE CALLE MIRANDA LOCAL NRO 1 SECTOR ANA SANARE EDO LARA';
     --
     l_reg_shops.nu_gps_lat	        := 0;
     l_reg_shops.nu_gps_lon	        := 0;
@@ -25,7 +25,7 @@ BEGIN
     l_reg_shops.fax_co	            := NULL;
     -- TODO: validaciones de formato de email
     l_reg_shops.email	            := 'email@email.com';
-    l_reg_shops.name_contact	    := 'FRANCISCO CARO';
+    l_reg_shops.name_contact	    := 'ALMAGORA';
     l_reg_shops.email_contact	    := 'email@email.com';
     -- TODO: validaciones de formato de formato telefonico
     l_reg_shops.telephone_contact	:= '(999)9999999';

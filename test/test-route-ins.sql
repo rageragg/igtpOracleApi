@@ -11,22 +11,22 @@ DECLARE
 BEGIN 
     --
     -- buscamos la ciudad origen
-    l_reg_from_city.city_co := 'BRNAS';
+    l_reg_from_city.city_co := 'LAR-BQTO';
     l_reg_from_city := cfg_api_k_city.get_record( p_city_co => l_reg_from_city.city_co );
     --
     -- buscamos la ciudad destino
-    l_reg_to_city.city_co := 'MIR-LTQ';
+    l_reg_to_city.city_co := 'LAR-ETYO';
     l_reg_to_city := cfg_api_k_city.get_record( p_city_co => l_reg_to_city.city_co );    
     --
     -- completamos el registro
     l_reg_route.from_city_id        := l_reg_from_city.id;
     l_reg_route.to_city_id          := l_reg_to_city.id;
-    l_reg_route.description         := 'BARINAS - LOS TEQUES';
+    l_reg_route.description         := 'BARQUISIMETO - EL TOCUYO (LAR)';
     l_reg_route.route_co            := l_reg_from_city.id ||'-'||l_reg_to_city.id;
     l_reg_route.k_level_co          := 'C';
-    l_reg_route.distance_km         :=  565;
-    l_reg_route.estimated_time_hrs  :=  9;
-    l_reg_route.slug                :=  'brnas-mir-ltq';
+    l_reg_route.distance_km         :=  64;
+    l_reg_route.estimated_time_hrs  :=  1;
+    l_reg_route.slug                :=  'lar-bqto-etyo';
     l_reg_route.uuid                :=  sys_k_utils.f_uuid;
     l_reg_route.user_id             :=  1;
     --
