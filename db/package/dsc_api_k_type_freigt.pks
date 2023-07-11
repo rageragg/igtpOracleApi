@@ -2,7 +2,7 @@
 --  DDL for Package Body TYPE_FREIGHTS_api
 --------------------------------------------------------
 
-CREATE OR REPLACE PACKAGE dsc_api_k_type_freigt IS
+CREATE OR REPLACE PACKAGE dsc_api_k_type_freight IS
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'TYPE_FREIGHTS';
@@ -53,5 +53,5 @@ CREATE OR REPLACE PACKAGE dsc_api_k_type_freigt IS
     -- delete
     procedure del ( p_id IN type_freights.id%TYPE );
     --
-END dsc_api_k_type_freigt;
+END dsc_api_k_type_freight;
 /

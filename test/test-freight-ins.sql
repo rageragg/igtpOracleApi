@@ -4,6 +4,7 @@
 DECLARE 
     --
     -- parametros 
+    p_user_id           freights.user_id%TYPE               := 1;
     p_customer_co       customers.customer_co%TYPE          := 'MKR';
     p_route_co          routes.route_co%TYPE                := '21-22';
     p_type_cargo_co     type_cargos.type_cargo_co%TYPE      := 'REF';
@@ -29,7 +30,9 @@ DECLARE
     PROCEDURE pp_adm_customer IS  
     BEGIN 
         --
-        l_reg_customer := dsc_api_k_customer.get_record( p_customer_co => l_reg_customer.customer_co );
+        l_reg_customer := dsc_api_k_customer.get_record( 
+            p_customer_co => l_reg_customer.customer_co 
+        );
         --
         -- TODO: verificamos que no este inhabilitado
         IF l_reg_customer.k_mca_inh = 'S' THEN 
@@ -39,15 +42,49 @@ DECLARE
             --
         END IF;
         --
-    END pp_v_customer;
+    END pp_adm_customer;
     --
     -- controlamos la ruta
     PROCEDURE pp_adm_route IS 
     BEGIN 
         --
-        l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
+        l_reg_route := lgc_api_k_route.get_record( 
+            p_route_co => l_reg_route.route_co 
+        );
         --
     END pp_adm_route;
+    --
+    -- controlamos el tipo de carga
+    PROCEDURE pp_adm_type_carga IS 
+    BEGIN
+        --
+        l_reg_cargo := dsc_api_k_typ_cargo.get_record( 
+            p_type_cargo_co => l_reg_cargo.type_cargo_co 
+        );
+        --
+    END pp_adm_type_carga;
+    --
+    -- controlamos el tipo de vehiculos
+    PROCEDURE pp_adm_type_vehicle IS 
+    BEGIN
+        --
+        l_reg_vehicle := dsc_api_k_typ_vehicle.get_record( 
+            p_type_vehicle_co => l_reg_vehicle.type_vehicle_co 
+        );
+        --
+         -- ! VALIDAR QUE EL TIPO DE VEHICULO SEA COMPATIBLE CON EL TIPO DE CARGA
+        --
+    END pp_adm_type_vehicle;
+    --
+    -- controlamos el tipo de viaje
+    PROCEDURE pp_adm_type_freight IS 
+    BEGIN 
+        --
+        l_type_freight := dsc_api_k_type_freight.get_record( 
+            p_type_freight_co => l_type_freight.type_freight_co 
+        );
+        --
+    END pp_adm_type_freight;
     --
 BEGIN 
     --
@@ -77,16 +114,15 @@ BEGIN
     --
     -- buscamos la ruta
     pp_adm_route;
+    --
     -- buscamos el tipo de carga
-    l_reg_cargo := dsc_api_k_typ_cargo.get_record( p_type_cargo_co => l_reg_cargo.type_cargo_co );
+    pp_adm_type_carga;
     --
     -- buscamos el tipo de vehiculo 
-    -- ! SOLO EL TIPO DE TRACTOMULA
-    l_reg_vehicle := dsc_api_k_typ_vehicle.get_record( p_type_vehicle_co => l_reg_vehicle.type_vehicle_co );
+    pp_adm_type_vehicle;
     --
     -- buscamos el tipo de viaje
-    -- TODO: Construir el proceso de tipos de viajes
-    l_type_freight := dsc_api_k_type_freigt.get_record( p_type_freight_co => l_type_freight.type_freight_co );
+    pp_adm_type_freight;
     --
     -- completamos el registro
     l_reg_freight.customer_id       := l_reg_customer.id;
@@ -95,7 +131,7 @@ BEGIN
     l_reg_freight.type_vehicle_id   := l_reg_vehicle.id;   
     l_reg_freight.k_status          := lgc_api_k_freight.K_STATUS_PLANNED;
     l_reg_freight.k_process         := lgc_api_k_freight.K_PROCESS_LOGISTIC;
-    l_reg_freight.user_id           := 1;
+    l_reg_freight.user_id           := p_user_id;
     l_reg_freight.type_freight_id   := l_type_freight.id;
     --
     dbms_output.put_line( 'Flete       : ' || l_reg_freight.freight_co );
@@ -128,7 +164,7 @@ BEGIN
     l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
     -- completamos el registro
     l_reg_transfer.route_id         := l_reg_route.id;
-    l_reg_transfer.planed_date      := l_reg_freight.upload_at;
+    l_reg_transfer.planed_at        := l_reg_freight.upload_at;
     --
     -- TODO: Realizar el proceso de busqueda de conductor por codigo externo
     l_reg_transfer.main_employee_id := 6;

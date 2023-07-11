@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY dsc_api_k_type_freigt
+CREATE OR REPLACE PACKAGE BODY dsc_api_k_type_freight
 IS
     --
     -- get DATA RETURN RECORD by ID
@@ -170,4 +170,4 @@ IS
         -- 
     END del;
     --
-END dsc_api_k_type_freigt;
+END dsc_api_k_type_freight;
