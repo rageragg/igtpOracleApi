@@ -3,6 +3,17 @@
 */
 DECLARE 
     --
+    -- parametros 
+    p_customer_co       customers.customer_co%TYPE          := 'MKR';
+    p_route_co          routes.route_co%TYPE                := '21-22';
+    p_type_cargo_co     type_cargos.type_cargo_co%TYPE      := 'REF';
+    p_type_vehicle_co   type_vehicles.type_vehicle_co%TYPE  := 'CH2';
+    p_type_freight_co   type_freights.type_freight_co%TYPE  := 'PMP';
+    p_freight_co        freights.freight_co%TYPE            := '71804';
+    p_regimen           freights.k_regimen%TYPE             := lgc_api_k_freight.K_REGIMEN_FREIGHT;
+    p_upload_at         freights.upload_at%TYPE             := to_date('03012018','ddmmyyyy');
+    p_notes             freights.notes%TYPE                 := 'Viajes 2018 RUNQUE HERNANDEZ JOSE LEONARDO';
+    --
     -- locales
     l_reg_freight   freights%ROWTYPE        := NULL;
     l_reg_transfer  transfers%ROWTYPE       := NULL;
@@ -12,47 +23,79 @@ DECLARE
     l_reg_vehicle   type_vehicles%ROWTYPE   := NULL;
     l_type_freight  type_freights%ROWTYPE   := NULL;
     --
+    e_CUSTOMER_INH  EXCEPTION;
+    --
+    -- controlamos el cliente
+    PROCEDURE pp_adm_customer IS  
+    BEGIN 
+        --
+        l_reg_customer := dsc_api_k_customer.get_record( p_customer_co => l_reg_customer.customer_co );
+        --
+        -- TODO: verificamos que no este inhabilitado
+        IF l_reg_customer.k_mca_inh = 'S' THEN 
+            --
+            -- TODO: lanzamos una exception de cliente no habilitado
+            RAISE e_CUSTOMER_INH;
+            --
+        END IF;
+        --
+    END pp_v_customer;
+    --
+    -- controlamos la ruta
+    PROCEDURE pp_adm_route IS 
+    BEGIN 
+        --
+        l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
+        --
+    END pp_adm_route;
+    --
 BEGIN 
     --
-    -- buscamos el cliente
-    l_reg_customer.customer_co := 'MKR';
-    l_reg_customer := dsc_api_k_customer.get_record( p_customer_co => l_reg_customer.customer_co );
+    -- parametros
+    l_reg_customer.customer_co      := p_customer_co;
+    l_reg_route.route_co            := p_route_co;
+    l_reg_cargo.type_cargo_co       := p_type_cargo_co;
+    l_reg_vehicle.type_vehicle_co   := p_type_vehicle_co;
+    l_type_freight.type_freight_co  := p_type_freight_co;
+    l_reg_freight.freight_co        := p_freight_co;
+    l_reg_freight.k_regimen         := p_regimen;
+    l_reg_freight.upload_at         := p_upload_at;
+    l_reg_freight.notes             := p_notes;
     --
-    -- completamos el registro
-    l_reg_freight.customer_id := l_reg_customer.id;
+    -- TODO: 1.- invocar un proceso para asinar los parametros a las globales
+    -- TODO: 2.- invocar un pre-proceso en PROCESSES
+    --
+    -- ! este numero es producto de una funcion del controlador
+    IF l_reg_freight.freight_co IS NULL THEN 
+        l_reg_freight.freight_co  :=  igtp.customers_seq.NEXTVAL;
+    ELSE     
+        l_reg_freight.freight_co  := p_freight_co; 
+    END IF;    
+    --
+    -- buscamos el cliente
+    pp_adm_customer;
     --
     -- buscamos la ruta
-    l_reg_route.route_co := '21-22';
-    l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
-    -- completamos el registro
-    l_reg_freight.route_id := l_reg_route.id;
-    --
+    pp_adm_route;
     -- buscamos el tipo de carga
-    l_reg_cargo.type_cargo_co := 'REF';
     l_reg_cargo := dsc_api_k_typ_cargo.get_record( p_type_cargo_co => l_reg_cargo.type_cargo_co );
-    -- completamos el registro
-    l_reg_freight.type_cargo_id := l_reg_cargo.id;
     --
     -- buscamos el tipo de vehiculo 
     -- ! SOLO EL TIPO DE TRACTOMULA
-    l_reg_vehicle.type_vehicle_co := 'CH2';
     l_reg_vehicle := dsc_api_k_typ_vehicle.get_record( p_type_vehicle_co => l_reg_vehicle.type_vehicle_co );
     --
     -- buscamos el tipo de viaje
-    l_type_freight.type_freight_co := 'PMP';
-    l_type_freight := dsc_api_k_type_freigt.get_record( p_type_freight_co => l_type_freight.type_freight_co );
-    -- 
     -- TODO: Construir el proceso de tipos de viajes
+    l_type_freight := dsc_api_k_type_freigt.get_record( p_type_freight_co => l_type_freight.type_freight_co );
     --
     -- completamos el registro
+    l_reg_freight.customer_id       := l_reg_customer.id;
+    l_reg_freight.route_id          := l_reg_route.id;
+    l_reg_freight.type_cargo_id     := l_reg_cargo.id;
     l_reg_freight.type_vehicle_id   := l_reg_vehicle.id;   
-    l_reg_freight.k_regimen         := lgc_api_k_freight.K_REGIMEN_FREIGHT;
     l_reg_freight.k_status          := lgc_api_k_freight.K_STATUS_PLANNED;
     l_reg_freight.k_process         := lgc_api_k_freight.K_PROCESS_LOGISTIC;
-    l_reg_freight.upload_at         := to_date('03012018','ddmmyyyy');
-    l_reg_freight.notes             := 'Viajes 2018 RUNQUE HERNANDEZ JOSE LEONARDO';
     l_reg_freight.user_id           := 1;
-    l_reg_freight.freight_co        := '71804';
     l_reg_freight.type_freight_id   := l_type_freight.id;
     --
     dbms_output.put_line( 'Flete       : ' || l_reg_freight.freight_co );
@@ -67,9 +110,15 @@ BEGIN
     -- ! SE DEBE VALIDAR ES ESTATUS: SEGUN SEA EL CASO, SE DEBE VALIDAR QUE LOS
     -- ! REGISTROS ASOCIADOS ESTEN COMPLETOS O NO.
     --
+    -- TODO: 3.- invocar un pre-INSERT en PROCESSES
     -- incluimos el registro
     lgc_api_k_freight.ins( p_rec => l_reg_freight );
     --
+    -- TODO: 4.- invocar un post-INSERT en PROCESSES
+    -- TODO: 5.- invocar un post-proceso en PROCESSES
+    -------------------------------------------------------------------------------------
+    -- 
+    -- TRANSFERENCIA, ES UN VECTOR DE VARIOS REGISTOS
     -- incluimos la primera transferencia, logistica 
     l_reg_transfer.freight_id       := l_reg_freight.id;
     l_reg_transfer.k_order          := 1;
@@ -104,6 +153,10 @@ BEGIN
     dbms_output.put_line( 'Registro Exitoso' );
     --
     EXCEPTION 
+        WHEN e_CUSTOMER_INH THEN 
+            dbms_output.put_line( 
+                'Cliente : ' || l_reg_customer.description || ' inhabilitado'
+            );
         WHEN NO_DATA_FOUND THEN 
             dbms_output.put_line(sqlerrm);
             dbms_output.put_line('NOT_DATA_FOUND');
