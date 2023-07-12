@@ -42,6 +42,19 @@ SEGMENT CREATION IMMEDIATE
 	)
   	TABLESPACE "TS_IGTP_DAT" ;
 --
-COMMENT ON TABLE "IGTP"."FREIGHTS"  IS 'Viajes o Declaracion de Fletes';
-COMMENT ON COLUMN "IGTP"."FREIGHTS"."FREIGHT_CO" 	IS 'Codigo externo del flete';
-COMMENT ON COLUMN "IGTP"."FREIGHTS"."ROUTE_ID" 		IS 'Identificador de la Ruta';
+COMMENT ON TABLE "IGTP"."FREIGHTS"  					IS 'Viajes o Declaracion de Fletes';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."ID" 				IS 'Identificador unico';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."FREIGHT_CO" 		IS 'Codigo externo del flete';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."CUSTOMER_ID" 		IS 'Identificador del cliente que contrata el viaje';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."ROUTE_ID" 			IS 'Identificador de la Ruta';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."TYPE_CARGO_ID" 	IS 'Identificador del tipo de carga';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."TYPE_VEHICLE_ID" 	IS 'Identificador del tipo de vehiculo';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."K_REGIMEN" 		IS 'Regimen del viaje, este valor sirve para procesos';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."UPLOAD_AT" 		IS 'Fecha de carga planeada';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."START_AT" 			IS 'Fecha de inicio planeada';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."FINISH_AT" 		IS 'Fecha de finalizacion planeado';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."NOTES" 			IS 'Notas del flete';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."K_STATUS" 			IS 'Estado del flete';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."K_PROCESS" 		IS 'En que proceso se ubica el flete';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."TYPE_FREIGHT_ID" 	IS 'Tipo de Viaje';
+COMMENT ON COLUMN "IGTP"."FREIGHTS"."VALUATION_CURRENCY_CO" IS 'Moneda de valoracion de flete';
