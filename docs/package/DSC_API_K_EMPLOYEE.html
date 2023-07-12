@@ -1,0 +1,309 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="DSC_API_K_EMPLOYEE/report.js" type="text/javascript"></script>
+<link href="DSC_API_K_EMPLOYEE/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">DSC_API_K_EMPLOYEE</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#del">del</A></B>( p_id IN employees . id % TYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_list">get_list</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA Array</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_record">get_record</A></B>( p_id IN employees . id % TYPE ) RETURN employees % ROWTYPE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by ID</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_record">get_record</A></B>( p_employee_co IN employees . employee_co % TYPE ) RETURN employees % ROWTYPE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by CO</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_id IN employees . id % TYPE , p_employee_co IN employees . employee_co % TYPE DEFAULT NULL , p_fullname IN employees . fullname % TYPE DEFAULT NULL , p_k_level IN employees . k_level % TYPE DEFAULT NULL , p_k_status IN employees . k_status % TYPE DEFAULT 'AVAILABLE' , p_partner_id IN employees . partner_id % TYPE DEFAULT NULL , p_transfer_id IN employees . transfer_id % TYPE DEFAULT NULL , p_truck_id IN employees . truck_id % TYPE DEFAULT NULL , p_trailer_id IN employees . trailer_id % TYPE DEFAULT NULL , p_location_id IN employees . location_id % TYPE DEFAULT NULL , p_user_id IN employees . user_id % TYPE DEFAULT NULL , p_created_at IN employees . created_at % TYPE DEFAULT sysdate , p_updated_at IN employees . updated_at % TYPE DEFAULT NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_rec IN OUT employees % ROWTYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_id IN employees . id % TYPE , p_employee_co IN employees . employee_co % TYPE DEFAULT NULL , p_fullname IN employees . fullname % TYPE DEFAULT NULL , p_k_level IN employees . k_level % TYPE DEFAULT NULL , p_k_status IN employees . k_status % TYPE DEFAULT 'AVAILABLE' , p_partner_id IN employees . partner_id % TYPE DEFAULT NULL , p_transfer_id IN employees . transfer_id % TYPE DEFAULT NULL , p_truck_id IN employees . truck_id % TYPE DEFAULT NULL , p_trailer_id IN employees . trailer_id % TYPE DEFAULT NULL , p_location_id IN employees . location_id % TYPE DEFAULT NULL , p_user_id IN employees . user_id % TYPE DEFAULT NULL , p_created_at IN employees . created_at % TYPE DEFAULT NULL , p_updated_at IN employees . updated_at % TYPE DEFAULT sysdate ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_rec IN OUT employees % ROWTYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD</TD></TR>
+</TABLE>
+<P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="del"></A>
+<H3>del</H3><PRE>          <B>del</B>( p_id IN employees . id % TYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete<DD><DL></DL></DD></DL><HR><A NAME="get_list"></A>
+<H3>get_list</H3><PRE>          <B>get_list</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA Array<DD><DL></DL></DD></DL><HR><A NAME="get_record"></A>
+<H3>get_record</H3><PRE>          <B>get_record</B>( p_id IN employees . id % TYPE ) RETURN employees % ROWTYPE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by ID<DD><DL></DL></DD></DL><HR><A NAME="get_record"></A>
+<H3>get_record</H3><PRE>          <B>get_record</B>( p_employee_co IN employees . employee_co % TYPE ) RETURN employees % ROWTYPE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by CO<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_id IN employees . id % TYPE , p_employee_co IN employees . employee_co % TYPE DEFAULT NULL , p_fullname IN employees . fullname % TYPE DEFAULT NULL , p_k_level IN employees . k_level % TYPE DEFAULT NULL , p_k_status IN employees . k_status % TYPE DEFAULT 'AVAILABLE' , p_partner_id IN employees . partner_id % TYPE DEFAULT NULL , p_transfer_id IN employees . transfer_id % TYPE DEFAULT NULL , p_truck_id IN employees . truck_id % TYPE DEFAULT NULL , p_trailer_id IN employees . trailer_id % TYPE DEFAULT NULL , p_location_id IN employees . location_id % TYPE DEFAULT NULL , p_user_id IN employees . user_id % TYPE DEFAULT NULL , p_created_at IN employees . created_at % TYPE DEFAULT sysdate , p_updated_at IN employees . updated_at % TYPE DEFAULT NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_rec IN OUT employees % ROWTYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_id IN employees . id % TYPE , p_employee_co IN employees . employee_co % TYPE DEFAULT NULL , p_fullname IN employees . fullname % TYPE DEFAULT NULL , p_k_level IN employees . k_level % TYPE DEFAULT NULL , p_k_status IN employees . k_status % TYPE DEFAULT 'AVAILABLE' , p_partner_id IN employees . partner_id % TYPE DEFAULT NULL , p_transfer_id IN employees . transfer_id % TYPE DEFAULT NULL , p_truck_id IN employees . truck_id % TYPE DEFAULT NULL , p_trailer_id IN employees . trailer_id % TYPE DEFAULT NULL , p_location_id IN employees . location_id % TYPE DEFAULT NULL , p_user_id IN employees . user_id % TYPE DEFAULT NULL , p_created_at IN employees . created_at % TYPE DEFAULT NULL , p_updated_at IN employees . updated_at % TYPE DEFAULT sysdate ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_rec IN OUT employees % ROWTYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>DSC_API_K_EMPLOYEE</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80658</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>19/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>19/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-19:12:31:02</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE dsc_api_k_employee
+is
+    --
+    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'EMPLOYEES';
+    K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
+    K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
+    --
+    K_STATUS_AVAILABLE      CONSTANT VARCHAR2(20)  := 'AVAILABLE';
+    K_STATUS_VACATIONS      CONSTANT VARCHAR2(20)  := 'VACATIONS';
+    K_STATUS_SERVING        CONSTANT VARCHAR2(20)  := 'SERVING';
+    K_STATUS_DISCARDED      CONSTANT VARCHAR2(20)  := 'DISCARDED';
+    K_STATUS_LOCATED        CONSTANT VARCHAR2(20)  := 'LOCATED';
+    K_STATUS_ARCHIVED       CONSTANT VARCHAR2(20)  := 'ARCHIVED';
+    --
+    K_LEVEL_A               CONSTANT CHAR(01) := 'A';
+    K_LEVEL_B               CONSTANT CHAR(01) := 'B';
+    K_LEVEL_C               CONSTANT CHAR(01) := 'C';
+    --
+    TYPE employees_api_tab is table of employees%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by ID
+    FUNCTION get_record( p_id IN employees.id%TYPE ) RETURN employees%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_employee_co IN employees.employee_co%TYPE ) RETURN employees%ROWTYPE;    
+    --
+    -- get DATA Array
+    FUNCTION get_list RETURN employees_api_tab;  
+    --
+    -- insert
+    PROCEDURE ins (
+        p_id            IN employees.id%TYPE,
+        p_employee_co   IN employees.employee_co%TYPE DEFAULT NULL,
+        p_fullname      IN employees.fullname%TYPE DEFAULT NULL,
+        p_k_level       IN employees.k_level%TYPE DEFAULT NULL,
+        p_k_status      IN employees.k_status%TYPE DEFAULT 'AVAILABLE',
+        p_partner_id    IN employees.partner_id%TYPE DEFAULT NULL,
+        p_transfer_id   IN employees.transfer_id%TYPE DEFAULT NULL,
+        p_truck_id      IN employees.truck_id%TYPE DEFAULT NULL,
+        p_trailer_id    IN employees.trailer_id%TYPE DEFAULT NULL,
+        p_location_id   IN employees.location_id%TYPE DEFAULT NULL,
+        p_user_id       IN employees.user_id%TYPE DEFAULT NULL,
+        p_created_at    IN employees.created_at%TYPE DEFAULT sysdate,
+        p_updated_at    IN employees.updated_at%TYPE DEFAULT NULL 
+    );
+    --
+    -- insert RECORD
+    PROCEDURE ins( p_rec IN OUT employees%ROWTYPE );
+    --
+    -- update
+    PROCEDURE upd (
+        p_id            IN employees.id%TYPE,
+        p_employee_co   IN employees.employee_co%TYPE DEFAULT NULL,
+        p_fullname      IN employees.fullname%TYPE DEFAULT NULL,
+        p_k_level       IN employees.k_level%TYPE DEFAULT NULL,
+        p_k_status      IN employees.k_status%TYPE DEFAULT 'AVAILABLE',
+        p_partner_id    IN employees.partner_id%TYPE DEFAULT NULL,
+        p_transfer_id   IN employees.transfer_id%TYPE DEFAULT NULL,
+        p_truck_id      IN employees.truck_id%TYPE DEFAULT NULL,
+        p_trailer_id    IN employees.trailer_id%TYPE DEFAULT NULL,
+        p_location_id   IN employees.location_id%TYPE DEFAULT NULL,
+        p_user_id       IN employees.user_id%TYPE DEFAULT NULL,
+        p_created_at    IN employees.created_at%TYPE DEFAULT NULL,
+        p_updated_at    IN employees.updated_at%TYPE DEFAULT sysdate 
+    );
+    --
+    -- update RECORD
+    PROCEDURE upd( p_rec IN OUT employees%ROWTYPE );    
+    --
+    -- delete
+    PROCEDURE del ( p_id IN employees.id%TYPE );
+    --
+END dsc_api_k_employee;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

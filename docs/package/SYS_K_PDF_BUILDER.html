@@ -1,0 +1,434 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_PDF_BUILDER/report.js" type="text/javascript"></script>
+<link href="SYS_K_PDF_BUILDER/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_PDF_BUILDER</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P><BR><BR>  Purpose:   Package to generate PDF files<BR><BR>  Remarks:   By Anton Scheffer, see http://technology.amis.nl/blog/8650/as_pdf-generating-a-pdf-document-with-some-plsql<BR><BR>  Who     Date        Description<BR>  ------  ----------  -------------------------------------<BR>  ASC     20.10.2010  Created<BR>  <BR>  </P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#tp_settings">tp_settings</A></B>( page_width number , page_height number , margin_left number , margin_right number , margin_top number , margin_bottom number , encoding varchar2 ( 100 ) , current_font pls_integer , current_fontsizePt pls_integer , x number , y number , page_nr pls_integer ) ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#add2page">add2page</A></B>( p_txt in nclob ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#conv2user_units">conv2user_units</A></B>( p_value in number , p_unit in varchar2 ) return number ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_pdf">get_pdf</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_settings">get_settings</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#horizontal_line">horizontal_line</A></B>( p_x in number , p_y in number , p_width in number , p_line_width in number : = 0 . 5 , p_line_color in varchar2 : = '000000' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#init">init</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#new_page">new_page</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#put_image">put_image</A></B>( p_dir in varchar2 , p_file_name in varchar2 , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#put_image">put_image</A></B>( p_url in varchar2 , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#put_image">put_image</A></B>( p_img in blob , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#put_txt">put_txt</A></B>( p_x in number , p_y in number , p_txt in nclob ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#rect">rect</A></B>( p_x in number , p_y in number , p_width in number , p_height in number , p_line_color in varchar2 : = null , p_fill_color in varchar2 : = null , p_line_width in number : = 0 . 5 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#save_pdf">save_pdf</A></B>( p_dir in varchar2 : = 'MY_DIR' , p_filename in varchar2 : = 'my.pdf' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_bk_color">set_bk_color</A></B>( p_rgb in varchar2 : = 'ffffff' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_bk_color">set_bk_color</A></B>( p_red in number : = 255 , p_green in number : = 255 , p_blue in number : = 255 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_color">set_color</A></B>( p_rgb in varchar2 : = '000000' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_color">set_color</A></B>( p_red in number : = 0 , p_green in number : = 0 , p_blue in number : = 0 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_font">set_font</A></B>( p_family in varchar2 , p_style in varchar2 : = 'N' , p_fontsizePt in pls_integer : = null , p_encoding in varchar2 : = 'WINDOWS-1252' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_format">set_format</A></B>( p_format in varchar2 : = 'A4' , p_orientation in varchar2 : = 'PORTRAIT' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_margins">set_margins</A></B>( p_top in number : = 3 , p_left in number : = 1 , p_bottom in number : = 4 , p_right in number : = 1 , p_unit in varchar2 : = 'cm' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_pagesize">set_pagesize</A></B>( p_width in number , p_height in number , p_unit in varchar2 : = 'cm' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#show_pdf">show_pdf</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#string_width">string_width</A></B>( p_txt in nclob ) return number ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#vertical_line">vertical_line</A></B>( p_x in number , p_y in number , p_height in number , p_line_width in number : = 0 . 5 , p_line_color in varchar2 : = '000000' ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#write">write</A></B>( p_txt in nclob , p_x in number : = null , p_y in number : = null , p_line_height in number : = null , p_start in number : = null , p_width in number : = null , p_alignment in varchar2 : = null ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="tp_settings"></A>
+<H3>tp_settings</H3><PRE>          <B>tp_settings</B>( page_width number , page_height number , margin_left number , margin_right number , margin_top number , margin_bottom number , encoding varchar2 ( 100 ) , current_font pls_integer , current_fontsizePt pls_integer , x number , y number , page_nr pls_integer ) ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="add2page"></A>
+<H3>add2page</H3><PRE>          <B>add2page</B>( p_txt in nclob ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="conv2user_units"></A>
+<H3>conv2user_units</H3><PRE>          <B>conv2user_units</B>( p_value in number , p_unit in varchar2 ) return number ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_pdf"></A>
+<H3>get_pdf</H3><PRE>          <B>get_pdf</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_settings"></A>
+<H3>get_settings</H3><PRE>          <B>get_settings</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="horizontal_line"></A>
+<H3>horizontal_line</H3><PRE>          <B>horizontal_line</B>( p_x in number , p_y in number , p_width in number , p_line_width in number : = 0 . 5 , p_line_color in varchar2 : = '000000' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="init"></A>
+<H3>init</H3><PRE>          <B>init</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="new_page"></A>
+<H3>new_page</H3><PRE>          <B>new_page</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="put_image"></A>
+<H3>put_image</H3><PRE>          <B>put_image</B>( p_dir in varchar2 , p_file_name in varchar2 , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="put_image"></A>
+<H3>put_image</H3><PRE>          <B>put_image</B>( p_url in varchar2 , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="put_image"></A>
+<H3>put_image</H3><PRE>          <B>put_image</B>( p_img in blob , p_x in number , p_y in number , p_width in number : = null , p_height in number : = null ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="put_txt"></A>
+<H3>put_txt</H3><PRE>          <B>put_txt</B>( p_x in number , p_y in number , p_txt in nclob ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="rect"></A>
+<H3>rect</H3><PRE>          <B>rect</B>( p_x in number , p_y in number , p_width in number , p_height in number , p_line_color in varchar2 : = null , p_fill_color in varchar2 : = null , p_line_width in number : = 0 . 5 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="save_pdf"></A>
+<H3>save_pdf</H3><PRE>          <B>save_pdf</B>( p_dir in varchar2 : = 'MY_DIR' , p_filename in varchar2 : = 'my.pdf' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_bk_color"></A>
+<H3>set_bk_color</H3><PRE>          <B>set_bk_color</B>( p_rgb in varchar2 : = 'ffffff' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_bk_color"></A>
+<H3>set_bk_color</H3><PRE>          <B>set_bk_color</B>( p_red in number : = 255 , p_green in number : = 255 , p_blue in number : = 255 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_color"></A>
+<H3>set_color</H3><PRE>          <B>set_color</B>( p_rgb in varchar2 : = '000000' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_color"></A>
+<H3>set_color</H3><PRE>          <B>set_color</B>( p_red in number : = 0 , p_green in number : = 0 , p_blue in number : = 0 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_font"></A>
+<H3>set_font</H3><PRE>          <B>set_font</B>( p_family in varchar2 , p_style in varchar2 : = 'N' , p_fontsizePt in pls_integer : = null , p_encoding in varchar2 : = 'WINDOWS-1252' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_format"></A>
+<H3>set_format</H3><PRE>          <B>set_format</B>( p_format in varchar2 : = 'A4' , p_orientation in varchar2 : = 'PORTRAIT' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_margins"></A>
+<H3>set_margins</H3><PRE>          <B>set_margins</B>( p_top in number : = 3 , p_left in number : = 1 , p_bottom in number : = 4 , p_right in number : = 1 , p_unit in varchar2 : = 'cm' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_pagesize"></A>
+<H3>set_pagesize</H3><PRE>          <B>set_pagesize</B>( p_width in number , p_height in number , p_unit in varchar2 : = 'cm' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="show_pdf"></A>
+<H3>show_pdf</H3><PRE>          <B>show_pdf</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="string_width"></A>
+<H3>string_width</H3><PRE>          <B>string_width</B>( p_txt in nclob ) return number ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="vertical_line"></A>
+<H3>vertical_line</H3><PRE>          <B>vertical_line</B>( p_x in number , p_y in number , p_height in number , p_line_width in number : = 0 . 5 , p_line_color in varchar2 : = '000000' ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="write"></A>
+<H3>write</H3><PRE>          <B>write</B>( p_txt in nclob , p_x in number : = null , p_y in number : = null , p_line_height in number : = null , p_start in number : = null , p_width in number : = null , p_alignment in varchar2 : = null ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_PDF_BUILDER</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80395</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>15/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>15/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-15:21:43:46</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+package sys_k_pdf_builder
+as
+
+  /*
+
+  Purpose:   Package to generate PDF files
+
+  Remarks:   By Anton Scheffer, see http://technology.amis.nl/blog/8650/as_pdf-generating-a-pdf-document-with-some-plsql
+
+  Who     Date        Description
+  ------  ----------  -------------------------------------
+  ASC     20.10.2010  Created
+  
+  */
+
+--
+  type tp_settings is record
+    ( page_width number
+    , page_height number
+    , margin_left number
+    , margin_right number
+    , margin_top number
+    , margin_bottom number
+    , encoding varchar2(100)
+    , current_font pls_integer
+    , current_fontsizePt pls_integer
+    , x   number
+    , y   number
+    , page_nr pls_integer
+    );
+--
+  procedure init;
+--
+  function get_pdf
+  return blob;
+--
+  procedure save_pdf
+    ( p_dir in varchar2 := 'MY_DIR'
+    , p_filename in varchar2 := 'my.pdf'
+    );
+--
+  procedure show_pdf;
+--
+  function conv2user_units( p_value in number, p_unit in varchar2 )
+  return number;
+--
+  procedure set_format
+    ( p_format in varchar2 := 'A4'
+    , p_orientation in varchar2 := 'PORTRAIT'
+    );
+--
+  procedure set_pagesize
+    ( p_width in number
+    , p_height in number
+    , p_unit in varchar2 := 'cm'
+    );
+--
+  procedure set_margins
+    ( p_top in number := 3
+    , p_left in number := 1
+    , p_bottom in number := 4
+    , p_right in number := 1
+    , p_unit in varchar2 := 'cm'
+    );
+--
+  function get_settings
+  return tp_settings;
+--
+  procedure new_page;
+--
+  procedure set_font
+    ( p_family in varchar2
+    , p_style  in varchar2 := 'N'
+    , p_fontsizePt in pls_integer := null
+    , p_encoding in varchar2 := 'WINDOWS-1252'
+    );
+--
+  procedure add2page( p_txt in nclob );
+--
+  procedure put_txt( p_x in number, p_y in number, p_txt in nclob );
+--
+  function string_width( p_txt in nclob )
+  return number;
+--
+  procedure write
+    ( p_txt in nclob
+    , p_x in number := null 
+    , p_y in number := null
+    , p_line_height in number := null
+    , p_start in number := null  -- left side of the available text box
+    , p_width in number := null  -- width of the available text box
+    , p_alignment in varchar2 := null
+    );
+--
+  procedure set_color( p_rgb in varchar2 := '000000' );
+--
+  procedure set_color
+    ( p_red in number := 0
+    , p_green in number := 0
+    , p_blue in number := 0 
+    );
+--
+  procedure set_bk_color( p_rgb in varchar2 := 'ffffff' );
+--
+  procedure set_bk_color
+    ( p_red in number := 255
+    , p_green in number := 255
+    , p_blue in number := 255 
+    );
+--
+  procedure horizontal_line
+    ( p_x in number
+    , p_y in number
+    , p_width in number
+    , p_line_width in number := 0.5
+    , p_line_color in varchar2 := '000000'
+    );
+--
+  procedure vertical_line
+    ( p_x in number
+    , p_y in number
+    , p_height in number
+    , p_line_width in number := 0.5
+    , p_line_color in varchar2 := '000000'
+    );
+--
+  procedure rect
+    ( p_x in number
+    , p_y in number
+    , p_width in number
+    , p_height in number
+    , p_line_color in varchar2 := null
+    , p_fill_color in varchar2 := null
+    , p_line_width in number := 0.5
+    );
+--
+  procedure put_image
+     ( p_dir in varchar2
+     , p_file_name in varchar2
+     , p_x in number
+     , p_y in number
+     , p_width in number := null
+     , p_height in number := null
+     );
+--
+  procedure put_image
+     ( p_url in varchar2
+     , p_x in number
+     , p_y in number
+     , p_width in number := null
+     , p_height in number := null
+     );
+--
+  procedure put_image
+     ( p_img in blob
+     , p_x in number
+     , p_y in number
+     , p_width in number := null
+     , p_height in number := null
+     );
+--
+
+end sys_k_pdf_builder;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

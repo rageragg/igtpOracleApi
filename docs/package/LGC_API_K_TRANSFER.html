@@ -1,0 +1,337 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="LGC_API_K_TRANSFER/report.js" type="text/javascript"></script>
+<link href="LGC_API_K_TRANSFER/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">LGC_API_K_TRANSFER</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#del">del</A></B>( p_id IN transfers . id % TYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_current_sequence">get_current_sequence</A></B>( p_freight_id IN transfers . freight_id % TYPE ) RETURN transfers % ROWTYPE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by current sequence</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_list">get_list</A></B>( p_freight_id IN transfers . freight_id % TYPE ) RETURN transfers_api_tab ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA Array</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_record">get_record</A></B>( p_id IN transfers . id % TYPE ) RETURN transfers % ROWTYPE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by ID</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_record">get_record</A></B>( p_freight_id IN transfers . freight_id % TYPE , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL ) RETURN transfers % ROWTYPE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by FREIGHT ID</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_id IN transfers . id % TYPE , p_freight_id IN transfers . freight_id % TYPE DEFAULT NULL , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL , p_k_order IN transfers . k_order % TYPE DEFAULT NULL , p_route_id IN transfers . route_id % TYPE DEFAULT NULL , p_k_regimen IN transfers . k_regimen % TYPE DEFAULT 'FREIGHT' , p_k_status IN transfers . k_status % TYPE DEFAULT 'PLANNED' , p_k_process IN transfers . k_process % TYPE DEFAULT 'LOGISTIC' , p_k_type_transfer IN transfers . k_type_transfer % TYPE DEFAULT 'TRANSFERENCE' , p_planed_at IN transfers . planed_at % TYPE DEFAULT NULL , p_start_date IN transfers . start_at % TYPE DEFAULT NULL , p_end_date IN transfers . end_at % TYPE DEFAULT NULL , p_main_employee_id IN transfers . main_employee_id % TYPE DEFAULT NULL , p_aux_employee_id IN transfers . aux_employee_id % TYPE DEFAULT NULL , p_truck_id IN transfers . truck_id % TYPE DEFAULT NULL , p_trailer_id IN transfers . trailer_id % TYPE DEFAULT NULL , p_user_id IN transfers . user_id % TYPE DEFAULT NULL , p_created_at IN transfers . created_at % TYPE DEFAULT sysdate , p_updated_at IN transfers . updated_at % TYPE DEFAULT NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_rec IN OUT transfers % ROWTYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_id IN transfers . id % TYPE , p_freight_id IN transfers . freight_id % TYPE DEFAULT NULL , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL , p_k_order IN transfers . k_order % TYPE DEFAULT NULL , p_route_id IN transfers . route_id % TYPE DEFAULT NULL , p_k_regimen IN transfers . k_regimen % TYPE DEFAULT 'FREIGHT' , p_k_status IN transfers . k_status % TYPE DEFAULT 'PLANNED' , p_k_process IN transfers . k_process % TYPE DEFAULT 'LOGISTIC' , p_k_type_transfer IN transfers . k_type_transfer % TYPE DEFAULT NULL , p_planed_at IN transfers . planed_at % TYPE DEFAULT NULL , p_start_date IN transfers . start_at % TYPE DEFAULT NULL , p_end_date IN transfers . end_at % TYPE DEFAULT NULL , p_main_employee_id IN transfers . main_employee_id % TYPE DEFAULT NULL , p_aux_employee_id IN transfers . aux_employee_id % TYPE DEFAULT NULL , p_truck_id IN transfers . truck_id % TYPE DEFAULT NULL , p_trailer_id IN transfers . trailer_id % TYPE DEFAULT NULL , p_user_id IN transfers . user_id % TYPE DEFAULT NULL , p_created_at IN transfers . created_at % TYPE DEFAULT NULL , p_updated_at IN transfers . updated_at % TYPE DEFAULT sysdate ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_rec IN OUT transfers % ROWTYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD</TD></TR>
+</TABLE>
+<P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="del"></A>
+<H3>del</H3><PRE>          <B>del</B>( p_id IN transfers . id % TYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete<DD><DL></DL></DD></DL><HR><A NAME="get_current_sequence"></A>
+<H3>get_current_sequence</H3><PRE>          <B>get_current_sequence</B>( p_freight_id IN transfers . freight_id % TYPE ) RETURN transfers % ROWTYPE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by current sequence<DD><DL></DL></DD></DL><HR><A NAME="get_list"></A>
+<H3>get_list</H3><PRE>          <B>get_list</B>( p_freight_id IN transfers . freight_id % TYPE ) RETURN transfers_api_tab ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA Array<DD><DL></DL></DD></DL><HR><A NAME="get_record"></A>
+<H3>get_record</H3><PRE>          <B>get_record</B>( p_id IN transfers . id % TYPE ) RETURN transfers % ROWTYPE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by ID<DD><DL></DL></DD></DL><HR><A NAME="get_record"></A>
+<H3>get_record</H3><PRE>          <B>get_record</B>( p_freight_id IN transfers . freight_id % TYPE , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL ) RETURN transfers % ROWTYPE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATA RETURN RECORD by FREIGHT ID<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_id IN transfers . id % TYPE , p_freight_id IN transfers . freight_id % TYPE DEFAULT NULL , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL , p_k_order IN transfers . k_order % TYPE DEFAULT NULL , p_route_id IN transfers . route_id % TYPE DEFAULT NULL , p_k_regimen IN transfers . k_regimen % TYPE DEFAULT 'FREIGHT' , p_k_status IN transfers . k_status % TYPE DEFAULT 'PLANNED' , p_k_process IN transfers . k_process % TYPE DEFAULT 'LOGISTIC' , p_k_type_transfer IN transfers . k_type_transfer % TYPE DEFAULT 'TRANSFERENCE' , p_planed_at IN transfers . planed_at % TYPE DEFAULT NULL , p_start_date IN transfers . start_at % TYPE DEFAULT NULL , p_end_date IN transfers . end_at % TYPE DEFAULT NULL , p_main_employee_id IN transfers . main_employee_id % TYPE DEFAULT NULL , p_aux_employee_id IN transfers . aux_employee_id % TYPE DEFAULT NULL , p_truck_id IN transfers . truck_id % TYPE DEFAULT NULL , p_trailer_id IN transfers . trailer_id % TYPE DEFAULT NULL , p_user_id IN transfers . user_id % TYPE DEFAULT NULL , p_created_at IN transfers . created_at % TYPE DEFAULT sysdate , p_updated_at IN transfers . updated_at % TYPE DEFAULT NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_rec IN OUT transfers % ROWTYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_id IN transfers . id % TYPE , p_freight_id IN transfers . freight_id % TYPE DEFAULT NULL , p_sequence_number IN transfers . sequence_number % TYPE DEFAULT NULL , p_k_order IN transfers . k_order % TYPE DEFAULT NULL , p_route_id IN transfers . route_id % TYPE DEFAULT NULL , p_k_regimen IN transfers . k_regimen % TYPE DEFAULT 'FREIGHT' , p_k_status IN transfers . k_status % TYPE DEFAULT 'PLANNED' , p_k_process IN transfers . k_process % TYPE DEFAULT 'LOGISTIC' , p_k_type_transfer IN transfers . k_type_transfer % TYPE DEFAULT NULL , p_planed_at IN transfers . planed_at % TYPE DEFAULT NULL , p_start_date IN transfers . start_at % TYPE DEFAULT NULL , p_end_date IN transfers . end_at % TYPE DEFAULT NULL , p_main_employee_id IN transfers . main_employee_id % TYPE DEFAULT NULL , p_aux_employee_id IN transfers . aux_employee_id % TYPE DEFAULT NULL , p_truck_id IN transfers . truck_id % TYPE DEFAULT NULL , p_trailer_id IN transfers . trailer_id % TYPE DEFAULT NULL , p_user_id IN transfers . user_id % TYPE DEFAULT NULL , p_created_at IN transfers . created_at % TYPE DEFAULT NULL , p_updated_at IN transfers . updated_at % TYPE DEFAULT sysdate ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_rec IN OUT transfers % ROWTYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>LGC_API_K_TRANSFER</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80643</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>19/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>19/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-19:15:33:19</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE lgc_api_k_transfer IS
+    --
+    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'TRANSFERS';
+    K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
+    K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
+    --
+    K_REGIMEN_FREIGHT       CONSTANT VARCHAR2(20)  := 'FREIGHT';
+    K_REGIMEN_WEIGHT        CONSTANT VARCHAR2(20)  := 'WEIGHT';
+    K_REGIMEN_DISTANCE      CONSTANT VARCHAR2(20)  := 'DISTANCE';
+    K_REGIMEN_MANIFEST      CONSTANT VARCHAR2(20)  := 'AMOUNT-MANIFEST';
+    --
+    K_TYPE_TRANS_LOGITIC    CONSTANT VARCHAR2(20)  := 'LOGISTIC';
+    K_TYPE_TRANS_BUSSINES   CONSTANT VARCHAR2(20)  := 'BUSSINES';
+    K_TYPE_TRANS_DEFAULT    CONSTANT VARCHAR2(20)  := 'TRANSFERENCE';
+    --
+    K_STATUS_PLANNED        CONSTANT VARCHAR2(20)  := 'PLANNED';
+    K_STATUS_EXECUTING      CONSTANT VARCHAR2(20)  := 'EXECUTING';
+    K_STATUS_COMMIT         CONSTANT VARCHAR2(20)  := 'COMMIT';
+    K_STATUS_ELIMINATED     CONSTANT VARCHAR2(20)  := 'ELIMINATED';
+    K_STATUS_INCOMPLETE     CONSTANT VARCHAR2(20)  := 'INCOMPLETE';
+    K_STATUS_INVOICED       CONSTANT VARCHAR2(20)  := 'INVOICED';
+    K_STATUS_ARCHIVED       CONSTANT VARCHAR2(20)  := 'ARCHIVED';
+    --
+    K_PROCESS_LOGISTIC      CONSTANT VARCHAR2(20)  := 'LOGISTIC';
+    K_PROCESS_INVOICING     CONSTANT VARCHAR2(20)  := 'INVOICING';
+    K_PROCESS_ARCHIVING     CONSTANT VARCHAR2(20)  := 'ARCHIVING';
+    --
+    TYPE transfers_api_tab IS TABLE OF transfers%ROWTYPE INDEX BY PLS_INTEGER;
+    --
+    -- get DATA RETURN RECORD by ID
+    FUNCTION get_record( p_id IN transfers.id%TYPE ) RETURN transfers%ROWTYPE;    
+    --
+    -- get DATA RETURN RECORD by FREIGHT ID
+    FUNCTION get_record( p_freight_id       IN transfers.freight_id%TYPE,
+                         p_sequence_number  IN transfers.sequence_number%TYPE DEFAULT NULL
+                       ) RETURN transfers%ROWTYPE;     
+    --
+    -- get DATA RETURN RECORD by current sequence
+    FUNCTION get_current_sequence( p_freight_id IN transfers.freight_id%TYPE ) RETURN transfers%ROWTYPE;
+    --
+    -- get DATA Array
+    FUNCTION get_list( p_freight_id IN transfers.freight_id%TYPE ) RETURN transfers_api_tab;      
+    --
+    -- insert
+    PROCEDURE ins (
+        p_id                IN transfers.id%TYPE,
+        p_freight_id        IN transfers.freight_id%TYPE DEFAULT NULL,
+        p_sequence_number   IN transfers.sequence_number%TYPE DEFAULT NULL,
+        p_k_order           IN transfers.k_order%TYPE DEFAULT NULL,
+        p_route_id          IN transfers.route_id%TYPE DEFAULT NULL,
+        p_k_regimen         IN transfers.k_regimen%TYPE DEFAULT 'FREIGHT',
+        p_k_status          IN transfers.k_status%TYPE DEFAULT 'PLANNED',
+        p_k_process         IN transfers.k_process%TYPE DEFAULT 'LOGISTIC',
+        p_k_type_transfer   IN transfers.k_type_transfer%TYPE DEFAULT 'TRANSFERENCE',
+        p_planed_at         IN transfers.planed_at%TYPE DEFAULT NULL,
+        p_start_date        IN transfers.start_at%TYPE DEFAULT NULL,
+        p_end_date          IN transfers.end_at%TYPE DEFAULT NULL,
+        p_main_employee_id  IN transfers.main_employee_id%TYPE DEFAULT NULL,
+        p_aux_employee_id   IN transfers.aux_employee_id%TYPE DEFAULT NULL,
+        p_truck_id          IN transfers.truck_id%TYPE DEFAULT NULL,
+        p_trailer_id        IN transfers.trailer_id%TYPE DEFAULT NULL,
+        p_user_id           IN transfers.user_id%TYPE DEFAULT NULL,
+        p_created_at        IN transfers.created_at%TYPE DEFAULT sysdate,
+        p_updated_at        IN transfers.updated_at%TYPE DEFAULT NULL 
+    );
+    --
+    -- insert RECORD
+    PROCEDURE ins( p_rec IN OUT transfers%ROWTYPE );
+    --
+    -- update
+    PROCEDURE upd (
+        p_id                IN transfers.id%TYPE,
+        p_freight_id        IN transfers.freight_id%TYPE DEFAULT NULL,
+        p_sequence_number   IN transfers.sequence_number%TYPE DEFAULT NULL,
+        p_k_order           IN transfers.k_order%TYPE DEFAULT NULL,
+        p_route_id          IN transfers.route_id%TYPE DEFAULT NULL,
+        p_k_regimen         IN transfers.k_regimen%TYPE DEFAULT 'FREIGHT',
+        p_k_status          IN transfers.k_status%TYPE DEFAULT 'PLANNED',
+        p_k_process         IN transfers.k_process%TYPE DEFAULT 'LOGISTIC',
+        p_k_type_transfer   IN transfers.k_type_transfer%TYPE DEFAULT NULL,
+        p_planed_at       IN transfers.planed_at%TYPE DEFAULT NULL,
+        p_start_date        IN transfers.start_at%TYPE DEFAULT NULL,
+        p_end_date          IN transfers.end_at%TYPE DEFAULT NULL,
+        p_main_employee_id  IN transfers.main_employee_id%TYPE DEFAULT NULL,
+        p_aux_employee_id   IN transfers.aux_employee_id%TYPE DEFAULT NULL,
+        p_truck_id          IN transfers.truck_id%TYPE DEFAULT NULL,
+        p_trailer_id        IN transfers.trailer_id%TYPE DEFAULT NULL,
+        p_user_id           IN transfers.user_id%TYPE DEFAULT NULL,
+        p_created_at        IN transfers.created_at%TYPE DEFAULT NULL,
+        p_updated_at        IN transfers.updated_at%TYPE DEFAULT sysdate 
+    );
+    --
+    -- update RECORD
+    PROCEDURE upd( p_rec IN OUT transfers%ROWTYPE );
+    --
+    -- delete
+    PROCEDURE del ( p_id IN transfers.id%TYPE );
+    --
+END lgc_api_k_transfer;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

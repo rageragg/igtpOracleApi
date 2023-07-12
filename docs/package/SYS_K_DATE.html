@@ -1,0 +1,372 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_DATE/report.js" type="text/javascript"></script>
+<link href="SYS_K_DATE/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_DATE</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P><BR>        Purpose:    Package handles functionality related to DATE and time<BR>        Remarks:    <BR>        Who     DATE        Description<BR>        ------  ----------  -------------------------------------<BR>        MBR     19.09.2006  Created<BR>    </P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#t_period_date">t_period_date</A></B>( year NUMBER , month NUMBER , day NUMBER , days_in_month NUMBER , the_date DATE ) ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#explode_month">explode_month</A></B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN t_period_date_tab pipelined ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; returns collection of dates IN specified month</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#fmt_date">fmt_date</A></B>( p_date IN DATE ) RETURN varchar2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATE formatted as DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#fmt_datetime">fmt_datetime</A></B>( p_date IN DATE ) RETURN varchar2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATE formatted as DATE and time</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#fmt_time">fmt_time</A></B>( p_days IN NUMBER ) RETURN varchar2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get time formatted as days, hours, minutes, seconds</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#fmt_time">fmt_time</A></B>( p_from_date IN DATE , p_to_date IN DATE ) RETURN varchar2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get time between two dates formatted as days, hours, minutes, seconds</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_date_tab">get_date_tab</A></B>( p_calendar_string IN varchar2 , p_from_date IN DATE : = null , p_to_date IN DATE : = null ) RETURN t_date_array pipelined ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get table of dates based on specified calendar string</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_days_in_month">get_days_in_month</A></B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN NUMBER of days IN given month</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_days_in_period">get_days_in_period</A></B>( p_from_date_1 IN DATE , p_to_date_1 IN DATE , p_from_date_2 IN DATE , p_to_date_2 IN DATE ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN NUMBER of days IN one period that fall within another period</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_days_in_year">get_days_in_year</A></B>( p_year IN NUMBER ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get NUMBER of days IN year</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_end_date_month">get_end_date_month</A></B>( p_date IN DATE ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of month based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_end_date_month">get_end_date_month</A></B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of month</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_end_date_year">get_end_date_year</A></B>( p_date IN DATE ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of year based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_end_date_year">get_end_date_year</A></B>( p_year IN NUMBER ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of year</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_month">get_month</A></B>( p_date IN DATE ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN month based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_quarter">get_quarter</A></B>( p_month IN NUMBER ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get quarter based on month</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_start_date_month">get_start_date_month</A></B>( p_date IN DATE ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of month based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_start_date_month">get_start_date_month</A></B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of month</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_start_date_year">get_start_date_year</A></B>( p_date IN DATE ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of year based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_start_date_year">get_start_date_year</A></B>( p_year IN NUMBER ) RETURN DATE ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of year</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_year">get_year</A></B>( p_date IN DATE ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN year based on DATE</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#is_period_in_range">is_period_in_range</A></B>( p_year IN NUMBER , p_month IN NUMBER , p_from_year IN NUMBER , p_from_month IN NUMBER , p_to_year IN NUMBER , p_to_month IN NUMBER ) RETURN boolean ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; returns true if period falls within range</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="t_period_date"></A>
+<H3>t_period_date</H3><PRE>          <B>t_period_date</B>( year NUMBER , month NUMBER , day NUMBER , days_in_month NUMBER , the_date DATE ) ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="explode_month"></A>
+<H3>explode_month</H3><PRE>          <B>explode_month</B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN t_period_date_tab pipelined ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; returns collection of dates IN specified month<DD><DL></DL></DD></DL><HR><A NAME="fmt_date"></A>
+<H3>fmt_date</H3><PRE>          <B>fmt_date</B>( p_date IN DATE ) RETURN varchar2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATE formatted as DATE<DD><DL></DL></DD></DL><HR><A NAME="fmt_datetime"></A>
+<H3>fmt_datetime</H3><PRE>          <B>fmt_datetime</B>( p_date IN DATE ) RETURN varchar2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get DATE formatted as DATE and time<DD><DL></DL></DD></DL><HR><A NAME="fmt_time"></A>
+<H3>fmt_time</H3><PRE>          <B>fmt_time</B>( p_days IN NUMBER ) RETURN varchar2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get time formatted as days, hours, minutes, seconds<DD><DL></DL></DD></DL><HR><A NAME="fmt_time"></A>
+<H3>fmt_time</H3><PRE>          <B>fmt_time</B>( p_from_date IN DATE , p_to_date IN DATE ) RETURN varchar2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get time between two dates formatted as days, hours, minutes, seconds<DD><DL></DL></DD></DL><HR><A NAME="get_date_tab"></A>
+<H3>get_date_tab</H3><PRE>          <B>get_date_tab</B>( p_calendar_string IN varchar2 , p_from_date IN DATE : = null , p_to_date IN DATE : = null ) RETURN t_date_array pipelined ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get table of dates based on specified calendar string<DD><DL></DL></DD></DL><HR><A NAME="get_days_in_month"></A>
+<H3>get_days_in_month</H3><PRE>          <B>get_days_in_month</B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN NUMBER of days IN given month<DD><DL></DL></DD></DL><HR><A NAME="get_days_in_period"></A>
+<H3>get_days_in_period</H3><PRE>          <B>get_days_in_period</B>( p_from_date_1 IN DATE , p_to_date_1 IN DATE , p_from_date_2 IN DATE , p_to_date_2 IN DATE ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN NUMBER of days IN one period that fall within another period<DD><DL></DL></DD></DL><HR><A NAME="get_days_in_year"></A>
+<H3>get_days_in_year</H3><PRE>          <B>get_days_in_year</B>( p_year IN NUMBER ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get NUMBER of days IN year<DD><DL></DL></DD></DL><HR><A NAME="get_end_date_month"></A>
+<H3>get_end_date_month</H3><PRE>          <B>get_end_date_month</B>( p_date IN DATE ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of month based on DATE<DD><DL></DL></DD></DL><HR><A NAME="get_end_date_month"></A>
+<H3>get_end_date_month</H3><PRE>          <B>get_end_date_month</B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of month<DD><DL></DL></DD></DL><HR><A NAME="get_end_date_year"></A>
+<H3>get_end_date_year</H3><PRE>          <B>get_end_date_year</B>( p_date IN DATE ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of year based on DATE<DD><DL></DL></DD></DL><HR><A NAME="get_end_date_year"></A>
+<H3>get_end_date_year</H3><PRE>          <B>get_end_date_year</B>( p_year IN NUMBER ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN end DATE of year<DD><DL></DL></DD></DL><HR><A NAME="get_month"></A>
+<H3>get_month</H3><PRE>          <B>get_month</B>( p_date IN DATE ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN month based on DATE<DD><DL></DL></DD></DL><HR><A NAME="get_quarter"></A>
+<H3>get_quarter</H3><PRE>          <B>get_quarter</B>( p_month IN NUMBER ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get quarter based on month<DD><DL></DL></DD></DL><HR><A NAME="get_start_date_month"></A>
+<H3>get_start_date_month</H3><PRE>          <B>get_start_date_month</B>( p_date IN DATE ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of month based on DATE<DD><DL></DL></DD></DL><HR><A NAME="get_start_date_month"></A>
+<H3>get_start_date_month</H3><PRE>          <B>get_start_date_month</B>( p_year IN NUMBER , p_month IN NUMBER ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of month<DD><DL></DL></DD></DL><HR><A NAME="get_start_date_year"></A>
+<H3>get_start_date_year</H3><PRE>          <B>get_start_date_year</B>( p_date IN DATE ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of year based on DATE<DD><DL></DL></DD></DL><HR><A NAME="get_start_date_year"></A>
+<H3>get_start_date_year</H3><PRE>          <B>get_start_date_year</B>( p_year IN NUMBER ) RETURN DATE ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN start DATE of year<DD><DL></DL></DD></DL><HR><A NAME="get_year"></A>
+<H3>get_year</H3><PRE>          <B>get_year</B>( p_date IN DATE ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETURN year based on DATE<DD><DL></DL></DD></DL><HR><A NAME="is_period_in_range"></A>
+<H3>is_period_in_range</H3><PRE>          <B>is_period_in_range</B>( p_year IN NUMBER , p_month IN NUMBER , p_from_year IN NUMBER , p_from_month IN NUMBER , p_to_year IN NUMBER , p_to_month IN NUMBER ) RETURN boolean ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; returns true if period falls within range<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_DATE</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80012</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>06/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>13/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-13:21:49:23</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE sys_k_date IS
+    /*
+        Purpose:    Package handles functionality related to DATE and time
+        Remarks:    
+        Who     DATE        Description
+        ------  ----------  -------------------------------------
+        MBR     19.09.2006  Created
+    */
+    --
+    K_DATE_FMT_DATE                CONSTANT VARCHAR2(30) := 'dd/mm/yyyy';
+    K_DATE_FMT_DATE_HOUR_MIN       CONSTANT VARCHAR2(30) := 'dd/mm/yyyy hh24:mi';
+    g_date_fmt_date_hour_min_sec   CONSTANT VARCHAR2(30) := 'dd/mm/yyyy hh24:mi:ss';
+    --
+    g_months_in_quarter            CONSTANT NUMBER := 3;
+    g_months_in_year               CONSTANT NUMBER := 12;
+    --
+    TYPE t_period_date IS RECORD (
+        year           NUMBER,
+        month          NUMBER,
+        day            NUMBER,
+        days_in_month  NUMBER,
+        the_date       DATE
+    );
+    --
+    TYPE t_period_date_tab IS TABLE OF t_period_date;
+    --
+    -- RETURN year based on DATE
+    FUNCTION get_year (p_date IN DATE) RETURN NUMBER;
+    --
+    -- RETURN month based on DATE
+    FUNCTION get_month (p_date IN DATE) RETURN NUMBER;
+    --
+    -- RETURN start DATE of year based on DATE
+    FUNCTION get_start_date_year (p_date IN DATE) RETURN DATE;
+    --
+    -- RETURN start DATE of year
+    FUNCTION get_start_date_year (p_year IN NUMBER) RETURN DATE;
+    --
+    -- RETURN end DATE of year based on DATE
+    FUNCTION get_end_date_year (p_date IN DATE) RETURN DATE;
+    --
+    -- RETURN end DATE of year
+    FUNCTION get_end_date_year (p_year IN NUMBER) RETURN DATE;
+    --
+    -- RETURN start DATE of month based on DATE
+    FUNCTION get_start_date_month (p_date IN DATE) RETURN DATE;
+    --    
+    -- RETURN start DATE of month
+    FUNCTION get_start_date_month ( p_year  IN NUMBER,
+                                    p_month IN NUMBER
+                                  ) RETURN DATE;  
+    --                          
+    -- RETURN end DATE of month based on DATE
+    FUNCTION get_end_date_month (p_date IN DATE) RETURN DATE;
+    --
+    -- RETURN end DATE of month
+    FUNCTION get_end_date_month(p_year  IN NUMBER,
+                                p_month IN NUMBER
+                               ) RETURN DATE;
+    --
+    -- RETURN NUMBER of days IN given month
+    FUNCTION get_days_in_month (p_year IN NUMBER,
+                                p_month IN NUMBER) RETURN NUMBER;
+    --
+    -- RETURN NUMBER of days IN one period that fall within another period
+    FUNCTION get_days_in_period (p_from_date_1 IN DATE,
+                                 p_to_date_1 IN DATE,
+                                 p_from_date_2 IN DATE,
+                                 p_to_date_2 IN DATE) RETURN NUMBER;
+    --
+    -- returns true if period falls within range
+    FUNCTION is_period_in_range (p_year IN NUMBER,
+                                 p_month IN NUMBER,
+                                 p_from_year IN NUMBER,
+                                 p_from_month IN NUMBER,
+                                 p_to_year IN NUMBER,
+                                 p_to_month IN NUMBER) RETURN boolean;
+    --                           
+    -- get quarter based on month
+    FUNCTION get_quarter (p_month IN NUMBER) RETURN NUMBER;
+    --
+    -- get time formatted as days, hours, minutes, seconds
+    FUNCTION fmt_time (p_days IN NUMBER) RETURN varchar2;
+    --
+    -- get time between two dates formatted as days, hours, minutes, seconds
+    FUNCTION fmt_time ( p_from_date IN DATE,
+                        p_to_date IN DATE) RETURN varchar2;
+    --                    
+    -- get DATE formatted as DATE
+    FUNCTION fmt_date (p_date IN DATE) RETURN varchar2;
+    --
+    -- get DATE formatted as DATE and time
+    FUNCTION fmt_datetime (p_date IN DATE) RETURN varchar2;
+    --
+    -- get NUMBER of days IN year
+    FUNCTION get_days_in_year (p_year IN NUMBER) RETURN NUMBER;
+
+    -- returns collection of dates IN specified month
+    FUNCTION explode_month (p_year IN NUMBER,
+                            p_month IN NUMBER
+                           ) RETURN t_period_date_tab pipelined;
+    --
+    -- get table of dates based on specified calendar string
+    FUNCTION get_date_tab ( p_calendar_string IN varchar2,
+                            p_from_date IN DATE := null,
+                            p_to_date IN DATE := null
+                          ) RETURN t_date_array pipelined;
+
+end sys_k_date;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_FILE_UTIL/report.js" type="text/javascript"></script>
+<link href="SYS_K_FILE_UTIL/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_FILE_UTIL</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P><BR>        Purpose:      Package contains file utilities <BR>        Remarks:      <BR>        Who     Date        Description<BR>        ------  ----------  --------------------------------<BR>        MBR     01.01.2005  Created<BR>        MBR     18.01.2011  Added BLOB/CLOB operations<BR>    </P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#t_dir_sep">t_dir_sep</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#t_file_ext">t_file_ext</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#t_file_name">t_file_name</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#extract_filename">extract_filename</A></B>( p_file_name IN VARCHAR2 , p_os IN VARCHAR2 : = g_os_windows ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; extract filename</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#file_exists">file_exists</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN BOOLEAN ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; does file exist?</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#fmt_bytes">fmt_bytes</A></B>( p_bytes IN number ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; format bytes</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_blob_from_file">get_blob_from_file</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN BLOB ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get BLOB from file</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_clob_from_file">get_clob_from_file</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN CLOB ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get CLOB from file</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_file_ext">get_file_ext</A></B>( p_file_name IN VARCHAR2 ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get file extension    </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_filename_str">get_filename_str</A></B>( p_str IN VARCHAR2 , p_extension IN VARCHAR2 : = null ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get filename string (no whitespace)</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#resolve_filename">resolve_filename</A></B>( p_dir IN VARCHAR2 , p_file_name IN VARCHAR2 , p_os IN VARCHAR2 : = g_os_windows ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolve filename</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#save_blob_to_file">save_blob_to_file</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_blob IN BLOB ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save BLOB to file</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#save_clob_to_file">save_clob_to_file</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_clob IN CLOB ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save CLOB to file</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#save_clob_to_file_raw">save_clob_to_file_raw</A></B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_clob IN CLOB ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save CLOB to file (raw)</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#strip_file_ext">strip_file_ext</A></B>( p_file_name IN VARCHAR2 ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strip file extension</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="t_dir_sep"></A>
+<H3>t_dir_sep</H3><PRE>          <B>t_dir_sep</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="t_file_ext"></A>
+<H3>t_file_ext</H3><PRE>          <B>t_file_ext</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="t_file_name"></A>
+<H3>t_file_name</H3><PRE>          <B>t_file_name</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="extract_filename"></A>
+<H3>extract_filename</H3><PRE>          <B>extract_filename</B>( p_file_name IN VARCHAR2 , p_os IN VARCHAR2 : = g_os_windows ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; extract filename<DD><DL></DL></DD></DL><HR><A NAME="file_exists"></A>
+<H3>file_exists</H3><PRE>          <B>file_exists</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN BOOLEAN ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; does file exist?<DD><DL></DL></DD></DL><HR><A NAME="fmt_bytes"></A>
+<H3>fmt_bytes</H3><PRE>          <B>fmt_bytes</B>( p_bytes IN number ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; format bytes<DD><DL></DL></DD></DL><HR><A NAME="get_blob_from_file"></A>
+<H3>get_blob_from_file</H3><PRE>          <B>get_blob_from_file</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN BLOB ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get BLOB from file<DD><DL></DL></DD></DL><HR><A NAME="get_clob_from_file"></A>
+<H3>get_clob_from_file</H3><PRE>          <B>get_clob_from_file</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 ) RETURN CLOB ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get CLOB from file<DD><DL></DL></DD></DL><HR><A NAME="get_file_ext"></A>
+<H3>get_file_ext</H3><PRE>          <B>get_file_ext</B>( p_file_name IN VARCHAR2 ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get file extension    <DD><DL></DL></DD></DL><HR><A NAME="get_filename_str"></A>
+<H3>get_filename_str</H3><PRE>          <B>get_filename_str</B>( p_str IN VARCHAR2 , p_extension IN VARCHAR2 : = null ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get filename string (no whitespace)<DD><DL></DL></DD></DL><HR><A NAME="resolve_filename"></A>
+<H3>resolve_filename</H3><PRE>          <B>resolve_filename</B>( p_dir IN VARCHAR2 , p_file_name IN VARCHAR2 , p_os IN VARCHAR2 : = g_os_windows ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolve filename<DD><DL></DL></DD></DL><HR><A NAME="save_blob_to_file"></A>
+<H3>save_blob_to_file</H3><PRE>          <B>save_blob_to_file</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_blob IN BLOB ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save BLOB to file<DD><DL></DL></DD></DL><HR><A NAME="save_clob_to_file"></A>
+<H3>save_clob_to_file</H3><PRE>          <B>save_clob_to_file</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_clob IN CLOB ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save CLOB to file<DD><DL></DL></DD></DL><HR><A NAME="save_clob_to_file_raw"></A>
+<H3>save_clob_to_file_raw</H3><PRE>          <B>save_clob_to_file_raw</B>( p_directory_name IN VARCHAR2 , p_file_name IN VARCHAR2 , p_clob IN CLOB ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; save CLOB to file (raw)<DD><DL></DL></DD></DL><HR><A NAME="strip_file_ext"></A>
+<H3>strip_file_ext</H3><PRE>          <B>strip_file_ext</B>( p_file_name IN VARCHAR2 ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strip file extension<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_FILE_UTIL</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80297</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>13/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>15/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-15:11:31:14</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE sys_k_file_util IS
+    /*
+        Purpose:      Package contains file utilities 
+        Remarks:      
+        Who     Date        Description
+        ------  ----------  --------------------------------
+        MBR     01.01.2005  Created
+        MBR     18.01.2011  Added BLOB/CLOB operations
+    */
+    --
+    -- operating system types
+    g_os_windows                   CONSTANT VARCHAR2(1) := 'w';
+    g_os_unix                      CONSTANT VARCHAR2(1) := 'u';
+    g_dir_sep_win                  CONSTANT VARCHAR2(1) := '\';
+    g_dir_sep_unix                 CONSTANT VARCHAR2(1) := '/';
+    g_file_ext_sep                 CONSTANT VARCHAR2(1) := '.';
+    --
+    -- file open modes
+    g_file_mode_append_text        CONSTANT VARCHAR2(1) := 'a';
+    g_file_mode_append_byte        CONSTANT VARCHAR2(2) := 'ab';
+    g_file_mode_read_text          CONSTANT VARCHAR2(1) := 'r';
+    g_file_mode_read_byte          CONSTANT VARCHAR2(2) := 'rb';
+    g_file_mode_write_text         CONSTANT VARCHAR2(1) := 'w';
+    g_file_mode_write_byte         CONSTANT VARCHAR2(2) := 'wb';
+    g_file_name_def                VARCHAR2(2000);
+    g_file_ext_def                 VARCHAR2(50);
+    g_dir_sep_def                  VARCHAR2(1);
+    --
+    SUBTYPE t_file_name IS g_file_name_def%TYPE;
+    SUBTYPE t_file_ext  IS g_file_ext_def%TYPE;
+    SUBTYPE t_dir_sep   IS g_dir_sep_def%TYPE;
+    --
+    -- resolve filename
+    FUNCTION resolve_filename ( p_dir IN VARCHAR2,
+                                p_file_name IN VARCHAR2,
+                                p_os IN VARCHAR2 := g_os_windows
+                              ) RETURN VARCHAR2;
+    --                         
+    -- extract filename
+    FUNCTION extract_filename ( p_file_name IN VARCHAR2,
+                                p_os IN VARCHAR2 := g_os_windows
+                              ) RETURN VARCHAR2;
+    --                     
+    -- get file extension    
+    FUNCTION get_file_ext (p_file_name IN VARCHAR2) RETURN VARCHAR2;
+    --
+    -- strip file extension
+    FUNCTION strip_file_ext (p_file_name IN VARCHAR2) RETURN VARCHAR2;
+    --                         
+    -- get filename string (no whitespace)
+    FUNCTION get_filename_str ( p_str IN VARCHAR2,
+                                p_extension IN VARCHAR2 := null
+                              ) RETURN VARCHAR2;
+    --
+    -- get BLOB from file
+    FUNCTION get_blob_from_file (p_directory_name IN VARCHAR2,
+                                 p_file_name IN VARCHAR2
+                                ) RETURN BLOB;
+    --
+    -- get CLOB from file
+    FUNCTION get_clob_from_file (p_directory_name IN VARCHAR2,
+                                 p_file_name IN VARCHAR2
+                                ) RETURN CLOB;
+    --
+    -- save BLOB to file
+    procedure save_blob_to_file (p_directory_name IN VARCHAR2,
+                                 p_file_name IN VARCHAR2,
+                                 p_blob IN BLOB);  
+    --
+    -- save CLOB to file
+    procedure save_clob_to_file (p_directory_name IN VARCHAR2,
+                                 p_file_name IN VARCHAR2,
+                                 p_clob IN CLOB);  
+    --
+    -- save CLOB to file (raw)
+    procedure save_clob_to_file_raw (p_directory_name IN VARCHAR2,
+                                    p_file_name IN VARCHAR2,
+                                    p_clob IN CLOB);  
+    --                           
+    -- does file exist?
+    FUNCTION file_exists (  p_directory_name IN VARCHAR2,
+                            p_file_name IN VARCHAR2) RETURN BOOLEAN;
+    --
+    -- format bytes
+    FUNCTION fmt_bytes (p_bytes IN number) RETURN VARCHAR2;
+    --
+END sys_k_file_util;</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

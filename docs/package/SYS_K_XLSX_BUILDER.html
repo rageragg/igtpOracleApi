@@ -1,0 +1,560 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_XLSX_BUILDER/report.js" type="text/javascript"></script>
+<link href="SYS_K_XLSX_BUILDER/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_XLSX_BUILDER</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P><BR>                                                                                      <BR>          <BR>           Author: Anton Scheffer<BR>           Date: 19-02-2011<BR>           Website: http://technology.amis.nl/blog<BR>           See also: http://technology.amis.nl/blog/?p=10995<BR>           See also: https://technology.amis.nl/2011/02/19/create-an-excel-file-with-plsql/<BR>          <BR>           Changelog:<BR>             Date: 21-02-2011   Added Aligment, horizontal, vertical, wrapText<BR>             Date: 06-03-2011   Added Comments, MergeCells, fixed bug for dependency on NLS-settings<BR>             Date: 16-03-2011   Added bold and italic fonts<BR>             Date: 22-03-2011   Fixed issue with timezone's set to a region(name) instead of a offset<BR>             Date: 08-04-2011   Fixed issue with XML-escaping from text<BR>             Date: 27-05-2011   Added MIT-license<BR>             Date: 11-08-2011   Fixed NLS-issue with column width<BR>             Date: 29-09-2011   Added font color<BR>             Date: 16-10-2011   fixed bug in add_string<BR>             Date: 26-04-2012   Fixed set_autofilter (only one autofilter per sheet, added _xlnm._FilterDatabase)<BR>                                Added list_validation = drop-down <BR>             Date: 27-08-2013   Added freeze_pane<BR>          <BR>                                                                                      <BR>        Copyright (C) 2011, 2012 by Anton Scheffer<BR><BR>        Permission is hereby granted, free of charge, to any person obtaining a copy<BR>        of this software and associated documentation files (the "Software"), to deal<BR>        in the Software without restriction, including without limitation the rights<BR>        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<BR>        copies of the Software, and to permit persons to whom the Software is<BR>        furnished to do so, subject to the following conditions:<BR><BR>        The above copyright notice and this permission notice shall be included in<BR>        all copies or substantial portions of the Software.<BR><BR>        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<BR>        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<BR>        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<BR>        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<BR>        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<BR>        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<BR>        THE SOFTWARE.<BR>                                                                                      <BR>    </P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#tp_alignment">tp_alignment</A></B>( vertical VARCHAR2 ( 11 ) , horizontal VARCHAR2 ( 16 ) , wrapText BOOLEAN ) ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#cell">cell</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value NUMBER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#cell">cell</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value VARCHAR2 , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#cell">cell</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value date , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#clear_workbook">clear_workbook</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#comment">comment</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_text VARCHAR2 , p_author VARCHAR2 : = NULL , p_width PLS_INTEGER : = 150 , p_height PLS_INTEGER : = 100 , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#defined_name">defined_name</A></B>( p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_name VARCHAR2 , p_sheet PLS_INTEGER : = NULL , p_localsheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#finish">finish</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#freeze_cols">freeze_cols</A></B>( p_nr_cols PLS_INTEGER : = 1 , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#freeze_pane">freeze_pane</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#freeze_rows">freeze_rows</A></B>( p_nr_rows PLS_INTEGER : = 1 , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_alignment">get_alignment</A></B>( p_vertical VARCHAR2 : = NULL , p_horizontal VARCHAR2 : = NULL , p_wrapText BOOLEAN : = NULL ) RETURN tp_alignment ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  vertical<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        bottom<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        center<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        distributed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        justify<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        top<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_border">get_border</A></B>( p_top VARCHAR2 : = 'thin' , p_bottom VARCHAR2 : = 'thin' , p_left VARCHAR2 : = 'thin' , p_right VARCHAR2 : = 'thin' ) RETURN PLS_INTEGER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Valores para: get_border<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        none<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        thin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        medium<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dotted<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        thick<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        double<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        hair<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashDotDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashDotDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        slantDashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_fill">get_fill</A></B>( p_patternType VARCHAR2 , p_fgRGB VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_font">get_font</A></B>( p_name VARCHAR2 , p_family PLS_INTEGER : = 2 , p_fontsize NUMBER : = 11 , p_theme PLS_INTEGER : = 1 , p_underline BOOLEAN : = FALSE , p_italic BOOLEAN : = FALSE , p_bold BOOLEAN : = FALSE , p_rgb VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_numFmt">get_numFmt</A></B>( p_format VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#hyperlink">hyperlink</A></B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_url VARCHAR2 , p_value VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#list_validation">list_validation</A></B>( p_sqref_col PLS_INTEGER , p_sqref_row PLS_INTEGER , p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_style VARCHAR2 : = 'stop' , p_title VARCHAR2 : = NULL , p_prompt varchar : = NULL , p_show_error BOOLEAN : = FALSE , p_error_title VARCHAR2 : = NULL , p_error_txt VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#list_validation">list_validation</A></B>( p_sqref_col PLS_INTEGER , p_sqref_row PLS_INTEGER , p_defined_name VARCHAR2 , p_style VARCHAR2 : = 'stop' , p_title VARCHAR2 : = NULL , p_prompt varchar : = NULL , p_show_error BOOLEAN : = FALSE , p_error_title VARCHAR2 : = NULL , p_error_txt VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#mergecells">mergecells</A></B>( p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#new_sheet">new_sheet</A></B>( p_sheetname VARCHAR2 : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#OraFmt2Excel">OraFmt2Excel</A></B>( p_format VARCHAR2 : = NULL ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#query2sheet">query2sheet</A></B>( p_sql VARCHAR2 , p_column_headers BOOLEAN : = true , p_directory VARCHAR2 : = NULL , p_filename VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#save">save</A></B>( p_directory VARCHAR2 , p_filename VARCHAR2 ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_autofilter">set_autofilter</A></B>( p_column_start PLS_INTEGER : = NULL , p_column_end PLS_INTEGER : = NULL , p_row_start PLS_INTEGER : = NULL , p_row_end PLS_INTEGER : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_column">set_column</A></B>( p_col PLS_INTEGER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_column_width">set_column_width</A></B>( p_col PLS_INTEGER , p_width NUMBER , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#set_row">set_row</A></B>( p_row PLS_INTEGER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="tp_alignment"></A>
+<H3>tp_alignment</H3><PRE>          <B>tp_alignment</B>( vertical VARCHAR2 ( 11 ) , horizontal VARCHAR2 ( 16 ) , wrapText BOOLEAN ) ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="cell"></A>
+<H3>cell</H3><PRE>          <B>cell</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value NUMBER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="cell"></A>
+<H3>cell</H3><PRE>          <B>cell</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value VARCHAR2 , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="cell"></A>
+<H3>cell</H3><PRE>          <B>cell</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_value date , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="clear_workbook"></A>
+<H3>clear_workbook</H3><PRE>          <B>clear_workbook</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="comment"></A>
+<H3>comment</H3><PRE>          <B>comment</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_text VARCHAR2 , p_author VARCHAR2 : = NULL , p_width PLS_INTEGER : = 150 , p_height PLS_INTEGER : = 100 , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="defined_name"></A>
+<H3>defined_name</H3><PRE>          <B>defined_name</B>( p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_name VARCHAR2 , p_sheet PLS_INTEGER : = NULL , p_localsheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="finish"></A>
+<H3>finish</H3><PRE>          <B>finish</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="freeze_cols"></A>
+<H3>freeze_cols</H3><PRE>          <B>freeze_cols</B>( p_nr_cols PLS_INTEGER : = 1 , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="freeze_pane"></A>
+<H3>freeze_pane</H3><PRE>          <B>freeze_pane</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="freeze_rows"></A>
+<H3>freeze_rows</H3><PRE>          <B>freeze_rows</B>( p_nr_rows PLS_INTEGER : = 1 , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_alignment"></A>
+<H3>get_alignment</H3><PRE>          <B>get_alignment</B>( p_vertical VARCHAR2 : = NULL , p_horizontal VARCHAR2 : = NULL , p_wrapText BOOLEAN : = NULL ) RETURN tp_alignment ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  vertical<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        bottom<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        center<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        distributed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        justify<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        top<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <DD><DL></DL></DD></DL><HR><A NAME="get_border"></A>
+<H3>get_border</H3><PRE>          <B>get_border</B>( p_top VARCHAR2 : = 'thin' , p_bottom VARCHAR2 : = 'thin' , p_left VARCHAR2 : = 'thin' , p_right VARCHAR2 : = 'thin' ) RETURN PLS_INTEGER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Valores para: get_border<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        none<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        thin<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        medium<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dotted<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        thick<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        double<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        hair<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        dashDotDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        mediumDashDotDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        slantDashDot<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <DD><DL></DL></DD></DL><HR><A NAME="get_fill"></A>
+<H3>get_fill</H3><PRE>          <B>get_fill</B>( p_patternType VARCHAR2 , p_fgRGB VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_font"></A>
+<H3>get_font</H3><PRE>          <B>get_font</B>( p_name VARCHAR2 , p_family PLS_INTEGER : = 2 , p_fontsize NUMBER : = 11 , p_theme PLS_INTEGER : = 1 , p_underline BOOLEAN : = FALSE , p_italic BOOLEAN : = FALSE , p_bold BOOLEAN : = FALSE , p_rgb VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="get_numFmt"></A>
+<H3>get_numFmt</H3><PRE>          <B>get_numFmt</B>( p_format VARCHAR2 : = NULL ) RETURN PLS_INTEGER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="hyperlink"></A>
+<H3>hyperlink</H3><PRE>          <B>hyperlink</B>( p_col PLS_INTEGER , p_row PLS_INTEGER , p_url VARCHAR2 , p_value VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="list_validation"></A>
+<H3>list_validation</H3><PRE>          <B>list_validation</B>( p_sqref_col PLS_INTEGER , p_sqref_row PLS_INTEGER , p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_style VARCHAR2 : = 'stop' , p_title VARCHAR2 : = NULL , p_prompt varchar : = NULL , p_show_error BOOLEAN : = FALSE , p_error_title VARCHAR2 : = NULL , p_error_txt VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="list_validation"></A>
+<H3>list_validation</H3><PRE>          <B>list_validation</B>( p_sqref_col PLS_INTEGER , p_sqref_row PLS_INTEGER , p_defined_name VARCHAR2 , p_style VARCHAR2 : = 'stop' , p_title VARCHAR2 : = NULL , p_prompt varchar : = NULL , p_show_error BOOLEAN : = FALSE , p_error_title VARCHAR2 : = NULL , p_error_txt VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="mergecells"></A>
+<H3>mergecells</H3><PRE>          <B>mergecells</B>( p_tl_col PLS_INTEGER , p_tl_row PLS_INTEGER , p_br_col PLS_INTEGER , p_br_row PLS_INTEGER , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="new_sheet"></A>
+<H3>new_sheet</H3><PRE>          <B>new_sheet</B>( p_sheetname VARCHAR2 : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="OraFmt2Excel"></A>
+<H3>OraFmt2Excel</H3><PRE>          <B>OraFmt2Excel</B>( p_format VARCHAR2 : = NULL ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="query2sheet"></A>
+<H3>query2sheet</H3><PRE>          <B>query2sheet</B>( p_sql VARCHAR2 , p_column_headers BOOLEAN : = true , p_directory VARCHAR2 : = NULL , p_filename VARCHAR2 : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="save"></A>
+<H3>save</H3><PRE>          <B>save</B>( p_directory VARCHAR2 , p_filename VARCHAR2 ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_autofilter"></A>
+<H3>set_autofilter</H3><PRE>          <B>set_autofilter</B>( p_column_start PLS_INTEGER : = NULL , p_column_end PLS_INTEGER : = NULL , p_row_start PLS_INTEGER : = NULL , p_row_end PLS_INTEGER : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_column"></A>
+<H3>set_column</H3><PRE>          <B>set_column</B>( p_col PLS_INTEGER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_column_width"></A>
+<H3>set_column_width</H3><PRE>          <B>set_column_width</B>( p_col PLS_INTEGER , p_width NUMBER , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><A NAME="set_row"></A>
+<H3>set_row</H3><PRE>          <B>set_row</B>( p_row PLS_INTEGER , p_numFmtId PLS_INTEGER : = NULL , p_fontId PLS_INTEGER : = NULL , p_fillId PLS_INTEGER : = NULL , p_borderId PLS_INTEGER : = NULL , p_alignment tp_alignment : = NULL , p_sheet PLS_INTEGER : = NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_XLSX_BUILDER</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>80386</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>15/06/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>15/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-15:20:49:45</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE sys_k_xlsx_builder AUTHID CURRENT_USER AS
+    /*
+        ******************************************************************************
+        **
+        ** Author: Anton Scheffer
+        ** Date: 19-02-2011
+        ** Website: http://technology.amis.nl/blog
+        ** See also: http://technology.amis.nl/blog/?p=10995
+        ** See also: https://technology.amis.nl/2011/02/19/create-an-excel-file-with-plsql/
+        **
+        ** Changelog:
+        **   Date: 21-02-2011   Added Aligment, horizontal, vertical, wrapText
+        **   Date: 06-03-2011   Added Comments, MergeCells, fixed bug for dependency on NLS-settings
+        **   Date: 16-03-2011   Added bold and italic fonts
+        **   Date: 22-03-2011   Fixed issue with timezone's set to a region(name) instead of a offset
+        **   Date: 08-04-2011   Fixed issue with XML-escaping from text
+        **   Date: 27-05-2011   Added MIT-license
+        **   Date: 11-08-2011   Fixed NLS-issue with column width
+        **   Date: 29-09-2011   Added font color
+        **   Date: 16-10-2011   fixed bug in add_string
+        **   Date: 26-04-2012   Fixed set_autofilter (only one autofilter per sheet, added _xlnm._FilterDatabase)
+                                Added list_validation = drop-down 
+        **   Date: 27-08-2013   Added freeze_pane
+        **
+        ******************************************************************************
+        Copyright (C) 2011, 2012 by Anton Scheffer
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+        ******************************************************************************
+    */
+    --
+    TYPE tp_alignment IS RECORD( 
+        vertical    VARCHAR2(11), 
+        horizontal  VARCHAR2(16), 
+        wrapText    BOOLEAN
+    );
+    --
+    PROCEDURE clear_workbook;
+    --
+    PROCEDURE new_sheet( p_sheetname VARCHAR2 := NULL );
+    --
+    FUNCTION OraFmt2Excel( p_format VARCHAR2 := NULL ) RETURN VARCHAR2;
+    --
+    FUNCTION get_numFmt( p_format VARCHAR2 := NULL ) RETURN PLS_INTEGER;
+    --
+    FUNCTION get_font( p_name       VARCHAR2,
+                       p_family     PLS_INTEGER := 2,
+                       p_fontsize   NUMBER := 11,
+                       p_theme      PLS_INTEGER := 1,
+                       p_underline  BOOLEAN := FALSE,
+                       p_italic     BOOLEAN := FALSE,
+                       p_bold       BOOLEAN := FALSE,
+                       p_rgb        VARCHAR2 := NULL -- this is a hex ALPHA Red Green Blue value
+                     ) RETURN PLS_INTEGER;
+    --
+    FUNCTION get_fill( p_patternType VARCHAR2, 
+                       p_fgRGB       VARCHAR2 := NULL -- this is a hex ALPHA Red Green Blue value
+                     ) RETURN PLS_INTEGER;
+    --
+    /*  Valores para: get_border
+        none
+        thin
+        medium
+        dashed
+        dotted
+        thick
+        double
+        hair
+        mediumDashed
+        dashDot
+        mediumDashDot
+        dashDotDot
+        mediumDashDotDot
+        slantDashDot
+    */
+    FUNCTION get_border( p_top      VARCHAR2 := 'thin', 
+                         p_bottom   VARCHAR2 := 'thin', 
+                         p_left     VARCHAR2 := 'thin', 
+                         p_right    VARCHAR2 := 'thin'
+                       ) RETURN PLS_INTEGER;
+    --
+    /*  Valores: get_alignment
+        horizontal
+        center
+        centerContinuous
+        distributed
+        fill
+        general
+        justify
+        left
+        right
+    */
+    /*  vertical
+        bottom
+        center
+        distributed
+        justify
+        top
+    */
+    FUNCTION get_alignment( p_vertical      VARCHAR2 := NULL, 
+                            p_horizontal    VARCHAR2 := NULL, 
+                            p_wrapText      BOOLEAN  := NULL
+                          ) RETURN tp_alignment;
+    --
+    PROCEDURE cell( p_col           PLS_INTEGER, 
+                    p_row           PLS_INTEGER, 
+                    p_value         NUMBER, 
+                    p_numFmtId      PLS_INTEGER := NULL, 
+                    p_fontId        PLS_INTEGER := NULL, 
+                    p_fillId        PLS_INTEGER := NULL, 
+                    p_borderId      PLS_INTEGER := NULL, 
+                    p_alignment     tp_alignment := NULL, 
+                    p_sheet         PLS_INTEGER := NULL
+                 );
+    --
+    PROCEDURE cell( p_col       PLS_INTEGER, 
+                    p_row       PLS_INTEGER, 
+                    p_value     VARCHAR2, 
+                    p_numFmtId  PLS_INTEGER := NULL, 
+                    p_fontId    PLS_INTEGER := NULL, 
+                    p_fillId    PLS_INTEGER := NULL, 
+                    p_borderId  PLS_INTEGER := NULL, 
+                    p_alignment tp_alignment := NULL, 
+                    p_sheet     PLS_INTEGER := NULL
+                  );
+    --
+    PROCEDURE cell
+        ( p_col PLS_INTEGER
+        , p_row PLS_INTEGER
+        , p_value date
+        , p_numFmtId PLS_INTEGER := NULL
+        , p_fontId PLS_INTEGER := NULL
+        , p_fillId PLS_INTEGER := NULL
+        , p_borderId PLS_INTEGER := NULL
+        , p_alignment tp_alignment := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE hyperlink
+        ( p_col PLS_INTEGER
+        , p_row PLS_INTEGER
+        , p_url VARCHAR2
+        , p_value VARCHAR2 := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE comment
+        ( p_col PLS_INTEGER
+        , p_row PLS_INTEGER
+        , p_text VARCHAR2
+        , p_author VARCHAR2 := NULL
+        , p_width PLS_INTEGER := 150  -- pixels
+        , p_height PLS_INTEGER := 100  -- pixels
+        , p_sheet PLS_INTEGER := NULL
+        );
+--
+  PROCEDURE mergecells
+    ( p_tl_col PLS_INTEGER -- top left
+    , p_tl_row PLS_INTEGER
+    , p_br_col PLS_INTEGER -- bottom right
+    , p_br_row PLS_INTEGER
+    , p_sheet PLS_INTEGER := NULL
+    );
+    --
+    PROCEDURE list_validation
+        ( p_sqref_col PLS_INTEGER
+        , p_sqref_row PLS_INTEGER
+        , p_tl_col PLS_INTEGER -- top left
+        , p_tl_row PLS_INTEGER
+        , p_br_col PLS_INTEGER -- bottom right
+        , p_br_row PLS_INTEGER
+        , p_style VARCHAR2 := 'stop' -- stop, warning, information
+        , p_title VARCHAR2 := NULL
+        , p_prompt varchar := NULL
+        , p_show_error BOOLEAN := FALSE
+        , p_error_title VARCHAR2 := NULL
+        , p_error_txt VARCHAR2 := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE list_validation
+        ( p_sqref_col PLS_INTEGER
+        , p_sqref_row PLS_INTEGER
+        , p_defined_name VARCHAR2
+        , p_style VARCHAR2 := 'stop' -- stop, warning, information
+        , p_title VARCHAR2 := NULL
+        , p_prompt varchar := NULL
+        , p_show_error BOOLEAN := FALSE
+        , p_error_title VARCHAR2 := NULL
+        , p_error_txt VARCHAR2 := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE defined_name
+        ( p_tl_col PLS_INTEGER -- top left
+        , p_tl_row PLS_INTEGER
+        , p_br_col PLS_INTEGER -- bottom right
+        , p_br_row PLS_INTEGER
+        , p_name VARCHAR2
+        , p_sheet PLS_INTEGER := NULL
+        , p_localsheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE set_column_width
+        ( p_col PLS_INTEGER
+        , p_width NUMBER
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE set_column
+        ( p_col PLS_INTEGER
+        , p_numFmtId PLS_INTEGER := NULL
+        , p_fontId PLS_INTEGER := NULL
+        , p_fillId PLS_INTEGER := NULL
+        , p_borderId PLS_INTEGER := NULL
+        , p_alignment tp_alignment := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE set_row
+        ( p_row PLS_INTEGER
+        , p_numFmtId PLS_INTEGER := NULL
+        , p_fontId PLS_INTEGER := NULL
+        , p_fillId PLS_INTEGER := NULL
+        , p_borderId PLS_INTEGER := NULL
+        , p_alignment tp_alignment := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+  PROCEDURE freeze_rows
+    ( p_nr_rows PLS_INTEGER := 1
+    , p_sheet PLS_INTEGER := NULL
+    );
+    --
+    PROCEDURE freeze_cols
+        ( p_nr_cols PLS_INTEGER := 1
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE freeze_pane
+        ( p_col PLS_INTEGER
+        , p_row PLS_INTEGER
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    PROCEDURE set_autofilter
+        ( p_column_start PLS_INTEGER := NULL
+        , p_column_end PLS_INTEGER := NULL
+        , p_row_start PLS_INTEGER := NULL
+        , p_row_end PLS_INTEGER := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --
+    FUNCTION finish RETURN blob;
+    --
+    PROCEDURE save
+        ( p_directory VARCHAR2
+        , p_filename VARCHAR2
+        );
+    --
+    PROCEDURE query2sheet
+        ( p_sql VARCHAR2
+        , p_column_headers BOOLEAN := true
+        , p_directory VARCHAR2 := NULL
+        , p_filename VARCHAR2 := NULL
+        , p_sheet PLS_INTEGER := NULL
+        );
+    --    
+END sys_k_xlsx_builder;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

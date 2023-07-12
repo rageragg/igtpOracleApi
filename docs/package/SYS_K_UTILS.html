@@ -1,0 +1,348 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_UTILS/report.js" type="text/javascript"></script>
+<link href="SYS_K_UTILS/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_UTILS</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#data_map_rec">data_map_rec</A></B>( column_name VARCHAR2 ( 30 ) , data_type VARCHAR2 ( 30 ) , data_value SYS . ANYDATA ) ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tipos  </TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_day_of_week">f_day_of_week</A></B>( p_date DATE ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dia de la semana</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_get_refcursor">f_get_refcursor</A></B>( p_owner VARCHAR2 , p_table VARCHAR2 , p_where VARCHAR2 , p_order VARCHAR2 ) RETURN SYS_REFCURSOR ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve un cursor de una determinada tabla </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_get_segundos">f_get_segundos</A></B>( p_fecha DATE ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve los segundos desde una fecha especifica</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_k_nls_calendar">f_k_nls_calendar</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve modo de calendario NLS_CALENDAR</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_k_nls_date_format">f_k_nls_date_format</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve el formato de fecha NLS_DATE_FORMAT</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_k_nls_time_format">f_k_nls_time_format</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve el formato de fecha NLS_TIME_FORMAT</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_list_day_of_week">f_list_day_of_week</A></B>( p_date DATE ) RETURN sys_refcursor ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lista de los dias de la semana</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_list_to_cursor">f_list_to_cursor</A></B>( p_list IN VARCHAR2 , p_separator IN VARCHAR2 DEFAULT ',' ) RETURN sys_refcursor ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; salida del cursor es { id, data }</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_table_exist">f_table_exist</A></B>( p_owner VARCHAR2 , p_table VARCHAR2 ) RETURN BOOLEAN ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; verifica si una tabla existe</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_uuid">f_uuid</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Funcion que devuelve un identificador unico</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_map_data">get_map_data</A></B>( p_owner VARCHAR2 , p_table_name VARCHAR2 ) RETURN data_map_tab ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve una tabla con las columnas de una determinada tabla</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_map_data_type">get_map_data_type</A></B>( p_field VARCHAR2 , p_mdata igtp . sys_k_utils . data_map_tab ) RETURN VARCHAR2 ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve el tipo del campo enviado </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_map_data_value">get_map_data_value</A></B>( p_field VARCHAR2 , p_mdata igtp . sys_k_utils . data_map_tab ) RETURN SYS . ANYDATA ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve el valor del campo enviado </TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#p_set_database_parameters">p_set_database_parameters</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; procedimiento que establece el los parametros de la base de datos</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#p_set_install_parameters">p_set_install_parameters</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; procedimiento que establece el los parametros de la instalacion</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="data_map_rec"></A>
+<H3>data_map_rec</H3><PRE>          <B>data_map_rec</B>( column_name VARCHAR2 ( 30 ) , data_type VARCHAR2 ( 30 ) , data_value SYS . ANYDATA ) ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tipos  <DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="f_day_of_week"></A>
+<H3>f_day_of_week</H3><PRE>          <B>f_day_of_week</B>( p_date DATE ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dia de la semana<DD><DL></DL></DD></DL><HR><A NAME="f_get_refcursor"></A>
+<H3>f_get_refcursor</H3><PRE>          <B>f_get_refcursor</B>( p_owner VARCHAR2 , p_table VARCHAR2 , p_where VARCHAR2 , p_order VARCHAR2 ) RETURN SYS_REFCURSOR ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve un cursor de una determinada tabla <DD><DL></DL></DD></DL><HR><A NAME="f_get_segundos"></A>
+<H3>f_get_segundos</H3><PRE>          <B>f_get_segundos</B>( p_fecha DATE ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve los segundos desde una fecha especifica<DD><DL></DL></DD></DL><HR><A NAME="f_k_nls_calendar"></A>
+<H3>f_k_nls_calendar</H3><PRE>          <B>f_k_nls_calendar</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve modo de calendario NLS_CALENDAR<DD><DL></DL></DD></DL><HR><A NAME="f_k_nls_date_format"></A>
+<H3>f_k_nls_date_format</H3><PRE>          <B>f_k_nls_date_format</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve el formato de fecha NLS_DATE_FORMAT<DD><DL></DL></DD></DL><HR><A NAME="f_k_nls_time_format"></A>
+<H3>f_k_nls_time_format</H3><PRE>          <B>f_k_nls_time_format</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function que devuelve el formato de fecha NLS_TIME_FORMAT<DD><DL></DL></DD></DL><HR><A NAME="f_list_day_of_week"></A>
+<H3>f_list_day_of_week</H3><PRE>          <B>f_list_day_of_week</B>( p_date DATE ) RETURN sys_refcursor ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lista de los dias de la semana<DD><DL></DL></DD></DL><HR><A NAME="f_list_to_cursor"></A>
+<H3>f_list_to_cursor</H3><PRE>          <B>f_list_to_cursor</B>( p_list IN VARCHAR2 , p_separator IN VARCHAR2 DEFAULT ',' ) RETURN sys_refcursor ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; salida del cursor es { id, data }<DD><DL></DL></DD></DL><HR><A NAME="f_table_exist"></A>
+<H3>f_table_exist</H3><PRE>          <B>f_table_exist</B>( p_owner VARCHAR2 , p_table VARCHAR2 ) RETURN BOOLEAN ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; verifica si una tabla existe<DD><DL></DL></DD></DL><HR><A NAME="f_uuid"></A>
+<H3>f_uuid</H3><PRE>          <B>f_uuid</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Funcion que devuelve un identificador unico<DD><DL></DL></DD></DL><HR><A NAME="get_map_data"></A>
+<H3>get_map_data</H3><PRE>          <B>get_map_data</B>( p_owner VARCHAR2 , p_table_name VARCHAR2 ) RETURN data_map_tab ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve una tabla con las columnas de una determinada tabla<DD><DL></DL></DD></DL><HR><A NAME="get_map_data_type"></A>
+<H3>get_map_data_type</H3><PRE>          <B>get_map_data_type</B>( p_field VARCHAR2 , p_mdata igtp . sys_k_utils . data_map_tab ) RETURN VARCHAR2 ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve el tipo del campo enviado <DD><DL></DL></DD></DL><HR><A NAME="get_map_data_value"></A>
+<H3>get_map_data_value</H3><PRE>          <B>get_map_data_value</B>( p_field VARCHAR2 , p_mdata igtp . sys_k_utils . data_map_tab ) RETURN SYS . ANYDATA ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; devuelve el valor del campo enviado <DD><DL></DL></DD></DL><HR><A NAME="p_set_database_parameters"></A>
+<H3>p_set_database_parameters</H3><PRE>          <B>p_set_database_parameters</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; procedimiento que establece el los parametros de la base de datos<DD><DL></DL></DD></DL><HR><A NAME="p_set_install_parameters"></A>
+<H3>p_set_install_parameters</H3><PRE>          <B>p_set_install_parameters</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; procedimiento que establece el los parametros de la instalacion<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_UTILS</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>79743</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>30/05/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>31/05/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-05-31:20:47:32</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE      sys_k_utils AS
+    --
+    -- VERSION: 1.00.00
+    /* -------------------- DESCRIPCION -------------------- 
+    || - Permite :
+    ||   Funciones y procesos de utileria general del sistema
+    */ ----------------------------------------------------- 
+    --
+    -- ! CONSTANTES
+    K_SDBP_DEFAULT     CONSTANT CHAR(1)         := 'D';
+    K_SDBP_INSTALL     CONSTANT CHAR(1)         := 'I';
+    K_NLS_LANG_DEFAULT CONSTANT VARCHAR2(16)    := 'AMERICAN';
+    K_NLS_LANG_INSTALL CONSTANT VARCHAR2(16)    := 'SPANISH';
+    K_FRAGMENT_UUID    CONSTANT VARCHAR2(20)    := '8,4,4,4,12'; -- fragmentacion del codigo uuid    
+    K_LIST_DW_AMERICAN CONSTANT NVARCHAR2(64)   := 'SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY';
+    K_LIST_DW_SPANISH  CONSTANT NVARCHAR2(64)   := 'LUNES,MARTES,MI'||CHR(50057)||'RCOLES,JUEVES,VIERNES,S'||CHR(50049)||'BADO,DOMINGO';
+    K_TZNAME           CONSTANT VARCHAR2(32)    := 'America/Caracas';
+    --
+    -- tipos  
+    TYPE data_map_rec IS RECORD(
+        column_name     VARCHAR2(30),
+        data_type       VARCHAR2(30),
+        data_value      SYS.ANYDATA
+    );
+    --
+    -- tabla de columnas de una determinada tabla
+    TYPE data_map_tab   IS TABLE OF data_map_rec INDEX BY VARCHAR2(30);
+    --
+    -- Funcion que devuelve un identificador unico
+    FUNCTION f_uuid RETURN VARCHAR2;
+    --
+    -- ! LISTAS
+    -- 
+    -- funcion que devuelve un cursor a partir de una lista separada por ','
+    -- salida del cursor es { id, data }
+    FUNCTION f_list_to_cursor( 
+            p_list      IN VARCHAR2, 
+            p_separator IN VARCHAR2 DEFAULT ',' 
+        ) RETURN sys_refcursor;
+    --    
+    --
+    -- procedimiento que establece el los parametros de la instalacion
+    PROCEDURE p_set_install_parameters; 
+    --
+    -- procedimiento que establece el los parametros de la base de datos
+    PROCEDURE p_set_database_parameters; 
+    -- 
+    -- ! FECHAS
+    -- function que devuelve el formato de fecha NLS_DATE_FORMAT
+    FUNCTION f_k_nls_date_format RETURN VARCHAR2;
+    --
+    -- function que devuelve el formato de fecha NLS_TIME_FORMAT
+    FUNCTION f_k_nls_time_format RETURN VARCHAR2;
+    --
+    -- function que devuelve modo de calendario NLS_CALENDAR
+    FUNCTION f_k_nls_calendar RETURN VARCHAR2;
+    --
+    -- dia de la semana
+    FUNCTION f_day_of_week( p_date DATE ) RETURN NUMBER;
+    --
+    -- lista de los dias de la semana
+    FUNCTION f_list_day_of_week( p_date DATE ) RETURN sys_refcursor;
+    --
+    -- devuelve los segundos desde una fecha especifica
+    FUNCTION f_get_segundos (p_fecha DATE) RETURN NUMBER;
+    --
+    -- devuelve una tabla con las columnas de una determinada tabla
+    FUNCTION get_map_data( p_owner      VARCHAR2,
+                           p_table_name VARCHAR2
+                         ) RETURN data_map_tab;
+    --
+    -- devuelve el valor del campo enviado 
+    FUNCTION get_map_data_value( p_field VARCHAR2,
+                                 p_mdata igtp.sys_k_utils.data_map_tab 
+                               ) RETURN SYS.ANYDATA;
+    --
+    -- devuelve el tipo del campo enviado 
+    FUNCTION get_map_data_type( p_field VARCHAR2,
+                                p_mdata igtp.sys_k_utils.data_map_tab 
+                              ) RETURN VARCHAR2;
+    --
+    -- TODO: NLS_NUMERIC_CHARACTERS
+    -- 
+    -- verifica si una tabla existe
+    FUNCTION f_table_exist( p_owner VARCHAR2, 
+                            p_table VARCHAR2
+                          ) RETURN BOOLEAN;
+    --
+    -- devuelve un cursor de una determinada tabla 
+    FUNCTION f_get_refcursor( p_owner VARCHAR2, 
+                              p_table VARCHAR2,
+                              p_where VARCHAR2,
+                              p_order VARCHAR2
+                            ) RETURN SYS_REFCURSOR;
+    --
+END sys_k_utils;
+
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

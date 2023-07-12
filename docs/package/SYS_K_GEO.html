@@ -1,0 +1,276 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="SYS_K_GEO/report.js" type="text/javascript"></script>
+<link href="SYS_K_GEO/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">SYS_K_GEO</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_distance_points">f_distance_points</A></B>( p_lat_init NUMBER , p_lng_init NUMBER , p_lat_end NUMBER , p_lng_end NUMBER ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  d = 2r arcsin(sqrt(sin²((lat2 - lat1)/2) + cos(lat1)cos(lat2)sin²((lon2 - lon1)/2)))</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#f_grade_to_radians">f_grade_to_radians</A></B>( p_grade NUMBER ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; radianes = grados   pi / 180</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_ecliptic_degree">get_ecliptic_degree</A></B>( p_degree IN NUMBER , p_direction IN VARCHAR2 ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get ecliptic degree of position</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#get_ecliptic_distance">get_ecliptic_distance</A></B>( p_from_latitude IN NUMBER , p_from_longitude IN NUMBER , p_to_latitude IN NUMBER , p_to_longitude IN NUMBER , p_radius IN NUMBER : = K_RADIUS_EARTH_MILES ) RETURN NUMBER ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get distance between to geographic position</TD></TR>
+</TABLE>
+<P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="f_distance_points"></A>
+<H3>f_distance_points</H3><PRE>          <B>f_distance_points</B>( p_lat_init NUMBER , p_lng_init NUMBER , p_lat_end NUMBER , p_lng_end NUMBER ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  d = 2r arcsin(sqrt(sin²((lat2 - lat1)/2) + cos(lat1)cos(lat2)sin²((lon2 - lon1)/2)))<DD><DL></DL></DD></DL><HR><A NAME="f_grade_to_radians"></A>
+<H3>f_grade_to_radians</H3><PRE>          <B>f_grade_to_radians</B>( p_grade NUMBER ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; radianes = grados   pi / 180<DD><DL></DL></DD></DL><HR><A NAME="get_ecliptic_degree"></A>
+<H3>get_ecliptic_degree</H3><PRE>          <B>get_ecliptic_degree</B>( p_degree IN NUMBER , p_direction IN VARCHAR2 ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get ecliptic degree of position<DD><DL></DL></DD></DL><HR><A NAME="get_ecliptic_distance"></A>
+<H3>get_ecliptic_distance</H3><PRE>          <B>get_ecliptic_distance</B>( p_from_latitude IN NUMBER , p_from_longitude IN NUMBER , p_to_latitude IN NUMBER , p_to_longitude IN NUMBER , p_radius IN NUMBER : = K_RADIUS_EARTH_MILES ) RETURN NUMBER ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get distance between to geographic position<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>SYS_K_GEO</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>79753</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>30/05/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>13/06/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-06-13:20:57:36</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE      sys_k_geo AS
+    --
+    -- VERSION: 1.00.00
+    /* -------------------- DESCRIPCION -------------------- 
+    || - Permite :
+    ||   Funciones y procesos de calculo geoespacial
+    */ ----------------------------------------------------- 
+    --
+    -- ! CONSTANTES
+    K_PI                        CONSTANT NUMBER      := 3.14159;
+    K_RATIO_EARTH_MTS           CONSTANT NUMBER      := 6371000.00;
+    K_RADIAN_180                CONSTANT NUMBER      := 180; 
+    K_RADIUS_EARTH_MILES        CONSTANT NUMBER      := 3443.917;
+    K_DEGREES_TO_RADIANS_FACTOR CONSTANT NUMBER      := 57.29577951;
+    --
+    K_LATITUDE_DIRECTION_NORTH  CONSTANT VARCHAR2(1) := 'N';
+    K_LATITUDE_DIRECTION_SOUTH  CONSTANT VARCHAR2(1) := 'S';
+    K_LONGITUDE_DIRECTION_EAST  CONSTANT VARCHAR2(1) := 'E';
+    K_LONGITUDE_DIRECTION_WEST  CONSTANT VARCHAR2(1) := 'W';
+    --
+    -- Para convertir grados a radianes, puede utilizar la siguiente fórmula:
+    -- radianes = grados * pi / 180
+    FUNCTION f_grade_to_radians( p_grade NUMBER )RETURN NUMBER;
+    --
+    -- La fórmula del Haversine es una ecuación astronómica que permite calcular la 
+    -- distancia de círculo máximo entre dos puntos del globo terráqueo sabiendo 
+    -- su longitud y su latitud. 
+    -- La fórmula es la siguiente:
+    --  d = 2r arcsin(sqrt(sin²((lat2 - lat1)/2) + cos(lat1)cos(lat2)sin²((lon2 - lon1)/2)))
+    FUNCTION f_distance_points( p_lat_init NUMBER, 
+                                p_lng_init NUMBER, 
+                                p_lat_end  NUMBER, 
+                                p_lng_end  NUMBER
+                              ) RETURN NUMBER; 
+    --
+    -- get ecliptic degree of position
+    FUNCTION get_ecliptic_degree( p_degree    IN NUMBER,
+                                  p_direction IN VARCHAR2
+                                ) RETURN NUMBER;                     
+                     
+  -- get distance between to geographic position
+  FUNCTION get_ecliptic_distance( p_from_latitude   IN NUMBER,
+                                  p_from_longitude  IN NUMBER,
+                                  p_to_latitude     IN NUMBER,
+                                  p_to_longitude    IN NUMBER,
+                                  p_radius          IN NUMBER := K_RADIUS_EARTH_MILES
+                                ) RETURN NUMBER;
+    --
+END sys_k_geo;
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>

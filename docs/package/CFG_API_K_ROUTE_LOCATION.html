@@ -1,0 +1,304 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=Cp1252" />
+<script src="CFG_API_K_ROUTE_LOCATION/report.js" type="text/javascript"></script>
+<link href="CFG_API_K_ROUTE_LOCATION/report.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="banner">
+<table width="98%"><tr>
+<td><h2 class="banner">CFG_API_K_ROUTE_LOCATION</h2></td>
+</tr></table></div>
+<div id="maintabs">
+<div class="currentmaintab" onclick="onSelectMainTab(this, 0)">
+<div>
+<p>Doc</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 1)">
+<div>
+<p>Details</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 2)">
+<div>
+<p>Grants</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 3)">
+<div>
+<p>References</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 4)">
+<div>
+<p>Dependencies</p>
+</div>
+</div>
+<div class="maintab" onclick="onSelectMainTab(this, 5)">
+<div>
+<p>Code</p>
+</div>
+</div>
+</div>
+<br/>
+<div id="masterreports">
+<div id="Master.0">
+<div class="currentmasterreport">
+<TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE><HR><P></P><HR><P></P><A NAME="type_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#route_locations_api_rec">route_locations_api_rec</A></B>( id igtp . route_locations . id % TYPE , route_id igtp . route_locations . route_id % TYPE , location_id igtp . route_locations . location_id % TYPE , description igtp . route_locations . description % TYPE , user_id igtp . route_locations . user_id % TYPE , updated_at igtp . route_locations . updated_at % TYPE , created_at igtp . route_locations . created_at % TYPE ) ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+</TABLE><P></P><A NAME="method_summary"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Summary</B></FONT></TD><TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#build_all">build_all</A></B></CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bulding all</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#build_from_route">build_from_route</A></B>( p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build from route</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#del">del</A></B>( p_ID IN igtp . route_locations . id % TYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#existe_record">existe_record</A></B>( p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL ) RETURN BOOLEAN ; </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exist record</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_created_at IN igtp . route_locations . created_at % TYPE DEFAULT NULL , p_description IN igtp . route_locations . description % TYPE DEFAULT NULL , p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_user_id IN igtp . route_locations . user_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL , p_updated_at IN igtp . route_locations . updated_at % TYPE DEFAULT NULL , p_id IN igtp . route_locations . id % type ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#ins">ins</A></B>( p_record IN OUT cfg_api_k_route_location . route_locations_api_rec ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_created_at IN igtp . route_locations . created_at % TYPE DEFAULT NULL , p_description IN igtp . route_locations . description % TYPE DEFAULT NULL , p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_user_id IN igtp . route_locations . user_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL , p_updated_at IN igtp . route_locations . updated_at % TYPE DEFAULT NULL , p_id IN igtp . route_locations . id % TYPE ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update</TD></TR>
+<TR CLASS="TableRowColor"><TD WIDTH="1%" VALIGN="top" ALIGN="right"><FONT SIZE="-1"><CODE>&nbsp;</CODE></FONT></TD><TD><CODE><B><A HREF="#upd">upd</A></B>( p_record IN OUT cfg_api_k_route_location . route_locations_api_rec ) </CODE><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD</TD></TR>
+</TABLE>
+<P></P><A NAME="type_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Type Detail</B></FONT></TD></TABLE><A NAME="route_locations_api_rec"></A>
+<H3>route_locations_api_rec</H3><PRE>          <B>route_locations_api_rec</B>( id igtp . route_locations . id % TYPE , route_id igtp . route_locations . route_id % TYPE , location_id igtp . route_locations . location_id % TYPE , description igtp . route_locations . description % TYPE , user_id igtp . route_locations . user_id % TYPE , updated_at igtp . route_locations . updated_at % TYPE , created_at igtp . route_locations . created_at % TYPE ) ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<DD><DL></DL></DD></DL><HR><P></P><A NAME="method_detail"></A><TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="1"><TR CLASS="TableHeadingColor"><TD COLSPAN="2"><FONT SIZE="+2"><B>Method Detail</B></FONT></TD></TABLE><A NAME="build_all"></A>
+<H3>build_all</H3><PRE>          <B>build_all</B></PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bulding all<DD><DL></DL></DD></DL><HR><A NAME="build_from_route"></A>
+<H3>build_from_route</H3><PRE>          <B>build_from_route</B>( p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; build from route<DD><DL></DL></DD></DL><HR><A NAME="del"></A>
+<H3>del</H3><PRE>          <B>del</B>( p_ID IN igtp . route_locations . id % TYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete<DD><DL></DL></DD></DL><HR><A NAME="existe_record"></A>
+<H3>existe_record</H3><PRE>          <B>existe_record</B>( p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL ) RETURN BOOLEAN ; </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exist record<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_created_at IN igtp . route_locations . created_at % TYPE DEFAULT NULL , p_description IN igtp . route_locations . description % TYPE DEFAULT NULL , p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_user_id IN igtp . route_locations . user_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL , p_updated_at IN igtp . route_locations . updated_at % TYPE DEFAULT NULL , p_id IN igtp . route_locations . id % type ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert<DD><DL></DL></DD></DL><HR><A NAME="ins"></A>
+<H3>ins</H3><PRE>          <B>ins</B>( p_record IN OUT cfg_api_k_route_location . route_locations_api_rec ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert RECORD<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_created_at IN igtp . route_locations . created_at % TYPE DEFAULT NULL , p_description IN igtp . route_locations . description % TYPE DEFAULT NULL , p_route_id IN igtp . route_locations . route_id % TYPE DEFAULT NULL , p_user_id IN igtp . route_locations . user_id % TYPE DEFAULT NULL , p_location_id IN igtp . route_locations . location_id % TYPE DEFAULT NULL , p_updated_at IN igtp . route_locations . updated_at % TYPE DEFAULT NULL , p_id IN igtp . route_locations . id % TYPE ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update<DD><DL></DL></DD></DL><HR><A NAME="upd"></A>
+<H3>upd</H3><PRE>          <B>upd</B>( p_record IN OUT cfg_api_k_route_location . route_locations_api_rec ) </PRE><DL>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update RECORD<DD><DL></DL></DD></DL><HR><TABLE CELLSPACING="0" CELLPADDING="1" WIDTH="100%" BORDER="0">
+<TR><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2">      SUMMARY:  <A HREF="#field_summary">FIELD</A> | <A HREF="#type_summary">TYPE</A> | <A HREF="#method_summary">METHOD</A></FONT></TD><TD CLASS="NavBarRow3" VALIGN="top"><FONT SIZE="-2"></TR></TABLE></div>
+</div>
+<div id="Master.1">
+<div class="masterreport">
+<table id="Table.0" cellpadding="0" cellspacing="0" summary="">
+<th>NAME</th>
+<th>VALUE</th>
+</tr>
+<tr>
+<td>OWNER</td>
+<td>IGTP</td>
+</tr>
+<tr>
+<td>OBJECT_NAME</td>
+<td>CFG_API_K_ROUTE_LOCATION</td>
+</tr>
+<tr>
+<td>SUBOBJECT_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_ID</td>
+<td>79755</td>
+</tr>
+<tr>
+<td>DATA_OBJECT_ID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>OBJECT_TYPE</td>
+<td>PACKAGE</td>
+</tr>
+<tr>
+<td>CREATED</td>
+<td>30/05/23</td>
+</tr>
+<tr>
+<td>LAST_DDL_TIME</td>
+<td>30/05/23</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>2023-05-30:19:53:09</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>VALID</td>
+</tr>
+<tr>
+<td>TEMPORARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>GENERATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SECONDARY</td>
+<td>N</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>1</td>
+</tr>
+<tr>
+<td>EDITION_NAME</td>
+<td>null</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>EDITIONABLE</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ORACLE_MAINTAINED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>N</td>
+</tr>
+<tr>
+<td>DEFAULT_COLLATION</td>
+<td>USING_NLS_COMP</td>
+</tr>
+<tr>
+<td>DUPLICATED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>SHARDED</td>
+<td>N</td>
+</tr>
+<tr>
+<td>IMPORTED_OBJECT</td>
+<td>N</td>
+</tr>
+<tr>
+<td>CREATED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>CREATED_VSNID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_APPID</td>
+<td>null</td>
+</tr>
+<tr>
+<td>MODIFIED_VSNID</td>
+<td>null</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.2">
+<div class="masterreport">
+<table id="Table.1" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>PRIVILEGE</th>
+<th>GRANTEE</th>
+<th>GRANTABLE</th>
+<th>GRANTOR</th>
+<th>OBJECT_NAME</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.3">
+<div class="masterreport">
+<table id="Table.2" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.4">
+<div class="masterreport">
+<table id="Table.3" cellpadding="0" cellspacing="0" summary="">
+<tr>
+<th>NAME</th>
+<th>OWNER</th>
+<th>TYPE</th>
+<th>OBJECT_ID</th>
+<th>STATUS</th>
+<th>TYPE_LINK</th>
+</tr>
+</table>
+</div>
+</div>
+<div id="Master.5">
+<div class="masterreport">
+<pre>
+PACKAGE      cfg_api_k_route_location IS
+    --
+    TYPE route_locations_api_rec IS RECORD (
+        id              igtp.route_locations.id%TYPE,
+        route_id        igtp.route_locations.route_id%TYPE,
+        location_id     igtp.route_locations.location_id%TYPE,
+        description     igtp.route_locations.description%TYPE,
+        user_id         igtp.route_locations.user_id%TYPE,
+        updated_at      igtp.route_locations.updated_at%TYPE,
+        created_at      igtp.route_locations.created_at%TYPE
+    );
+    --
+    TYPE route_locations_tab IS TABLE OF route_locations_api_rec;
+    --
+    -- insert
+    PROCEDURE ins (
+        p_created_at    IN igtp.route_locations.created_at%TYPE DEFAULT NULL,
+        p_description   IN igtp.route_locations.description%TYPE DEFAULT NULL,
+        p_route_id      IN igtp.route_locations.route_id%TYPE DEFAULT NULL,
+        p_user_id       IN igtp.route_locations.user_id%TYPE DEFAULT NULL,
+        p_location_id   IN igtp.route_locations.location_id%TYPE DEFAULT NULL, 
+        p_updated_at    IN igtp.route_locations.updated_at%TYPE DEFAULT NULL, 
+        p_id            IN igtp.route_locations.id%type
+    );
+    --
+    -- insert RECORD
+    PROCEDURE ins( 
+        p_record IN OUT cfg_api_k_route_location.route_locations_api_rec
+    );
+    --
+    -- update
+    PROCEDURE upd (
+        p_created_at    IN igtp.route_locations.created_at%TYPE DEFAULT NULL,
+        p_description   IN igtp.route_locations.description%TYPE DEFAULT NULL,
+        p_route_id      IN igtp.route_locations.route_id%TYPE DEFAULT NULL,
+        p_user_id       IN igtp.route_locations.user_id%TYPE DEFAULT NULL,
+        p_location_id   IN igtp.route_locations.location_id%TYPE DEFAULT NULL, 
+        p_updated_at    IN igtp.route_locations.updated_at%TYPE DEFAULT NULL, 
+        p_id            IN igtp.route_locations.id%TYPE
+    );
+    --
+    -- update RECORD
+    PROCEDURE upd ( 
+            p_record IN OUT cfg_api_k_route_location.route_locations_api_rec
+    );
+    --
+    -- delete
+    PROCEDURE del (
+        p_ID IN igtp.route_locations.id%TYPE
+    );
+    --
+    -- exist record
+    FUNCTION existe_record ( 
+        p_route_id      IN igtp.route_locations.route_id%TYPE DEFAULT NULL,
+        p_location_id   IN igtp.route_locations.location_id%TYPE DEFAULT NULL
+    ) RETURN BOOLEAN;
+    --
+    -- build from route
+    PROCEDURE build_from_route( 
+        p_route_id IN igtp.route_locations.route_id%TYPE DEFAULT NULL 
+    );
+    --
+    -- bulding all
+    PROCEDURE build_all;
+    --
+END cfg_api_k_route_location;
+
+</pre>
+</div>
+</div>
+</div>
+</body>
+</html>
