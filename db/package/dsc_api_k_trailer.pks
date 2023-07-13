@@ -18,7 +18,10 @@ CREATE OR REPLACE PACKAGE dsc_api_k_trailer IS
     type trailers_api_tab is table of trailers%ROWTYPE;
     --
     -- get DATA RETURN RECORD
-    FUNCTION get_record( p_id IN trailers.id%TYPE ) RETURN trailers%ROWTYPE;    
+    FUNCTION get_record( p_id IN trailers.id%TYPE ) RETURN trailers%ROWTYPE;   
+    --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_trailer_co IN trailers.trailer_co%TYPE ) RETURN trailers%ROWTYPE;       
     --
     -- get DATA Array
     FUNCTION get_list RETURN trailers_api_tab;  

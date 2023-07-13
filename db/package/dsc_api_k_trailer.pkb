@@ -23,6 +23,25 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_trailer IS
         --
     END get_record;     
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_trailer_co IN trailers.trailer_co%TYPE ) RETURN trailers%ROWTYPE IS
+         --
+        l_data trailers%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.trailers WHERE trailer_co = p_trailer_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;        
+    --
     -- get DATA Array
     FUNCTION get_list RETURN trailers_api_tab IS
         --

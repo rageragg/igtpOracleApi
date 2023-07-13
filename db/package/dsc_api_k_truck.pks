@@ -20,6 +20,9 @@ CREATE OR REPLACE PACKAGE dsc_api_k_truck IS
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id IN trucks.id%TYPE ) RETURN trucks%ROWTYPE;    
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_truck_co IN trucks.truck_co%TYPE ) RETURN trucks%ROWTYPE;        
+    --
     -- get DATA Array
     FUNCTION get_list RETURN trucks_api_tab;  
     --

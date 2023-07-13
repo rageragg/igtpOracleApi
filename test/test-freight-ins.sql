@@ -4,25 +4,25 @@
 DECLARE 
     --
     -- parametros 
-    p_user_id           freights.user_id%TYPE               := 1;
+    p_freight_co        freights.freight_co%TYPE            := '71806';
     p_customer_co       customers.customer_co%TYPE          := 'MKR';
-    p_route_co          routes.route_co%TYPE                := '21-22';
     p_type_cargo_co     type_cargos.type_cargo_co%TYPE      := 'REF';
+    p_route_co          routes.route_co%TYPE                := '21-26';
     p_type_vehicle_co   type_vehicles.type_vehicle_co%TYPE  := 'CH2';
     p_type_freight_co   type_freights.type_freight_co%TYPE  := 'PMP';
-    p_freight_co        freights.freight_co%TYPE            := '71804';
     p_regimen           freights.k_regimen%TYPE             := lgc_api_k_freight.K_REGIMEN_FREIGHT;
     p_upload_at         freights.upload_at%TYPE             := to_date('03012018','ddmmyyyy');
-    p_notes             freights.notes%TYPE                 := 'Viajes 2018 RUNQUE HERNANDEZ JOSE LEONARDO';
+    p_notes             freights.notes%TYPE                 := 'Viajes 2018 GALUE CASTILLO ANGEL JOSE';
+    p_user_co           users.user_co%TYPE                  := 'rguerra';
     --
     -- locales
     l_reg_freight   freights%ROWTYPE        := NULL;
-    l_reg_transfer  transfers%ROWTYPE       := NULL;
     l_reg_customer  customers%ROWTYPE       := NULL;
     l_reg_route     routes%ROWTYPE          := NULL;
     l_reg_cargo     type_cargos%ROWTYPE     := NULL;
     l_reg_vehicle   type_vehicles%ROWTYPE   := NULL;
     l_type_freight  type_freights%ROWTYPE   := NULL;
+    l_reg_user      users%ROWTYPE           := NULL;
     --
     e_CUSTOMER_INH  EXCEPTION;
     --
@@ -86,6 +86,16 @@ DECLARE
         --
     END pp_adm_type_freight;
     --
+    -- controlamos el usuario
+    PROCEDURE pp_adm_user IS 
+    BEGIN 
+        --
+        l_reg_user := sec_api_k_user.get_record( 
+            p_user_co => p_user_co
+        );
+        --
+    END pp_adm_user;    
+    --
 BEGIN 
     --
     -- parametros
@@ -124,6 +134,9 @@ BEGIN
     -- buscamos el tipo de viaje
     pp_adm_type_freight;
     --
+    -- buscamos el usuario
+    pp_adm_user;
+    --
     -- completamos el registro
     l_reg_freight.customer_id       := l_reg_customer.id;
     l_reg_freight.route_id          := l_reg_route.id;
@@ -131,7 +144,7 @@ BEGIN
     l_reg_freight.type_vehicle_id   := l_reg_vehicle.id;   
     l_reg_freight.k_status          := lgc_api_k_freight.K_STATUS_PLANNED;
     l_reg_freight.k_process         := lgc_api_k_freight.K_PROCESS_LOGISTIC;
-    l_reg_freight.user_id           := p_user_id;
+    l_reg_freight.user_id           := l_reg_user.id;
     l_reg_freight.type_freight_id   := l_type_freight.id;
     --
     dbms_output.put_line( 'Flete       : ' || l_reg_freight.freight_co );
@@ -149,39 +162,6 @@ BEGIN
     -- TODO: 3.- invocar un pre-INSERT en PROCESSES
     -- incluimos el registro
     lgc_api_k_freight.ins( p_rec => l_reg_freight );
-    --
-    -- TODO: 4.- invocar un post-INSERT en PROCESSES
-    -- TODO: 5.- invocar un post-proceso en PROCESSES
-    -------------------------------------------------------------------------------------
-    -- 
-    -- TRANSFERENCIA, ES UN VECTOR DE VARIOS REGISTOS
-    -- incluimos la primera transferencia, logistica 
-    l_reg_transfer.freight_id       := l_reg_freight.id;
-    l_reg_transfer.k_order          := 1;
-    l_reg_transfer.k_type_transfer  := lgc_api_k_transfer.K_PROCESS_LOGISTIC;
-    -- buscamos la ruta
-    l_reg_route.route_co := '9-21';
-    l_reg_route := lgc_api_k_route.get_record( p_route_co => l_reg_route.route_co );
-    -- completamos el registro
-    l_reg_transfer.route_id         := l_reg_route.id;
-    l_reg_transfer.planed_at        := l_reg_freight.upload_at;
-    --
-    -- TODO: Realizar el proceso de busqueda de conductor por codigo externo
-    l_reg_transfer.main_employee_id := 6;
-    --
-    -- TODO: Realizar el proceso de busqueda de tractomula y trailer por codigo externo
-    l_reg_transfer.truck_id     := 6;
-    l_reg_transfer.trailer_id   := 1;
-    l_reg_transfer.user_id      := 1;
-    --
-    -- incluimos el registro
-    lgc_api_k_transfer.ins( p_rec => l_reg_transfer );
-    --
-    dbms_output.put_line( 'Transferencia : ' || l_reg_transfer.sequence_number );
-    dbms_output.put_line( 'Ruta          : ' || l_reg_route.description );
-    dbms_output.put_line( 'Tipo          : ' || l_reg_transfer.k_type_transfer);
-    dbms_output.put_line( 'Estado        : ' || l_reg_transfer.k_status );
-    --
     --
     COMMIT;
     -- ROLLBACK;

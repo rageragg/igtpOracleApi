@@ -23,6 +23,25 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_truck IS
         --
     END get_record;     
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_truck_co IN trucks.truck_co%TYPE ) RETURN trucks%ROWTYPE IS
+        --
+        l_data trucks%ROWTYPE;
+        --
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.trucks WHERE truck_co = p_truck_co;
+        -- 
+    BEGIN 
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_data;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_record;               
+    --
     -- get DATA Array
     FUNCTION get_list RETURN trucks_api_tab IS
         --
