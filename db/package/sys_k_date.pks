@@ -1,6 +1,23 @@
 --------------------------------------------------------
 --  DDL for Package sys_k_date
 --------------------------------------------------------
+/*
+    Calendaring Syntax
+    ---------------------------------------------------------------
+    freq=daily	                                            Run once per day
+    freq=daily;bymonthday=2	                                Run once on each 2nd day of a month
+    freq=daily;bymonthday=-1	                            Run on the last day of a month
+    freq=daily;byday=tue	                                Run on Tuesdays. For a strange reason, the given value freq= is irrelevant: 
+                                                            freq=monthly;byday=tue or freq=minutely;byday=tue etc. produce the same calendar!
+    freq=daily;byday=tue; byhour=12; byminute=0; bysecond=0	Run on tuesdays almost exactly at noon (the fraction of a second cannot be specified).
+    freq=monthly;byday=2                                    tue	Run on each month's second tuesday
+    freq=minutely;interval=5	                            Run every fifth minute.
+    freq=hourly;byminute=7,31,42	                        Runs three times per hour: on each hour's 7th, 31st and 42nd minute.
+    freq=minutely;byhour=7,8,16,17	                        Runs every minute, but only between 7:00 and 9:00, and between 16:00 and 18:00.
+    freq=monthly;byday=mon,tue,wed,thu,fri;bysetpos=1	    Runs on each month's first business day.
+    freq=monthly;byday=mon,tue,wed,thu,fri;bysetpos=-1	    Runs on each month's last business day.
+    freq=daily;byday=mon,tue,wed,thu,fri;exclude=holidays	Run daily, Monday through Friday, but exclude days referenced in the schedule named holidays.
+*/
 
 CREATE OR REPLACE PACKAGE sys_k_date IS
     /*
