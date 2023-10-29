@@ -1,0 +1,391 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8B1B5934-756A-BBCF-F6E1-35F1C5A05CC5" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHTS">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHTS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<commentInRDBMS><![CDATA[Viajes o Declaracion de Fletes]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="E4A20F07-1236-FCA9-D057-8851E390C4ED">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Identificador unico ]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<autoIncrementDisableCache>false</autoIncrementDisableCache>
+<autoIncrementCache>20</autoIncrementCache>
+<autoIncrementOrder>false</autoIncrementOrder>
+</Column>
+<Column name="FREIGHT_CO" id="546186B8-CF8B-ECF3-FD6A-E8D856CDD701">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>FREIGHT_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Codigo externo del flete]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CUSTOMER_ID" id="9974398B-F7E7-7A37-3702-DCC4176EA86C">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>CUSTOMER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Identificador del cliente que contrata el viaje]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ROUTE_ID" id="FAA99E00-788D-025B-33BF-71F31DF2BEDA">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>ROUTE_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Identificador de la Ruta]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TYPE_CARGO_ID" id="AC77A5AE-F83E-E3B6-ED8C-FB6BB52857AF">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>TYPE_CARGO_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Identificador del tipo de carga]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TYPE_VEHICLE_ID" id="97D25390-5E12-F196-D870-C8DA74BF57CF">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>TYPE_VEHICLE_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Identificador del tipo de vehiculo]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="K_REGIMEN" id="BF278748-FAB9-2AC9-5D52-9ADA71B1878C">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>K_REGIMEN</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Regimen del viaje, este valor sirve para procesos]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<constraintName>K_REGIMEN_CHK</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<listOfValues>
+<valueDef value="&apos;AMOUNT-MANIFEST&apos;" description=""/>
+<valueDef value="&apos;DISTANCE&apos;" description=""/>
+<valueDef value="&apos;FREIGHT&apos;" description=""/>
+<valueDef value="&apos;WEIGHT&apos;" description=""/>
+</listOfValues>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPLOAD_AT" id="29EEFB34-D45C-2EB9-7B4E-C5A9FCE2F1E7">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>UPLOAD_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Fecha de carga planeada]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="START_AT" id="D2719D44-4FAD-726B-B6B1-6A4D749DC991">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>START_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Fecha de inicio planeada]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="FINISH_AT" id="989F48AA-1E43-C3F5-33D3-0C0F79707146">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>FINISH_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Fecha de finalizacion planeado]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NOTES" id="4BA7600D-D511-0413-37B1-96A55D6607B8">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>NOTES</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Notas del flete]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80 BYTE</dataTypeSize>
+<ownDataTypeParameters>80 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="K_STATUS" id="10855D49-4A9C-A3D2-7BD0-EA642FC9EBC0">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>K_STATUS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Estado del flete]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<constraintName>K_STATUS_FREIGHTS_CHK</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<listOfValues>
+<valueDef value="&apos;ARCHIVED&apos;" description=""/>
+<valueDef value="&apos;COMMIT&apos;" description=""/>
+<valueDef value="&apos;ELIMINATED&apos;" description=""/>
+<valueDef value="&apos;EXECUTING&apos;" description=""/>
+<valueDef value="&apos;INCOMPLETE&apos;" description=""/>
+<valueDef value="&apos;INVOICED&apos;" description=""/>
+<valueDef value="&apos;PLANNED&apos;" description=""/>
+</listOfValues>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="K_PROCESS" id="42A57565-97D3-E55D-E4CE-E56A45D5DA03">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>K_PROCESS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[En que proceso se ubica el flete]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<constraintName>K_PROCESS_CHK</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<listOfValues>
+<valueDef value="&apos;ARCHIVING&apos;" description=""/>
+<valueDef value="&apos;INVOICING&apos;" description=""/>
+<valueDef value="&apos;LOGISTIC&apos;" description=""/>
+</listOfValues>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_ID" id="9E853F5D-1390-689C-7839-E34173DB7C91">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_AT" id="081BB675-B7D5-07E2-A4B0-770FA8C1BA92">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>CREATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATED_AT" id="3A94151F-8EB3-A231-BF08-0CCDC4D9E507">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>UPDATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TYPE_FREIGHT_ID" id="002A2BD2-E68B-8C21-213C-5E5EFE39BA6C">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>TYPE_FREIGHT_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Tipo de Viaje]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="VALUATION_CURRENCY_CO" id="86242714-CD25-ABE0-18BE-AB48C6B1D377">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHTS</sourceObjSchema>
+<sourceObjName>VALUATION_CURRENCY_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Moneda de valoracion de flete]]></commentInRDBMS>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>3 BYTE</dataTypeSize>
+<ownDataTypeParameters>3 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="B18804D4-9D46-575E-7C37-C01D78F67DAA" name="FREIGHTS_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHTS_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E4A20F07-1236-FCA9-D057-8851E390C4ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9C516DCA-5C43-93BC-F0FC-021FA7B46B96" name="FREIGHTS_UK_01">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHTS_UK_01</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="546186B8-CF8B-ECF3-FD6A-E8D856CDD701"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6804A80E-C2B2-BDF0-8AB7-4DFEAF022DA5" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHTS_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHTS_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E4A20F07-1236-FCA9-D057-8851E390C4ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B13CF8CD-6E59-2865-EAF3-9557D711238C" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHTS_UK_01">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHTS_UK_01</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="546186B8-CF8B-ECF3-FD6A-E8D856CDD701"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

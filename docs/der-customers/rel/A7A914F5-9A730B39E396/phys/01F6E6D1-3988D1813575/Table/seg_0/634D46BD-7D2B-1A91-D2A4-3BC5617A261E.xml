@@ -1,0 +1,147 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev20c class="oracle.dbtools.crest.model.design.storage.oracle.v20c.TableProxyOraclev20c" name="SHOPS" directorySegmentName="seg_0" id="634D46BD-7D2B-1A91-D2A4-3BC5617A261E">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>8DC90468-BC47-1F7C-FE82-D4F82B93FD43</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="EMAIL_CONTACT" id="056E5647-D163-DB1B-AD9D-968F6688C610">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="EMAIL" id="15FE8C81-6A58-7DB4-2C51-D49FC83BD812">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_ID" id="20FF6DC8-FD67-5B54-C06B-CA9D5BA1F900">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="LOCATION_ID" id="2FB0C4C7-9CBC-ABB1-3DDF-625BE28878CF">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="FAX_CO" id="3658E710-46D7-4AAD-5B2A-807ACA8899F2">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="SLUG" id="4533ACE3-298C-A182-5FCA-D1F35D0EFECB">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TELEPHONE_CO" id="4BA88656-994B-B8E8-0316-1C3E7A49CCAD">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TELEPHONE_CONTACT" id="4E7D6A94-708B-62E9-447F-2E9CACA9BABE">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="NAME_CONTACT" id="5A6EE830-862C-46CA-A55E-151FD970E852">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATED_AT" id="5B09C7D4-49EF-79BA-BDE5-2005CAD85A49">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="ID" id="5B0D8C3D-7320-7E35-E769-65E17FFA118F">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ADDRESS" id="61E2A10D-8BBD-8751-4304-3A2829AF1254">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="NU_GPS_LON" id="87F94CB6-CBE7-04BA-BCF3-93D459AA21C4">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="SHOP_CO" id="8E258546-69A7-7166-86AC-E91DB63FAA65">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="DESCRIPTION" id="9DFD5FB9-92D4-11FC-031E-C6F138C854D6">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPDATED_AT" id="AA03533C-EF70-7A46-24CA-9476CD280185">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="UUID" id="C42E93C7-6187-343E-5142-1DF02319E824">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="NU_GPS_LAT" id="F28566D0-18A3-D5F3-0F82-412E899C832A">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="SHOPS_PK" id="8BE88AF2-5B69-6276-D035-04B8308FEC1B">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="SHOPS_UK_00" id="9977A46E-EBC9-65C9-B591-F5300FA29330">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="LOCATION_SHOP_FK" id="3CEDA036-3A26-1FEE-A3FB-9F92F2CB8B90">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="SHOPS_PK" id="82B9CE8E-DD41-20DF-0AC6-7FEC34BEE8D1">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+<existingIndex>8BE88AF2-5B69-6276-D035-04B8308FEC1B</existingIndex>
+<indexSegment>5F6D5253-DF04-6561-090A-C38663E3182F</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev20c>

@@ -1,0 +1,115 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev20c class="oracle.dbtools.crest.model.design.storage.oracle.v20c.TableProxyOraclev20c" name="SUBSIDIARIES" directorySegmentName="seg_0" id="C9B37448-1C80-D69C-A704-8AC97A3762EC">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>8DC90468-BC47-1F7C-FE82-D4F82B93FD43</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="SLUG" id="40072DCA-84CC-860B-7BD8-B440D8B1B36A">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPDATED_AT" id="5448B951-BE5F-768F-0934-75583CEEE3AF">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="UUID" id="5B5D21FB-706A-0C28-83DF-381B5E09E3F0">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="SUBSIDIARY_CO" id="6690716F-397E-C1EA-4D6F-9A9DF4C9E46F">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATED_AT" id="9246CF55-B41C-49D5-5299-A549D4E1687E">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="USER_ID" id="A5C908C1-79E8-31B7-253A-ABA2FED3D3F2">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ID" id="B8B2D43B-3D66-DB20-D95B-A1122D94662C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CUSTOMER_ID" id="DF3B6842-D93D-DC8B-AD86-C2F7EE354FC8">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="SHOP_ID" id="EE927291-AF50-45C1-A83C-834D50B047B0">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="SUBSIDIARIES_UK_01" id="3D656DD4-5ABB-F8A2-7CE3-06404C22E7D8">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="SUBSIDIARIES_PK" id="AFB730EC-87AD-2FA3-3405-A9E3D8EF252E">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="SUBSIDIARIES_UK_00" id="F6F01509-637D-6398-8B21-7FD549F8851C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="SHOP_SUBSIDIARY_FK" id="4ACA25C5-B5CC-5A4C-A2A7-8979735E5F96">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="CUSTOMER_SUBSIDIARY_FK" id="58FB166A-D63F-8A60-6625-1A1D619DA5BB">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="SUBSIDIARIES_PK" id="1278DB4E-37EE-03EF-86B9-AAEBFE238FFA">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+<existingIndex>AFB730EC-87AD-2FA3-3405-A9E3D8EF252E</existingIndex>
+<indexSegment>5F6D5253-DF04-6561-090A-C38663E3182F</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev20c>
