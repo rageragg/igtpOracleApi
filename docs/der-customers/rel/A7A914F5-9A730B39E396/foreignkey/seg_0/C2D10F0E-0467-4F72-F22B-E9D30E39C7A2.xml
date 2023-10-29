@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="C2D10F0E-0467-4F72-F22B-E9D30E39C7A2" containerWithKeyObject="5DB4B7C3-6592-E7B6-FF44-A995B31DE0F9" localFKIndex="3B32ED99-55E5-FBFA-1F55-CA41926296D1" name="FREIGHT_CFG_CUSTOMER_FK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHT_CFG_CUSTOMER_FK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<referredTableLongName>IGTP.CUSTOMERS</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>5C9550F9-45BF-D817-573D-38073DF68C7A</referredTableID>
+<keyObject>85D60A95-0C00-CF5E-89EE-351E798DE7FB</keyObject>
+<referredKeyID>85D60A95-0C00-CF5E-89EE-351E798DE7FB</referredKeyID>
+<mandatory>false</mandatory>
+<refColNames>ID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

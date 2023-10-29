@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="der-customers" id="F9849F22-4396-75ED-63CE-DB380757EDF7" version="3.5">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 12:58:39 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>F9849F22-4396-75ED-63CE-DB380757EDF7</designId>
+</OSDM_Design>

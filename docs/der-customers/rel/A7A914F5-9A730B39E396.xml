@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<relationalModel class="oracle.dbtools.crest.model.design.relational.RelationalDesign" name="Relational_1" id="A7A914F5-8121-9AAC-D04A-9A730B39E396" mainViewID="931BED5A-C2CD-A4D4-D6FE-34DD2E167817">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 12:58:47 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+<selectedRDBMSSite>01F6E6D1-21D0-CFBD-ABDD-3988D1813575</selectedRDBMSSite>
+<importConnectionStamps>
+<importConnectionStamp class="oracle.dbtools.crest.imports.DBConnectionStamp">
+<connName>igtp-rage-dell-svr</connName>
+<connUser>IGTP</connUser>
+<connType>1</connType>
+</importConnectionStamp>
+</importConnectionStamps>
+</relationalModel>

@@ -1,0 +1,129 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev20c class="oracle.dbtools.crest.model.design.storage.oracle.v20c.TableProxyOraclev20c" name="FREIGHT_CFG" directorySegmentName="seg_0" id="5DB4B7C3-6592-E7B6-FF44-A995B31DE0F9">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>E297B61F-ED50-ECDA-8C69-093792E768AF</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="CREATED_AT" id="27AACB9F-2721-C76E-44A6-E9CCA1974848">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="ROUTE_ID" id="32141713-EE01-66E0-00EA-F1220657E1D4">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPDATED_AT" id="39369406-4F3F-8DAE-839E-BFA7AF6420E6">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="K_REGIMEN" id="48BF06BF-75DD-E4AD-BE84-B32A26EB38DF">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>&apos;FREIGHT&apos;</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="CUSTOMER_ID" id="4FF57A65-717E-4B2C-D37B-819762313278">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_ID" id="5423562B-425B-4F1E-BAD9-9A59D085D2C6">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="PRE-PROCCESS" id="5FB7D4B0-5A9C-6702-DD03-D5F248AE4F84">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TYPE_VEHICLE_ID" id="6427707F-C941-B57F-B95E-C7D3FF909C70">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="POST-PROCCESS" id="7C511CF2-8DF5-21B5-13B7-ED150D260062">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ID" id="90F94EB3-8834-5CF9-A79E-34D397D4F18A">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<autoIncrementDDL>IDENTITY_CLAUSE</autoIncrementDDL>
+</ColumnProxy>
+<ColumnProxy name="TYPE_CARGO_ID" id="EAD0B07E-C7F0-48BB-F3E5-06DE715A5330">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FREIGHT_CFG_UK_01" id="48CE0FF1-7FBC-E803-2F78-5CBDD3F94185">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>0EA5B808-EA9A-950D-61A4-4392E1545849</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FREIGHT_CFG_PK" id="7FF0BF6E-9D78-85E0-E435-8C591D674AA9">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+</indexProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="FREIGHT_CFG_ROUTE_FK" id="0654A22B-4065-EF33-1B0A-C62F4569CFE6">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="FREIGHT_CFG_CUSTOMER_FK" id="3B32ED99-55E5-FBFA-1F55-CA41926296D1">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="FREIGHT_CFG_TYPE_VEHICLE_FK" id="4FAF7004-D98B-7D83-FBC4-CF4398DC0D52">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="FREIGHT_CFG_TYPE_CARGO_FK" id="D40A4DB9-6552-9B02-CE92-B79758572B21">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="FREIGHT_CFG_PK" id="E8458114-FE81-4DAB-1BA5-BA02A2AABC6C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+<existingIndex>7FF0BF6E-9D78-85E0-E435-8C591D674AA9</existingIndex>
+<indexSegment>5F6D5253-DF04-6561-090A-C38663E3182F</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev20c>

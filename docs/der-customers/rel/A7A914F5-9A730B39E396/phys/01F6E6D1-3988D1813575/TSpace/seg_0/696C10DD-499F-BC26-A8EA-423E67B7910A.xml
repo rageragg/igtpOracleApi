@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableSpaceOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TableSpaceOraclev10g" name="TS_IGTP_IDX" directorySegmentName="seg_0" id="696C10DD-499F-BC26-A8EA-423E67B7910A">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjName>TS_IGTP_IDX</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<emUniformSize>0</emUniformSize>
+<extentManagement>LOCAL</extentManagement>
+</TableSpaceOraclev10g>

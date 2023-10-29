@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="A03AAFC1-BD36-1A10-8B1C-7BB11B0E00D8" containerWithKeyObject="5C9550F9-45BF-D817-573D-38073DF68C7A" localFKIndex="86626730-CD6C-133C-AB5D-DE8ECD8F71DC" name="LOCATION_CUSTOMER_FK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>LOCATION_CUSTOMER_FK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<referredTableLongName>IGTP.LOCATIONS</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>251F1DE4-1017-D7BF-45E3-6035BC424032</referredTableID>
+<keyObject>25F223DB-443A-09B6-73C4-6FCB7724A150</keyObject>
+<referredKeyID>25F223DB-443A-09B6-73C4-6FCB7724A150</referredKeyID>
+<mandatory>false</mandatory>
+<refColNames>ID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

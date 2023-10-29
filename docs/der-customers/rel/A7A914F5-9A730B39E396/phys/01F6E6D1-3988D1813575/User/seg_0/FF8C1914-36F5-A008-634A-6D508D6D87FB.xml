@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<UserOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UserOraclev10g" name="IGTP" directorySegmentName="seg_0" id="FF8C1914-36F5-A008-634A-6D508D6D87FB">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjName>IGTP</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:27 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+</UserOraclev10g>

@@ -1,0 +1,288 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="5DB4B7C3-6592-E7B6-FF44-A995B31DE0F9" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHT_CFG">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHT_CFG</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="90F94EB3-8834-5CF9-A79E-34D397D4F18A">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<autoIncrementDisableCache>false</autoIncrementDisableCache>
+<autoIncrementCache>20</autoIncrementCache>
+<autoIncrementOrder>false</autoIncrementOrder>
+</Column>
+<Column name="CUSTOMER_ID" id="4FF57A65-717E-4B2C-D37B-819762313278">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>CUSTOMER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C2D10F0E-0467-4F72-F22B-E9D30E39C7A2" referredColumn="7EE13E2A-2A60-E3BA-DA47-AA68184CC1F4"/>
+</associations>
+</Column>
+<Column name="ROUTE_ID" id="32141713-EE01-66E0-00EA-F1220657E1D4">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>ROUTE_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TYPE_CARGO_ID" id="EAD0B07E-C7F0-48BB-F3E5-06DE715A5330">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>TYPE_CARGO_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TYPE_VEHICLE_ID" id="6427707F-C941-B57F-B95E-C7D3FF909C70">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>TYPE_VEHICLE_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="K_REGIMEN" id="48BF06BF-75DD-E4AD-BE84-B32A26EB38DF">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>K_REGIMEN</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<constraintName>K_REGIMEN_CFG_CHK</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<listOfValues>
+<valueDef value="&apos;AMOUNT-MANIFEST&apos;" description=""/>
+<valueDef value="&apos;DISTANCE&apos;" description=""/>
+<valueDef value="&apos;FREIGHT&apos;" description=""/>
+<valueDef value="&apos;WEIGHT&apos;" description=""/>
+</listOfValues>
+<defaultValue>&apos;FREIGHT&apos;</defaultValue>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PRE-PROCCESS" id="5FB7D4B0-5A9C-6702-DD03-D5F248AE4F84">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>PRE-PROCCESS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>256 BYTE</dataTypeSize>
+<ownDataTypeParameters>256 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="POST-PROCCESS" id="7C511CF2-8DF5-21B5-13B7-ED150D260062">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>POST-PROCCESS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>256 BYTE</dataTypeSize>
+<ownDataTypeParameters>256 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_ID" id="5423562B-425B-4F1E-BAD9-9A59D085D2C6">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>20</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,20,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_AT" id="27AACB9F-2721-C76E-44A6-E9CCA1974848">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>CREATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATED_AT" id="39369406-4F3F-8DAE-839E-BFA7AF6420E6">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>FREIGHT_CFG</sourceObjSchema>
+<sourceObjName>UPDATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E8458114-FE81-4DAB-1BA5-BA02A2AABC6C" name="FREIGHT_CFG_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHT_CFG_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="90F94EB3-8834-5CF9-A79E-34D397D4F18A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7FF0BF6E-9D78-85E0-E435-8C591D674AA9" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHT_CFG_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHT_CFG_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="90F94EB3-8834-5CF9-A79E-34D397D4F18A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="48CE0FF1-7FBC-E803-2F78-5CBDD3F94185" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="FREIGHT_CFG_UK_01">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>FREIGHT_CFG_UK_01</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4FF57A65-717E-4B2C-D37B-819762313278"/>
+<colUsage columnID="32141713-EE01-66E0-00EA-F1220657E1D4"/>
+<colUsage columnID="EAD0B07E-C7F0-48BB-F3E5-06DE715A5330"/>
+<colUsage columnID="6427707F-C941-B57F-B95E-C7D3FF909C70"/>
+<colUsage columnID="48BF06BF-75DD-E4AD-BE84-B32A26EB38DF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3B32ED99-55E5-FBFA-1F55-CA41926296D1" name="FREIGHT_CFG_CUSTOMER_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4FF57A65-717E-4B2C-D37B-819762313278"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0654A22B-4065-EF33-1B0A-C62F4569CFE6" name="FREIGHT_CFG_ROUTE_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="32141713-EE01-66E0-00EA-F1220657E1D4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D40A4DB9-6552-9B02-CE92-B79758572B21" name="FREIGHT_CFG_TYPE_CARGO_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EAD0B07E-C7F0-48BB-F3E5-06DE715A5330"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4FAF7004-D98B-7D83-FBC4-CF4398DC0D52" name="FREIGHT_CFG_TYPE_VEHICLE_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6427707F-C941-B57F-B95E-C7D3FF909C70"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

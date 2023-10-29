@@ -1,0 +1,345 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="634D46BD-7D2B-1A91-D2A4-3BC5617A261E" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SHOPS">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SHOPS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="5B0D8C3D-7320-7E35-E769-65E17FFA118F">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SHOP_CO" id="8E258546-69A7-7166-86AC-E91DB63FAA65">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>SHOP_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>6 BYTE</dataTypeSize>
+<ownDataTypeParameters>6 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="DESCRIPTION" id="9DFD5FB9-92D4-11FC-031E-C6F138C854D6">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>DESCRIPTION</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80 BYTE</dataTypeSize>
+<ownDataTypeParameters>80 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="LOCATION_ID" id="2FB0C4C7-9CBC-ABB1-3DDF-625BE28878CF">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>LOCATION_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="DA0B8267-1AB8-E9CC-2256-05291C8B5C25" referredColumn="9F8C081B-0CC7-7C35-064A-EFD8714DB332"/>
+</associations>
+</Column>
+<Column name="ADDRESS" id="61E2A10D-8BBD-8751-4304-3A2829AF1254">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>ADDRESS</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250 BYTE</dataTypeSize>
+<ownDataTypeParameters>250 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NU_GPS_LAT" id="F28566D0-18A3-D5F3-0F82-412E899C832A">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>NU_GPS_LAT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>4</dataTypeScale>
+<ownDataTypeParameters>,8,4</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NU_GPS_LON" id="87F94CB6-CBE7-04BA-BCF3-93D459AA21C4">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>NU_GPS_LON</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>4</dataTypeScale>
+<ownDataTypeParameters>,8,4</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TELEPHONE_CO" id="4BA88656-994B-B8E8-0316-1C3E7A49CCAD">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>TELEPHONE_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 BYTE</dataTypeSize>
+<ownDataTypeParameters>50 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="FAX_CO" id="3658E710-46D7-4AAD-5B2A-807ACA8899F2">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>FAX_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 BYTE</dataTypeSize>
+<ownDataTypeParameters>50 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EMAIL" id="15FE8C81-6A58-7DB4-2C51-D49FC83BD812">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>EMAIL</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="NAME_CONTACT" id="5A6EE830-862C-46CA-A55E-151FD970E852">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>NAME_CONTACT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="EMAIL_CONTACT" id="056E5647-D163-DB1B-AD9D-968F6688C610">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>EMAIL_CONTACT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TELEPHONE_CONTACT" id="4E7D6A94-708B-62E9-447F-2E9CACA9BABE">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>TELEPHONE_CONTACT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 BYTE</dataTypeSize>
+<ownDataTypeParameters>20 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="USER_ID" id="20FF6DC8-FD67-5B54-C06B-CA9D5BA1F900">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UUID" id="C42E93C7-6187-343E-5142-1DF02319E824">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>UUID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SLUG" id="4533ACE3-298C-A182-5FCA-D1F35D0EFECB">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>SLUG</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_AT" id="5B09C7D4-49EF-79BA-BDE5-2005CAD85A49">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>CREATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATED_AT" id="AA03533C-EF70-7A46-24CA-9476CD280185">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SHOPS</sourceObjSchema>
+<sourceObjName>UPDATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="82B9CE8E-DD41-20DF-0AC6-7FEC34BEE8D1" name="SHOPS_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SHOPS_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5B0D8C3D-7320-7E35-E769-65E17FFA118F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8BE88AF2-5B69-6276-D035-04B8308FEC1B" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SHOPS_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SHOPS_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5B0D8C3D-7320-7E35-E769-65E17FFA118F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9977A46E-EBC9-65C9-B591-F5300FA29330" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SHOPS_UK_00">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SHOPS_UK_00</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8E258546-69A7-7166-86AC-E91DB63FAA65"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3CEDA036-3A26-1FEE-A3FB-9F92F2CB8B90" name="LOCATION_SHOP_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2FB0C4C7-9CBC-ABB1-3DDF-625BE28878CF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

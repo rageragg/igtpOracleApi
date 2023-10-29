@@ -1,0 +1,236 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C9B37448-1C80-D69C-A704-8AC97A3762EC" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SUBSIDIARIES">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SUBSIDIARIES</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="B8B2D43B-3D66-DB20-D95B-A1122D94662C">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SUBSIDIARY_CO" id="6690716F-397E-C1EA-4D6F-9A9DF4C9E46F">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>SUBSIDIARY_CO</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 BYTE</dataTypeSize>
+<ownDataTypeParameters>10 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CUSTOMER_ID" id="DF3B6842-D93D-DC8B-AD86-C2F7EE354FC8">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>CUSTOMER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="880BED17-77CA-18F1-A59C-B811D2649C3F" referredColumn="7EE13E2A-2A60-E3BA-DA47-AA68184CC1F4"/>
+</associations>
+</Column>
+<Column name="SHOP_ID" id="EE927291-AF50-45C1-A83C-834D50B047B0">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>SHOP_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D42C2F1A-3AE8-F1EB-333D-FD3E71185CB8" referredColumn="5B0D8C3D-7320-7E35-E769-65E17FFA118F"/>
+</associations>
+</Column>
+<Column name="USER_ID" id="A5C908C1-79E8-31B7-253A-ABA2FED3D3F2">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>USER_ID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>8</dataTypePrecision>
+<dataTypeScale>0</dataTypeScale>
+<ownDataTypeParameters>,8,0</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UUID" id="5B5D21FB-706A-0C28-83DF-381B5E09E3F0">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>UUID</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="SLUG" id="40072DCA-84CC-860B-7BD8-B440D8B1B36A">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>SLUG</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>60 BYTE</dataTypeSize>
+<ownDataTypeParameters>60 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CREATED_AT" id="9246CF55-B41C-49D5-5299-A549D4E1687E">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>CREATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATED_AT" id="5448B951-BE5F-768F-0934-75583CEEE3AF">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>SUBSIDIARIES</sourceObjSchema>
+<sourceObjName>UPDATED_AT</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<dataTypeSize>7</dataTypeSize>
+<defaultValue>sysdate</defaultValue>
+<ownDataTypeParameters>7,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="1278DB4E-37EE-03EF-86B9-AAEBFE238FFA" name="SUBSIDIARIES_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SUBSIDIARIES_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B8B2D43B-3D66-DB20-D95B-A1122D94662C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AFB730EC-87AD-2FA3-3405-A9E3D8EF252E" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SUBSIDIARIES_PK">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SUBSIDIARIES_PK</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B8B2D43B-3D66-DB20-D95B-A1122D94662C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F6F01509-637D-6398-8B21-7FD549F8851C" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SUBSIDIARIES_UK_00">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SUBSIDIARIES_UK_00</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6690716F-397E-C1EA-4D6F-9A9DF4C9E46F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3D656DD4-5ABB-F8A2-7CE3-06404C22E7D8" schemaObject="8EBD08BF-43EB-AF56-C2D5-004A1BD9A842" name="SUBSIDIARIES_UK_01">
+<sourceConnName>igtp-rage-dell-svr</sourceConnName>
+<sourceObjSchema>IGTP</sourceObjSchema>
+<sourceObjName>SUBSIDIARIES_UK_01</sourceObjName>
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF3B6842-D93D-DC8B-AD86-C2F7EE354FC8"/>
+<colUsage columnID="EE927291-AF50-45C1-A83C-834D50B047B0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="58FB166A-D63F-8A60-6625-1A1D619DA5BB" name="CUSTOMER_SUBSIDIARY_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF3B6842-D93D-DC8B-AD86-C2F7EE354FC8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4ACA25C5-B5CC-5A4C-A2A7-8979735E5F96" name="SHOP_SUBSIDIARY_FK">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:38 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="EE927291-AF50-45C1-A83C-834D50B047B0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

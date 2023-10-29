@@ -1,0 +1,154 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev20c class="oracle.dbtools.crest.model.design.storage.oracle.v20c.TableProxyOraclev20c" name="FREIGHTS" directorySegmentName="seg_0" id="8B1B5934-756A-BBCF-F6E1-35F1C5A05CC5">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:29 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<segment>8DC90468-BC47-1F7C-FE82-D4F82B93FD43</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<inMemory>NO</inMemory>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="TYPE_FREIGHT_ID" id="002A2BD2-E68B-8C21-213C-5E5EFE39BA6C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CREATED_AT" id="081BB675-B7D5-07E2-A4B0-770FA8C1BA92">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="K_STATUS" id="10855D49-4A9C-A3D2-7BD0-EA642FC9EBC0">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPLOAD_AT" id="29EEFB34-D45C-2EB9-7B4E-C5A9FCE2F1E7">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPDATED_AT" id="3A94151F-8EB3-A231-BF08-0CCDC4D9E507">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<defaultValue>sysdate</defaultValue>
+</ColumnProxy>
+<ColumnProxy name="K_PROCESS" id="42A57565-97D3-E55D-E4CE-E56A45D5DA03">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="NOTES" id="4BA7600D-D511-0413-37B1-96A55D6607B8">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="FREIGHT_CO" id="546186B8-CF8B-ECF3-FD6A-E8D856CDD701">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="VALUATION_CURRENCY_CO" id="86242714-CD25-ABE0-18BE-AB48C6B1D377">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TYPE_VEHICLE_ID" id="97D25390-5E12-F196-D870-C8DA74BF57CF">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="FINISH_AT" id="989F48AA-1E43-C3F5-33D3-0C0F79707146">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="CUSTOMER_ID" id="9974398B-F7E7-7A37-3702-DCC4176EA86C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_ID" id="9E853F5D-1390-689C-7839-E34173DB7C91">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TYPE_CARGO_ID" id="AC77A5AE-F83E-E3B6-ED8C-FB6BB52857AF">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="K_REGIMEN" id="BF278748-FAB9-2AC9-5D52-9ADA71B1878C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="START_AT" id="D2719D44-4FAD-726B-B6B1-6A4D749DC991">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ID" id="E4A20F07-1236-FCA9-D057-8851E390C4ED">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<autoIncrementDDL>IDENTITY_CLAUSE</autoIncrementDDL>
+</ColumnProxy>
+<ColumnProxy name="ROUTE_ID" id="FAA99E00-788D-025B-33BF-71F31DF2BEDA">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:30 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<indexProxies>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FREIGHTS_PK" id="6804A80E-C2B2-BDF0-8AB7-4DFEAF022DA5">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+</IndexProxy>
+<IndexProxy class="oracle.dbtools.crest.model.design.storage.oracle.v10g.IndexProxyOraclev10g" name="FREIGHTS_UK_01" id="B13CF8CD-6E59-2865-EAF3-9557D711238C">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:33 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<schemaObject>8EBD08BF-43EB-AF56-C2D5-004A1BD9A842</schemaObject>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+</IndexProxy>
+</indexProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="FREIGHTS_PK" id="B18804D4-9D46-575E-7C37-C01D78F67DAA">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>696C10DD-499F-BC26-A8EA-423E67B7910A</tableSpace>
+<existingIndex>6804A80E-C2B2-BDF0-8AB7-4DFEAF022DA5</existingIndex>
+<indexSegment>5F6D5253-DF04-6561-090A-C38663E3182F</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</PrimaryKey>
+</primaryKeys>
+<uniqueKeys>
+<UniqueKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.UniqueOraclev10g" name="FREIGHTS_UK_01" id="9C516DCA-5C43-93BC-F0FC-021FA7B46B96">
+<createdBy>rager</createdBy>
+<createdTime>2023-10-29 13:04:35 UTC</createdTime>
+<ownerDesignName>der-customers</ownerDesignName>
+<segment>5F6D5253-DF04-6561-090A-C38663E3182F</segment>
+<tableSpace>70231542-40A3-BB6A-5268-58FCAF597C89</tableSpace>
+<existingIndex>B13CF8CD-6E59-2865-EAF3-9557D711238C</existingIndex>
+<indexSegment>5F6D5253-DF04-6561-090A-C38663E3182F</indexSegment>
+<indexSort>SORTED</indexSort>
+<usingIndex>BY INDEX NAME</usingIndex>
+</UniqueKey>
+</uniqueKeys>
+</TableProxyOraclev20c>
