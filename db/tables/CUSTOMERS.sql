@@ -48,4 +48,4 @@ SEGMENT CREATION IMMEDIATE
 /
 COMMENT ON TABLE "IGTP"."CUSTOMERS"  IS 'Clientes'
 
-COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_TYPE_CUSTOMER" IS "Tipo de Cliente, F->Factory, D->Distribution, M->Market" 
+COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_TYPE_CUSTOMER" IS "Tipo de Cliente, F->Factory, D->Distribution, M->Market" ;
