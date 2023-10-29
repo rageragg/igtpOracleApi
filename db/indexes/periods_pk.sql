@@ -1,8 +1,8 @@
 --------------------------------------------------------
---  DDL for Index CONFIGURATIONS_PK
+--  DDL for Index PERIODS_PK
 --------------------------------------------------------
 
-CREATE UNIQUE INDEX "IGTP"."CONFIGURATIONS_PK" ON "IGTP"."CONFIGURATIONS" ("ID") 
+CREATE UNIQUE INDEX "IGTP"."PERIODS_PK" ON "IGTP"."PERIODS" ("ID") 
   PCTFREE 10 
   INITRANS 2 
   MAXTRANS 255 
