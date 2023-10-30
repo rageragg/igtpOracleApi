@@ -41,13 +41,13 @@
     3. CORREO ELECTRONICO CONTAC.: ronaldg.css.logistica@makro.com
     
     ### SUBSIDIARIAS (OPCIONAL)
-    *   CODIGO SUBSIDIARIA  CODIGO TIENDA   DESCRIPCION DE TIENDA   DIRECCION
+    **CODIGO SUBSIDIARIA  CODIGO TIENDA   DESCRIPCION DE TIENDA   DIRECCION**
     -----------------------------------------------------------------------------------------------------------------
     1.  MKR-S-01            SHOP-123        MAKRO LA URBINA         LA URBINA CARACAS
     2.  MKR-S-02            SHOP-231        MAKRO LA YAGUARA        LA YAGUARA CARACAS
 
     ### CONFIGURACION DE FLETES O CONTRATOS
-    *   CODIGO RUTA     TIPO CARGA      TIPO VEHICULO       TIPO DE FLETE   REGIMEN DE CARGA
+    **CODIGO RUTA     TIPO CARGA      TIPO VEHICULO       TIPO DE FLETE   REGIMEN DE CARGA**
     -----------------------------------------------------------------------------------------------------------------
     1.  CCS-BQTO        CRF             T3E                 PTP             FLETE
     2.  CCS-BQTO        CSE             T2E                 PTP             FLETE             
