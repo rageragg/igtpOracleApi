@@ -3,21 +3,20 @@
 ## DECLARACION DE LOCACION
 ### TAREAS
 1. Identificador de Localidad.
-2. Determinar su tipo de cliente, entre Fabrica, Distribuidora y/o Mercado.
-3. Direccion fiscal.
-4. Categoria de cliente, entre A,B y C.
-5. Sector a que pertenece el cliente (ALIMENTOS, QUIMICOS...)
+2. Direccion fiscal.
+3. Direccion Geocolocacion.
+4. Informacion del contacto.
 
-## CONFIGURACION DE SUBSIDIARIAS
-1. CREAR TIENDAS
-    1. Determinar su localidad.
-    2. Direccion fiscal de la tienda.
-2. Asociar las tiendas a los clientes como subsidiarias.
+## DATOS DEL DOCUMENTO (Ejemplo)
+1. CODIGO DE LOCALIDAD  : BQT-ZI-01
+2. DESCRIPCION          : ZONA INDUSTRIAL I
+3. CODIGO POSTAL        : 3001
+4. CODIGO CIUDAD        : BQTO BARQUISIMETO
+5. GPS LATITUD          : 99999.999
+6. GPS LONGITUD         : 99999.999
 
-## CONFIGURACION DE FLETES O CONTRATOS
-1. Determinar el tipo de carga que el cliente puede transladar.
-2. Determinar el tipo de vehiculo que el cliente puede emplear.
-3. Determinar la ruta que se emplea.
-4. Determinar el regimen de negocio y logistica.
-5. Determinar el proceso antes de establecer la cobfiguracion de fletes.
-6. Determinar el proceso luego de establecer la cobfiguracion de fletes.
+    ### TIENDAS (OPCIONAL)
+    **CODIGO TIENDA     DESCRIPCION DE TIENDA       DIRECCION                               CONTACTO**
+    ---------------------------------------------------------------------------------------------------------------------
+    1. BQT001           DRAGON DE ORO               CARR. 18 ENTRE CALLES 49 Y 50           +584248976556 CARLOS CHANG
+    2. BQT002           DISTRIBUIDORA MICHEL        CALLE 50 ENTRE CARRERAS 26 Y 27         +584120987654 MICHEL YOUNG
