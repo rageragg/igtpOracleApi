@@ -33,6 +33,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     g_rec_customer      customer_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
     --
+    -- tabla constantes 
+    TYPE constant_api_tab IS  TABLE OF VARCHAR2(80) INDEX BY VARCHAR2(80);
+    --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
     -- VALIDATE type customer

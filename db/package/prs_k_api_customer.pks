@@ -5,10 +5,20 @@
 
 CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     --
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'CUSTOMERS';
-    K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
-    K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
+    K_OWNER         CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_TABLE_NAME    CONSTANT VARCHAR2(30)  := 'CUSTOMERS';
+    K_LIMIT_LIST    CONSTANT PLS_INTEGER   := 512;
+    K_ORDER_LIST    CONSTANT PLS_INTEGER   := 2;
+    --
+    -- CONSTANTES DE NEGOCIO
+    -- tipo de clientes
+    K_TYPE_CUSTOMER_FACTORY     CONSTANT CHAR(01) := 'F'; 
+    K_TYPE_CUSTOMER_DISTRIBUTOR CONSTANT CHAR(01) := 'D';
+    K_TYPE_CUSTOMER_MARKET      CONSTANT CHAR(01) := 'M';
+    -- categoria de clientes
+    K_CATEGORY_A                CONSTANT CHAR(01) := 'A';
+    K_CATEGORY_B                CONSTANT CHAR(01) := 'B';
+    K_CATEGORY_C                CONSTANT CHAR(01) := 'C';
     --
     TYPE customer_api_tab IS  TABLE OF customers%ROWTYPE;
     --
