@@ -46,7 +46,10 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     );
     --
     -- CREATE CUSTOMER BY RECORD
-    FUNCTION create( p_rec IN OUT customer_api_doc ) RETURN BOOLEAN;
+    FUNCTION ins( 
+            p_rec       IN OUT customer_api_doc,
+            p_result    OUT VARCHAR2
+        ) RETURN BOOLEAN;
     --
     -- CREATE CUSTOMER BY JSON
     -- TODO: FUNCTION create( p_rec IN OUT CLOB ) RETURN BOOLEAN;
