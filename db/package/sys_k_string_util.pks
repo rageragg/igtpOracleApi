@@ -6,9 +6,10 @@ CREATE OR REPLACE PACKAGE sys_k_string_util AS
     /*
         Purpose:    The package handles general string-related functionality
         Remarks:  
-        Who     Date        Description
-        ------  ----------  -------------------------------------
-        MBR     21.09.2006  Created   
+        Who       Date        Description
+        --------  ----------  -------------------------------------
+        MBR       21.09.2006  Created 
+        RGUERRA   01.11.2023  Add validate email
     */
     --
     g_max_pl_varchar2_def          VARCHAR2(32767);
@@ -34,6 +35,8 @@ CREATE OR REPLACE PACKAGE sys_k_string_util AS
     --
     g_html_entity_carriage_return  CONSTANT VARCHAR2(5) := chr(38) || '#13;';
     g_html_nbsp                    CONSTANT VARCHAR2(6) := chr(38) || 'nbsp;'; 
+    --
+    g_email_str_validate           CONSTANT VARCHAR2(64) := '[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+\.[a-zA-Z]{2,4}';
     --
     -- RETURN string merged with substitution values
     FUNCTION get_str (  p_msg    IN VARCHAR2,
@@ -191,7 +194,10 @@ CREATE OR REPLACE PACKAGE sys_k_string_util AS
     FUNCTION concat_array (p_array IN t_str_array,
                            p_separator IN VARCHAR2 := g_default_separator
                           ) RETURN VARCHAR2;
-    --                           
+    --         
+    -- validate email
+    FUNCTION validate_email( p_email IN VARCHAR2) RETURN BOOLEAN;
+    --
 END sys_k_string_util;
 /
 

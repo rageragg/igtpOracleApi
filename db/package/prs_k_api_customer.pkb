@@ -32,10 +32,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     -- GLOBALES
     g_rec_customer      customer_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
-    --
-    -- tabla constantes 
-    TYPE constant_api_tab IS  TABLE OF VARCHAR2(80) INDEX BY VARCHAR2(80);
-    --
+     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
     -- VALIDATE type customer
@@ -43,7 +40,11 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     BEGIN
         --
         -- se verifica que el tipo de cliente este dentro de los siguientes valores
-        RETURN g_rec_customer.k_type_customer IN ('F','D','M');
+        RETURN g_rec_customer.k_type_customer IN (
+            K_TYPE_CUSTOMER_FACTORY,
+            K_TYPE_CUSTOMER_DISTRIBUTOR,
+            K_TYPE_CUSTOMER_MARKET
+        );
         --
     END validate_type_customer;
     --
@@ -57,6 +58,15 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                                 );
 
         RETURN g_rec_locations IS NOT NULL;
+        --
+    END validate_location;
+    --
+    -- VALIDATE email
+    FUNCTION validate_email RETURN BOOLEAN IS 
+    BEGIN
+        --
+        -- Se valida el email
+        RETURN validate_email( g_rec_customer.email );
         --
     END validate_location;
     --
@@ -81,6 +91,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             NULL;
         END IF;
         --
+        -- TODO: Completar
         RETURN TRUE;
         --
     END create;

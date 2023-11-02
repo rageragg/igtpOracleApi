@@ -61,8 +61,7 @@ AS
                       p_value6 IN VARCHAR2 := NULL,
                       p_value7 IN VARCHAR2 := NULL,
                       p_value8 IN VARCHAR2 := NULL
-                     ) RETURN VARCHAR2
-    AS 
+                     ) RETURN VARCHAR2 AS 
         --
         l_returnvalue t_max_pl_varchar2;
         --
@@ -92,10 +91,11 @@ AS
         --
     END get_str;
     --
-    PROCEDURE add_token (p_text IN out VARCHAR2,
-                        p_token IN VARCHAR2,
-                        p_separator IN VARCHAR2 := g_default_separator)
-    AS 
+    PROCEDURE add_token(
+            p_text IN out VARCHAR2,
+            p_token IN VARCHAR2,
+            p_separator IN VARCHAR2 := g_default_separator
+        ) AS 
     BEGIN
         /*
             Purpose:    add token to string
@@ -113,13 +113,16 @@ AS
         --
     END add_token;
     --
-    FUNCTION get_nth_token(p_text IN VARCHAR2,
-                        p_num IN NUMBER,
-                        p_separator IN VARCHAR2 := g_default_separator) RETURN VARCHAR2
-    AS 
-    l_pos_begin    PLS_INTEGER;
-    l_pos_end      PLS_INTEGER;
-    l_returnvalue  t_max_pl_varchar2;
+    FUNCTION get_nth_token(
+            p_text IN VARCHAR2,
+            p_num IN NUMBER,
+            p_separator IN VARCHAR2 := g_default_separator
+        ) RETURN VARCHAR2 AS 
+        --
+        l_pos_begin    PLS_INTEGER;
+        l_pos_end      PLS_INTEGER;
+        l_returnvalue  t_max_pl_varchar2;
+        --
     BEGIN
         /*
             Purpose:    get the sub-string at the Nth position 
@@ -211,85 +214,81 @@ AS
         --
     END get_token_count;
     --
-    FUNCTION str_to_num (p_str IN VARCHAR2,
-                        p_decimal_separator IN VARCHAR2 := NULL,
-                        p_thousand_separator IN VARCHAR2 := NULL,
-                        p_raise_error_if_parse_error IN BOOLEAN := false,
-                        p_value_name IN VARCHAR2 := NULL) RETURN NUMBER 
-    AS 
-    l_returnvalue           NUMBER;
+    FUNCTION str_to_num (
+            p_str IN VARCHAR2,
+            p_decimal_separator IN VARCHAR2 := NULL,
+            p_thousand_separator IN VARCHAR2 := NULL,
+            p_raise_error_if_parse_error IN BOOLEAN := false,
+            p_value_name IN VARCHAR2 := NULL
+        ) RETURN NUMBER AS 
+        --
+        l_returnvalue           NUMBER;
+        --
     BEGIN
-
-    /*
-
-    Purpose:    convert string to NUMBER
-
-    Remarks:  
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    FDL     03.05.2007  Created
-    
-    */
-    
-    BEGIN
-        IF (p_decimal_separator is NULL) and (p_thousand_separator is NULL) THEN
-        l_returnvalue := to_number(p_str);
-        ELSE
-        l_returnvalue := to_number(replace(replace(p_str,p_thousand_separator,''), p_decimal_separator, get_nls_decimal_separator));
-    END IF;
-    EXCEPTION
-        when value_error THEN
-        IF p_raise_error_if_parse_error THEN
-            raise_application_error (-20000, sys_k_string_util.get_str('Failed to parse the string "%1" to a valid NUMBER. Using decimal separator = "%2" and thousand separator = "%3". Field name = "%4". ' || sqlerrm, p_str, p_decimal_separator, p_thousand_separator, p_value_name));
-        ELSE
-            l_returnvalue := NULL;
-        END IF;
-    END;
-    
-    RETURN l_returnvalue;
-
+        /*
+            Purpose:    convert string to NUMBER
+            Remarks:  
+            Who     Date        Description
+            ------  ----------  -------------------------------------
+            FDL     03.05.2007  Created       
+        */
+        BEGIN
+            IF (p_decimal_separator is NULL) and (p_thousand_separator is NULL) THEN
+                l_returnvalue := to_number(p_str);
+            ELSE
+                l_returnvalue := to_number(replace(replace(p_str,p_thousand_separator,''), p_decimal_separator, get_nls_decimal_separator));
+            END IF;
+        EXCEPTION
+            WHEN value_error THEN
+                IF p_raise_error_if_parse_error THEN
+                    raise_application_error (
+                        -20000, 
+                        sys_k_string_util.get_str('Failed to parse the string "%1" to a valid NUMBER. Using decimal separator = "%2" and thousand separator = "%3". Field name = "%4". ' || sqlerrm, p_str, p_decimal_separator, p_thousand_separator, p_value_name));
+                ELSE
+                    l_returnvalue := NULL;
+                END IF;
+        END;
+        --
+        RETURN l_returnvalue;
+        --
     END str_to_num;
     --
-    FUNCTION copy_str (p_string IN VARCHAR2,
-                    p_from_pos IN NUMBER := 1,
-                    p_to_pos IN NUMBER := NULL) RETURN VARCHAR2
-    AS 
-    l_to_pos       PLS_INTEGER;
-    l_returnvalue  t_max_pl_varchar2;
+    FUNCTION copy_str (
+            p_string IN VARCHAR2,
+            p_from_pos IN NUMBER := 1,
+            p_to_pos IN NUMBER := NULL
+        ) RETURN VARCHAR2 AS 
+        --
+        l_to_pos       PLS_INTEGER;
+        l_returnvalue  t_max_pl_varchar2;
+        --
     BEGIN
-
-    /*
-
-    Purpose:    copy part of string
-
-    Remarks:  
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    MBR     08.05.2007  Created
-    
-    */
-
-    IF (p_string is NULL) or (p_from_pos <= 0) THEN
-        l_returnvalue:=NULL;
-    ELSE
-
-        IF p_to_pos IS NULL THEN
-        l_to_pos:=length(p_string);
+        /*
+            Purpose:    copy part of string
+            Remarks:  
+            Who     Date        Description
+            ------  ----------  -------------------------------------
+            MBR     08.05.2007  Created           
+        */
+        IF (p_string is NULL) or (p_from_pos <= 0) THEN
+            l_returnvalue:=NULL;
         ELSE
-        l_to_pos:=p_to_pos;
-    END IF;
 
-        IF l_to_pos > length(p_string) THEN
-        l_to_pos:=length(p_string);
-    END IF;
+            IF p_to_pos IS NULL THEN
+                l_to_pos:=length(p_string);
+            ELSE
+                l_to_pos:=p_to_pos;
+            END IF;
 
-        l_returnvalue:=substr(p_string, p_from_pos, l_to_pos - p_from_pos + 1);
+            IF l_to_pos > length(p_string) THEN
+                l_to_pos:=length(p_string);
+            END IF;
 
-    END IF;
+            l_returnvalue:=substr(p_string, p_from_pos, l_to_pos - p_from_pos + 1);
 
-    RETURN l_returnvalue;
+        END IF;
+
+        RETURN l_returnvalue;
 
     END copy_str;
     --
@@ -1053,12 +1052,14 @@ AS
         
     END value_has_changed;
     --
-    FUNCTION concat_array (p_array IN t_str_array,
-                        p_separator IN VARCHAR2 := g_default_separator) RETURN VARCHAR2
-    AS 
-    l_returnvalue                  t_max_pl_varchar2;
+    FUNCTION concat_array (
+            p_array IN t_str_array,
+            p_separator IN VARCHAR2 := g_default_separator
+        ) RETURN VARCHAR2 AS 
+        --
+        l_returnvalue                  t_max_pl_varchar2;
+        --
     BEGIN
-
         /*
             Purpose:      concatenate non-NULL strings with specified separator
             Remarks:      
@@ -1066,22 +1067,55 @@ AS
             ------  ----------  --------------------------------
             MBR     19.11.2015  Created
         */
-
         IF p_array.count > 0 THEN
+            --
             FOR i IN 1 .. p_array.count LOOP
+                --
                 IF p_array(i) is not NULL THEN
+                    --
                     IF l_returnvalue IS NULL THEN
                         l_returnvalue := p_array(i);
                     ELSE
                         l_returnvalue := l_returnvalue || p_separator || p_array(i);
                     END IF;
+                    --
                 END IF;
+                --
             END LOOP;
+            --
         END IF;
 
         RETURN l_returnvalue;
 
     END concat_array;
+    --
+    -- validate email
+    FUNCTION validate_email( 
+            p_email IN VARCHAR2
+        ) RETURN BOOLEAN IS
+        --
+        l_result VARCHAR2(64);
+        --
+    BEGIN 
+        /*
+            Purpose:  validate email
+            Remarks:      
+            Who         Date        Description
+            ----------- ----------  --------------------------------
+            RGUERRA     01.11.2023  Created
+        */
+        --
+        SELECT regexp_substr( p_email,igtp.sys_k_string_util.g_email_str_validate)
+          INTO l_result
+          FROM DUAL;
+        --
+        RETURN l_result IS NOT NULL;
+        --
+        EXCEPTION 
+            WHEN OTHERS THEN 
+                RETURN FALSE;  
+        --
+    END validate_email;
     --
 END sys_k_string_util;
 /
