@@ -175,6 +175,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             p_rec => g_rec_customers
         );
         --
+        p_result := 'ID: ' || g_rec_customers.id;
+        --
         RETURN TRUE;
         --
         EXCEPTION 
