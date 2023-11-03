@@ -164,7 +164,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         g_rec_customers.telephone_contact   := g_rec_customer.telephone_contact;
         g_rec_customers.name_contact        := g_rec_customer.name_contact;
         g_rec_customers.email_contact       := g_rec_customer.email_contact;
-        g_rec_customers.slug                := NULL;
+        g_rec_customers.slug                := g_rec_customer.slug;
         g_rec_customers.uuid                := NULL;
         g_rec_customers.k_mca_inh           := 'N';
         g_rec_customers.user_id             := NULL;
