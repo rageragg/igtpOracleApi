@@ -4,6 +4,11 @@ declare
     l_key_list  json_key_list; 
     l_array     json_array_t;
     l_obj_subs  json_object_t;
+    --
+    r_customer  prs_api_k_customer.customer_api_doc;
+    l_result    VARCHAR2(512);
+    l_ok        BOOLEAN;
+    --
 begin 
     --
     l_json := trim('{ "customer_co":"MKR", 
@@ -56,6 +61,39 @@ begin
         --
     END LOOP;
     --
-    dbms_output.put_line( l_obj.get_string('description') );
+    -- completamos los datos del registro customer
+    r_customer.customer_co        := l_obj.get_string('customer_co');
+    r_customer.description        := l_obj.get_string('description');
+    r_customer.telephone_co       := l_obj.get_string('telephone_co');
+    r_customer.fax_co             := l_obj.get_string('fax_co');
+    r_customer.email              := l_obj.get_string('email');
+    r_customer.address            := l_obj.get_string('address');
+    r_customer.k_type_customer    := l_obj.get_string('k_type_customer');
+    r_customer.k_sector           := l_obj.get_string('k_sector');
+    r_customer.k_category_co      := l_obj.get_string('k_category_co');
+    r_customer.fiscal_document_co := l_obj.get_string('fiscal_document_co');
+    r_customer.location_co        := l_obj.get_string('location_co');
+    r_customer.telephone_contact  := l_obj.get_string('telephone_contact');
+    r_customer.name_contact       := l_obj.get_string('name_contact');
+    r_customer.email_contact      := l_obj.get_string('email_contact');
+    r_customer.slug               := l_obj.get_string('slug');
+    r_customer.user_co            := l_obj.get_string('user_co');
+    --
+    l_ok := prs_api_k_customer.ins( 
+            p_rec       => r_customer,
+            p_result    => l_result
+    );
+    --
+    -- verificacion de resultado
+    IF NOT l_ok THEN 
+        --
+        dbms_output.put_line(l_result);
+        ROLLBACK;
+        --
+    ELSE
+        --
+        COMMIT;
+        --
+    END IF;
     --
 end;
