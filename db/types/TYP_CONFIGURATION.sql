@@ -2,7 +2,7 @@
 --  DDL for Type TYP_CONFIGURATION
 --------------------------------------------------------
 
-  CREATE OR REPLACE NONEDITIONABLE TYPE "IGTP"."TYP_CONFIGURATION" IS OBJECT(
+CREATE OR REPLACE NONEDITIONABLE TYPE "IGTP"."TYP_CONFIGURATION" IS OBJECT(
     --
     id	                            NUMBER(8,0),
     local_currency_co	            VARCHAR2(3 byte),
@@ -18,16 +18,17 @@
     --
     CONSTRUCTOR FUNCTION typ_configuration(
             SELF IN OUT NOCOPY typ_configuration, 
-            id	                            NUMBER,
-            local_currency_co               VARCHAR2,
-            foreign_currency_co             VARCHAR2,
-            last_foreign_currency_q_value   NUMBER,
-            last_foreign_currency_q_date	DATE 
+            id	                          NUMBER,
+            local_currency_co             VARCHAR2,
+            foreign_currency_co           VARCHAR2,
+            last_foreign_currency_q_value NUMBER,
+            last_foreign_currency_q_date  DATE 
         ) RETURN SELF AS RESULT,
     --
     MAP MEMBER FUNCTION get_id RETURN NUMBER,
     MEMBER FUNCTION get_hours_per_week RETURN INTEGER,
     MEMBER FUNCTION get_currenvy_value( p_local_value IN NUMBER ) RETURN NUMBER
+    --
 );
 /
 CREATE OR REPLACE NONEDITIONABLE TYPE BODY "IGTP"."TYP_CONFIGURATION" AS

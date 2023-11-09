@@ -45,11 +45,11 @@ ALTER TABLE "IGTP"."FREIGHT_CFG"
 ALTER TABLE "IGTP"."FREIGHT_CFG"
     ADD "TYPE_FREIGHT_ID" 	NUMBER(20,0) NOT NULL;
 
-   COMMENT ON TABLE "IGTP"."FREIGHT_CFG"  IS 'Configuracion de Fletes segun cada Cliente';
+COMMENT ON TABLE "IGTP"."FREIGHT_CFG"  IS 'Configuracion de Fletes segun cada Cliente';
 
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."ROUTE_ID" IS 'Codigo de Ruta';
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."TYPE_CARGO_ID" IS 'Codigo de Tipo de Cargo';
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."TYPE_VEHICLE_ID" IS 'Codigo de Tipo de Vehiculo';
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."K_REGIMEN" IS 'Regimen de Viaje (FREIGHT,WEIGHT,DISTANCE,AMOUNT-MANIFEST)';
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."PRE-PROCCESS" IS 'Nombre de Programa que se aplica luego de aplicar la configuracion';
-   COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."POST-PROCCESS" IS 'Nombre de Programa que se aplica luego de aplicar la configuracion';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."ROUTE_ID" IS 'Codigo de Ruta';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."TYPE_CARGO_ID" IS 'Codigo de Tipo de Cargo';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."TYPE_VEHICLE_ID" IS 'Codigo de Tipo de Vehiculo';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."K_REGIMEN" IS 'Regimen de Viaje (FREIGHT,WEIGHT,DISTANCE,AMOUNT-MANIFEST)';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."PRE-PROCCESS" IS 'Nombre de Programa que se aplica luego de aplicar la configuracion';
+COMMENT ON COLUMN "IGTP"."FREIGHT_CFG"."POST-PROCCESS" IS 'Nombre de Programa que se aplica luego de aplicar la configuracion';
