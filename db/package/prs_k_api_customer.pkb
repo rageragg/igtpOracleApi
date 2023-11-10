@@ -9,8 +9,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     g_rec_customer      customer_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
     g_rec_customers     igtp.customers%ROWTYPE;
-     --
+    --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
+    -- TODO: crear un sistema de regionalizacion de mensajes
     --
     -- VALIDATE type customer
     FUNCTION validate_type_customer RETURN BOOLEAN IS 
@@ -103,6 +104,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- valida tipo de cliente 
         IF NOT validate_type_customer THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID TYPE CUSTOMER';
             raise_application_error(-20001, p_result );
             --
@@ -111,6 +113,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- validamos el codigo de la localidad del cliente
         IF NOT validate_location THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID LOCATION CODE';
             raise_application_error(-20002, p_result );
             --
@@ -119,6 +122,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- validamos que el codigo del cliente no este registrado
         IF exist_customer_code THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID CUSTOMER CODE';
             raise_application_error(-20003, p_result );
             --
@@ -127,6 +131,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- validamos la categoria del cliente 
         IF NOT validate_category_customer THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID CATEGORY CODE';
             raise_application_error(-20004, p_result );
             --
@@ -135,6 +140,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- validamos el email del cliente 
         IF NOT validate_email( g_rec_customer.email ) THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID CUSTOMER EMAIL';
             raise_application_error(-20004, p_result );
             --
@@ -143,6 +149,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- validamos el email del cliente 
         IF NOT validate_email( g_rec_customer.email_contact ) THEN 
             -- 
+            -- TODO: regionalizacion de mensajes
             p_result := 'INVALID CONTACT EMAIL';
             raise_application_error(-20004, p_result );
             --
@@ -188,6 +195,57 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
                 RETURN FALSE;
                 -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result := SQLERRM;
+                END IF;
+                --
+                ROLLBACK;
+                --
+                RETURN FALSE;
+        --
+    END ins;
+    --
+    -- CREATE CUSTOMER BY JSON
+    FUNCTION ins( 
+            p_josn      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) RETURN BOOLEAN IS 
+        --
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_josn);
+        --
+        -- completamos los datos del registro customer
+        r_customer.customer_co        := l_obj.get_string('customer_co');
+        r_customer.description        := l_obj.get_string('description');
+        r_customer.telephone_co       := l_obj.get_string('telephone_co');
+        r_customer.fax_co             := l_obj.get_string('fax_co');
+        r_customer.email              := l_obj.get_string('email');
+        r_customer.address            := l_obj.get_string('address');
+        r_customer.k_type_customer    := l_obj.get_string('k_type_customer');
+        r_customer.k_sector           := l_obj.get_string('k_sector');
+        r_customer.k_category_co      := l_obj.get_string('k_category_co');
+        r_customer.fiscal_document_co := l_obj.get_string('fiscal_document_co');
+        r_customer.location_co        := l_obj.get_string('location_co');
+        r_customer.telephone_contact  := l_obj.get_string('telephone_contact');
+        r_customer.name_contact       := l_obj.get_string('name_contact');
+        r_customer.email_contact      := l_obj.get_string('email_contact');
+        r_customer.slug               := l_obj.get_string('slug');
+        r_customer.user_co            := l_obj.get_string('user_co');
+        --
+        l_ok := ins( 
+                p_rec       => r_customer,
+                p_result    => p_result
+        );
+        --
+        RETURN l_ok;
+        --
+        EXCEPTIONS
             WHEN OTHERS THEN 
                 --
                 IF p_result IS NULL THEN 

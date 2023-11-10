@@ -52,6 +52,12 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         ) RETURN BOOLEAN;
     --
     -- CREATE CUSTOMER BY JSON
-    -- TODO: FUNCTION create( p_rec IN OUT CLOB ) RETURN BOOLEAN;
+    FUNCTION ins( 
+            p_json       IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) RETURN BOOLEAN;
     --
+    -- TODO: desarrollar el metodo de UPDATE
+    -- TODO: desarrollar el metodo de devolver un registro 
+    -- TODO: desarrollar el metodo de devolver una lista
 END prs_api_k_customer;
