@@ -42,3 +42,13 @@ COMMENT ON COLUMN "IGTP"."LANGUAGES"."DESCRIPTION" IS 'Descripcion del lenguaje'
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."DICCIONARY" IS 'Contenido JSON del diccionario';
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."CREATED_AT" IS 'Fecha de creacion';
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."UPDATED_AT" IS 'Fecha de actualizacion';
+/
+
+/*
+	-- SAMPLES DATA JSON
+	[
+		{ "module": "modulo", "code": "20000", "description": "descripcion del error", "action": "accion a tomar" },
+		{ "module": "modulo", "code": "20001", "description": "descripcion del error", "action": "accion a tomar" }
+	]
+	--
+*/
