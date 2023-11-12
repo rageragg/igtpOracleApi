@@ -45,6 +45,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
         p_days_per_month                IN configurations.days_per_month%TYPE DEFAULT NULL, 
         p_days_per_week                 IN configurations.days_per_week%TYPE DEFAULT NULL,
         p_hours_per_day                 IN configurations.hours_per_day%TYPE DEFAULT NULL,
+        p_language_co                   IN configurations.language_co%TYPE DEFAULT 'ES',
         p_updated_at                    IN configurations.updated_at%TYPE DEFAULT NULL, 
         p_created_at                    IN configurations.created_at%TYPE DEFAULT NULL 
     ) IS
@@ -70,6 +71,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
             days_per_month,
             days_per_week,
             hours_per_day,
+            language_co,
             created_at,
             updated_at
         ) 
@@ -93,6 +95,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
             p_days_per_month,
             p_days_per_week,
             p_hours_per_day,
+            p_language_co,
             p_updated_at,
             p_created_at
         );
@@ -132,6 +135,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
         p_days_per_month                IN configurations.days_per_month%TYPE DEFAULT NULL, 
         p_days_per_week                 IN configurations.days_per_week%TYPE DEFAULT NULL,
         p_hours_per_day                 IN configurations.hours_per_day%TYPE DEFAULT NULL,
+        p_language_co                   IN configurations.language_co%TYPE DEFAULT 'ES',
         p_updated_at                    IN configurations.updated_at%TYPE DEFAULT NULL, 
         p_created_at                    IN configurations.created_at%TYPE DEFAULT NULL 
     ) IS
@@ -156,12 +160,13 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
             days_per_month                = p_days_per_month,
             days_per_week                 = p_days_per_week,
             hours_per_day                 = p_hours_per_day,
+            language_co                   = p_language_co,                
             updated_at                    = p_updated_at,
             created_at                    = p_created_at
         WHERE id = p_id;
         --
     END upd;
-        --
+    --
     -- update RECORD
     PROCEDURE upd( p_rec IN OUT igtp.configurations%ROWTYPE ) IS 
     BEGIN

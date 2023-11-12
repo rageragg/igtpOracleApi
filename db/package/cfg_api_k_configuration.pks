@@ -33,6 +33,7 @@ CREATE OR REPLACE PACKAGE cfg_api_k_configuration IS
         p_days_per_month                IN configurations.days_per_month%TYPE DEFAULT NULL, 
         p_days_per_week                 IN configurations.days_per_week%TYPE DEFAULT NULL,
         p_hours_per_day                 IN configurations.hours_per_day%TYPE DEFAULT NULL,
+        p_language_co                   IN configurations.language_co%TYPE DEFAULT 'ES',
         p_updated_at                    IN configurations.updated_at%TYPE DEFAULT NULL, 
         p_created_at                    IN configurations.created_at%TYPE DEFAULT NULL 
     );
@@ -61,6 +62,7 @@ CREATE OR REPLACE PACKAGE cfg_api_k_configuration IS
         p_days_per_month                IN configurations.days_per_month%TYPE DEFAULT NULL, 
         p_days_per_week                 IN configurations.days_per_week%TYPE DEFAULT NULL,
         p_hours_per_day                 IN configurations.hours_per_day%TYPE DEFAULT NULL,
+        p_language_co                   IN configurations.language_co%TYPE DEFAULT 'ES',
         p_updated_at                    IN configurations.updated_at%TYPE DEFAULT NULL, 
         p_created_at                    IN configurations.created_at%TYPE DEFAULT NULL 
     );

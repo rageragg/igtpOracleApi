@@ -68,6 +68,6 @@ COMMENT ON COLUMN "IGTP"."CONFIGURATIONS"."UPDATED_AT" IS 'Fecha de actualizacio
 --
 -- se agrega idioma de regionalizacion
 ALTER TABLE "IGTP"."CONFIGURATIONS" 
-	ADD "LANGUAGE_ID" VARCHAR2(03) DEFAULT 'ES';
+	ADD "LANGUAGE_CO" VARCHAR2(03) DEFAULT 'ES';
 --
-COMMENT ON COLUMN "IGTP"."CONFIGURATIONS"."CONFIGURATIONS" IS 'Identificacion del lenguaje de regionalizacion';
+COMMENT ON COLUMN "IGTP"."CONFIGURATIONS"."LANGUAGE_CO" IS 'Identificacion del lenguaje de regionalizacion';
