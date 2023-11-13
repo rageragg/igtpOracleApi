@@ -12,6 +12,9 @@ CREATE OR REPLACE PACKAGE cfg_api_k_language IS
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN igtp.languages.id%TYPE ) RETURN igtp.languages%ROWTYPE;
     --
+    -- get DATA RETURN RECORD by CO
+    FUNCTION get_record( p_language_co IN languages.language_co%TYPE ) RETURN languages%ROWTYPE;     
+    --
     -- insert
     PROCEDURE ins (
         p_id              languages.id%TYPE,
