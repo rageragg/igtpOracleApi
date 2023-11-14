@@ -17,7 +17,21 @@ declare
     --
     -- registro de lenguaje
     l_reg_actual languages%ROWTYPE;
+    /*
+    SELECT a.context, a.code_error error_co, a.description_error description
+      FROM languages b,
+           json_table(
+                b.diccionary, 
+                '$[*]' COLUMNS (
+                        code_error   VARCHAR PATH '$.code_error',
+                        context      VARCHAR PATH '$.context',
+                        description_error  VARCHAR PATH '$.description_error'
+                )
+            ) a
+     WHERE b.language_co = 'ES'
+    */
     --
+    -- metodo que verifica las propiedades del objeto
 begin 
     --
     -- parametro recibido
@@ -56,22 +70,15 @@ begin
             --
             dbms_output.put_line( l_obj_actual.stringify );
             --
-            -- lista las claves existentes
-            FOR counter IN 1 .. l_key_list_actual.COUNT 
-            LOOP 
+            IF l_obj_diccionary.has('code_error') THEN 
                 --
-                -- verifica las subsidiarias del cliente
-                IF l_key_list_actual(counter) = 'code_error' THEN 
-                    -- 
-                    IF l_obj_diccionary.get_string(l_key_list_actual(counter)) = l_obj_param.get_string(l_key_list_actual(counter)) THEN 
-                        --
-                        l_insert := FALSE;
-                        --
-                    END IF;
+                IF l_obj_diccionary.get_string('code_error') = l_obj_param.get_string('code_error') THEN 
+                    --
+                    l_insert := FALSE;
                     --
                 END IF;
                 --
-            END LOOP; 
+            END IF;
             --
             -- verificamos el resultado del analisis
             IF NOT l_insert THEN 
