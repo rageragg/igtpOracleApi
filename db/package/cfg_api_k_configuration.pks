@@ -73,4 +73,7 @@ CREATE OR REPLACE PACKAGE cfg_api_k_configuration IS
     -- delete
     PROCEDURE del ( p_id IN igtp.configurations.id%TYPE );
     --
+    -- inicia las globales declaradas
+    PROCEDURE set_global_configuration( p_id IN igtp.configurations.id%TYPE );
+    --
 END cfg_api_k_configuration;
