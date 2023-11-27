@@ -1,11 +1,11 @@
 DECLARE
     --
-    input_string    VARCHAR2 (200) := 'Secret Message';
+    input_string    VARCHAR2 (200) := 'https://clientes/mapfre.com.uy/pagos/?id=2523521'||chr(38)||'tip=DL';
     output_string   VARCHAR2 (200);
     encrypted_raw   RAW (2000);         -- stores encrypted binary text
     decrypted_raw   RAW (2000);         -- stores decrypted binary text
-    num_key_bytes   NUMBER := 256/8;    -- key length 256 bits (32 bytes)
-    key_bytes_raw   RAW (32);           -- stores 256-bit encryption key
+    num_key_bytes   NUMBER := 256/8;    -- key length 64 bits (32 bytes)
+    key_bytes_raw   RAW (32);           -- stores 128-bit encryption key
     iv_raw          RAW (16);
     --
     encryption_type PLS_INTEGER := -- total encryption type
@@ -31,12 +31,14 @@ BEGIN
         iv      => iv_raw
     );
     --
-    INSERT INTO x_eliminar( id, content ) values( 1, encrypted_raw );
+    INSERT INTO x_eliminar( id, content, key ) values( 1, encrypted_raw, key_bytes_raw );
     --
     output_string := UTL_I18N.RAW_TO_CHAR (encrypted_raw, 'AL32UTF8');
     --
     DBMS_OUTPUT.PUT_LINE (
-        'Encripted string: ' || output_string
+        'Encripted string: ' || output_string || chr(13) ||
+        encrypted_raw || chr(13) ||
+        UTL_I18N.STRING_TO_RAW (output_string, 'AL32UTF8')
     );
     --
     -- The encrypted value "encrypted_raw" can be used here
