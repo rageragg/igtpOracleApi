@@ -4,6 +4,9 @@
 
 CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
     --
+    -- identificador actual de configuracion
+    g_id    igtp.configurations.id%TYPE;
+    --
     -- get record
     FUNCTION get_record( p_id IN igtp.configurations.id%TYPE ) RETURN igtp.configurations%ROWTYPE IS 
         --
@@ -188,5 +191,67 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
               WHERE id = p_id;
         --
     END del;
+    --
+    -- inicia las globales declaradas
+    PROCEDURE set_global_configuration( p_id IN igtp.configurations.id%TYPE ) IS 
+        --
+        l_rec   igtp.configurations%ROWTYPE;
+        --
+    BEGIN
+        --
+        g_id := p_id;
+        l_rec := get_record( p_id );
+        --
+        IF l_rec.id IS NOT NULL THEN 
+            --
+            -- se establece los valores
+            sys_k_global.p_seter( 'CONFIGURATION_ID', p_id );
+            sys_k_global.p_seter( 'LOCAL_CURRENCY_CO', l_rec.local_currency_co );
+            sys_k_global.p_seter( 'FOREIGN_CURRENCY_CO', l_rec.foreign_currency_co );
+            sys_k_global.p_seter( 'LAST_FOREIGN_CURRENCY_Q_VALUE', l_rec.last_foreign_currency_q_value );
+            sys_k_global.p_seter( 'LAST_FOREIGN_CURRENCY_Q_DATE', l_rec.last_foreign_currency_q_date );
+            sys_k_global.p_seter( 'COUNTRY_CO', l_rec.country_co );
+            sys_k_global.p_seter( 'COMPANY_DESCRIPTION', l_rec.company_description );
+            sys_k_global.p_seter( 'COMPANY_ADDRESS', l_rec.company_address );
+            sys_k_global.p_seter( 'COMPANY_TELEPHONE_CO', l_rec.company_telephone_co );
+            sys_k_global.p_seter( 'COMPANY_FAX_CO', l_rec.company_fax_co );
+            sys_k_global.p_seter( 'COMPANY_EMAIL', l_rec.company_email );
+            sys_k_global.p_seter( 'COMPANY_FISCAL_DOCUMENT_CO', l_rec.company_fiscal_document_co );
+            sys_k_global.p_seter( 'COMPANY_LOGO', l_rec.company_logo );
+            sys_k_global.p_seter( 'DAYS_PER_YEAR', l_rec.days_per_year );
+            sys_k_global.p_seter( 'WEEKS_PER_YEAR', l_rec.weeks_per_year );
+            sys_k_global.p_seter( 'MONTHS_PER_YEAR', l_rec.months_per_year );
+            sys_k_global.p_seter( 'DAYS_PER_MONTH', l_rec.days_per_month );
+            sys_k_global.p_seter( 'DAYS_PER_WEEK', l_rec.days_per_week );
+            sys_k_global.p_seter( 'HOURS_PER_DAY', l_rec.hours_per_day );
+            sys_k_global.p_seter( 'LANGUAGE_CO', l_rec.language_co );
+            --
+        ELSE 
+            --
+            -- se elimina los valores
+            sys_k_global.delete_variable( 'CONFIGURATION_ID' );
+            sys_k_global.delete_variable( 'LOCAL_CURRENCY_CO' );
+            sys_k_global.delete_variable( 'FOREIGN_CURRENCY_CO' );
+            sys_k_global.delete_variable( 'LAST_FOREIGN_CURRENCY_Q_VALUE' );
+            sys_k_global.delete_variable( 'LAST_FOREIGN_CURRENCY_Q_DATE' );
+            sys_k_global.delete_variable( 'COUNTRY_CO' );
+            sys_k_global.delete_variable( 'COMPANY_DESCRIPTION' );
+            sys_k_global.delete_variable( 'COMPANY_ADDRESS' );
+            sys_k_global.delete_variable( 'COMPANY_TELEPHONE_CO' );
+            sys_k_global.delete_variable( 'COMPANY_FAX_CO' );
+            sys_k_global.delete_variable( 'COMPANY_EMAIL' );
+            sys_k_global.delete_variable( 'COMPANY_FISCAL_DOCUMENT_CO' );
+            sys_k_global.delete_variable( 'COMPANY_LOGO' );
+            sys_k_global.delete_variable( 'DAYS_PER_YEAR' );
+            sys_k_global.delete_variable( 'WEEKS_PER_YEAR' );
+            sys_k_global.delete_variable( 'MONTHS_PER_YEAR' );
+            sys_k_global.delete_variable( 'DAYS_PER_MONTH' );
+            sys_k_global.delete_variable( 'DAYS_PER_WEEK' );
+            sys_k_global.delete_variable( 'HOURS_PER_DAY' );
+            sys_k_global.delete_variable( 'LANGUAGE_CO' );
+            --
+        END IF;
+        -- 
+    END set_global_configuration;
     --
 END cfg_api_k_configuration;
