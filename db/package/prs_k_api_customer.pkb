@@ -9,8 +9,26 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     g_rec_customer      customer_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
     g_rec_customers     igtp.customers%ROWTYPE;
+    g_modo              VARCHAR2(20);
     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
+    --
+    g_hay_error                     BOOLEAN;
+    g_msg_error                     VARCHAR2(512);
+    g_cod_error                     NUMBER;
+    -- excepciones
+    e_validate_type_customer        EXCEPTION;
+    e_validate_location             EXCEPTION;
+    e_exist_customer_code           EXCEPTION;
+    e_validate_category_customer    EXCEPTION; 
+    e_validate_email                EXCEPTION;
+    --
+    PRAGMA exception_init( e_validate_type_customer, -20001 );
+    PRAGMA exception_init( e_validate_location, -20002 );
+    PRAGMA exception_init( e_exist_customer_code, -20003 );
+    PRAGMA exception_init( e_validate_category_customer, -20004 );
+    PRAGMA exception_init( e_validate_email, -20005 );
+
     -- TODO: crear un sistema de regionalizacion de mensajes
     --
     -- VALIDATE type customer
@@ -76,82 +94,110 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END validate_category_customer;
     --
+    -- validacion total
+    FUNCTION f_validation_all RETURN BOOLEAN IS 
+    BEGIN  
+        --
+        g_hay_error := FALSE;
+        --
+        -- valida tipo de cliente 
+        IF NOT validate_type_customer THEN 
+            -- 
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID TYPE CUSTOMER';
+            g_cod_error := -20001;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error;
+            --
+        END IF;
+                
+        --
+        -- validamos el codigo de la localidad del cliente
+        IF NOT validate_location THEN 
+            -- 
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID LOCATION CODE';
+            g_cod_error := -20002;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error;
+            --
+        END IF;
+        --
+        -- validamos que el codigo del cliente no este registrado
+        IF exist_customer_code AND g_modo = 'INSERT' THEN
+            --
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID CUSTOMER CODE';
+            g_cod_error := -20003;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error; 
+            -- 
+        END IF;
+        --
+        -- validamos la categoria del cliente 
+        IF NOT validate_category_customer THEN
+            --
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID CATEGORY CODE';
+            g_cod_error := -20003;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error; 
+            --
+        END IF;
+        --
+        -- validamos el email del cliente 
+        IF NOT validate_email( g_rec_customer.email ) THEN 
+            --
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID CUSTOMER EMAIL';
+            g_cod_error := -20004;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error; 
+            --
+        END IF;
+        --
+        -- validamos el email del cliente 
+        IF NOT validate_email( g_rec_customer.email_contact ) THEN 
+            --
+            -- TODO: regionalizacion de mensajes
+            g_msg_error := 'INVALID CONTACT EMAIL';
+            g_cod_error := -20004;
+            g_hay_error := TRUE;
+            --
+            RETURN g_hay_error; 
+            --
+        END IF;
+        --
+    END p_validation_all;
+    --
     -- CREATE CUSTOMER BY DOCUMENT
     FUNCTION ins( 
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2 
         ) RETURN BOOLEAN IS
         --
-        -- excepciones
-        e_validate_type_customer        EXCEPTION;
-        e_validate_location             EXCEPTION;
-        e_exist_customer_code           EXCEPTION;
-        e_validate_category_customer    EXCEPTION; 
-        e_validate_email                EXCEPTION;
+        l_reg_user      igtp.users%ROWTYPE;
         --
-        PRAGMA exception_init( e_validate_type_customer, -20001 );
-        PRAGMA exception_init( e_validate_location, -20002 );
-        PRAGMA exception_init( e_exist_customer_code, -20003 );
-        PRAGMA exception_init( e_validate_category_customer, -20004 );
-        PRAGMA exception_init( e_validate_email, -20005 );
-        --
-        -- 
     BEGIN 
         --
         -- se establece el valor a la global 
-        g_rec_customer := p_rec;
+        g_rec_customer  := p_rec;
+        g_modo          := 'INSERT';
         --
-        -- valida tipo de cliente 
-        IF NOT validate_type_customer THEN 
-            -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID TYPE CUSTOMER';
-            raise_application_error(-20001, p_result );
+        -- validacion total
+        IF NOT p_validation_all THEN
             --
-        END IF;
-        --
-        -- validamos el codigo de la localidad del cliente
-        IF NOT validate_location THEN 
+            p_result := g_msg_error;
+            raise_application_error(g_cod_error, g_msg_error );
             -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID LOCATION CODE';
-            raise_application_error(-20002, p_result );
+        ELSE
             --
-        END IF;
-        --
-        -- validamos que el codigo del cliente no este registrado
-        IF exist_customer_code THEN 
-            -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID CUSTOMER CODE';
-            raise_application_error(-20003, p_result );
-            --
-        END IF;
-        --
-        -- validamos la categoria del cliente 
-        IF NOT validate_category_customer THEN 
-            -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID CATEGORY CODE';
-            raise_application_error(-20004, p_result );
-            --
-        END IF;
-        --
-        -- validamos el email del cliente 
-        IF NOT validate_email( g_rec_customer.email ) THEN 
-            -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID CUSTOMER EMAIL';
-            raise_application_error(-20004, p_result );
-            --
-        END IF;
-        --
-        -- validamos el email del cliente 
-        IF NOT validate_email( g_rec_customer.email_contact ) THEN 
-            -- 
-            -- TODO: regionalizacion de mensajes
-            p_result := 'INVALID CONTACT EMAIL';
-            raise_application_error(-20004, p_result );
+            p_result := NULL;
             --
         END IF;
         --
@@ -174,8 +220,14 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         g_rec_customers.slug                := g_rec_customer.slug;
         g_rec_customers.uuid                := NULL;
         g_rec_customers.k_mca_inh           := 'N';
-        g_rec_customers.user_id             := NULL;
         g_rec_customers.created_at          := sysdate;
+        --
+        --
+        -- TODO: buscar el id del usuario
+        l_rec_user := sec_api_k_user.get_record(
+            p_user_co => g_rec_customer.user_co
+        );
+        g_rec_customers.user_id             := l_rec_user.id;
         --
         -- creamos el registro
         dsc_api_k_customer.ins( 
@@ -217,6 +269,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     BEGIN 
         --
+        g_modo  := 'INSERT';
         -- analizamos los datos JSON
         l_obj   := json_object_t.parse(p_josn);
         --
@@ -257,5 +310,93 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 RETURN FALSE;
         --
     END ins;
+    --
+    -- UPDATE CUSTOMER BY RECORD
+    PROCEDURE upd(
+            p_rec       IN OUT customer_api_doc,
+            p_result    OUT VARCHAR2
+        ) RETURN BOOLEAN IS
+        --
+        l_reg_customer  igtp.customers%ROWTYPE;
+        l_reg_user      igtp.users%ROWTYPE;
+        --
+    BEGIN 
+        --
+        -- se establece el valor a la global 
+        g_rec_customer  := p_rec;
+        g_modo          := 'UPDATE';
+        --
+        -- validacion total
+        IF NOT p_validation_all THEN
+            --
+            p_result := g_msg_error;
+            raise_application_error(g_cod_error, g_msg_error );
+            -- 
+        ELSE
+            --
+            p_result := NULL;
+            --
+        END IF;
+        --
+        -- verificamos que exista
+        l_reg_customer := dsc_api_k_customer.get_record( 
+            p_customer_co => l_reg.customer_co
+        );
+        --
+        -- completamos los datos del cliente
+        g_rec_customers.id                  := l_reg_customer.id;
+        g_rec_customers.customer_co         := g_rec_customer.customer_co;
+        g_rec_customers.description         := g_rec_customer.description;
+        g_rec_customers.telephone_co        := g_rec_customer.telephone_co;
+        g_rec_customers.fax_co              := g_rec_customer.fax_co;
+        g_rec_customers.email               := g_rec_customer.email;
+        g_rec_customers.address             := g_rec_customer.address;
+        g_rec_customers.k_type_customer     := g_rec_customer.k_type_customer;
+        g_rec_customers.k_sector            := g_rec_customer.k_sector;
+        g_rec_customers.k_category_co       := g_rec_customer.k_category_co;
+        g_rec_customers.fiscal_document_co  := g_rec_customer.fiscal_document_co;
+        g_rec_customers.location_id         := g_rec_locations.id;
+        g_rec_customers.telephone_contact   := g_rec_customer.telephone_contact;
+        g_rec_customers.name_contact        := g_rec_customer.name_contact;
+        g_rec_customers.email_contact       := g_rec_customer.email_contact;
+        g_rec_customers.slug                := g_rec_customer.slug;
+        g_rec_customers.uuid                := g_rec_customer.uuid;
+        g_rec_customers.k_mca_inh           := g_rec_customer.k_mca_inh;
+        --
+        -- TODO: buscar el id del usuario
+        l_rec_user := sec_api_k_user.get_record(
+            p_user_co => l_reg_customer.user_co
+        );
+        --
+        g_rec_customers.user_id             := l_rec_user.id;
+        g_rec_customers.created_at          := sysdate;
+        --
+        -- creamos el registro
+        dsc_api_k_customer.upd( 
+            p_rec => g_rec_customers
+        );
+        --
+        RETURN TRUE;
+        --
+        EXCEPTION 
+            WHEN e_validate_type_customer       OR
+                 e_validate_location            OR
+                 e_exist_customer_code          OR
+                 e_validate_category_customer   OR
+                 e_validate_email               THEN 
+                --
+                RETURN FALSE;
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result := SQLERRM;
+                END IF;
+                --
+                ROLLBACK;
+                --
+                RETURN FALSE;
+        --
+    END upd;
     --
 END prs_api_k_customer;

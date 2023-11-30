@@ -41,6 +41,7 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         uuid                  customers.uuid%TYPE DEFAULT NULL,
         slug                  customers.slug%TYPE DEFAULT NULL,
         user_co               users.user_co%TYPE DEFAULT NULL,
+        k_mca_inh             customer.k_mca_inh%TYPE DEFAULT 'N',
         created_at            customers.created_at%TYPE DEFAULT sysdate,
         updated_at            customers.updated_at%TYPE DEFAULT sysdate
     );
@@ -53,11 +54,17 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     --
     -- CREATE CUSTOMER BY JSON
     FUNCTION ins( 
-            p_json       IN OUT VARCHAR2,
+            p_json      IN OUT VARCHAR2,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;
     --
     -- TODO: desarrollar el metodo de UPDATE
+    -- UPDATE CUSTOMER BY RECORD
+    PROCEDURE upd(
+            p_rec       IN OUT customer_api_doc,
+            p_result    OUT VARCHAR2
+        ) RETURN BOOLEAN;
+    
     -- TODO: desarrollar el metodo de devolver un registro 
     -- TODO: desarrollar el metodo de devolver una lista
 END prs_api_k_customer;
