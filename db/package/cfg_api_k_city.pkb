@@ -1,14 +1,26 @@
---------------------------------------------------------
+---------------------------------------------------------------------------
 --  DDL for Package Body CITIES_API
---------------------------------------------------------
+--  MODIFICATIONS
+--  DATE        AUTOR               DESCRIPTIONS
+--  =========== =================== =======================================
+---------------------------------------------------------------------------
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
+    --
+    g_record        cities%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN cities%ROWTYPE IS 
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;
     --
     -- get DATA RECORD BY ID
     FUNCTION get_record( p_id in cities.id%TYPE )  RETURN cities%ROWTYPE IS 
         --
         l_data cities%ROWTYPE;
-        --
         --
         CURSOR c_data IS 
             SELECT * FROM igtp.cities WHERE id = p_id;
@@ -27,7 +39,6 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     FUNCTION get_record( p_city_co IN cities.city_co%TYPE ) RETURN cities%ROWTYPE IS 
         --
         l_data cities%ROWTYPE;
-        --
         --
         CURSOR c_data IS 
             SELECT * FROM igtp.cities WHERE city_co = p_city_co;
@@ -202,6 +213,27 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         DELETE FROM igtp.cities WHERE id = p_id;
         --
     END del;
+    --
+    -- exist
+    FUNCTION exist( p_id IN cities.id%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist
+    FUNCTION exist( p_city_co IN cities.city_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_city_co => p_city_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
     --
 END cfg_api_k_city;
 

@@ -106,7 +106,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_language IS
         --
         EXCEPTIONS
             WHEN NO_DATA_FOUND THEN 
-                RETURN 'NO FOUND!'; 
+                --
+                RETURN NULL;
+                -- 
             WHEN OTHERS THEN 
                 --
                 -- TODO: manejar el error propio
