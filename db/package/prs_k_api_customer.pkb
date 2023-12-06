@@ -110,8 +110,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             --
             RETURN g_hay_error;
             --
-        END IF;
-                
+        END IF;                
         --
         -- validamos el codigo de la localidad del cliente
         IF NOT validate_location THEN 
@@ -312,7 +311,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     END ins;
     --
     -- UPDATE CUSTOMER BY RECORD
-    PROCEDURE upd(
+    FUNCTION upd(
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN IS

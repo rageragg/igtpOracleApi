@@ -1,15 +1,22 @@
---------------------------------------------------------
+---------------------------------------------------------------------------
 --  DDL for Package CITIES_API
---------------------------------------------------------
+--  MODIFICATIONS
+--  DATE        AUTOR               DESCRIPTIONS
+--  =========== =================== =======================================
+---------------------------------------------------------------------------
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
+    K_PROCESS    CONSTANT VARCHAR2(20)  := 'CFG_API_K_CITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'CITIES';
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
     TYPE cities_api_tab IS TABLE OF cities%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN cities%ROWTYPE;
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN cities.id%TYPE ) RETURN cities%ROWTYPE;
@@ -58,6 +65,12 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
     -- delete
     PROCEDURE del ( p_id in cities.id%TYPE );
+    --
+    -- exist
+    FUNCTION exist( p_id IN cities.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist
+    FUNCTION exist( p_city_co IN cities.city_co%TYPE ) RETURN BOOLEAN;
     --
 END cfg_api_k_city;
 /

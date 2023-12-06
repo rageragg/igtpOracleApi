@@ -49,12 +49,13 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    || K_SEPARATOR
    */ --------------------------------------------------------
    --
-   PROCEDURE p_extractor( p_val     IN            CLOB       ,
-                        p_sep     IN            VARCHAR2   ,
-                        p_pos_ini IN OUT NOCOPY PLS_INTEGER,
-                        p_pos_end IN OUT NOCOPY PLS_INTEGER,
-                        p_return    OUT NOCOPY VARCHAR2   
-                      ) IS
+   PROCEDURE p_extractor( 
+            p_val     IN            CLOB       ,
+            p_sep     IN            VARCHAR2   ,
+            p_pos_ini IN OUT NOCOPY PLS_INTEGER,
+            p_pos_end IN OUT NOCOPY PLS_INTEGER,
+            p_return  OUT NOCOPY VARCHAR2   
+      ) IS
       --
       l_lng_sep INTEGER := LENGTH(p_sep);
       --
@@ -90,9 +91,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    || seter el valor de la variable
    */ ----------------------------------------------------
    --
-   PROCEDURE seter( p_variable VARCHAR2, 
-                     p_value    VARCHAR2
-                  ) IS
+   PROCEDURE seter( 
+         p_variable VARCHAR2, 
+         p_value    VARCHAR2
+      ) IS
       --
       l_nam_variable t_nam_variable := UPPER(p_variable);
       --
@@ -109,9 +111,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    || seter el valor de la variable
    */ ----------------------------------------------------
    --
-   PROCEDURE p_seter(  p_variable VARCHAR2, 
-                        p_value    VARCHAR2
-                     ) IS
+   PROCEDURE p_seter(  
+         p_variable VARCHAR2, 
+         p_value    VARCHAR2
+      ) IS
    BEGIN
       --
       seter(p_variable, p_value);
@@ -124,9 +127,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    || seter el valor de la variable
    */ ----------------------------------------------------
    --
-   PROCEDURE p_seter( p_variable VARCHAR2, 
-                       p_value    NUMBER  
-                     ) IS
+   PROCEDURE p_seter( 
+         p_variable VARCHAR2, 
+         p_value    NUMBER  
+      ) IS
    BEGIN
       --
       seter( p_variable, to_char(p_value) );
@@ -139,9 +143,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    || seter el valor de la variable
    */ ----------------------------------------------------
    --
-   PROCEDURE p_seter(  p_variable VARCHAR2, 
-                        p_value    DATE
-                     ) IS
+   PROCEDURE p_seter(  
+         p_variable VARCHAR2, 
+         p_value    DATE
+      ) IS
    BEGIN
       --
       seter( p_variable, to_char(p_value, sys_k_global.k_format_date ) );
@@ -334,22 +339,19 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
       --
    BEGIN
       --
-      IF g_tb_variables.COUNT > 0
-         THEN
+      IF g_tb_variables.COUNT > 0 THEN
          --
-         IF g_row IS NULL
-         THEN
+         IF g_row IS NULL THEN
             --
             g_row    := g_tb_variables.FIRST;
             l_retorno := g_tb_variables(g_row).nam_variable || ' <' || g_tb_variables(g_row).val_variable || '>';
             --
-         ELSIF g_row != g_tb_variables.LAST
-            THEN
+         ELSIF g_row != g_tb_variables.LAST THEN
             --
             g_row    := g_tb_variables.NEXT(g_row);
             l_retorno := g_tb_variables(g_row).nam_variable || ' <' || g_tb_variables(g_row).val_variable || '>';
             --
-            ELSE
+         ELSE
             --
             g_row := NULL;
             --
@@ -374,6 +376,6 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
       g_globals_saved := FALSE;
       --
    END init_variables;
- --
+   --
 END sys_k_global;
 /
