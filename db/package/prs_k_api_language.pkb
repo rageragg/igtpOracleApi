@@ -83,7 +83,7 @@ CREATE OR REPLACE PACKAGE BODY prs_k_api_language IS
         --
         l_message   VARCHAR2(1024);
         --
-        -- cursor de busqueda de mensaje de error
+        -- cursor de busqueda de mensaje de error 
         CURSOR c_message IS 
             SELECT a.description_error description
                 FROM languages b,
