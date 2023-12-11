@@ -6,7 +6,6 @@ DataBase for igtp 5.0 Server (Oracle PLSQL)
 
 1. Datos Geograficos
     1. Regiones
-       >.[!NOTE]. Se debe actualizar las funciones API y realizar CRUD con procesos de 2do. Nivel
     3. Provincias
     4. Municipalidades
     5. Ciudades  
