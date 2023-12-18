@@ -46,3 +46,26 @@ SEGMENT CREATION IMMEDIATE
 	TABLESPACE "TS_IGTP_DAT" ;
 --
 COMMENT ON TABLE "IGTP"."TRANSFERS"  IS 'Transferencias de Cargas en un Viaje';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."ID" IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."FREIGHT_ID" IS 'Referencia unica al viaje';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."K_ORDER" IS 'Orden de Ejecucion';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."SEQUENCE_NUMBER" IS 'Secuencia de registro o planeacion';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."ROUTE_ID" IS 'Referencia unica a la ruta de la transferencia';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."K_REGIMEN" IS 'Regimen de carga o transporte';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."K_STATUS" IS 'Estado del Viaje segun los distintos proceso que lo trata';
+COMMENT ON COLUMN "IGTP"."TRANSFERS"."K_PROCESS" IS 'Proceso actual de tratamiento del Viaje';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,10 +6,10 @@ DataBase for igtp 5.0 Server (Oracle PLSQL)
 
 1. Datos Geograficos
     1. Regiones
-    2. Provincias
-    3. Municipalidades
-    4. Ciudades  
-    5. **Locaciones**
+    3. Provincias
+    4. Municipalidades
+    5. Ciudades  
+    6. **Locaciones**
 2. Datos Comunes
     1. Tipos de Cargas
     2. Tipos de Vehiculos
