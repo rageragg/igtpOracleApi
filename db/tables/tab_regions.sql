@@ -3,7 +3,7 @@
 --------------------------------------------------------
 
 CREATE TABLE "IGTP"."REGIONS" (	
-   "ID" NUMBER(8,0) DEFAULT IGTP.REGIONS_SEQ.NEXTVAL, 
+   "ID"           NUMBER(8,0) DEFAULT IGTP.REGIONS_SEQ.NEXTVAL, 
    "REGION_CO"    VARCHAR2(10 BYTE), 
 	"DESCRIPTION"  VARCHAR2(80 BYTE), 
 	"COUNTRY_ID"   NUMBER(8,0), 
