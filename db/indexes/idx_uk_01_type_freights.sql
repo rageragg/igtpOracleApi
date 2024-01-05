@@ -1,8 +1,9 @@
 --------------------------------------------------------
---  DDL for Index FREIGHTS_UK_01
+--  DDL for Index TYPE_FREIGHTS_UK_01
 --------------------------------------------------------
 
-CREATE UNIQUE INDEX "IGTP"."FREIGHTS_UK_01" ON "IGTP"."FREIGHTS" ("FREIGHT_CO") 
+CREATE UNIQUE INDEX "IGTP"."TYPE_FREIGHTS_UK_01" 
+  ON "IGTP"."TYPE_FREIGHTS" ("TYPE_FREIGHT_CO") 
   PCTFREE 10 
   INITRANS 2 
   MAXTRANS 255 

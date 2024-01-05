@@ -1,8 +1,9 @@
 --------------------------------------------------------
---  DDL for Index FREIGHTS_UK_01
+--  DDL for Index PARTNERS_UK_00
 --------------------------------------------------------
 
-CREATE UNIQUE INDEX "IGTP"."FREIGHTS_UK_01" ON "IGTP"."FREIGHTS" ("FREIGHT_CO") 
+CREATE UNIQUE INDEX "IGTP"."PARTNERS_UK_00" 
+  ON "IGTP"."PARTNERS" ("PARTNER_CO") 
   PCTFREE 10 
   INITRANS 2 
   MAXTRANS 255 
@@ -19,4 +20,4 @@ CREATE UNIQUE INDEX "IGTP"."FREIGHTS_UK_01" ON "IGTP"."FREIGHTS" ("FREIGHT_CO")
     FLASH_CACHE DEFAULT 
     CELL_FLASH_CACHE DEFAULT
   )
-  TABLESPACE "TS_IGTP_DAT" ;
+  TABLESPACE "TS_IGTP_IDX" ;
