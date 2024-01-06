@@ -7,7 +7,7 @@
 --                                  administrativos de creacion de ciudades
 ---------------------------------------------------------------------------
 
-CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prc_k_api_city IS
+CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
     --
     K_PROCESS    CONSTANT VARCHAR2(20)  := 'PRC_API_K_CITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
@@ -48,7 +48,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prc_k_api_city IS
     BEGIN
         --
         -- TODO: 1.- validar que el codigo de ciudad no exista
-        IF prc_k_api_city.exist( p_city_co => p_city_co ) THEN
+        IF prs_k_api_city.exist( p_city_co => p_city_co ) THEN
             --
             -- TODO: regionalizacion de mensajes
             g_cod_error := -20003;
@@ -124,7 +124,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prc_k_api_city IS
         l_reg_city.slug             :=  p_slug;
         l_reg_city.user_id          :=  l_reg_user.id;
         --
-        prc_k_api_city.ins( p_rec => l_reg_city );
+        prs_k_api_city.ins( p_rec => l_reg_city );
         --
         COMMIT;
         --
@@ -196,5 +196,5 @@ BEGIN
         p_value     => g_reg_config.language_co
     );
     --
-END prc_k_api_city;
+END prs_k_api_city;
 /

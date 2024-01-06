@@ -81,6 +81,20 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END exist_customer_code;
     --
+    -- EXIST customer code
+    FUNCTION exist_customer_code( p_customer_co customers.customer_co%TYPE ) RETURN BOOLEAN IS
+    BEGIN 
+        --
+        -- Se toma el registro de cliente por codigo
+        g_rec_customers := NULL;
+        g_rec_customers := igtp.dsc_api_k_customer.get_record(
+                                    p_customer_co => p_customer_co
+                                );
+        --
+        RETURN g_rec_customers.id IS NOT NULL;
+        --
+    END exist_customer_code;
+    --
     -- VALIDATE category customer
     FUNCTION validate_category_customer RETURN BOOLEAN IS 
     BEGIN
@@ -175,7 +189,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     END p_validation_all;
     --
     -- CREATE CUSTOMER BY DOCUMENT
-    FUNCTION ins( 
+    FUNCTION create_customer( 
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2 
         ) RETURN BOOLEAN IS
@@ -256,10 +270,10 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
                 RETURN FALSE;
         --
-    END ins;
+    END create_customer;
     --
     -- CREATE CUSTOMER BY JSON
-    FUNCTION ins( 
+    FUNCTION create_customer( 
             p_josn      IN OUT VARCHAR2,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN IS 
@@ -290,7 +304,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         r_customer.slug               := l_obj.get_string('slug');
         r_customer.user_co            := l_obj.get_string('user_co');
         --
-        l_ok := ins( 
+        l_ok := create_customer( 
                 p_rec       => r_customer,
                 p_result    => p_result
         );
@@ -308,10 +322,10 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
                 RETURN FALSE;
         --
-    END ins;
+    END create_customer;
     --
     -- UPDATE CUSTOMER BY RECORD
-    FUNCTION upd(
+    FUNCTION update_customer(
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN IS
@@ -396,6 +410,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
                 RETURN FALSE;
         --
-    END upd;
+    END update_customer;
     --
 END prs_api_k_customer;

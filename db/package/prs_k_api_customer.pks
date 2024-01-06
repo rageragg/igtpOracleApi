@@ -47,20 +47,20 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     );
     --
     -- CREATE CUSTOMER BY RECORD
-    FUNCTION ins( 
+    FUNCTION create_customer( 
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;
     --
     -- CREATE CUSTOMER BY JSON
-    FUNCTION ins( 
+    FUNCTION create_customer( 
             p_json      IN OUT VARCHAR2,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;
     --
     -- TODO: desarrollar el metodo de UPDATE
     -- UPDATE CUSTOMER BY RECORD
-    PROCEDURE upd(
+    PROCEDURE update_customer(
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;

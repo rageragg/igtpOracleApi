@@ -119,7 +119,7 @@ DECLARE
                     IF reg.rownum = 1 THEN 
                         --
                         -- codigo del viaje
-                        l_reg_freigth.freight_co :=reg.dato; 
+                        l_reg_freigth.freight_co := reg.dato; 
                         --
                     ELSIF reg.rownum = 2 THEN 
                         --
@@ -219,6 +219,35 @@ DECLARE
         --
     END pp_listar;
     --
+    -- validar los datos caragados en memoria
+    PROCEDURE pp_validar_datos IS 
+        --
+        l_reg_freigth       typ_data_freigth;
+        --
+    BEGIN 
+        --
+        FOR i IN 1..g_data_freigth.COUNT LOOP 
+            --
+            l_reg_freigth := g_data_freigth(i);
+            --
+            -- TODO: Se debe crear el proceso de generacion de flete, por cada registro
+            --
+            -- dbms_output.put_line(
+            --     l_reg_freigth.freight_co ||' '||
+            --     l_reg_freigth.customer_co ||' '||
+            --     l_reg_freigth.route_co ||' '||
+            --     l_reg_freigth.type_cargo_co ||' '||
+            --     l_reg_freigth.type_vehicle_co ||' '||
+            --     l_reg_freigth.type_freight_co ||' '||
+            --     l_reg_freigth.k_regimen ||' '||
+            --     l_reg_freigth.upload_at ||' '||
+            --     l_reg_freigth.k_process
+            -- );
+            --
+        END LOOP;
+        -- 
+    END pp_validar_datos;
+    --
 BEGIN
     --
     pp_lee_dato_archivo;
@@ -227,6 +256,7 @@ BEGIN
     --
     pp_listar;
     --
-    -- TODO: Validar los datos que se han cargado
+    -- TODO: Validar los datos que se han cargado, generar reporte con el resultado, el cual va a ser cargado por otra tarea
+    -- TODO: crear viaje
     --
 END;

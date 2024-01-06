@@ -7,7 +7,7 @@
 --                                  administrativos de creacion de ciudades
 ---------------------------------------------------------------------------
 
-CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.prc_k_api_city IS
+CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.prs_k_api_city IS
     --
     K_PROCESS    CONSTANT VARCHAR2(20)  := 'PRC_API_K_CITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
@@ -67,5 +67,5 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.prc_k_api_city IS
         p_result    OUT VARCHAR2 
     );
     --
-END prc_k_api_city;
+END prs_k_api_city;
 /
