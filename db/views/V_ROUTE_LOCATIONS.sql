@@ -2,7 +2,13 @@
 --  DDL for View V_ROUTE_LOCATIONS
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_ROUTE_LOCATIONS" ("ID", "ROUTE_ID", "ROUTE_CO", "ROUTE_DESC", "LOCATION_ID", "LOCATION_CO", "LOCATION_DESC", "FROM_CITY_ID", "TO_CITY_ID", "K_POSITION", "NU_GPS_LAT", "NU_GPS_LON") AS 
+CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_ROUTE_LOCATIONS" (
+     "ID", "ROUTE_ID", "ROUTE_CO", 
+     "ROUTE_DESC", "LOCATION_ID", "LOCATION_CO", 
+     "LOCATION_DESC", "FROM_CITY_ID", 
+     "TO_CITY_ID", "K_POSITION", "NU_GPS_LAT", 
+     "NU_GPS_LON"
+ ) AS 
   SELECT a.id, a.route_id, b.route_co, b.description route_desc,
        a.location_id, c.location_co, c.description location_desc,
        b.from_city_id, b.to_city_id,
