@@ -1,15 +1,22 @@
---------------------------------------------------------
---  DDL for Package LOCATIONS_API
---------------------------------------------------------
+---------------------------------------------------------------------------
+--  DDL for Package Body LOCATIONS API
+--  MODIFICATIONS
+--  DATE        AUTOR               DESCRIPTIONS
+--  =========== =================== =======================================
+---------------------------------------------------------------------------
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS 
     --
+    K_PROCESS    CONSTANT VARCHAR2(20)  := 'CFG_API_K_LOCATION';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'LOCATIONS';
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
     TYPE locations_api_tab IS  TABLE OF locations%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN locations%ROWTYPE;    
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in locations.id%TYPE ) RETURN locations%ROWTYPE;    
@@ -60,6 +67,12 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
     --
     -- delete
     PROCEDURE del ( p_id  IN locations.id%TYPE );
+    --
+    -- exist
+    FUNCTION exist( p_id IN locations.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist
+    FUNCTION exist( p_location_co IN locations.location_co%TYPE ) RETURN BOOLEAN;
     --
 END cfg_api_k_location;
 

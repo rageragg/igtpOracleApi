@@ -107,7 +107,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
             p_description,
             p_municipality_co,
             p_province_id,
-            p_uuid,
+            ui,
             p_slug,
             p_user_id,
             p_created_at,

@@ -1,8 +1,21 @@
---------------------------------------------------------
---  DDL for Package Body LOCATIONS_API
---------------------------------------------------------
+---------------------------------------------------------------------------
+--  DDL for Package Body LOCATIONS API
+--  MODIFICATIONS
+--  DATE        AUTOR               DESCRIPTIONS
+--  =========== =================== =======================================
+---------------------------------------------------------------------------
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS 
+    --
+    g_record        locations%ROWTYPE;
+    --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN locations%ROWTYPE IS 
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;    
     --
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id in locations.id%TYPE ) RETURN locations%ROWTYPE IS
@@ -82,20 +95,27 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
     --
     -- insert
     PROCEDURE ins (
-        p_id                IN locations.id%type,
-        p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
-        p_description       IN locations.description%TYPE DEFAULT NULL, 
-        p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
-        p_city_id           IN locations.city_id%TYPE DEFAULT NULL, 
-        p_nu_gps_lat        IN locations.nu_gps_lat%TYPE DEFAULT NULL,
-        p_nu_gps_lon        IN locations.nu_gps_lon%TYPE DEFAULT NULL, 
-        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
-        p_slug              IN locations.slug%TYPE DEFAULT NULL, 
-        p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
-        p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
-        p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
+            p_id                IN locations.id%type,
+            p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
+            p_description       IN locations.description%TYPE DEFAULT NULL, 
+            p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
+            p_city_id           IN locations.city_id%TYPE DEFAULT NULL, 
+            p_nu_gps_lat        IN locations.nu_gps_lat%TYPE DEFAULT NULL,
+            p_nu_gps_lon        IN locations.nu_gps_lon%TYPE DEFAULT NULL, 
+            p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+            p_slug              IN locations.slug%TYPE DEFAULT NULL, 
+            p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
+            p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
+            p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
         ) IS 
+        --
+        ui  varchar2(60)    := sys_guid();
+        --        
     BEGIN
+        --
+        IF p_uuid IS NOT NULL THEN 
+            ui := p_uuid;
+        END IF;    
         --
         INSERT INTO locations(
             id,
@@ -118,7 +138,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_city_id   ,
             p_nu_gps_lat,
             p_nu_gps_lon,
-            p_uuid,
+            ui,
             p_slug,
             p_user_id,
             p_created_at,
@@ -198,7 +218,27 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
               WHERE id = p_id;
         --
     END del;
-    --  
+    --
+    -- exist
+    FUNCTION exist( p_id IN locations.id%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist
+    FUNCTION exist( p_location_co IN locations.location_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_location_co => p_location_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
 END cfg_api_k_location;
 
 /

@@ -127,7 +127,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_province IS
             p_province_co,
             p_description,
             p_region_id,
-            p_uuid,
+            ui,
             p_slug,
             p_user_id,
             p_created_at ,
