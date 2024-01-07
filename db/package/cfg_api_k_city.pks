@@ -29,7 +29,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
     -- insert
     PROCEDURE ins (
-        p_id                IN cities.ID%TYPE,
+        p_id                IN cities.id%TYPE,
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
         p_description       IN cities.description%TYPE DEFAULT NULL,
         p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
