@@ -108,6 +108,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY cfg_api_k_country IS
         ui  varchar2(60)    := sys_guid();
         --
     BEGIN
+        --
         IF p_uuid IS NOT NULL THEN 
             ui := p_uuid;
         END IF;   
