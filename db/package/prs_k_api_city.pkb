@@ -5,6 +5,8 @@
 --  =========== =================== =======================================
 --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
 --                                  administrativos de creacion de ciudades
+--
+-- TODO: Compactar codigo repetitivo en funciones de utilerias
 ---------------------------------------------------------------------------
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
