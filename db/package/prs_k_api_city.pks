@@ -1,5 +1,12 @@
 ---------------------------------------------------------------------------
 --  DDL for Package CITIES_API (Process)
+--  REFERENCIAS
+--  NOMBRE                          TIPO
+--  =============================== =======================================
+--  CFG_API_K_CITY                  PAQUETE DE BASE
+--  CFG_API_K_MUNICIPALITY          PAQUETE DE BASE
+--  PRS_API_K_LANGUAGE              PAQUETE DE BASE
+--
 --  MODIFICATIONS
 --  DATE        AUTOR               DESCRIPTIONS
 --  =========== =================== =======================================

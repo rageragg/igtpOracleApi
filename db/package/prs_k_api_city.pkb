@@ -151,7 +151,116 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
     PROCEDURE create_city( 
         p_rec               IN OUT city_api_doc,
         p_result            OUT VARCHAR2 
-    );
+    ) IS 
+        --
+        l_reg_municipality      municipalities%ROWTYPE;
+        l_reg_user              users%ROWTYPE;
+        l_reg_city              cities%ROWTYPE;
+        --
+    BEGIN
+        --
+        -- TODO: 1.- validar que el codigo de ciudad no exista
+        IF prs_k_api_city.exist( p_city_co => p_rec.p_city_co ) THEN
+            --
+            -- TODO: regionalizacion de mensajes
+            g_cod_error := -20003;
+            g_hay_error := TRUE;
+            --
+            g_msg_error := prs_api_k_language.p_message( 
+                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                p_context     => K_PROCESS,
+                p_error_co    => g_cod_error 
+            );
+            --
+            g_msg_error := nvl(g_msg_error, 'INVALID CITY CODE');
+            p_result    := g_msg_error;
+            --
+            raise_application_error(g_cod_error, g_msg_error );
+            --  
+        END IF;
+        --
+        -- TODO: 2.- validar que el codigo de municipalidad exista
+        l_reg_municipality := cfg_api_k_municipality.get_record( 
+            p_municipality_co => p_rec.p_municipality_co
+        );
+        --
+        IF l_reg_municipality.id IS NULL THEN
+            --
+            -- TODO: regionalizacion de mensajes
+            g_cod_error := -20001;
+            g_hay_error := TRUE;
+            --
+            g_msg_error := prs_api_k_language.p_message( 
+                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                p_context     => K_PROCESS,
+                p_error_co    => g_cod_error 
+            );
+            --
+            g_msg_error := nvl(g_msg_error, 'INVALID MUNICIPALITY CODE');
+            p_result    := g_msg_error;
+            --
+            raise_application_error(g_cod_error, g_msg_error );
+            -- 
+        END IF;
+        --
+        -- TODO: 3.- validar que el codigo de usuario exista
+        l_reg_user := cfg_api_k_municipality.get_record( 
+            p_user_co => p_rec.p_user_co
+        );
+        --
+        IF l_reg_user.id IS NULL THEN
+            --
+            -- TODO: regionalizacion de mensajes
+            g_cod_error := -20002;
+            g_hay_error := TRUE;
+            --
+            g_msg_error := prs_api_k_language.p_message( 
+                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                p_context     => K_PROCESS,
+                p_error_co    => g_cod_error 
+            );
+            --
+            g_msg_error := nvl(g_msg_error, 'INVALID USER CODE');
+            p_result    := g_msg_error;
+            --            
+            raise_application_error(g_cod_error, g_msg_error );
+            -- 
+        END IF;
+        --
+        l_reg_city.city_co          :=  p_rec.p_city_co; 
+        l_reg_city.description      :=  p_rec.p_description;
+        l_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
+        l_reg_city.postal_co        :=  p_rec.p_postal_co; 
+        l_reg_city.municipality_id  :=  l_reg_municipality.id;
+        l_reg_city.uuid             :=  p_rec.p_uuid;
+        l_reg_city.slug             :=  p_rec.p_slug;
+        l_reg_city.user_id          :=  l_reg_user.id;
+        --
+        prs_k_api_city.ins( p_rec => l_reg_city );
+        --
+        p_rec.p_uuid    := l_reg_city.uuid;
+        p_rec.p_slug    := l_reg_city.slug;
+        --
+        COMMIT;
+        --
+        p_result := '{ "status":"OK", "message":"" }';
+        --
+        EXCEPTION
+            WHEN e_exist_city_code OR e_validate_municipality OR e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+        --
+    END create_city;
     --
     -- update
     PROCEDURE update_city(
