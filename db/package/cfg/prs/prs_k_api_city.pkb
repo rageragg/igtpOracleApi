@@ -1,26 +1,24 @@
----------------------------------------------------------------------------
---  DDL for Package body CITIES_API (Process)
---  MODIFICATIONS
---  DATE        AUTOR               DESCRIPTIONS
---  =========== =================== =======================================
---  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
---                                  administrativos de creacion de ciudades
---
--- TODO: Compactar codigo repetitivo en funciones de utilerias
----------------------------------------------------------------------------
 
-CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package body CITIES_API (Process)
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de ciudades
     --
-    K_PROCESS    CONSTANT VARCHAR2(20)  := 'PRC_API_K_CITY';
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    -- TODO: Compactar codigo repetitivo en funciones de utilerias
+    ---------------------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
+    --
     K_CFG_CO     CONSTANT NUMBER        := '1';
     --
     -- globales
-    g_cfg_co                        cfg_configurations.id%TYPE;
+    g_cfg_co                        configurations.id%TYPE;
     g_hay_error                     BOOLEAN;
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
-    g_reg_config                    cfg_configurations%ROWTYPE;
+    g_reg_config                    configurations%ROWTYPE;
     -- excepciones
     e_validate_municipality         EXCEPTION;
     e_validate_user                 EXCEPTION;
@@ -35,7 +33,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
     -- raise_error 
     PROCEDURE raise_error( 
         p_cod_error NUMBER,
-        p_msg_error VARCHAR2(512)
+        p_msg_error VARCHAR2
     ) IS 
     BEGIN 
         --
@@ -43,14 +41,13 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
         g_cod_error := p_cod_error;
         g_hay_error := TRUE;
         --
-        g_msg_error := prs_api_k_language.p_message( 
-            p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+        g_msg_error := prs_k_api_language.f_message( 
+            p_language_co => sys_k_global.geter('LANGUAGE_CO'),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
         );
         --
         g_msg_error := nvl(g_msg_error, p_msg_error );
-        p_result    := g_msg_error;
         --
         raise_application_error(g_cod_error, g_msg_error );
         -- 
@@ -62,10 +59,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             p_description       IN cities.description%TYPE DEFAULT NULL,
             p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
             p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
-            p_municipality_co   IN cities.municipality_co%TYPE DEFAULT NULL,
+            p_municipality_co   IN municipalities.municipality_co%TYPE DEFAULT NULL,
             p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
             p_slug              IN cities.slug%TYPE DEFAULT NULL,
-            p_user_co           IN cities.user_co%TYPE DEFAULT NULL,
+            p_user_co           IN users.user_co%TYPE DEFAULT NULL,
             p_result            OUT VARCHAR2 
         ) IS 
         --
@@ -178,8 +175,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20001;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_api_k_language.p_message( 
-                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+            g_msg_error := prs_k_api_language.f_message( 
+                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                 p_context     => K_PROCESS,
                 p_error_co    => g_cod_error 
             );
@@ -192,6 +189,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
         END IF;
         --
         -- TODO: 3.- validar que el codigo de usuario exista
+        -- ! CONSTRUIR
         l_reg_user := cfg_api_k_municipality.get_record( 
             p_user_co => p_rec.p_user_co
         );
@@ -202,8 +200,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20002;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_api_k_language.p_message( 
-                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+            g_msg_error := prs_k_api_language.f_message( 
+                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                 p_context     => K_PROCESS,
                 p_error_co    => g_cod_error 
             );
@@ -256,11 +254,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
         p_description       IN cities.description%TYPE DEFAULT NULL,
         p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
         p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
-        p_municipality_co   IN cities.municipality_co%TYPE DEFAULT NULL,
+        p_municipality_co   IN municipalities.municipality_co%TYPE DEFAULT NULL,
         p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
         p_slug              IN cities.slug%TYPE DEFAULT NULL,
-        p_user_co           IN cities.user_co%TYPE DEFAULT NULL,
-        p_result            OUT VARCHAR2  
+        p_user_co           IN users.user_co%TYPE DEFAULT NULL,
+        p_result            OUT VARCHAR2 
     ) IS
         --
         l_reg_municipality      municipalities%ROWTYPE;
@@ -286,8 +284,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
                 g_cod_error := -20001;
                 g_hay_error := TRUE;
                 --
-                g_msg_error := prs_api_k_language.p_message( 
-                    p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                g_msg_error := prs_k_api_language.f_message( 
+                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                     p_context     => K_PROCESS,
                     p_error_co    => g_cod_error 
                 );
@@ -310,8 +308,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
                 g_cod_error := -20002;
                 g_hay_error := TRUE;
                 --
-                g_msg_error := prs_api_k_language.p_message( 
-                    p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                g_msg_error := prs_k_api_language.f_message( 
+                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                     p_context     => K_PROCESS,
                     p_error_co    => g_cod_error 
                 );
@@ -346,8 +344,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20004;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_api_k_language.p_message( 
-                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+            g_msg_error := prs_k_api_language.f_message( 
+                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                 p_context     => K_PROCESS,
                 p_error_co    => g_cod_error 
             );
@@ -409,8 +407,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
                 g_cod_error := -20001;
                 g_hay_error := TRUE;
                 --
-                g_msg_error := prs_api_k_language.p_message( 
-                    p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                g_msg_error := prs_k_api_language.f_message( 
+                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                     p_context     => K_PROCESS,
                     p_error_co    => g_cod_error 
                 );
@@ -433,8 +431,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
                 g_cod_error := -20002;
                 g_hay_error := TRUE;
                 --
-                g_msg_error := prs_api_k_language.p_message( 
-                    p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+                g_msg_error := prs_k_api_language.f_message( 
+                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                     p_context     => K_PROCESS,
                     p_error_co    => g_cod_error 
                 );
@@ -472,8 +470,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20004;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_api_k_language.p_message( 
-                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+            g_msg_error := prs_k_api_language.f_message( 
+                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                 p_context     => K_PROCESS,
                 p_error_co    => g_cod_error 
             );
@@ -508,8 +506,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- delete
     PROCEDURE delete_city( 
-        p_co                IN cities.citie_co%TYPE,
-        p_result            OUT VARCHAR2 
+        p_co        IN cities.city_co%TYPE,
+        p_result    OUT VARCHAR2 
     ) IS 
         --
         l_reg_city              cities%ROWTYPE;
@@ -534,8 +532,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20004;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_api_k_language.p_message( 
-                p_language_co => ref_f_global.f_geter('LANGUAGE_CO'),
+            g_msg_error := prs_k_api_language.f_message( 
+                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
                 p_context     => K_PROCESS,
                 p_error_co    => g_cod_error 
             );
@@ -567,13 +565,13 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.prs_k_api_city IS
 BEGIN
     --
     -- verificamos la configuracion Actual 
-    g_cfg_co := nvl(sys_k_global.ref_f_global(
+    g_cfg_co := nvl(sys_k_global.sys_k_global(
         p_variable => 'CONFIGURATION_ID'
     ), K_CFG_CO );
     --
     -- tomamos la configuracion local
     g_reg_config := cfg_api_k_configuration.get_record( 
-        p_id => g_cfg_co;
+        p_id => g_cfg_co
     );
     --
     -- establecemos el lenguaje de trabajo
