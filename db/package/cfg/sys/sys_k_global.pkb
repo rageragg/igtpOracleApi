@@ -244,11 +244,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
          --
          EXCEPTION
             WHEN E_GLOBAL_NO_DEFINED THEN
-            --
-            l_val_variable := NULL;
-            --
-            seter(p_variable, l_val_variable);
-            --
+               --
+               l_val_variable := NULL;
+               --
+               seter(p_variable, l_val_variable);
+               --
       END;
       --
       RETURN l_val_variable;

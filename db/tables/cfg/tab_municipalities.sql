@@ -35,6 +35,7 @@ CREATE TABLE "IGTP"."MUNICIPALITIES"(
 
 COMMENT ON TABLE "IGTP"."MUNICIPALITIES"  IS 'Provincias de una region';
 COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."ID" IS 'Identificador correlativo unico';
+COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."MUNICIPALITY_CO" IS 'Codigo de la Municipalidad';
 COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."DESCRIPTION" IS 'Descripcion de la Municipalidad';
 COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."PROVINCE_ID" IS 'Identificador de la provincia a que pertenece';
 COMMENT ON COLUMN "IGTP"."MUNICIPALITIES"."SLUG" IS 'Identificativo de URL';

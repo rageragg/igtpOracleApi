@@ -11,7 +11,7 @@
     ---------------------------------------------------------------------------
 CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
-    K_CFG_CO     CONSTANT NUMBER        := '1';
+    K_CFG_CO     CONSTANT NUMBER        := 1;
     --
     -- globales
     g_cfg_co                        configurations.id%TYPE;
@@ -50,6 +50,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         g_msg_error := nvl(g_msg_error, p_msg_error );
         --
         raise_application_error(g_cod_error, g_msg_error );
+        --
+        EXCEPTION 
+            WHEN OTHERS THEN 
+                dbms_output.put_line('raise_error: ' || SQLERRM);
         -- 
     END raise_error;
     --
@@ -154,6 +158,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     BEGIN
         --
+        dbms_output.put_line('create_city: INICIO');
+        dbms_output.put_line('create_city: Validando Codigo de ciudad');
+        --
         -- TODO: 1.- validar que el codigo de ciudad no exista
         IF cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
             --
@@ -165,11 +172,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         END IF;
         --
         -- TODO: 2.- validar que el codigo de municipalidad exista
-        l_reg_municipality := cfg_api_k_municipality.get_record( 
-            p_municipality_co => p_rec.p_municipality_co
-        );
+        dbms_output.put_line('create_city: Validando Codigo de Municipalidad: ' || p_rec.p_municipality_co);
         --
-        IF l_reg_municipality.id IS NULL THEN
+        IF NOT cfg_api_k_municipality.exist( p_municipality_co =>  p_rec.p_municipality_co ) THEN
+            --
+            dbms_output.put_line('create_city: Error Codigo de Municipalidad');
             --
             raise_error( 
                 p_cod_error => -20001,
@@ -178,17 +185,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             -- 
         END IF;
         --
+        dbms_output.put_line('create_city: Validando Codigo de Usuario');
         -- TODO: 3.- validar que el codigo de usuario exista
-        -- ! CONSTRUIR
-        l_reg_user := sec_api_k_user.get_record( 
-            p_user_co => p_rec.p_user_co
-        );
-        --
-        IF l_reg_user.id IS NULL THEN
-            --
-            -- TODO: regionalizacion de mensajes
-            g_cod_error := -20002;
-            g_hay_error := TRUE;
+        IF NOT sec_api_k_user.exist( p_user_co =>  p_rec.p_user_co )THEN
             --
             raise_error( 
                 p_cod_error => -20002,
@@ -197,6 +196,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             -- 
         END IF;
         --
+        dbms_output.put_line('create_city: Llenando el documento API Ciudad');
         l_reg_city.city_co          :=  p_rec.p_city_co; 
         l_reg_city.description      :=  p_rec.p_description;
         l_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
@@ -206,10 +206,13 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         l_reg_city.slug             :=  p_rec.p_slug;
         l_reg_city.user_id          :=  l_reg_user.id;
         --
+        dbms_output.put_line('create_city: Invocando cfg_api_k_city.ins');
         cfg_api_k_city.ins( p_rec => l_reg_city );
         --
         p_rec.p_uuid    := l_reg_city.uuid;
         p_rec.p_slug    := l_reg_city.slug;
+        --
+         dbms_output.put_line('create_city: COMMIT');
         --
         COMMIT;
         --
@@ -493,7 +496,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
 BEGIN
     --
     -- verificamos la configuracion Actual 
-    g_cfg_co := nvl(sys_k_global.f_geter_n(
+    g_cfg_co := nvl(sys_k_global.ref_f_global(
         p_variable => 'CONFIGURATION_ID'
     ), K_CFG_CO );
     --
@@ -507,6 +510,10 @@ BEGIN
         p_variable  => 'LANGUAGE_CO', 
         p_value     => g_reg_config.language_co
     );
+    --
+    EXCEPTION 
+        WHEN OTHERS THEN 
+            dbms_output.put_line('Init Package: '||sqlerrm);
     --
 END prs_k_api_city;
 /

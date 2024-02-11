@@ -60,10 +60,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     PROCEDURE del ( p_id IN municipalities.id%TYPE );
     --
     -- exist
-    FUNCTION exist( p_id IN municipalities.id%TYPE ) RETURN BOOLEAN;
+    FUNCTION exist( p_id IN NUMBER ) RETURN BOOLEAN;
     --
     -- exist
-    FUNCTION exist( p_municipality_co IN municipalities.municipality_co%TYPE ) RETURN BOOLEAN;
+    FUNCTION exist( p_municipality_co IN VARCHAR2  ) RETURN BOOLEAN;
     --    
 END cfg_api_k_municipality;
 

@@ -4,6 +4,8 @@
 
 CREATE OR REPLACE PACKAGE BODY sec_api_k_user IS
     --
+    g_record        users%ROWTYPE;
+    --
     -- get DATA RECORD by ID
     FUNCTION get_record( p_id in users.id%TYPE )  RETURN users%ROWTYPE IS 
         --
@@ -230,4 +232,24 @@ CREATE OR REPLACE PACKAGE BODY sec_api_k_user IS
          WHERE id = p_id;
     END del;
     --
+    -- exist
+    FUNCTION exist( p_id IN users.id%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist
+    FUNCTION exist( p_user_co IN users.user_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_user_co => p_user_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    -- 
 END sec_api_k_user;

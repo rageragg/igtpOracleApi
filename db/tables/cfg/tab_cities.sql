@@ -41,6 +41,7 @@ COMMENT ON TABLE "IGTP"."CITIES"  IS 'Ciudades';
 COMMENT ON COLUMN "IGTP"."CITIES"."ID" IS 'Identificador correlativo unico';
 COMMENT ON COLUMN "IGTP"."CITIES"."CITY_CO" IS 'Codigo de la ciudad';
 COMMENT ON COLUMN "IGTP"."CITIES"."DESCRIPTION" IS 'Descripcion o nombre de la ciudad';
+COMMENT ON COLUMN "IGTP"."CITIES"."MUNICIPALITY_ID" IS 'Codigo de la Municipalidad';
 COMMENT ON COLUMN "IGTP"."CITIES"."POSTAL_CO" IS 'Codigo Postal';
 COMMENT ON COLUMN "IGTP"."CITIES"."TELEPHONE_CO" IS 'Codigo discal telefonico';
 COMMENT ON COLUMN "IGTP"."CITIES"."SLUG" IS 'Forma especifica un lugar determinado de una pagina Web';

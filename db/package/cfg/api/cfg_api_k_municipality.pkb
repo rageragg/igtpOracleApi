@@ -184,7 +184,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     END del;
     --
     -- exist
-    FUNCTION exist( p_id IN municipalities.id%TYPE ) RETURN BOOLEAN IS 
+    FUNCTION exist( p_id IN NUMBER ) RETURN BOOLEAN IS 
     BEGIN 
         --
         g_record := get_record( p_id => p_id );
@@ -194,13 +194,18 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     END exist;
     --
     -- exist
-    FUNCTION exist( p_municipality_co IN municipalities.municipality_co%TYPE ) RETURN BOOLEAN IS 
+    FUNCTION exist( p_municipality_co IN VARCHAR2  ) RETURN BOOLEAN IS 
     BEGIN 
         --
+        dbms_output.put_line('1');
         g_record := get_record( p_municipality_co => p_municipality_co );
         --
         RETURN g_record.id IS NOT NULL;
         --
+        EXCEPTION 
+            WHEN OTHERS THEN 
+                dbms_output.put_line('MAMAMA');
+                RETURN FALSE;
     END exist;
     --   
 END cfg_api_k_municipality;

@@ -69,5 +69,12 @@ CREATE OR REPLACE PACKAGE sec_api_k_user IS
     -- delete
     PROCEDURE del ( p_id IN users.id%TYPE );
     --
+    --
+    -- exist
+    FUNCTION exist( p_id IN users.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist
+    FUNCTION exist( p_user_co IN users.user_co%TYPE ) RETURN BOOLEAN;    
+    --
 end sec_api_k_user;
 /
