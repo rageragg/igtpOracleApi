@@ -97,7 +97,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         END IF;
         --
         -- TODO: 3.- validar que el codigo de usuario exista
-        l_reg_user := cfg_api_k_municipality.get_record( 
+        l_reg_user := sec_api_k_user.get_record( 
             p_user_co => p_user_co
         );
         --
@@ -171,26 +171,16 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
         IF l_reg_municipality.id IS NULL THEN
             --
-            -- TODO: regionalizacion de mensajes
-            g_cod_error := -20001;
-            g_hay_error := TRUE;
-            --
-            g_msg_error := prs_k_api_language.f_message( 
-                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                p_context     => K_PROCESS,
-                p_error_co    => g_cod_error 
+            raise_error( 
+                p_cod_error => -20001,
+                p_msg_error => 'INVALID MUNICIPALITY CODE'
             );
-            --
-            g_msg_error := nvl(g_msg_error, 'INVALID MUNICIPALITY CODE');
-            p_result    := g_msg_error;
-            --
-            raise_application_error(g_cod_error, g_msg_error );
             -- 
         END IF;
         --
         -- TODO: 3.- validar que el codigo de usuario exista
         -- ! CONSTRUIR
-        l_reg_user := cfg_api_k_municipality.get_record( 
+        l_reg_user := sec_api_k_user.get_record( 
             p_user_co => p_rec.p_user_co
         );
         --
@@ -200,16 +190,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20002;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_k_api_language.f_message( 
-                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                p_context     => K_PROCESS,
-                p_error_co    => g_cod_error 
+            raise_error( 
+                p_cod_error => -20002,
+                p_msg_error => 'INVALID USER CODE'
             );
-            --
-            g_msg_error := nvl(g_msg_error, 'INVALID USER CODE');
-            p_result    := g_msg_error;
-            --            
-            raise_application_error(g_cod_error, g_msg_error );
             -- 
         END IF;
         --
@@ -284,41 +268,26 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
                 g_cod_error := -20001;
                 g_hay_error := TRUE;
                 --
-                g_msg_error := prs_k_api_language.f_message( 
-                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                    p_context     => K_PROCESS,
-                    p_error_co    => g_cod_error 
+                raise_error( 
+                    p_cod_error => -20001,
+                    p_msg_error => 'INVALID MUNICIPALITY CODE'
                 );
-                --
-                g_msg_error := nvl(g_msg_error, 'INVALID MUNICIPALITY CODE');
-                p_result    := g_msg_error;
-                --
-                raise_application_error(g_cod_error, g_msg_error );
                 -- 
             END IF;
             --
             -- TODO: 3.- validar que el codigo de usuario exista
-            l_reg_user := cfg_api_k_municipality.get_record( 
+            l_reg_user := sec_api_k_user.get_record( 
                 p_user_co => p_user_co
             );
             --
             IF l_reg_user.id IS NULL THEN
                 --
                 -- TODO: regionalizacion de mensajes
-                g_cod_error := -20002;
-                g_hay_error := TRUE;
-                --
-                g_msg_error := prs_k_api_language.f_message( 
-                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                    p_context     => K_PROCESS,
-                    p_error_co    => g_cod_error 
+                raise_error( 
+                    p_cod_error => -20002,
+                    p_msg_error => 'INVALID USER CODE'
                 );
                 --
-                g_msg_error := nvl(g_msg_error, 'INVALID USER CODE');
-                p_result    := g_msg_error;
-                --            
-                raise_application_error(g_cod_error, g_msg_error );
-                -- 
             END IF;
             --
             l_reg_city.city_co          :=  p_city_co; 
@@ -341,19 +310,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             -- TODO: Manejar el error cuando no exista el codigo de ciudad
             --
             -- TODO: regionalizacion de mensajes
-            g_cod_error := -20004;
-            g_hay_error := TRUE;
-            --
-            g_msg_error := prs_k_api_language.f_message( 
-                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                p_context     => K_PROCESS,
-                p_error_co    => g_cod_error 
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID CITY CODE'
             );
-            --
-            g_msg_error := nvl(g_msg_error, 'INVALID CITY CODE');
-            p_result    := g_msg_error;
-            --
-            raise_application_error(g_cod_error, g_msg_error );
             --
         END IF;
         --
@@ -404,44 +364,26 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             IF l_reg_municipality.id IS NULL THEN
                 --
                 -- TODO: regionalizacion de mensajes
-                g_cod_error := -20001;
-                g_hay_error := TRUE;
-                --
-                g_msg_error := prs_k_api_language.f_message( 
-                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                    p_context     => K_PROCESS,
-                    p_error_co    => g_cod_error 
+                raise_error( 
+                    p_cod_error => -20001,
+                    p_msg_error => 'INVALID MUNICIPALITY CODE'
                 );
-                --
-                g_msg_error := nvl(g_msg_error, 'INVALID MUNICIPALITY CODE');
-                p_result    := g_msg_error;
-                --
-                raise_application_error(g_cod_error, g_msg_error );
                 -- 
             END IF;
             --
             -- TODO: 3.- validar que el codigo de usuario exista
-            l_reg_user := cfg_api_k_municipality.get_record( 
+            l_reg_user := sec_api_k_user.get_record( 
                 p_user_co => p_rec.p_user_co
             );
             --
             IF l_reg_user.id IS NULL THEN
                 --
                 -- TODO: regionalizacion de mensajes
-                g_cod_error := -20002;
-                g_hay_error := TRUE;
-                --
-                g_msg_error := prs_k_api_language.f_message( 
-                    p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                    p_context     => K_PROCESS,
-                    p_error_co    => g_cod_error 
+                raise_error( 
+                    p_cod_error => -20002,
+                    p_msg_error => 'INVALID USER CODE'
                 );
                 --
-                g_msg_error := nvl(g_msg_error, 'INVALID USER CODE');
-                p_result    := g_msg_error;
-                --            
-                raise_application_error(g_cod_error, g_msg_error );
-                -- 
             END IF;
             --
             l_reg_city.city_co          :=  p_rec.p_city_co; 
@@ -453,7 +395,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             l_reg_city.slug             :=  p_rec.p_slug;
             l_reg_city.user_id          :=  l_reg_user.id;
             --
-            prs_k_api_city.upd( p_rec => l_reg_city );
+            cfg_api_k_city.upd( p_rec => l_reg_city );
             --
             COMMIT;
             --
@@ -467,19 +409,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             -- TODO: Manejar el error cuando no exista el codigo de ciudad
             --
             -- TODO: regionalizacion de mensajes
-            g_cod_error := -20004;
-            g_hay_error := TRUE;
             --
-            g_msg_error := prs_k_api_language.f_message( 
-                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                p_context     => K_PROCESS,
-                p_error_co    => g_cod_error 
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID CITY CODE'
             );
-            --
-            g_msg_error := nvl(g_msg_error, 'INVALID CITY CODE');
-            p_result    := g_msg_error;
-            --
-            raise_application_error(g_cod_error, g_msg_error );
             --
         END IF;
         --
@@ -506,7 +440,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- delete
     PROCEDURE delete_city( 
-        p_co        IN cities.city_co%TYPE,
+        p_city_co   IN cities.city_co%TYPE,
         p_result    OUT VARCHAR2 
     ) IS 
         --
@@ -532,16 +466,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             g_cod_error := -20004;
             g_hay_error := TRUE;
             --
-            g_msg_error := prs_k_api_language.f_message( 
-                p_language_co => sys_k_global.geter('LANGUAGE_CO'),
-                p_context     => K_PROCESS,
-                p_error_co    => g_cod_error 
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID CITY CODE'
             );
-            --
-            g_msg_error := nvl(g_msg_error, 'INVALID CITY CODE');
-            p_result    := g_msg_error;
-            --
-            raise_application_error(g_cod_error, g_msg_error );
             --
         END IF;
         --
@@ -565,7 +493,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
 BEGIN
     --
     -- verificamos la configuracion Actual 
-    g_cfg_co := nvl(sys_k_global.sys_k_global(
+    g_cfg_co := nvl(sys_k_global.f_geter_n(
         p_variable => 'CONFIGURATION_ID'
     ), K_CFG_CO );
     --

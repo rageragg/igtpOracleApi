@@ -70,7 +70,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_city IS
     --
     -- delete
     PROCEDURE delete_city( 
-        p_co        IN cities.city_co%TYPE,
+        p_city_co   IN cities.city_co%TYPE,
         p_result    OUT VARCHAR2 
     );
     --
