@@ -176,7 +176,16 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_created_at        IN cities.created_at%TYPE DEFAULT NULL, 
             p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
         ) IS
+        --
+        l_uuid  cities.uuid%TYPE;
+        --
     BEGIN
+        --
+        IF p_uuid IS NULL THEN 
+            l_uuid := sys_k_utils.f_uuid();
+        ELSE 
+            l_uuid := p_uuid;
+        END IF;   
         --
         UPDATE igtp.cities 
         SET city_co         = p_city_co,
@@ -184,7 +193,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             telephone_co    = p_telephone_co,
             postal_co       = p_postal_co,
             municipality_id = p_municipality_id,
-            uuid            = p_uuid,
+            uuid            = l_uuid,
             slug            = p_slug,
             user_id         = p_user_id,
             created_at      = p_created_at,
@@ -196,6 +205,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     -- update RECORD
     PROCEDURE upd ( p_rec IN OUT cities%ROWTYPE ) IS
     BEGIN 
+        --
+        IF p_rec.uuid IS NULL THEN 
+            p_rec.uuid := sys_k_utils.f_uuid();
+        END IF;   
         --
         p_rec.updated_at        := sysdate;
         --

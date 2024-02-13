@@ -16,21 +16,21 @@ BEGIN
     r_city_data.p_city_co           := 'XXX-XXXX';
     r_city_data.p_description       := 'ELIMINAR';
     r_city_data.p_telephone_co      := '000';
-    r_city_data.p_postal_co         := '0000';
+    r_city_data.p_postal_co         := '000x';
     r_city_data.p_municipality_co   := 'BOL-HRE';
     r_city_data.p_uuid              := NULL;
     r_city_data.p_slug              := NULL;
     r_city_data.p_user_co           := 'RGUERRA';
     --
     --
-    dbms_output.put_line( '2.- Incluir ciudad');
+    dbms_output.put_line( '2.- Actualizando ciudad');
     /*
-    igtp.prs_k_api_city.create_city(
+    igtp.prs_k_api_city.update_city(
         p_rec       => r_city_data,
         p_result    => l_result
     );
     */
-    igtp.prs_k_api_city.create_city(
+    igtp.prs_k_api_city.update_city(
         p_city_co           => r_city_data.p_city_co,
         p_description       => r_city_data.p_description,
         p_telephone_co      => r_city_data.p_telephone_co,

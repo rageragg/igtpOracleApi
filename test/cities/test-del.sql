@@ -24,22 +24,9 @@ BEGIN
     --
     --
     dbms_output.put_line( '2.- Incluir ciudad');
-    /*
-    igtp.prs_k_api_city.create_city(
-        p_rec       => r_city_data,
+    igtp.prs_k_api_city.delete_city(
+        p_city_co   => r_city_data.p_city_co,
         p_result    => l_result
-    );
-    */
-    igtp.prs_k_api_city.create_city(
-        p_city_co           => r_city_data.p_city_co,
-        p_description       => r_city_data.p_description,
-        p_telephone_co      => r_city_data.p_telephone_co,
-        p_postal_co         => r_city_data.p_postal_co,
-        p_municipality_co   => r_city_data.p_municipality_co,
-        p_uuid              => r_city_data.p_uuid,
-        p_slug              => r_city_data.p_slug,
-        p_user_co           => r_city_data.p_user_co,
-        p_result            => l_result
     );
     --
     COMMIT;
