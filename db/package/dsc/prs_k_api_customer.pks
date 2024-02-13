@@ -67,4 +67,5 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     
     -- TODO: desarrollar el metodo de devolver un registro 
     -- TODO: desarrollar el metodo de devolver una lista
+    -- TODO: desarrollar el metodo eliminar
 END prs_api_k_customer;
