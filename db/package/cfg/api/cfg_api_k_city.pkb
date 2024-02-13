@@ -111,7 +111,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     BEGIN
         --
         IF p_uuid IS NOT NULL THEN 
-            ui := p_uuid;
+            ui := sys_k_utils.f_uuid();
         END IF;    
         --
         INSERT INTO igtp.cities(

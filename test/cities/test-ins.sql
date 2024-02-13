@@ -13,11 +13,11 @@ BEGIN
     --
     dbms_output.put_line( '1.- llenado de documento');
     -- llenado de documento
-    r_city_data.p_city_co           := 'SUC-CUM';
-    r_city_data.p_description       := 'CUMANA';
-    r_city_data.p_telephone_co      := '293';
-    r_city_data.p_postal_co         := '6101';
-    r_city_data.p_municipality_co   := 'SUC-SUC';
+    r_city_data.p_city_co           := 'BOL-CBOL';
+    r_city_data.p_description       := 'CIUDAD BOLIVAR (BOL)';
+    r_city_data.p_telephone_co      := '285';
+    r_city_data.p_postal_co         := '8001';
+    r_city_data.p_municipality_co   := 'BOL-HRE';
     r_city_data.p_uuid              := NULL;
     r_city_data.p_slug              := NULL;
     r_city_data.p_user_co           := 'RGUERRA';
