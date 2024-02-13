@@ -158,7 +158,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         END IF; 
         --
         IF p_rec.uuid IS NULL THEN 
-            p_rec.uuid := sys_guid();
+            p_rec.uuid := sys_k_utils.f_uuid();
         END IF;  
         --
         INSERT INTO igtp.locations VALUES p_rec;
