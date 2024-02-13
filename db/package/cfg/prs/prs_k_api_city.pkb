@@ -38,8 +38,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
+        dbms_output.put_line('raise_error: 1');
         g_cod_error := p_cod_error;
         g_hay_error := TRUE;
+        dbms_output.put_line('raise_error: 2');
         --
         g_msg_error := prs_k_api_language.f_message( 
             p_language_co => sys_k_global.geter('LANGUAGE_CO'),
@@ -47,13 +49,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             p_error_co    => g_cod_error 
         );
         --
+        dbms_output.put_line('raise_error: 3');
+        --
         g_msg_error := nvl(g_msg_error, p_msg_error );
         --
         raise_application_error(g_cod_error, g_msg_error );
-        --
-        EXCEPTION 
-            WHEN OTHERS THEN 
-                dbms_output.put_line('raise_error: ' || SQLERRM);
         -- 
     END raise_error;
     --
@@ -159,7 +159,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     BEGIN
         --
         dbms_output.put_line('create_city: INICIO');
-        dbms_output.put_line('create_city: Validando Codigo de ciudad');
+        dbms_output.put_line('create_city: Validando Codigo de ciudad ' || p_rec.p_city_co);
         --
         -- TODO: 1.- validar que el codigo de ciudad no exista
         IF cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
@@ -221,7 +221,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         EXCEPTION
             WHEN e_exist_city_code OR e_validate_municipality OR e_validate_user THEN 
                 --
-                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                p_result := '{ "status":"ERROR", "message":"'|| g_msg_error ||'" }';
                 -- 
             WHEN OTHERS THEN 
                 --

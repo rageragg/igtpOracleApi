@@ -16,7 +16,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_city IS
     --                                  administrativos de creacion de ciudades
     ---------------------------------------------------------------------------
     --
-    K_PROCESS    CONSTANT VARCHAR2(20)  := 'PRC_API_K_CITY';
+    K_PROCESS    CONSTANT VARCHAR2(30)  := 'PRC_API_K_CITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     --
     TYPE city_api_doc IS RECORD(

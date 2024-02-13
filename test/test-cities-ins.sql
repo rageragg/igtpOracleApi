@@ -11,9 +11,11 @@ BEGIN
     --
     -- TODO: validaciones de que exista la localidad
     l_reg_municipality.municipality_co := 'LAR-MOR';
+    dbms_output.put_line('1');
     l_reg_municipality := cfg_api_k_municipality.get_record( p_municipality_co => l_reg_municipality.municipality_co );
     --
     -- TODO: validaciones de codigo no se repita
+    dbms_output.put_line('2');
     l_reg_city.city_co          := 'LAR-ETYO';
     l_reg_city.description      := 'EL TOCUYO (LAR)';
     l_reg_city.municipality_id  := l_reg_municipality.id;

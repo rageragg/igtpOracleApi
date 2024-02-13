@@ -34,7 +34,7 @@ CREATE OR REPLACE PACKAGE BODY prs_k_api_language IS
     BEGIN  
         --
         g_rec_configuration := cfg_api_k_configuration.get_record( 
-                                    p_id => sys_k_global.ref_f_global('LANGUAGE_CO') 
+                                    p_id => sys_k_global.ref_f_global('CONFIGURATION_ID') 
                                );
         --
     END p_init_globals;

@@ -7,7 +7,7 @@
 
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     --
-    K_PROCESS    CONSTANT VARCHAR2(20)  := 'CFG_API_K_MUNICIPALITY';
+    K_PROCESS    CONSTANT VARCHAR2(30)  := 'CFG_API_K_MUNICIPALITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'MUNICIPALITIES';
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
@@ -19,7 +19,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     FUNCTION get_record RETURN municipalities%ROWTYPE;    
     --
     -- get DATA RETURN RECORD
-    FUNCTION get_record( p_id in municipalities.id%TYPE ) RETURN municipalities%ROWTYPE;
+    FUNCTION get_record( p_id IN municipalities.id%TYPE ) RETURN municipalities%ROWTYPE;
     --
     -- get DATA RETURN RECORD by CO
     FUNCTION get_record( p_municipality_co IN municipalities.municipality_co%TYPE ) RETURN municipalities%ROWTYPE;     
@@ -60,10 +60,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     PROCEDURE del ( p_id IN municipalities.id%TYPE );
     --
     -- exist
-    FUNCTION exist( p_id IN NUMBER ) RETURN BOOLEAN;
+    FUNCTION exist( p_id IN municipalities.id%TYPE ) RETURN BOOLEAN;
     --
     -- exist
-    FUNCTION exist( p_municipality_co IN VARCHAR2  ) RETURN BOOLEAN;
+    FUNCTION exist( p_municipality_co IN municipalities.municipality_co%TYPE  ) RETURN BOOLEAN;
     --    
 END cfg_api_k_municipality;
 
