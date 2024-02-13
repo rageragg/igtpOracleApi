@@ -21,13 +21,12 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
     TYPE location_api_doc IS RECORD(
         p_location_co       locations.location_co%TYPE DEFAULT NULL, 
         p_description       locations.description%TYPE DEFAULT NULL,
-        p_telephone_co      locations.telephone_co%TYPE DEFAULT NULL, 
         p_postal_co         locations.postal_co%TYPE DEFAULT NULL, 
         p_city_co           cities.city_co%TYPE DEFAULT NULL,
         p_uuid              locations.uuid%TYPE DEFAULT NULL,
         p_slug              locations.slug%TYPE DEFAULT NULL,
-        p_nu_gps_lat 		locations.num_gps_lat%TYPE DEFAULT NULL, 
-	    p_nu_gps_lon 		locations.num_gps_lon%TYPE DEFAULT NULL,  
+        p_nu_gps_lat 		locations.nu_gps_lat%TYPE DEFAULT NULL, 
+	    p_nu_gps_lon 		locations.nu_gps_lon%TYPE DEFAULT NULL,  
         p_user_co           users.user_co%TYPE DEFAULT NULL
     );
     --
@@ -35,13 +34,12 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
     PROCEDURE create_location (
         p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
         p_description       IN locations.description%TYPE DEFAULT NULL,
-        p_telephone_co      IN locations.telephone_co%TYPE DEFAULT NULL, 
         p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
         p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
         p_slug              IN locations.slug%TYPE DEFAULT NULL,
-        p_nu_gps_lat 		IN locations.num_gps_lat%TYPE DEFAULT NULL, 
-	    p_nu_gps_lon 		IN locations.num_gps_lon%TYPE DEFAULT NULL,  
+        p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
+	    p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
         p_user_co           IN users.user_co%TYPE DEFAULT NULL,
         p_result            OUT VARCHAR2 
     );
@@ -56,18 +54,17 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
     PROCEDURE update_location(
         p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
         p_description       IN locations.description%TYPE DEFAULT NULL,
-        p_telephone_co      IN locations.telephone_co%TYPE DEFAULT NULL, 
         p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
         p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
         p_slug              IN locations.slug%TYPE DEFAULT NULL,
-        p_nu_gps_lat 		IN locations.num_gps_lat%TYPE DEFAULT NULL, 
-	    p_nu_gps_lon 		IN locations.num_gps_lon%TYPE DEFAULT NULL,  
+        p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
+	    p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
         p_user_co           IN users.user_co%TYPE DEFAULT NULL,
         p_result            OUT VARCHAR2  
     );
     --
-    -- update RECORD
+    -- update RECORD 
     PROCEDURE update_location( 
         p_rec       IN OUT location_api_doc,
         p_result    OUT VARCHAR2  

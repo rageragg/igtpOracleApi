@@ -38,18 +38,14 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
-        dbms_output.put_line('raise_error: 1');
         g_cod_error := p_cod_error;
         g_hay_error := TRUE;
-        dbms_output.put_line('raise_error: 2');
         --
         g_msg_error := prs_k_api_language.f_message( 
             p_language_co => sys_k_global.geter('LANGUAGE_CO'),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
         );
-        --
-        dbms_output.put_line('raise_error: 3');
         --
         g_msg_error := nvl(g_msg_error, p_msg_error );
         --
