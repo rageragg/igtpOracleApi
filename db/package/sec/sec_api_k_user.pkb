@@ -6,6 +6,14 @@ CREATE OR REPLACE PACKAGE BODY sec_api_k_user IS
     --
     g_record        users%ROWTYPE;
     --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN users%ROWTYPE IS 
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;    
+    --
     -- get DATA RECORD by ID
     FUNCTION get_record( p_id in users.id%TYPE )  RETURN users%ROWTYPE IS 
         --

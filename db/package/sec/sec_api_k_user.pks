@@ -10,7 +10,10 @@ CREATE OR REPLACE PACKAGE sec_api_k_user IS
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
     TYPE users_api_tab IS TABLE OF users%ROWTYPE;
-       --
+    --
+    -- get DATA RETURN RECORD by PRELOAD with function exist
+    FUNCTION get_record RETURN users%ROWTYPE;
+    --
     -- get DATA RETURN RECORD by id
     FUNCTION get_record( p_id IN users.id%TYPE ) RETURN users%ROWTYPE;
     --

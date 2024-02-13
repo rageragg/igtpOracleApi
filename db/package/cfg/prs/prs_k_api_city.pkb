@@ -183,6 +183,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
                 p_msg_error => 'INVALID MUNICIPALITY CODE'
             );
             -- 
+        ELSE 
+            --
+            l_reg_municipality := cfg_api_k_municipality.get_record;
+            --
         END IF;
         --
         dbms_output.put_line('create_city: Validando Codigo de Usuario');
@@ -194,6 +198,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
                 p_msg_error => 'INVALID USER CODE'
             );
             -- 
+        ELSE 
+            --
+            l_reg_user := sec_api_k_user.get_record;
+            --
         END IF;
         --
         dbms_output.put_line('create_city: Llenando el documento API Ciudad');
@@ -203,7 +211,19 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         l_reg_city.postal_co        :=  p_rec.p_postal_co; 
         l_reg_city.municipality_id  :=  l_reg_municipality.id;
         l_reg_city.uuid             :=  p_rec.p_uuid;
-        l_reg_city.slug             :=  p_rec.p_slug;
+        --
+        -- creamos el slug
+        IF p_rec.p_slug IS NULL THEN 
+            --
+            dbms_output.put_line('create_city: Creando el SLUG ' || substr(l_reg_municipality.slug||'-'||l_reg_city.city_co,1,60));
+            l_reg_city.slug :=  lower( substr(l_reg_municipality.slug||'-'||l_reg_city.city_co,1,60) );
+            --
+        ELSE
+            --
+            l_reg_city.slug :=  p_rec.p_slug;
+            --
+        END IF;
+        --
         l_reg_city.user_id          :=  l_reg_user.id;
         --
         dbms_output.put_line('create_city: Invocando cfg_api_k_city.ins');

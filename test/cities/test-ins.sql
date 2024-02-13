@@ -13,14 +13,14 @@ BEGIN
     --
     dbms_output.put_line( '1.- llenado de documento');
     -- llenado de documento
-    r_city_data.p_city_co           := 'SFAP';
-    r_city_data.p_description       := 'SAN FERNANDO DE APURE';
-    r_city_data.p_telephone_co      := '247';
-    r_city_data.p_postal_co         := '7001';
-    r_city_data.p_municipality_co   := 'SFAP';
+    r_city_data.p_city_co           := 'SUC-CUM';
+    r_city_data.p_description       := 'CUMANA';
+    r_city_data.p_telephone_co      := '293';
+    r_city_data.p_postal_co         := '6101';
+    r_city_data.p_municipality_co   := 'SUC-SUC';
     r_city_data.p_uuid              := NULL;
-    r_city_data.p_slug              := 'ven-lla-apu-sfap';
-    r_city_data.p_user_co           := 1;
+    r_city_data.p_slug              := NULL;
+    r_city_data.p_user_co           := 'RGUERRA';
     --
     --
     dbms_output.put_line( '2.- Incluir ciudad');
