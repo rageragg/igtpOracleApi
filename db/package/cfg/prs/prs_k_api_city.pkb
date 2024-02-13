@@ -270,9 +270,6 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             l_reg_city := cfg_api_k_city.get_record;
             --
             -- TODO: 2.- validar que el codigo de municipalidad exista
-            l_reg_municipality := cfg_api_k_municipality.get_record( 
-                p_municipality_co => p_municipality_co
-            );
             --
             IF NOT cfg_api_k_municipality.exist( p_municipality_co => p_municipality_co )  THEN
                 --

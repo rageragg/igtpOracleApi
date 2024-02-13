@@ -151,7 +151,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
     PROCEDURE ins( p_rec IN OUT locations%ROWTYPE ) IS  
     BEGIN 
         --
-        p_rec.updated_at    := sysdate;
+        p_rec.created_at    := sysdate;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
@@ -161,7 +161,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_rec.uuid := sys_k_utils.f_uuid();
         END IF;  
         --
-        INSERT INTO igtp.locations VALUES p_rec;
+        INSERT INTO igtp.locations 
+            VALUES p_rec
+            RETURNING id, created_at INTO p_rec.id, p_rec.created_at;
         --
     END ins;
     --
@@ -179,8 +181,17 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
         p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
-        ) IS 
+        ) IS
+        --
+        l_uuid  cities.uuid%TYPE;
+        -- 
     BEGIN
+        --
+        IF p_uuid IS NULL THEN 
+            l_uuid := sys_k_utils.f_uuid();
+        ELSE 
+            l_uuid := p_uuid;
+        END IF;  
         --
         UPDATE locations 
         SET postal_co   = p_postal_co,
@@ -192,21 +203,26 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             user_id     = p_user_id,
             updated_at  = p_updated_at,
             nu_gps_lon  = p_nu_gps_lon,
-            uuid        = p_uuid,
+            uuid        = l_uuid,
             slug        = p_slug
         WHERE id = p_id;
         --
     END upd;
     --
     -- update RECORD
-    PROCEDURE upd( p_rec IN OUT locations%ROWTYPE ) IS 
+    PROCEDURE upd( p_rec IN OUT locations%ROWTYPE ) IS    
     BEGIN
+        -- 
+        IF p_rec.uuid IS NULL THEN 
+            p_rec.uuid := sys_k_utils.f_uuid();
+        END IF;  
         --
         p_rec.updated_at    := sysdate;
         --
         UPDATE igtp.locations 
            SET ROW = p_rec
-         WHERE id = p_rec.id;
+         WHERE id = p_rec.id
+         RETURNING updated_at INTO p_rec.updated_at;
         --
     END upd;
     --

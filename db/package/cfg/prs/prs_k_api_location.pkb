@@ -26,7 +26,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
     e_exist_location_code           EXCEPTION;
     e_no_exist_location_code        EXCEPTION;
     --
-    PRAGMA exception_init( e_validate_municipality, -20001 );
+    PRAGMA exception_init( e_validate_city, -20001 );
     PRAGMA exception_init( e_validate_user, -20002 );
     PRAGMA exception_init( e_exist_location_code, -20003 );
     PRAGMA exception_init( e_no_exist_location_code, -20004 );
@@ -118,17 +118,28 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
         l_reg_location.nu_gps_lat       := p_nu_gps_lat;
         l_reg_location.nu_gps_lon       := p_nu_gps_lon;
         l_reg_location.uuid             := p_uuid; 
-        l_reg_location.slug             := p_slug; 
+        --
+        -- creamos el slug
+        IF p_slug IS NULL THEN 
+            --
+            l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+            --
+        ELSE
+            --
+            l_reg_location.slug :=  p_slug;
+            --
+        END IF;
+        --
         l_reg_location.user_id          := l_reg_user.id;
         --
         cfg_api_k_location.ins( p_rec => l_reg_location );
         --
         COMMIT;
         --
-        p_result := '{ "status":"OK", "message":"" }';
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
         --
         EXCEPTION
-            WHEN e_exist_location_code OR e_validate_location OR e_validate_user THEN 
+            WHEN e_exist_location_code OR e_validate_city OR e_validate_user THEN 
                 --
                 p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
                 -- 
@@ -141,7 +152,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
                 END IF;
                 --
                 ROLLBACK;
-        --    
+        -- 
     END create_location;
     --  
     -- insert RECORD
@@ -157,7 +168,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
     BEGIN 
         --
         -- TODO: 1.- validar que el codigo de locacion no exista
-        IF cfg_api_k_location.exist( p_location_co => location_api_doc.p_location_co ) THEN
+        IF cfg_api_k_location.exist( p_location_co => p_rec.p_location_co ) THEN
             --
             raise_error( 
                 p_cod_error => -20003,
@@ -166,7 +177,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
             --  
         END IF;
         --
-        IF NOT cfg_api_k_city.exist( p_city_co => location_api_doc.p_city_co ) THEN
+        IF NOT cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
             --
             raise_error( 
                 p_cod_error => -20001,
@@ -179,7 +190,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
             --            
         END IF;
         --
-        IF NOT sec_api_k_user.exist( p_user_co => location_api_doc.p_user_co ) THEN
+        IF NOT sec_api_k_user.exist( p_user_co => p_rec.p_user_co ) THEN
             --
             raise_error( 
                 p_cod_error => -20002,
@@ -192,27 +203,38 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
             --            
         END IF;
         --
-        l_reg_location.location_co      := location_api_doc.p_location_co;
-        l_reg_location.description      := location_api_doc.p_description; 
-        l_reg_location.postal_co        := location_api_doc.p_postal_co; 
+        l_reg_location.location_co      := p_rec.p_location_co;
+        l_reg_location.description      := p_rec.p_description; 
+        l_reg_location.postal_co        := p_rec.p_postal_co; 
         l_reg_location.city_id          := l_reg_city.id;
-        l_reg_location.nu_gps_lat       := location_api_doc.p_nu_gps_lat;
-        l_reg_location.nu_gps_lon       := location_api_doc.p_nu_gps_lon;
-        l_reg_location.uuid             := location_api_doc.p_uuid; 
-        l_reg_location.slug             := location_api_doc.p_slug; 
+        l_reg_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
+        l_reg_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
+        l_reg_location.uuid             := p_rec.p_uuid; 
+        --
+        -- creamos el slug
+        IF p_rec.p_slug IS NULL THEN 
+            --
+            l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+            --
+        ELSE
+            --
+            l_reg_location.slug :=  p_rec.p_slug;
+            --
+        END IF;
+        --
         l_reg_location.user_id          := l_reg_user.id;
         --
         cfg_api_k_location.ins( p_rec => l_reg_location );
         --
-        p_rec.p_uuid    := l_reg_city.uuid;
-        p_rec.p_slug    := l_reg_city.slug;                
+        p_rec.p_uuid    := l_reg_location.uuid;
+        p_rec.p_slug    := l_reg_location.slug;                
         --
         COMMIT;
         --
-        p_result := '{ "status":"OK", "message":"" }';
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
         --
         EXCEPTION
-            WHEN e_exist_location_code OR e_validate_location OR e_validate_user THEN 
+            WHEN e_exist_location_code OR e_validate_city OR e_validate_user THEN 
                 --
                 p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
                 -- 
@@ -225,9 +247,300 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
                 END IF;
                 --
                 ROLLBACK;
-        --     
+        --    
     END create_location;
-    --      
+    --  
+    --
+    -- update
+    PROCEDURE update_location(
+        p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
+        p_description       IN locations.description%TYPE DEFAULT NULL,
+        p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
+        p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
+        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+        p_slug              IN locations.slug%TYPE DEFAULT NULL,
+        p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
+	    p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
+        p_user_co           IN users.user_co%TYPE DEFAULT NULL,
+        p_result            OUT VARCHAR2  
+    ) IS 
+        --
+        l_reg_location          locations%ROWTYPE;
+        l_reg_user              users%ROWTYPE;
+        l_reg_city              cities%ROWTYPE;
+        --
+    BEGIN
+        --
+        -- TODO: 1.- validar que el codigo de ciudad exista
+        IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
+            --
+            -- tomamos el registro encontrado
+            l_reg_location := cfg_api_k_location.get_record;
+            --
+            IF NOT cfg_api_k_city.exist( p_city_co => p_city_co )  THEN
+                --
+                -- TODO: regionalizacion de mensajes
+                g_cod_error := -20001;
+                g_hay_error := TRUE;
+                --
+                raise_error( 
+                    p_cod_error => -20001,
+                    p_msg_error => 'INVALID CITY CODE'
+                );
+                -- 
+            ELSE 
+                --
+                l_reg_city := cfg_api_k_city.get_record;
+                --
+            END IF;
+            --
+            IF NOT sec_api_k_user.exist(p_user_co => p_user_co) THEN
+                --
+                -- TODO: regionalizacion de mensajes
+                raise_error( 
+                    p_cod_error => -20002,
+                    p_msg_error => 'INVALID USER CODE'
+                );
+                --
+            ELSE 
+                --
+                l_reg_user := sec_api_k_user.get_record;
+                --
+            END IF;
+            --
+            l_reg_location.location_co      := p_location_co;
+            l_reg_location.description      := p_description; 
+            l_reg_location.postal_co        := p_postal_co; 
+            l_reg_location.city_id          := l_reg_city.id;
+            l_reg_location.nu_gps_lat       := p_nu_gps_lat;
+            l_reg_location.nu_gps_lon       := p_nu_gps_lon;
+            --
+            -- creamos el slug
+            IF p_uuid IS NOT NULL THEN 
+                l_reg_location.uuid             :=  p_uuid;
+            END IF;
+            --
+            IF p_slug IS NOT NULL THEN 
+                --
+                l_reg_location.slug             :=  p_slug;
+                --
+            ELSE
+                --
+                IF l_reg_location.slug IS NULL THEN 
+                    l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+                END IF;
+                --
+            END IF;
+            --
+            l_reg_location.user_id          := l_reg_user.id;
+            --
+            cfg_api_k_location.upd( p_rec => l_reg_location );
+            --
+            COMMIT;
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --
+        ELSE
+            --
+            -- TODO: Manejar el error cuando no exista el codigo de ciudad
+            --
+            -- TODO: regionalizacion de mensajes
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            --
+        END IF;
+        --
+        EXCEPTION
+            WHEN e_validate_city OR e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                -- 
+            WHEN e_no_exist_location_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --    
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+        --  
+    END update_location;
+    --
+    -- update RECORD 
+    PROCEDURE update_location( 
+        p_rec       IN OUT location_api_doc,
+        p_result    OUT VARCHAR2  
+    ) IS
+        --
+        l_reg_location          locations%ROWTYPE;
+        l_reg_user              users%ROWTYPE;
+        l_reg_city              cities%ROWTYPE;
+        --
+    BEGIN
+        --
+        -- TODO: 1.- validar que el codigo de ciudad exista
+        IF cfg_api_k_location.exist( p_location_co => p_rec.p_location_co ) THEN
+            --
+            -- tomamos el registro encontrado
+            l_reg_location := cfg_api_k_location.get_record;
+            --
+            IF NOT cfg_api_k_city.exist( p_city_co => p_rec.p_city_co )  THEN
+                --
+                -- TODO: regionalizacion de mensajes
+                g_cod_error := -20001;
+                g_hay_error := TRUE;
+                --
+                raise_error( 
+                    p_cod_error => -20001,
+                    p_msg_error => 'INVALID CITY CODE'
+                );
+                -- 
+            ELSE 
+                --
+                l_reg_city := cfg_api_k_city.get_record;
+                --
+            END IF;
+            --
+            IF NOT sec_api_k_user.exist(p_user_co => p_rec.p_user_co) THEN
+                --
+                -- TODO: regionalizacion de mensajes
+                raise_error( 
+                    p_cod_error => -20002,
+                    p_msg_error => 'INVALID USER CODE'
+                );
+                --
+            ELSE 
+                --
+                l_reg_user := sec_api_k_user.get_record;
+                --
+            END IF;
+            --
+            l_reg_location.location_co      := p_rec.p_location_co;
+            l_reg_location.description      := p_rec.p_description; 
+            l_reg_location.postal_co        := p_rec.p_postal_co; 
+            l_reg_location.city_id          := l_reg_city.id;
+            l_reg_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
+            l_reg_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
+            --
+            -- creamos el slug
+            IF p_rec.p_uuid IS NOT NULL THEN 
+                l_reg_location.uuid             :=  p_rec.p_uuid;
+            END IF;
+            --
+            IF p_rec.p_slug IS NOT NULL THEN 
+                --
+                l_reg_location.slug             :=  p_rec.p_slug;
+                --
+            ELSE
+                --
+                IF l_reg_location.slug IS NULL THEN 
+                    l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+                END IF;
+                --
+            END IF;
+            --
+            l_reg_location.user_id          := l_reg_user.id;
+            --
+            cfg_api_k_location.upd( p_rec => l_reg_location );
+            --
+            p_rec.p_uuid    := l_reg_location.uuid;
+            p_rec.p_slug    := l_reg_location.slug;     
+            --
+            COMMIT;
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --
+        ELSE
+            --
+            -- TODO: Manejar el error cuando no exista el codigo de ciudad
+            --
+            -- TODO: regionalizacion de mensajes
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            --
+        END IF;
+        --
+        EXCEPTION
+            WHEN e_validate_city OR e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                -- 
+            WHEN e_no_exist_location_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --    
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+        --   
+    END update_location;   
+    --
+    -- delete
+    PROCEDURE delete_location( 
+        p_location_co   IN locations.location_co%TYPE,
+        p_result        OUT VARCHAR2 
+    ) IS 
+        --
+        l_reg_locations     locations%ROWTYPE;
+        --
+    BEGIN 
+        --
+        IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
+            --
+            -- tomamos el registro encontrado
+            l_reg_locations := cfg_api_k_location.get_record;
+            --
+            cfg_api_k_location.del( p_id => l_reg_locations.id );
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --
+        ELSE 
+            --
+            -- TODO: Manejar el error cuando no exista el codigo de ciudad
+            --
+            -- TODO: regionalizacion de mensajes
+            g_cod_error := -20004;
+            g_hay_error := TRUE;
+            --
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'INVALID LOCATION CODE'
+            );
+            --
+        END IF;
+        --
+        EXCEPTION
+            WHEN e_no_exist_location_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --    
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+        --
+    END delete_location;
+    --        
 BEGIN
     --
     -- verificamos la configuracion Actual 

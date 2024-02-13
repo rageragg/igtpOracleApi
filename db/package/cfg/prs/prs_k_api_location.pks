@@ -72,8 +72,8 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
     --
     -- delete
     PROCEDURE delete_location( 
-        p_city_co   IN locations.location_co%TYPE,
-        p_result    OUT VARCHAR2 
+        p_location_co   IN locations.location_co%TYPE,
+        p_result        OUT VARCHAR2 
     );
     --
 END prs_k_api_location;
