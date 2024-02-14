@@ -173,9 +173,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     ) IS 
     BEGIN
         --
-        g_doc_city.p_city_co            := p_rec.p_city_co;
-        g_doc_city.p_municipality_co    := p_rec.p_municipality_co;
-        g_doc_city.p_user_co            := p_rec.p_user_co;
+        -- se establece el valor a la global 
+        g_doc_city  := p_rec;
         --
         IF cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
             --
@@ -471,4 +470,3 @@ BEGIN
             dbms_output.put_line('Init Package: '||sqlerrm);
     --
 END prs_k_api_city;
-/

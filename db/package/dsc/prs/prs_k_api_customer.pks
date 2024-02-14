@@ -1,9 +1,19 @@
---------------------------------------------------------
---  DDL for Package Body CUSTOMER_API
---  PROCESS
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE prs_api_k_customer IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package CUSTOMERS_API (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  CFG_API_K_LOCATION              PAQUETE DE BASE
+    --  CFG_API_K_USER                  PAQUETE DE BASE
+    --  PRS_API_K_LANGUAGE              PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de clientes
+    ---------------------------------------------------------------------------
     --
     K_OWNER         CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME    CONSTANT VARCHAR2(30)  := 'CUSTOMERS';
@@ -49,24 +59,29 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     TYPE customer_doc_tab IS  TABLE OF customer_api_doc INDEX BY PLS_INTEGER;
     --
     -- create customer by record
-    FUNCTION create_customer( 
-            p_rec       IN OUT customer_api_doc,
-            p_result    OUT VARCHAR2
-        ) RETURN BOOLEAN;
+    PROCEDURE create_customer( 
+        p_rec       IN OUT customer_api_doc,
+        p_result    OUT VARCHAR2
+    );
     --
     -- create customer by json
-    FUNCTION create_customer( 
-            p_json      IN OUT VARCHAR2,
-            p_result    OUT VARCHAR2
-        ) RETURN BOOLEAN;
+    PROCEDURE create_customer( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2
+    );
     --
     -- update customer by record
     PROCEDURE update_customer(
-            p_rec       IN OUT customer_api_doc,
-            p_result    OUT VARCHAR2
-        ) RETURN BOOLEAN;
-    
-    -- TODO: desarrollar el metodo de devolver un registro 
-    -- TODO: desarrollar el metodo de devolver una lista
-    -- TODO: desarrollar el metodo eliminar
+        p_rec       IN OUT customer_api_doc,
+        p_result    OUT VARCHAR2
+    ) RETURN BOOLEAN;
+    --
+    -- update customer by json
+    PROCEDURE update_customer( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2
+    );
+    --
+    -- TODO: desarrollar el metodo eliminar y de lista
+    --
 END prs_api_k_customer;
