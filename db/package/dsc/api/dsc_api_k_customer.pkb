@@ -4,6 +4,8 @@
 
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
     --
+    g_record        customers%ROWTYPE;
+    --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in customers.id%TYPE ) RETURN customers%ROWTYPE IS
         --
@@ -238,6 +240,27 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
               WHERE id = p_id;
         --      
     END del;
+    --
+    -- TODO: desarrollar las funciones que evaluan la existencia
+    -- exist customer by id
+    FUNCTION exist( p_id IN customers.id%TYPE ) RETURN BOOLEAN IS
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist customer by code
+    FUNCTION exist( p_customer_co IN customers.customer_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_customer_co => p_customer_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
     --
 END dsc_api_k_customer;
 /

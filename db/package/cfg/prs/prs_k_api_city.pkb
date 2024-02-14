@@ -1,4 +1,6 @@
 
+CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
+    --
     ---------------------------------------------------------------------------
     --  DDL for Package body CITIES_API (Process)
     --  MODIFICATIONS
@@ -9,7 +11,6 @@
     --
     -- TODO: Compactar codigo repetitivo en funciones de utilerias
     ---------------------------------------------------------------------------
-CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     K_CFG_CO     CONSTANT NUMBER        := 1;
     --
@@ -19,6 +20,12 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_reg_config                    configurations%ROWTYPE;
+    g_doc_city                      prs_k_api_city.city_api_doc;
+    --
+    g_reg_municipality              municipalities%ROWTYPE;
+    g_reg_user                      users%ROWTYPE;
+    g_reg_city                      cities%ROWTYPE;
+    --
     -- excepciones
     e_validate_municipality         EXCEPTION;
     e_validate_user                 EXCEPTION;
@@ -53,6 +60,38 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         -- 
     END raise_error;
     --
+    -- validate all
+    PROCEDURE validate_all IS 
+    BEGIN 
+        -- 
+        IF NOT cfg_api_k_municipality.exist( p_municipality_co => g_doc_city.p_municipality_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20001,
+                p_msg_error => 'INVALID MUNICIPALITY CODE'
+            );
+            -- 
+        ELSE 
+            --
+            g_reg_municipality := cfg_api_k_municipality.get_record;
+            --            
+        END IF;
+        --
+        IF NOT sec_api_k_user.exist( p_user_co =>  g_doc_city.p_user_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20002,
+                p_msg_error => 'INVALID USER CODE'
+            );
+            -- 
+        ELSE 
+            --
+            g_reg_user := sec_api_k_user.get_record;
+            --            
+        END IF;
+        --
+    END validate_all;
+    --
     -- create city
     PROCEDURE create_city (
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
@@ -65,12 +104,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             p_user_co           IN users.user_co%TYPE DEFAULT NULL,
             p_result            OUT VARCHAR2 
         ) IS 
-        --
-        l_reg_municipality      municipalities%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
-        l_reg_city              cities%ROWTYPE;
-        --
     BEGIN
+        --
+        g_doc_city.p_city_co            := p_city_co;
+        g_doc_city.p_municipality_co    := p_municipality_co;
+        g_doc_city.p_user_co            := p_user_co;
         --
         -- TODO: 1.- validar que el codigo de ciudad no exista
         IF cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
@@ -82,53 +120,30 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             --  
         END IF;
         --
-        IF NOT cfg_api_k_municipality.exist( p_municipality_co => p_municipality_co ) THEN
-            --
-            raise_error( 
-                p_cod_error => -20001,
-                p_msg_error => 'INVALID MUNICIPALITY CODE'
-            );
-            -- 
-        ELSE 
-            --
-            l_reg_municipality := cfg_api_k_municipality.get_record;
-            --            
-        END IF;
+        -- valida los codigo asociados 
+        validate_all;
         --
-        IF NOT sec_api_k_user.exist( p_user_co =>  p_user_co ) THEN
-            --
-            raise_error( 
-                p_cod_error => -20002,
-                p_msg_error => 'INVALID USER CODE'
-            );
-            -- 
-        ELSE 
-            --
-            l_reg_user := sec_api_k_user.get_record;
-            --            
-        END IF;
-        --
-        l_reg_city.city_co          :=  p_city_co; 
-        l_reg_city.description      :=  p_description;
-        l_reg_city.telephone_co     :=  p_telephone_co; 
-        l_reg_city.postal_co        :=  p_postal_co; 
-        l_reg_city.municipality_id  :=  l_reg_municipality.id;
-        l_reg_city.uuid             :=  p_uuid;
+        g_reg_city.city_co          :=  p_city_co; 
+        g_reg_city.description      :=  p_description;
+        g_reg_city.telephone_co     :=  p_telephone_co; 
+        g_reg_city.postal_co        :=  p_postal_co; 
+        g_reg_city.municipality_id  :=  g_reg_municipality.id;
+        g_reg_city.uuid             :=  p_uuid;
         --
         -- creamos el slug
         IF p_slug IS NULL THEN 
             --
-            l_reg_city.slug :=  lower( substr(l_reg_municipality.slug||'-'||l_reg_city.city_co,1,60) );
+            g_reg_city.slug :=  lower( substr(g_reg_municipality.slug||'-'||g_reg_city.city_co,1,60) );
             --
         ELSE
             --
-            l_reg_city.slug :=  p_slug;
+            g_reg_city.slug :=  p_slug;
             --
         END IF;
         --
-        l_reg_city.user_id          :=  l_reg_user.id;
+        g_reg_city.user_id          :=  g_reg_user.id;
         --
-        cfg_api_k_city.ins( p_rec => l_reg_city );
+        cfg_api_k_city.ins( p_rec => g_reg_city );
         --
         COMMIT;
         --
@@ -156,12 +171,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         p_rec               IN OUT city_api_doc,
         p_result            OUT VARCHAR2 
     ) IS 
-        --
-        l_reg_municipality      municipalities%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
-        l_reg_city              cities%ROWTYPE;
-        --
     BEGIN
+        --
+        g_doc_city.p_city_co            := p_rec.p_city_co;
+        g_doc_city.p_municipality_co    := p_rec.p_municipality_co;
+        g_doc_city.p_user_co            := p_rec.p_user_co;
         --
         IF cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
             --
@@ -172,56 +186,33 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
             --
         END IF;
         --
-        IF NOT cfg_api_k_municipality.exist( p_municipality_co =>  p_rec.p_municipality_co ) THEN
-            --
-            raise_error( 
-                p_cod_error => -20001,
-                p_msg_error => 'INVALID MUNICIPALITY CODE'
-            );
-            -- 
-        ELSE 
-            --
-            l_reg_municipality := cfg_api_k_municipality.get_record;
-            --
-        END IF;
+        -- valida los codigo asociados 
+        validate_all;
         --
-        IF NOT sec_api_k_user.exist( p_user_co =>  p_rec.p_user_co ) THEN
-            --
-            raise_error( 
-                p_cod_error => -20002,
-                p_msg_error => 'INVALID USER CODE'
-            );
-            -- 
-        ELSE 
-            --
-            l_reg_user := sec_api_k_user.get_record;
-            --
-        END IF;
-        --
-        l_reg_city.city_co          :=  p_rec.p_city_co; 
-        l_reg_city.description      :=  p_rec.p_description;
-        l_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
-        l_reg_city.postal_co        :=  p_rec.p_postal_co; 
-        l_reg_city.municipality_id  :=  l_reg_municipality.id;
-        l_reg_city.uuid             :=  p_rec.p_uuid;
+        g_reg_city.city_co          :=  p_rec.p_city_co; 
+        g_reg_city.description      :=  p_rec.p_description;
+        g_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
+        g_reg_city.postal_co        :=  p_rec.p_postal_co; 
+        g_reg_city.municipality_id  :=  g_reg_municipality.id;
+        g_reg_city.uuid             :=  p_rec.p_uuid;
         --
         -- creamos el slug
         IF p_rec.p_slug IS NULL THEN 
             --
-            l_reg_city.slug :=  lower( substr(l_reg_municipality.slug||'-'||l_reg_city.city_co,1,60) );
+            g_reg_city.slug :=  lower( substr(g_reg_municipality.slug||'-'||g_reg_city.city_co,1,60) );
             --
         ELSE
             --
-            l_reg_city.slug :=  p_rec.p_slug;
+            g_reg_city.slug :=  p_rec.p_slug;
             --
         END IF;
         --
-        l_reg_city.user_id          :=  l_reg_user.id;
+        g_reg_city.user_id          :=  g_reg_user.id;
         --
-        cfg_api_k_city.ins( p_rec => l_reg_city );
+        cfg_api_k_city.ins( p_rec => g_reg_city );
         --
-        p_rec.p_uuid    := l_reg_city.uuid;
-        p_rec.p_slug    := l_reg_city.slug;
+        p_rec.p_uuid    := g_reg_city.uuid;
+        p_rec.p_slug    := g_reg_city.slug;
         --
         COMMIT;
         --
@@ -256,69 +247,38 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         p_user_co           IN users.user_co%TYPE DEFAULT NULL,
         p_result            OUT VARCHAR2 
     ) IS
-        --
-        l_reg_municipality      municipalities%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
-        l_reg_city              cities%ROWTYPE;
-        --
     BEGIN
+        --
+        g_doc_city.p_city_co            := p_city_co;
+        g_doc_city.p_municipality_co    := p_municipality_co;
+        g_doc_city.p_user_co            := p_user_co;
         --
         -- TODO: 1.- validar que el codigo de ciudad exista
         IF cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_city := cfg_api_k_city.get_record;
+            g_reg_city := cfg_api_k_city.get_record;
             --
-            -- TODO: 2.- validar que el codigo de municipalidad exista
+            -- valida los codigo asociados 
+            validate_all;
             --
-            IF NOT cfg_api_k_municipality.exist( p_municipality_co => p_municipality_co )  THEN
-                --
-                -- TODO: regionalizacion de mensajes
-                g_cod_error := -20001;
-                g_hay_error := TRUE;
-                --
-                raise_error( 
-                    p_cod_error => -20001,
-                    p_msg_error => 'INVALID MUNICIPALITY CODE'
-                );
-                -- 
-            ELSE 
-                --
-                l_reg_municipality := cfg_api_k_municipality.get_record;
-                --
-            END IF;
-            --
-            IF NOT sec_api_k_user.exist(p_user_co => p_user_co) THEN
-                --
-                -- TODO: regionalizacion de mensajes
-                raise_error( 
-                    p_cod_error => -20002,
-                    p_msg_error => 'INVALID USER CODE'
-                );
-                --
-            ELSE 
-                --
-                l_reg_user := sec_api_k_user.get_record;
-                --
-            END IF;
-            --
-            l_reg_city.city_co          :=  p_city_co; 
-            l_reg_city.description      :=  p_description;
-            l_reg_city.telephone_co     :=  p_telephone_co; 
-            l_reg_city.postal_co        :=  p_postal_co; 
-            l_reg_city.municipality_id  :=  l_reg_municipality.id;
+            g_reg_city.city_co          :=  p_city_co; 
+            g_reg_city.description      :=  p_description;
+            g_reg_city.telephone_co     :=  p_telephone_co; 
+            g_reg_city.postal_co        :=  p_postal_co; 
+            g_reg_city.municipality_id  :=  g_reg_municipality.id;
             --
             IF p_uuid IS NOT NULL THEN 
-                l_reg_city.uuid             :=  p_uuid;
+                g_reg_city.uuid             :=  p_uuid;
             END IF;
             --
             IF p_slug IS NOT NULL THEN 
-                l_reg_city.slug             :=  p_slug;
+                g_reg_city.slug             :=  p_slug;
             END IF;
             --
-            l_reg_city.user_id          :=  l_reg_user.id;
+            g_reg_city.user_id          :=  g_reg_user.id;
             --
-            cfg_api_k_city.upd( p_rec => l_reg_city );
+            cfg_api_k_city.upd( p_rec => g_reg_city );
             --
             COMMIT;
             --
@@ -362,68 +322,43 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         p_rec               IN OUT city_api_doc,
         p_result            OUT VARCHAR2 
     ) IS
-        --
-        l_reg_municipality      municipalities%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
-        l_reg_city              cities%ROWTYPE;
-        --
     BEGIN
+        --
+        g_doc_city.p_city_co            := p_rec.p_city_co;
+        g_doc_city.p_municipality_co    := p_rec.p_municipality_co;
+        g_doc_city.p_user_co            := p_rec.p_user_co;
         --
         -- TODO: 1.- validar que el codigo de ciudad exista
         IF cfg_api_k_city.exist( p_city_co => p_rec.p_city_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_city := cfg_api_k_city.get_record;
+            g_reg_city := cfg_api_k_city.get_record;
             --
-            IF NOT cfg_api_k_municipality.exist( p_municipality_co => p_rec.p_municipality_co ) THEN
-                --
-                -- TODO: regionalizacion de mensajes
-                raise_error( 
-                    p_cod_error => -20001,
-                    p_msg_error => 'INVALID MUNICIPALITY CODE'
-                );
-                -- 
-            ELSE 
-                --
-                l_reg_municipality := cfg_api_k_municipality.get_record;
-                --                
-            END IF;
+            -- valida los codigo asociados 
+            validate_all;
             --
-            IF NOT sec_api_k_user.exist(p_user_co => p_rec.p_user_co) THEN
-                --
-                -- TODO: regionalizacion de mensajes
-                raise_error( 
-                    p_cod_error => -20002,
-                    p_msg_error => 'INVALID USER CODE'
-                );
-            ELSE 
-                --
-                l_reg_user := sec_api_k_user.get_record;
-                --
-            END IF;
-            --
-            l_reg_city.city_co          :=  p_rec.p_city_co; 
-            l_reg_city.description      :=  p_rec.p_description;
-            l_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
-            l_reg_city.postal_co        :=  p_rec.p_postal_co; 
-            l_reg_city.municipality_id  :=  l_reg_municipality.id;
+            g_reg_city.city_co          :=  p_rec.p_city_co; 
+            g_reg_city.description      :=  p_rec.p_description;
+            g_reg_city.telephone_co     :=  p_rec.p_telephone_co; 
+            g_reg_city.postal_co        :=  p_rec.p_postal_co; 
+            g_reg_city.municipality_id  :=  g_reg_municipality.id;
             --
             IF p_rec.p_uuid IS NOT NULL THEN 
-                l_reg_city.uuid             :=  p_rec.p_uuid;
+                g_reg_city.uuid             :=  p_rec.p_uuid;
             END IF;
             --
             IF p_rec.p_slug IS NOT NULL THEN 
-                l_reg_city.slug             :=  p_rec.p_slug;
+                g_reg_city.slug             :=  p_rec.p_slug;
             END IF;
             --
-            l_reg_city.user_id          :=  l_reg_user.id;
+            g_reg_city.user_id          :=  g_reg_user.id;
             --
-            cfg_api_k_city.upd( p_rec => l_reg_city );
+            cfg_api_k_city.upd( p_rec => g_reg_city );
             --
             COMMIT;
             --
-            p_rec.p_uuid    := l_reg_city.uuid;
-            p_rec.p_slug    := l_reg_city.slug;
+            p_rec.p_uuid    := g_reg_city.uuid;
+            p_rec.p_slug    := g_reg_city.slug;
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';
             --
@@ -467,7 +402,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         p_result    OUT VARCHAR2 
     ) IS 
         --
-        l_reg_city              cities%ROWTYPE;
+        g_reg_city              cities%ROWTYPE;
         --
     BEGIN 
         --
@@ -475,9 +410,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         IF cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_city := cfg_api_k_city.get_record;
+            g_reg_city := cfg_api_k_city.get_record;
             --
-            cfg_api_k_city.del( p_id => l_reg_city.id );
+            cfg_api_k_city.del( p_id => g_reg_city.id );
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';
             --

@@ -78,4 +78,10 @@ CREATE OR REPLACE PACKAGE dsc_api_k_customer IS
     PROCEDURE del ( p_id IN customers.id%TYPE );
     --
     -- TODO: desarrollar las funciones que evaluan la existencia
+    -- exist customer by id
+    FUNCTION exist( p_id IN customers.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist customer by code
+    FUNCTION exist( p_customer_co IN customers.customer_co%TYPE ) RETURN BOOLEAN;
+    --
 END dsc_api_k_customer;

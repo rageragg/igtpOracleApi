@@ -20,9 +20,7 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     K_CATEGORY_B                CONSTANT CHAR(01) := 'B';
     K_CATEGORY_C                CONSTANT CHAR(01) := 'C';
     --
-    TYPE customer_api_tab IS  TABLE OF customers%ROWTYPE;
-    --
-    -- DOCUMENT
+    -- document
     TYPE customer_api_doc IS RECORD(
         customer_co           customers.customer_co%TYPE DEFAULT NULL,
         description           customers.description%TYPE DEFAULT NULL,
@@ -46,20 +44,23 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         updated_at            customers.updated_at%TYPE DEFAULT sysdate
     );
     --
-    -- CREATE CUSTOMER BY RECORD
+    -- plsq tables
+    TYPE customer_api_tab IS  TABLE OF customers%ROWTYPE;
+    TYPE customer_doc_tab IS  TABLE OF customer_api_doc INDEX BY PLS_INTEGER;
+    --
+    -- create customer by record
     FUNCTION create_customer( 
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;
     --
-    -- CREATE CUSTOMER BY JSON
+    -- create customer by json
     FUNCTION create_customer( 
             p_json      IN OUT VARCHAR2,
             p_result    OUT VARCHAR2
         ) RETURN BOOLEAN;
     --
-    -- TODO: desarrollar el metodo de UPDATE
-    -- UPDATE CUSTOMER BY RECORD
+    -- update customer by record
     PROCEDURE update_customer(
             p_rec       IN OUT customer_api_doc,
             p_result    OUT VARCHAR2
