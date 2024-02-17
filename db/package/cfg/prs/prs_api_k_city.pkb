@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
+CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     ---------------------------------------------------------------------------
     --  DDL for Package body CITIES_API (Process)
@@ -20,7 +20,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_reg_config                    configurations%ROWTYPE;
-    g_doc_city                      prs_api_k_city.city_api_doc;
+    g_doc_city                      prs_k_api_city.city_api_doc;
     --
     g_reg_municipality              municipalities%ROWTYPE;
     g_reg_user                      users%ROWTYPE;
@@ -48,7 +48,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         g_cod_error := p_cod_error;
         g_hay_error := TRUE;
         --
-        g_msg_error := prs_api_k_language.f_message( 
+        g_msg_error := prs_k_api_language.f_message( 
             p_language_co => sys_k_global.geter('LANGUAGE_CO'),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
@@ -470,5 +470,5 @@ BEGIN
         WHEN OTHERS THEN 
             dbms_output.put_line('Init Package: '||sqlerrm);
     --
-END prs_api_k_city;
-/
+END prs_k_api_city;
+

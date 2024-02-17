@@ -1,0 +1,1 @@
+DROP PACKAGE igtp.prs_api_k_customer;
