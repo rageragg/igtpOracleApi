@@ -270,59 +270,55 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END create_customer;
     
-    /*
+    --
+    -- CREATE CUSTOMER BY JSON
+    PROCEDURE create_customer( 
+            p_json      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
         --
-        -- CREATE CUSTOMER BY JSON
-        PROCEDURE create_customer( 
-                p_josn      IN OUT VARCHAR2,
-                p_result    OUT VARCHAR2
-            ) IS 
-            --
-            l_obj       json_object_t;
-            --
-        BEGIN 
-            --
-            g_modo  := 'INSERT';
-            -- analizamos los datos JSON
-            l_obj   := json_object_t.parse(p_josn);
-            --
-            -- completamos los datos del registro customer
-            r_customer.customer_co        := l_obj.get_string('customer_co');
-            r_customer.description        := l_obj.get_string('description');
-            r_customer.telephone_co       := l_obj.get_string('telephone_co');
-            r_customer.fax_co             := l_obj.get_string('fax_co');
-            r_customer.email              := l_obj.get_string('email');
-            r_customer.address            := l_obj.get_string('address');
-            r_customer.k_type_customer    := l_obj.get_string('k_type_customer');
-            r_customer.k_sector           := l_obj.get_string('k_sector');
-            r_customer.k_category_co      := l_obj.get_string('k_category_co');
-            r_customer.fiscal_document_co := l_obj.get_string('fiscal_document_co');
-            r_customer.location_co        := l_obj.get_string('location_co');
-            r_customer.telephone_contact  := l_obj.get_string('telephone_contact');
-            r_customer.name_contact       := l_obj.get_string('name_contact');
-            r_customer.email_contact      := l_obj.get_string('email_contact');
-            r_customer.slug               := l_obj.get_string('slug');
-            r_customer.user_co            := l_obj.get_string('user_co');
-            --
-            l_ok := create_customer( 
-                    p_rec       => r_customer,
-                    p_result    => p_result
-            );
-            --
-            RETURN l_ok;
-            --
-            EXCEPTIONS
-                WHEN OTHERS THEN 
-                    --
-                    IF p_result IS NULL THEN 
-                        p_result := SQLERRM;
-                    END IF;
-                    --
-                    ROLLBACK;
-                    --
-                    RETURN FALSE;
-            --
-        END create_customer;
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        g_doc_customer.p_customer_co        := l_obj.get_string('customer_co');
+        g_doc_customer.p_description        := l_obj.get_string('description');
+        g_doc_customer.p_telephone_co       := l_obj.get_string('telephone_co');
+        g_doc_customer.p_fax_co             := l_obj.get_string('fax_co');
+        g_doc_customer.p_email              := l_obj.get_string('email');
+        g_doc_customer.p_address            := l_obj.get_string('address');
+        g_doc_customer.p_k_type_customer    := l_obj.get_string('k_type_customer');
+        g_doc_customer.p_k_sector           := l_obj.get_string('k_sector');
+        g_doc_customer.p_k_category_co      := l_obj.get_string('k_category_co');
+        g_doc_customer.p_fiscal_document_co := l_obj.get_string('fiscal_document_co');
+        g_doc_customer.p_location_co        := l_obj.get_string('location_co');
+        g_doc_customer.p_telephone_contact  := l_obj.get_string('telephone_contact');
+        g_doc_customer.p_name_contact       := l_obj.get_string('name_contact');
+        g_doc_customer.p_email_contact      := l_obj.get_string('email_contact');
+        g_doc_customer.p_slug               := l_obj.get_string('slug');
+        g_doc_customer.p_user_co            := l_obj.get_string('user_co');
+        --
+        create_customer( 
+                p_rec       => g_doc_customer,
+                p_result    => p_result
+        );
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
+        --
+    END create_customer;
+    /*
         --
         -- UPDATE CUSTOMER BY RECORD
         PROCEDURE update_customer(

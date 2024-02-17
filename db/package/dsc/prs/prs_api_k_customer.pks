@@ -65,13 +65,13 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         p_rec       IN OUT customer_api_doc,
         p_result    OUT VARCHAR2
     );
-    /*
     --
     -- create customer by json
     PROCEDURE create_customer( 
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
     );
+    /*
     --
     -- update customer by record
     PROCEDURE update_customer(
