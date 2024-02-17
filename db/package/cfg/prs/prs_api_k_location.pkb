@@ -9,7 +9,7 @@
     --
     -- TODO: Compactar codigo repetitivo en funciones de utilerias
     ---------------------------------------------------------------------------
-CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_location IS
+CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --
     K_CFG_CO     CONSTANT NUMBER        := 1;
     --
@@ -563,4 +563,4 @@ BEGIN
         WHEN OTHERS THEN 
             dbms_output.put_line('Init Package: '||sqlerrm);
     --    
-END prs_k_api_location;
+END prs_api_k_location;

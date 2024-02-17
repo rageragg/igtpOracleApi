@@ -3,7 +3,7 @@
 --  PROCESS
 --------------------------------------------------------
 
-CREATE OR REPLACE PACKAGE prs_k_api_language IS
+CREATE OR REPLACE PACKAGE prs_api_k_language IS
     --
     K_OWNER         CONSTANT VARCHAR2(20)  := 'IGTP';
     K_CONTEXT       CONSTANT VARCHAR2(30)  := 'LANGUAGE-ADMINISTRATOS';
@@ -51,4 +51,4 @@ CREATE OR REPLACE PACKAGE prs_k_api_language IS
         p_context     IN VARCHAR2 
     ) RETURN t_diccionary_tab;
     --
-END prs_k_api_language;
+END prs_api_k_language;

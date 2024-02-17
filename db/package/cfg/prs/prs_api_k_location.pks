@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
+CREATE OR REPLACE PACKAGE igtp.prs_api_k_location IS
     ---------------------------------------------------------------------------
     --  DDL for Package LOCATIONS_API (Process)
     --  REFERENCIAS
@@ -76,5 +76,5 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_location IS
         p_result        OUT VARCHAR2 
     );
     --
-END prs_k_api_location;
+END prs_api_k_location;
 /

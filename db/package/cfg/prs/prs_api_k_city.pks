@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE PACKAGE igtp.prs_k_api_city IS
+CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     ---------------------------------------------------------------------------
     --  DDL for Package CITIES_API (Process)
     --  REFERENCIAS
@@ -74,5 +74,5 @@ CREATE OR REPLACE PACKAGE igtp.prs_k_api_city IS
         p_result    OUT VARCHAR2 
     );
     --
-END prs_k_api_city;
+END prs_api_k_city;
 /

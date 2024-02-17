@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY prs_k_api_language IS
+CREATE OR REPLACE PACKAGE BODY prs_api_k_language IS
     --
     -- tabla de propiedades a recibir
     TYPE t_properties IS TABLE OF VARCHAR2(60) INDEX BY PLS_INTEGER;
@@ -149,7 +149,7 @@ CREATE OR REPLACE PACKAGE BODY prs_k_api_language IS
         IF NOT f_chk_properties( p_key_list_param => l_key_list_param ) THEN  
             --
             -- TODO: se lanza la excepcion
-            g_rec_diccionary.context            := prs_k_api_language.K_CONTEXT;
+            g_rec_diccionary.context            := prs_api_k_language.K_CONTEXT;
             g_rec_diccionary.error_co           := -20001;
             g_rec_diccionary.error_description  := f_message( 
                                                     p_language_co => g_rec_configuration.language_co,
@@ -306,7 +306,7 @@ CREATE OR REPLACE PACKAGE BODY prs_k_api_language IS
             "cause_error": "'||error_cause||'"
         }'; 
         --
-        l_ok := prs_k_api_language.f_ins_upd_diccionary(
+        l_ok := prs_api_k_language.f_ins_upd_diccionary(
                                                         p_json          => l_json,
                                                         p_result        => l_result 
                                                     );
@@ -362,4 +362,4 @@ BEGIN
     --
     p_init_globals;
     --
-END prs_k_api_language;
+END prs_api_k_language;
