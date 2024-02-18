@@ -49,3 +49,6 @@ SEGMENT CREATION IMMEDIATE
 COMMENT ON TABLE "IGTP"."CUSTOMERS"  IS 'Clientes'
 
 COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_TYPE_CUSTOMER" IS "Tipo de Cliente, F->Factory, D->Distribution, M->Market" ;
+COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_CATEGORY_CO" IS "Categoria de Cliente (A,B,C)" ;
+COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_SECTOR" IS "Sector de Negocio" ;
+COMMENT ON COLUMN "IGTP"."CUSTOMERS.K_MCA_INH" IS "Marca Indicadora de Inhabilitacion N->No cualquier otro valor es valido y habilitante" ;
