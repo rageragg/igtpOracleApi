@@ -20,7 +20,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     g_rec_locations     igtp.locations%ROWTYPE;
     g_rec_customer      igtp.customers%ROWTYPE;
     g_rec_user          igtp.users%ROWTYPE;
-    g_modo              VARCHAR2(20);
     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
@@ -223,8 +222,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         g_rec_customer.k_mca_inh           := 'N';
         g_rec_customer.created_at          := sysdate;
         g_rec_customer.user_id             := g_rec_user.id;
-        --
-        g_rec_customer.slug                := g_doc_customer.p_slug;
         --
         -- creamos el slug
         IF p_rec.p_slug IS NULL THEN 
