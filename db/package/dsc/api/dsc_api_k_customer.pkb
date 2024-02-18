@@ -5,6 +5,14 @@
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
     --
     g_record        customers%ROWTYPE;
+--
+    -- get DATA 
+    FUNCTION get_record RETURN customers%ROWTYPE IS
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;     
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id in customers.id%TYPE ) RETURN customers%ROWTYPE IS

@@ -34,6 +34,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     e_validate_category_customer    EXCEPTION; 
     e_validate_email                EXCEPTION;
     e_validate_user                 EXCEPTION;
+    e_no_exist_customer_code        EXCEPTION;
     --
     PRAGMA exception_init( e_validate_type_customer, -20001 );
     PRAGMA exception_init( e_validate_location, -20002 );
@@ -41,6 +42,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     PRAGMA exception_init( e_validate_category_customer, -20004 );
     PRAGMA exception_init( e_validate_email, -20005 );
     PRAGMA exception_init( e_validate_user, -20006 );
+    PRAGMA exception_init( e_no_exist_customer_code, -20007 );
     --
     -- raise_error 
     PROCEDURE raise_error( 
@@ -269,7 +271,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
         --
     END create_customer;
-    
     --
     -- CREATE CUSTOMER BY JSON
     PROCEDURE create_customer( 
@@ -318,67 +319,50 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 --
         --
     END create_customer;
-    /*
+    --
+    -- UPDATE CUSTOMER BY RECORD
+    PROCEDURE update_customer(
+            p_rec       IN OUT customer_api_doc,
+            p_result    OUT VARCHAR2
+        ) IS
+    BEGIN
         --
-        -- UPDATE CUSTOMER BY RECORD
-        PROCEDURE update_customer(
-                p_rec       IN OUT customer_api_doc,
-                p_result    OUT VARCHAR2
-            ) IS
+        -- se establece el valor a la global 
+        g_doc_customer  := p_rec;
+        --
+        -- verificamos que el codigo de cliente no exista
+        IF dsc_api_k_customer.exist( p_customer_co => p_rec.p_customer_co ) THEN
             --
-            l_reg_customer  igtp.customers%ROWTYPE;
-            g_rec_user      igtp.users%ROWTYPE;
-            --
-        BEGIN
-            --
-            --
-            -- se establece el valor a la global 
-            g_doc_customer  := p_rec;
-            g_modo          := 'UPDATE';
+            g_rec_customer := dsc_api_k_customer.get_record;
             --
             -- validacion total
-            IF NOT p_validation_all THEN
-                --
-                p_result := g_msg_error;
-                raise_application_error(g_cod_error, g_msg_error );
-                -- 
-            ELSE
-                --
-                p_result := NULL;
-                --
-            END IF;
-            --
-            -- verificamos que exista
-            l_reg_customer := dsc_api_k_customer.get_record( 
-                p_customer_co => l_reg.customer_co
-            );
+            validate_all;
             --
             -- completamos los datos del cliente
-            g_rec_customer.id                  := l_reg_customer.id;
-            g_rec_customer.customer_co         := g_doc_customer.customer_co;
-            g_rec_customer.description         := g_doc_customer.description;
-            g_rec_customer.telephone_co        := g_doc_customer.telephone_co;
-            g_rec_customer.fax_co              := g_doc_customer.fax_co;
-            g_rec_customer.email               := g_doc_customer.email;
-            g_rec_customer.address             := g_doc_customer.address;
-            g_rec_customer.k_type_customer     := g_doc_customer.k_type_customer;
-            g_rec_customer.k_sector            := g_doc_customer.k_sector;
-            g_rec_customer.k_category_co       := g_doc_customer.k_category_co;
-            g_rec_customer.fiscal_document_co  := g_doc_customer.fiscal_document_co;
+            g_rec_customer.customer_co         := g_doc_customer.p_customer_co;
+            g_rec_customer.description         := g_doc_customer.p_description;
+            g_rec_customer.telephone_co        := g_doc_customer.p_telephone_co;
+            g_rec_customer.fax_co              := g_doc_customer.p_fax_co;
+            g_rec_customer.email               := g_doc_customer.p_email;
+            g_rec_customer.address             := g_doc_customer.p_address;
+            g_rec_customer.k_type_customer     := g_doc_customer.p_k_type_customer;
+            g_rec_customer.k_sector            := g_doc_customer.p_k_sector;
+            g_rec_customer.k_category_co       := g_doc_customer.p_k_category_co;
+            g_rec_customer.fiscal_document_co  := g_doc_customer.p_fiscal_document_co;
             g_rec_customer.location_id         := g_rec_locations.id;
-            g_rec_customer.telephone_contact   := g_doc_customer.telephone_contact;
-            g_rec_customer.name_contact        := g_doc_customer.name_contact;
-            g_rec_customer.email_contact       := g_doc_customer.email_contact;
-            g_rec_customer.slug                := g_doc_customer.slug;
-            g_rec_customer.uuid                := g_doc_customer.uuid;
-            g_rec_customer.k_mca_inh           := g_doc_customer.k_mca_inh;
+            g_rec_customer.telephone_contact   := g_doc_customer.p_telephone_contact;
+            g_rec_customer.name_contact        := g_doc_customer.p_name_contact;
+            g_rec_customer.email_contact       := g_doc_customer.p_email_contact;
+            g_rec_customer.k_mca_inh           := g_doc_customer.p_k_mca_inh;
             --
-            -- TODO: buscar el id del usuario
-            l_rec_user := sec_api_k_user.get_record(
-                p_user_co => l_reg_customer.user_co
-            );
+            IF g_doc_customer.p_slug IS NOT NULL THEN 
+                g_rec_customer.uuid             :=  g_doc_customer.p_slug;
+            END IF;
             --
-            g_rec_customer.user_id             := l_rec_user.id;
+            IF g_doc_customer.p_uuid IS NOT NULL THEN 
+                g_rec_customer.slug             :=  g_doc_customer.p_uuid;
+            END IF;            
+            --
             g_rec_customer.created_at          := sysdate;
             --
             -- creamos el registro
@@ -386,38 +370,137 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 p_rec => g_rec_customer
             );
             --
-            RETURN TRUE;
+            COMMIT;
             --
-            EXCEPTION 
-                WHEN e_validate_type_customer       OR
-                    e_validate_location            OR
-                    e_exist_customer_code          OR
-                    e_validate_category_customer   OR
-                    e_validate_email               THEN 
-                    --
-                    RETURN FALSE;
-                    -- 
-                WHEN OTHERS THEN 
-                    --
-                    IF p_result IS NULL THEN 
-                        p_result := SQLERRM;
-                    END IF;
-                    --
-                    ROLLBACK;
-                    --
-                    RETURN FALSE;
+            p_rec.p_uuid    := g_rec_customer.uuid;
+            p_rec.p_slug    := g_rec_customer.slug;
             --
-        END update_customer;
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --            
+        ELSE 
+            --
+            raise_error( 
+                p_cod_error => -20007,
+                p_msg_error => 'INVALID CUSTOMER CODE'
+            );
+            --
+        END IF;         
         --
+        EXCEPTION 
+            WHEN e_validate_type_customer       OR
+                 e_validate_location            OR
+                 e_no_exist_customer_code       OR
+                 e_validate_category_customer   OR
+                 e_validate_email               OR    
+                 e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| g_msg_error ||'" }';
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
         --
-        -- update customer by json
-        PROCEDURE update_customer( 
-            p_json      IN OUT VARCHAR2,
-            p_result    OUT VARCHAR2
-        ) IS 
-        BEGIN
-        NULL; 
-        END update_customer;
+    END update_customer;
+    --
+    -- update customer by json
+    PROCEDURE update_customer( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2
+    ) IS 
         --
-    */
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        g_doc_customer.p_customer_co        := l_obj.get_string('customer_co');
+        g_doc_customer.p_description        := l_obj.get_string('description');
+        g_doc_customer.p_telephone_co       := l_obj.get_string('telephone_co');
+        g_doc_customer.p_fax_co             := l_obj.get_string('fax_co');
+        g_doc_customer.p_email              := l_obj.get_string('email');
+        g_doc_customer.p_address            := l_obj.get_string('address');
+        g_doc_customer.p_k_type_customer    := l_obj.get_string('k_type_customer');
+        g_doc_customer.p_k_sector           := l_obj.get_string('k_sector');
+        g_doc_customer.p_k_category_co      := l_obj.get_string('k_category_co');
+        g_doc_customer.p_fiscal_document_co := l_obj.get_string('fiscal_document_co');
+        g_doc_customer.p_location_co        := l_obj.get_string('location_co');
+        g_doc_customer.p_telephone_contact  := l_obj.get_string('telephone_contact');
+        g_doc_customer.p_name_contact       := l_obj.get_string('name_contact');
+        g_doc_customer.p_email_contact      := l_obj.get_string('email_contact');
+        g_doc_customer.p_slug               := l_obj.get_string('slug');
+        g_doc_customer.p_user_co            := l_obj.get_string('user_co');
+        --
+        update_customer( 
+                p_rec       => g_doc_customer,
+                p_result    => p_result
+        );
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
+        --
+    END update_customer;
+    --
+    --
+    -- update customer by json
+    PROCEDURE delete_customer( 
+        p_customer_co   IN customers.customer_co%TYPE,
+        p_result        OUT VARCHAR2 
+    ) IS 
+        --
+        g_reg_customer  customers%ROWTYPE;
+        --
+    BEGIN 
+        --
+        -- verificamos que el codigo de cliente no exista
+        IF dsc_api_k_customer.exist( p_customer_co => p_customer_co ) THEN
+            --
+            -- tomamos el registro encontrado
+            g_reg_customer := dsc_api_k_customer.get_record;
+            --
+            dsc_api_k_customer.del( p_id => g_reg_customer.id );
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --
+        ELSE 
+            --
+            raise_error( 
+                p_cod_error => -20007,
+                p_msg_error => 'INVALID CUSTOMER CODE'
+            );
+            --
+        END IF;
+        --
+        EXCEPTION
+            WHEN e_no_exist_customer_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --    
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+        --
+    END delete_customer;
+    --    
 END prs_api_k_customer;

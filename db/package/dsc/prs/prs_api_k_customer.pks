@@ -71,7 +71,6 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
     );
-    /*
     --
     -- update customer by record
     PROCEDURE update_customer(
@@ -84,8 +83,11 @@ CREATE OR REPLACE PACKAGE prs_api_k_customer IS
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
     );
-    */
     --
-    -- TODO: desarrollar el metodo eliminar y de lista
+    -- update customer by json
+    PROCEDURE delete_customer( 
+        p_customer_co   IN customers.customer_co%TYPE,
+        p_result        OUT VARCHAR2 
+    );
     --
 END prs_api_k_customer;

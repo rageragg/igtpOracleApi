@@ -209,7 +209,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
         g_reg_city.user_id          :=  g_reg_user.id;
         --
-        cfg_api_k_city.ins( p_rec => g_reg_city );
+        cfg_api_k_city.ins( 
+            p_rec => g_reg_city 
+        );
         --
         p_rec.p_uuid    := g_reg_city.uuid;
         p_rec.p_slug    := g_reg_city.slug;
