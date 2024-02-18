@@ -1,15 +1,19 @@
---------------------------------------------------------
---  DDL for Package SHOPS_API
---------------------------------------------------------
 
 CREATE OR REPLACE PACKAGE dsc_api_k_shop IS
+    --------------------------------------------------------
+    --  DDL for Package SHOPS_API
+    --------------------------------------------------------
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'SHOPS';
+    K_CONTEXT    CONSTANT VARCHAR2(30)  := 'SHOP-ADMINISTRATOR';
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
     TYPE shops_api_tab IS TABLE OF shops%ROWTYPE;
+    --
+    -- get DATA
+    FUNCTION get_record RETURN shops%ROWTYPE;   
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN shops.id%TYPE ) RETURN shops%ROWTYPE;    
@@ -73,5 +77,12 @@ CREATE OR REPLACE PACKAGE dsc_api_k_shop IS
     -- delete
     PROCEDURE del ( p_id IN shops.id%TYPE );
     --
+    -- TODO: desarrollar las funciones que evaluan la existencia
+    -- exist shop by id
+    FUNCTION exist( p_id IN shops.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist shop by code
+    FUNCTION exist( p_shop_co IN shops.shop_co%TYPE DEFAULT NULL ) RETURN BOOLEAN;
+    --    
 END dsc_api_k_shop;
 /
