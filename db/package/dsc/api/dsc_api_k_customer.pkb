@@ -1,11 +1,11 @@
---------------------------------------------------------
---  DDL for Package Body CUSTOMER_API
---------------------------------------------------------
 
 CREATE OR REPLACE PACKAGE BODY dsc_api_k_customer IS
+    --------------------------------------------------------
+    --  DDL for Package Body CUSTOMER_API
+    --------------------------------------------------------
     --
     g_record        customers%ROWTYPE;
---
+    --
     -- get DATA 
     FUNCTION get_record RETURN customers%ROWTYPE IS
     BEGIN 

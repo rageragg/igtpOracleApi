@@ -1,9 +1,19 @@
 
---------------------------------------------------------
---  DDL for Package SHOPS_API
---------------------------------------------------------
 
 CREATE OR REPLACE package body dsc_api_k_shop IS 
+    --------------------------------------------------------
+    --  DDL for Package SHOPS_API
+    --------------------------------------------------------
+    --
+    g_record        shops%ROWTYPE;    
+    --
+    -- get DATA 
+    FUNCTION get_record RETURN shops%ROWTYPE IS
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;  
     --
     -- get DATA RETURN RECORD
     FUNCTION get_record( p_id in shops.id%TYPE ) RETURN shops%ROWTYPE IS
@@ -230,4 +240,24 @@ CREATE OR REPLACE package body dsc_api_k_shop IS
         -- 
     END del;
     --
+    -- exist shop by id
+    FUNCTION exist( p_id IN shops.id%TYPE ) RETURN BOOLEAN IS
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist customer by code
+    FUNCTION exist( p_shop_co IN shops.shop_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_shop_co => p_shop_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --       
 end dsc_api_k_shop;

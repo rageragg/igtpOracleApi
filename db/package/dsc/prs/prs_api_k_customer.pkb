@@ -456,7 +456,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END update_customer;
     --
-    --
     -- update customer by json
     PROCEDURE delete_customer( 
         p_customer_co   IN customers.customer_co%TYPE,

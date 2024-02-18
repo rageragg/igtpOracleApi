@@ -1,8 +1,8 @@
---------------------------------------------------------
---  DDL for Package Body CUSTOMER_API
---------------------------------------------------------
 
 CREATE OR REPLACE PACKAGE dsc_api_k_customer IS
+    --------------------------------------------------------
+    --  DDL for Package Body CUSTOMER_API
+    --------------------------------------------------------
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'CUSTOMERS';
