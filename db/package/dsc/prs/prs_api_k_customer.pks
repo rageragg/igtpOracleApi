@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE prs_api_k_customer IS
     ---------------------------------------------------------------------------
     --  DDL for Package CUSTOMERS_API (Process)
-    --  REFERENCIAS
+    --  REFERENCES
     --  NOMBRE                          TIPO
     --  =============================== =======================================
     --  CFG_API_K_LOCATION              PAQUETE DE BASE
