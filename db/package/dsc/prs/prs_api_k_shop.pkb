@@ -91,6 +91,15 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         END IF;
         --
         -- validamos el email del tienda 
+        IF NOT validate_email( g_doc_shop.p_email ) THEN 
+            -- 
+            raise_error( 
+                p_cod_error => -20005,
+                p_msg_error => 'INVALID SHOP EMAIL'
+            );
+            --
+        --
+        -- validamos el email del contacto 
         IF NOT validate_email( g_doc_shop.p_email_contact ) THEN 
             -- 
             raise_error( 
