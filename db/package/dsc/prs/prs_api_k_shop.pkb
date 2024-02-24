@@ -257,7 +257,81 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     ) IS 
     BEGIN
         --
-        NULL;
+        -- se establece el valor a la global 
+        g_doc_shop  := p_rec;
+        --
+        -- verificamos que el codigo de cliente no exista
+        IF dsc_api_k_customer.exist( p_customer_co => p_rec.p_customer_co ) THEN
+            --
+            g_rec_shop := dsc_api_k_shop.get_record;
+            --
+            -- validacion total
+            validate_all;
+            --
+            -- completamos los datos del cliente
+            g_rec_shop.shop_co              := g_doc_shop.p_shop_co;
+            g_rec_shop.description          := g_doc_shop.p_description;
+            g_rec_shop.location_id          := g_rec_locations.id;
+            g_rec_shop.address              := g_doc_shop.p_address;
+            g_rec_shop.nu_gps_lat           := g_doc_shop.p_nu_gps_lat;
+            g_rec_shop.nu_gps_lon           := g_doc_shop.p_nu_gps_lon;
+            g_rec_shop.telephone_co         := g_doc_shop.p_telephone_co;
+            g_rec_shop.fax_co               := g_doc_shop.p_fax_co;
+            g_rec_shop.email                := g_doc_shop.p_email;
+            g_rec_shop.name_contact         := g_doc_shop.p_name_contact;
+            g_rec_shop.email_contact        := g_doc_shop.p_email_contact;
+            g_rec_shop.telephone_contact    := g_doc_shop.p_telephone_contact;
+            g_rec_shop.user_id              := g_rec_user.id;
+            g_rec_shop.update_at            := sysdate;
+            --
+            -- creamos el slug
+            IF p_rec.p_slug IS NULL THEN 
+                --
+                g_rec_shop.slug :=  lower( substr(g_rec_locations.slug||'-'||g_rec_shop.shop_co,1,60) );
+                --
+            ELSE
+                --
+                g_rec_shop.slug :=  g_doc_shop.p_slug;
+                --
+            END IF;
+            --
+            -- creamos el registro
+            dsc_api_k_shop.upd( 
+                p_rec => g_rec_shop
+            );
+            --
+            p_rec.p_uuid    := g_rec_shop.uuid;
+            p_rec.p_slug    := g_rec_shop.slug;
+            --
+            COMMIT;
+            --
+        ELSE 
+            --
+            raise_error( 
+                p_cod_error => -20007,
+                p_msg_error => 'INVALID SHOP CODE'
+            );
+            --
+        END IF;
+        --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
+        EXCEPTION 
+            WHEN e_validate_location  OR
+                 e_no_exist_shop_code OR
+                 e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| g_msg_error ||'" }';
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
         --
     END update_shop;  
     --
