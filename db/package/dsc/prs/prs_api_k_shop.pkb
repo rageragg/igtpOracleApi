@@ -216,7 +216,37 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     ) IS 
     BEGIN
         --
-        NULL;
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        g_doc_shop.p_shop_co            := l_obj.get_string('shop_co');
+        g_doc_shop.p_description        := l_obj.get_string('description');
+        g_doc_shop.p_telephone_co       := l_obj.get_string('telephone_co');
+        g_doc_shop.p_fax_co             := l_obj.get_string('fax_co');
+        g_doc_shop.p_email              := l_obj.get_string('email');
+        g_doc_shop.p_address            := l_obj.get_string('address');
+        g_doc_shop.p_location_co        := l_obj.get_string('location_co');
+        g_doc_shop.p_telephone_contact  := l_obj.get_string('telephone_contact');
+        g_doc_shop.p_name_contact       := l_obj.get_string('name_contact');
+        g_doc_shop.p_email_contact      := l_obj.get_string('email_contact');
+        g_doc_shop.p_slug               := l_obj.get_string('slug');
+        g_doc_shop.p_user_co            := l_obj.get_string('user_co');
+        --
+        create_shop( 
+            p_rec      => g_doc_shop,
+            p_result   => p_result
+        )
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
         --
     END create_shop;         
     --

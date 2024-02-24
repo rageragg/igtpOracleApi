@@ -29,7 +29,7 @@ BEGIN
     -- jSON
     l_json := '{ "shop_co":"XXX",'||
               '  "description":"ELIMINAR",'||
-              '  "telephone_co":"+XXXXX-XXXXXXX",'||
+              '  "telephone_co":"+XXS",'||
               '  "fax_co":"",'||
               '  "email":"xxxxxx@gmail.com",'||
               '  "address":"XXXXXXXXXXXXXXXXXXX",'||
