@@ -1,8 +1,8 @@
---------------------------------------------------------
---  DDL for Package sys_k_string_util
---------------------------------------------------------
 
 CREATE OR REPLACE PACKAGE sys_k_string_util AS
+      --------------------------------------------------------
+      --  DDL for Package sys_k_string_util
+      --------------------------------------------------------
     /*
         Purpose:    The package handles general string-related functionality
         Remarks:  
