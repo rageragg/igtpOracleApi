@@ -818,223 +818,230 @@ AS
         --
     END parse_date;
     --
-    FUNCTION split_str (p_str IN VARCHAR2,
-                        p_delim IN VARCHAR2 := g_default_separator) RETURN t_str_array pipelined
-    AS 
-    l_str   long := p_str || p_delim;
-    l_n     NUMBER;
-    BEGIN
-
     /*
-
-    Purpose:    split delimited string to rows
-
-    Remarks:    
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    MBR     23.11.2009  Created
-    
+        Purpose:    split delimited string to rows
+        Remarks:    
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        MBR     23.11.2009  Created   
     */
-
-    LOOP
-        l_n := instr(l_str, p_delim);
-        EXIT when (nvl(l_n,0) = 0);
-        pipe row (ltrim(rtrim(substr(l_str,1,l_n-1))));
-        l_str := substr(l_str, l_n +1);
-    END LOOP;
-
-    return;
-
+    FUNCTION split_str (
+            p_str   IN VARCHAR2,
+            p_delim IN VARCHAR2 := g_default_separator
+        ) RETURN t_str_array pipelined AS
+        -- 
+        l_str   long := p_str || p_delim;
+        l_n     NUMBER;
+        --
+    BEGIN
+        --
+        LOOP
+            --
+            l_n := instr(l_str, p_delim);
+            --
+            EXIT when (nvl(l_n,0) = 0);
+            --
+            PIPE ROW (ltrim(rtrim(substr(l_str,1,l_n-1))));
+            --
+            l_str := substr(l_str, l_n +1);
+            --
+        END LOOP;
+        --
+        RETURN;
+        --
     END split_str;
     --
-    FUNCTION join_str (p_cursor IN sys_refcursor,
-                    p_delim IN VARCHAR2 := g_default_separator) RETURN VARCHAR2
-    AS 
-    l_value        t_max_pl_varchar2;
-    l_returnvalue  t_max_pl_varchar2;
-    BEGIN
-
     /*
-
-    Purpose:    create delimited string FROM cursor
-
-    Remarks:    
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    MBR     23.11.2009  Created
-    
+        Purpose:    create delimited string FROM cursor
+        Remarks:    
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        MBR     23.11.2009  Created      
     */
-
-    LOOP
-
-        fetch p_cursor
-        INTO l_value;
-        EXIT when p_cursor%notfound;
-        
-        IF l_returnvalue is not NULL THEN
-        l_returnvalue := l_returnvalue || p_delim;
-    END IF;
-        
-        l_returnvalue := l_returnvalue || l_value;
-        
-    END LOOP;
-
-    RETURN l_returnvalue;
-        
+    FUNCTION join_str (
+            p_cursor    IN sys_refcursor,
+            p_delim     IN VARCHAR2 := g_default_separator
+        ) RETURN VARCHAR2 AS
+        -- 
+        l_value        t_max_pl_varchar2;
+        l_returnvalue  t_max_pl_varchar2;
+        --
+    BEGIN
+        --
+        LOOP
+            --
+            FETCH p_cursor INTO l_value;
+            EXIT when p_cursor%notfound;
+            --
+            IF l_returnvalue is not NULL THEN
+                l_returnvalue := l_returnvalue || p_delim;
+            END IF;
+            --
+            l_returnvalue := l_returnvalue || l_value;
+            --
+        END LOOP;
+        --
+        RETURN l_returnvalue;
+        --    
     END join_str;
     --
-    FUNCTION multi_replace (p_string IN VARCHAR2,
-                            p_search_for IN t_str_array,
-                            p_replace_with IN t_str_array) RETURN VARCHAR2
-    AS 
-    l_returnvalue t_max_pl_varchar2; 
-    BEGIN
-
     /*
-
-    Purpose:    replace several strings
-
-    Remarks:    see http://oraclequirks.blogspot.com/2010/01/how-fast-can-we-replace-multiple.html
-                this implementation uses t_str_array type instead of index-by table, so it can be used FROM both SQL and PL/SQL
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    MBR     21.01.2011  Created
-    
+        Purpose:    replace several strings
+        Remarks:    see http://oraclequirks.blogspot.com/2010/01/how-fast-can-we-replace-multiple.html
+                    this implementation uses t_str_array type instead of index-by table, so it can be used FROM both SQL and PL/SQL
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        MBR     21.01.2011  Created   
     */
-    
-    l_returnvalue := p_string;
-
-    IF p_search_for.count > 0 THEN
-        FOR i IN 1 .. p_search_for.count LOOP
-        l_returnvalue := replace (l_returnvalue, p_search_for(i), p_replace_with(i));
-        END LOOP;
-    END IF;
-
-    RETURN l_returnvalue;
-
+    FUNCTION multi_replace (
+            p_string        IN VARCHAR2,
+            p_search_for    IN t_str_array,
+            p_replace_with  IN t_str_array
+        ) RETURN VARCHAR2 AS
+        -- 
+        l_returnvalue t_max_pl_varchar2;
+        -- 
+    BEGIN
+        --
+        l_returnvalue := p_string;
+        --
+        IF p_search_for.count > 0 THEN
+            --
+            FOR i IN 1 .. p_search_for.count LOOP
+                l_returnvalue := replace (l_returnvalue, p_search_for(i), p_replace_with(i));
+            END LOOP;
+            --
+        END IF;
+        --
+        RETURN l_returnvalue;
+        --
     END multi_replace;
     --
-    FUNCTION multi_replace (p_clob IN clob,
-                            p_search_for IN t_str_array,
-                            p_replace_with IN t_str_array) RETURN clob
-    AS 
-    l_returnvalue clob; 
-    BEGIN
-
     /*
-
-    Purpose:    replace several strings (clob version)
-
-    Remarks:    
-
-    Who     Date        Description
-    ------  ----------  -------------------------------------
-    MBR     25.01.2011  Created
-    
+        Purpose:    replace several strings (clob version)
+        Remarks:    
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        MBR     25.01.2011  Created
     */
-    
-    l_returnvalue := p_clob;
-
-    IF p_search_for.count > 0 THEN
-        FOR i IN 1 .. p_search_for.count LOOP
-        l_returnvalue := replace (l_returnvalue, p_search_for(i), p_replace_with(i));
-        END LOOP;
-    END IF;
-
-    RETURN l_returnvalue;
-
+    FUNCTION multi_replace (
+            p_clob          IN clob,
+            p_search_for    IN t_str_array,
+            p_replace_with  IN t_str_array
+        ) RETURN clob AS
+        -- 
+        l_returnvalue clob;
+        -- 
+    BEGIN
+        --
+        l_returnvalue := p_clob;
+        --
+        IF p_search_for.count > 0 THEN
+            --
+            FOR i IN 1 .. p_search_for.count LOOP
+                l_returnvalue := replace (l_returnvalue, p_search_for(i), p_replace_with(i));
+            END LOOP;
+            --
+        END IF;
+        --
+        RETURN l_returnvalue;
+        --
     END multi_replace;
     --
-    FUNCTION is_item_in_list (p_item IN VARCHAR2,
-                            p_list IN VARCHAR2,
-                            p_separator IN VARCHAR2 := g_default_separator) RETURN BOOLEAN
-    AS 
-    l_returnvalue BOOLEAN;
+    /*
+        Purpose:    RETURN true IF item is contained IN list
+        Remarks:    
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        MBR     02.07.2010  Created     
+    */
+    FUNCTION is_item_in_list (
+            p_item      IN VARCHAR2,
+            p_list      IN VARCHAR2,
+            p_separator IN VARCHAR2 := g_default_separator
+        ) RETURN BOOLEAN AS
+        -- 
+        l_returnvalue BOOLEAN;
+        --
     BEGIN
-        /*
-            Purpose:    RETURN true IF item is contained IN list
-            Remarks:    
-            Who     Date        Description
-            ------  ----------  -------------------------------------
-            MBR     02.07.2010  Created     
-        */
+        --
         -- add delimiters before and after list to avoid partial match
-        l_returnvalue := (instr(p_separator || p_list || p_separator, p_separator || p_item || p_separator) > 0) AND 
-                         (p_item IS NOT NULL);
+        l_returnvalue := (
+            instr(p_separator || p_list || p_separator, p_separator || p_item || p_separator) > 0
+        ) AND (p_item IS NOT NULL);
         --
         RETURN l_returnvalue;
         --
     END is_item_in_list;     
     --
-    FUNCTION randomize_array (p_array IN t_str_array) RETURN t_str_array
-    AS 
-    l_swap_pos    PLS_INTEGER;
-    l_value       VARCHAR2(4000);
-    l_returnvalue t_str_array := p_array;
-    BEGIN
-
-        /*
-
+    /*
         Purpose:    randomize array of strings
-
         Remarks:    
-
         Who     Date        Description
         ------  ----------  -------------------------------------
         MBR     07.07.2010  Created
         MBR     26.04.2012  Ignore empty array to avoid error
-        
-        */
-
+    */
+    FUNCTION randomize_array (
+            p_array IN t_str_array
+        ) RETURN t_str_array AS
+        -- 
+        l_swap_pos    PLS_INTEGER;
+        l_value       VARCHAR2(4000);
+        l_returnvalue t_str_array := p_array;
+        --
+    BEGIN
+        --
         IF l_returnvalue.count > 0 THEN
-
+            --
             FOR i IN l_returnvalue.first .. l_returnvalue.last LOOP
-            l_swap_pos := trunc(dbms_random.value(1, l_returnvalue.count));
-            l_value := l_returnvalue(i);
-            l_returnvalue (i) := l_returnvalue (l_swap_pos);
-            l_returnvalue (l_swap_pos) := l_value;
+                --
+                l_swap_pos                  := trunc(dbms_random.value(1, l_returnvalue.count));
+                l_value                     := l_returnvalue(i);
+                l_returnvalue (i)           := l_returnvalue (l_swap_pos);
+                l_returnvalue (l_swap_pos)  := l_value;
+                --
             END LOOP;
-
+            --
         END IF;
-        
+        --
         RETURN l_returnvalue;
-        
+        --
     END randomize_array;
     --
-    FUNCTION value_has_changed (p_old IN VARCHAR2,
-                                p_new IN VARCHAR2) RETURN BOOLEAN
-    AS 
-    l_returnvalue BOOLEAN;
-    BEGIN
-    
-        /*
-        
+    /*   
         Purpose:      RETURN true IF two values are different
-        
         Remarks:      
-        
         Who     Date        Description
         ------  ----------  --------------------------------
         MBR     30.07.2010  Created
-        
-        */
-        
-        IF ((p_new is NULL) and (p_old is not NULL)) or
-            ((p_new is not NULL) and (p_old is NULL)) or
-            (p_new <> p_old)
-        THEN
+    */
+    FUNCTION value_has_changed (
+            p_old IN VARCHAR2,
+            p_new IN VARCHAR2
+        ) RETURN BOOLEAN AS
+        -- 
+        l_returnvalue BOOLEAN;
+        --
+    BEGIN
+        --  
+        IF ((p_new IS NULL) AND (p_old IS NOT NULL)) OR ((p_new IS NOT NULL) AND (p_old IS NULL)) OR (p_new <> p_old) THEN
             l_returnvalue := true;
         ELSE
             l_returnvalue := false;
         END IF;
-
+        --
         RETURN l_returnvalue;
-        
+        --
     END value_has_changed;
     --
+    /*
+        Purpose:      concatenate non-NULL strings with specified separator
+        Remarks:      
+        Who     Date        Description
+        ------  ----------  --------------------------------
+        MBR     19.11.2015  Created
+    */
     FUNCTION concat_array (
             p_array IN t_str_array,
             p_separator IN VARCHAR2 := g_default_separator
@@ -1043,13 +1050,7 @@ AS
         l_returnvalue                  t_max_pl_varchar2;
         --
     BEGIN
-        /*
-            Purpose:      concatenate non-NULL strings with specified separator
-            Remarks:      
-            Who     Date        Description
-            ------  ----------  --------------------------------
-            MBR     19.11.2015  Created
-        */
+        --
         IF p_array.count > 0 THEN
             --
             FOR i IN 1 .. p_array.count LOOP
@@ -1067,12 +1068,18 @@ AS
             END LOOP;
             --
         END IF;
-
+        --
         RETURN l_returnvalue;
-
+        --
     END concat_array;
     --
-    -- validate email
+    /*
+        Purpose:  validate email
+        Remarks:      
+        Who         Date        Description
+        ----------- ----------  --------------------------------
+        RGUERRA     01.11.2023  Created
+    */
     FUNCTION validate_email( 
             p_email IN VARCHAR2
         ) RETURN BOOLEAN IS
@@ -1080,13 +1087,6 @@ AS
         l_result VARCHAR2(64);
         --
     BEGIN 
-        /*
-            Purpose:  validate email
-            Remarks:      
-            Who         Date        Description
-            ----------- ----------  --------------------------------
-            RGUERRA     01.11.2023  Created
-        */
         --
         SELECT regexp_substr( p_email,igtp.sys_k_string_util.g_email_str_validate)
           INTO l_result
