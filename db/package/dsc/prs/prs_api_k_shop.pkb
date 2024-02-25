@@ -101,6 +101,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
                 p_msg_error => 'INVALID SHOP EMAIL'
             );
             --
+        END IF;
         --
         -- validamos el email del contacto 
         IF NOT validate_email( g_doc_shop.p_email_contact ) THEN 
@@ -242,7 +243,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         create_shop( 
             p_rec      => g_doc_shop,
             p_result   => p_result
-        )
+        );
         --
         EXCEPTION
             WHEN OTHERS THEN 
@@ -267,7 +268,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         g_doc_shop  := p_rec;
         --
         -- verificamos que el codigo de cliente no exista
-        IF dsc_api_k_customer.exist( p_customer_co => p_rec.p_customer_co ) THEN
+        IF dsc_api_k_shop.exist( p_shop_co => p_rec.p_shop_co ) THEN
             --
             g_rec_shop := dsc_api_k_shop.get_record;
             --
@@ -288,7 +289,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
             g_rec_shop.email_contact        := g_doc_shop.p_email_contact;
             g_rec_shop.telephone_contact    := g_doc_shop.p_telephone_contact;
             g_rec_shop.user_id              := g_rec_user.id;
-            g_rec_shop.update_at            := sysdate;
+            g_rec_shop.updated_at           := sysdate;
             --
             -- creamos el slug
             IF p_rec.p_slug IS NULL THEN 
@@ -362,6 +363,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         NULL;
         --
     END delete_shop;  
+    --
+BEGIN
     --
     -- verificamos la configuracion Actual 
     g_cfg_co := nvl(sys_k_global.ref_f_global(
