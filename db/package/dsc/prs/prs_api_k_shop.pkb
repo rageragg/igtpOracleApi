@@ -14,12 +14,15 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
     --                                  administrativos de creacion de tiendas
     ---------------------------------------------------------------------------
+    K_CFG_CO     CONSTANT NUMBER        := 1;
     --
     -- GLOBALES
+    g_cfg_co            configurations.id%TYPE;
     g_doc_shop          shop_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
     g_rec_shop          igtp.shops%ROWTYPE;
     g_rec_user          igtp.users%ROWTYPE;
+    g_reg_config                    configurations%ROWTYPE;
     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
@@ -214,6 +217,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
     ) IS 
+        --
+        l_obj       json_object_t;
+        --
     BEGIN
         --
         -- analizamos los datos JSON
@@ -356,5 +362,25 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         NULL;
         --
     END delete_shop;  
+    --
+    -- verificamos la configuracion Actual 
+    g_cfg_co := nvl(sys_k_global.ref_f_global(
+        p_variable => 'CONFIGURATION_ID'
+    ), K_CFG_CO );
+    --
+    -- tomamos la configuracion local
+    g_reg_config := cfg_api_k_configuration.get_record( 
+        p_id => g_cfg_co
+    );
+    --
+    -- establecemos el lenguaje de trabajo
+    sys_k_global.p_seter(
+        p_variable  => 'LANGUAGE_CO', 
+        p_value     => g_reg_config.language_co
+    );
+    --
+    EXCEPTION 
+        WHEN OTHERS THEN 
+            dbms_output.put_line('Init Package: '||sqlerrm);
     --
 END prs_api_k_shop;
