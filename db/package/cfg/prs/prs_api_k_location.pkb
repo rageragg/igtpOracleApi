@@ -1,4 +1,6 @@
 
+CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
+    --
     ---------------------------------------------------------------------------
     --  DDL for Package body LOCATIONS_API (Process)
     --  MODIFICATIONS
@@ -9,7 +11,6 @@
     --
     -- TODO: Compactar codigo repetitivo en funciones de utilerias
     ---------------------------------------------------------------------------
-CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --
     K_CFG_CO     CONSTANT NUMBER        := 1;
     --

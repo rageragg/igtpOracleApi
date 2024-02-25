@@ -15,6 +15,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --                                  administrativos de creacion de clientes
     ---------------------------------------------------------------------------
     --
+    K_CFG_CO     CONSTANT NUMBER        := 1;
+    --
     -- GLOBALES
     g_doc_customer      customer_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
@@ -23,9 +25,11 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
+    g_cfg_co                        configurations.id%TYPE;
     g_hay_error                     BOOLEAN;
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
+    g_reg_config                    configurations%ROWTYPE;
     -- excepciones
     e_validate_type_customer        EXCEPTION;
     e_validate_location             EXCEPTION;
@@ -305,6 +309,10 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 p_result    => p_result
         );
         --
+        l_obj.put('slug', g_doc_customer.p_slug);
+        l_obj.put('uuid', g_doc_customer.p_uuid);
+        p_json := l_obj.stringify; 
+        --
         EXCEPTION
             WHEN OTHERS THEN 
                 --
@@ -498,5 +506,27 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 ROLLBACK;
         --
     END delete_customer;
-    --    
+    --   
+BEGIN    
+    --
+    -- verificamos la configuracion Actual 
+    g_cfg_co := nvl(sys_k_global.ref_f_global(
+        p_variable => 'CONFIGURATION_ID'
+    ), K_CFG_CO );
+    --
+    -- tomamos la configuracion local
+    g_reg_config := cfg_api_k_configuration.get_record( 
+        p_id => g_cfg_co
+    );
+    --
+    -- establecemos el lenguaje de trabajo
+    sys_k_global.p_seter(
+        p_variable  => 'LANGUAGE_CO', 
+        p_value     => g_reg_config.language_co
+    );
+    --
+    EXCEPTION 
+        WHEN OTHERS THEN 
+            dbms_output.put_line('Init Package: '||sqlerrm);
+    --     
 END prs_api_k_customer;

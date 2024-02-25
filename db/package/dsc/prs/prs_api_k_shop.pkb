@@ -15,6 +15,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     --                                  administrativos de creacion de tiendas
     ---------------------------------------------------------------------------
     --
+    K_CFG_CO     CONSTANT NUMBER        := 1;
+    --
     -- GLOBALES
     g_doc_shop          shop_api_doc;
     g_rec_locations     igtp.locations%ROWTYPE;
@@ -23,9 +25,11 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     --
     -- TODO: crear el manejo de errores para transferirlo al nivel superior
     --
+    g_cfg_co                        configurations.id%TYPE;
     g_hay_error                     BOOLEAN;
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
+    g_reg_config                    configurations%ROWTYPE;
     -- excepciones
     e_validate_location             EXCEPTION;
     e_exist_shop_code               EXCEPTION;
@@ -205,9 +209,48 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
     ) IS 
+        --
+        l_obj       json_object_t;
+        --
     BEGIN
         --
-        NULL;
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        g_doc_shop.p_shop_co           := l_obj.get_string( 'shop_co');
+        g_doc_shop.p_description       := l_obj.get_string( 'description');
+        g_doc_shop.p_location_co       := l_obj.get_string( 'location_co');
+        g_doc_shop.p_address           := l_obj.get_string( 'address');
+        g_doc_shop.p_nu_gps_lat        := l_obj.get_number( 'nu_gps_lat');
+        g_doc_shop.p_nu_gps_lon        := l_obj.get_number( 'nu_gps_lon');
+        g_doc_shop.p_telephone_co      := l_obj.get_string( 'telephone_co');
+        g_doc_shop.p_fax_co            := l_obj.get_string( 'fax_co');
+        g_doc_shop.p_email             := l_obj.get_string( 'email');
+        g_doc_shop.p_name_contact      := l_obj.get_string( 'name_contact');
+        g_doc_shop.p_email_contact     := l_obj.get_string( 'email_contact');
+        g_doc_shop.p_telephone_contact := l_obj.get_string( 'telephone_contact');
+        g_doc_shop.p_user_co           := l_obj.get_string( 'user_co');
+        g_doc_shop.p_slug              := l_obj.get_string( 'slug');
+        -- g_doc_shop.p_uuid              := l_obj.get_string( 'uuid%
+        --
+        create_shop( 
+            p_rec       => g_doc_shop,
+            p_result    => p_result
+        );
+        --
+        l_obj.put('slug', g_doc_shop.p_slug);
+        l_obj.put('uuid', g_doc_shop.p_uuid);
+        p_json := l_obj.stringify;
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
         --
     END create_shop;         
     --
@@ -218,7 +261,82 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     ) IS 
     BEGIN
         --
-        NULL;
+        -- se establece el valor a la global 
+        g_doc_shop  := p_rec;
+        --
+        -- verificamos que el codigo de cliente no exista
+        IF dsc_api_k_shop.exist( p_shop_co => p_rec.p_shop_co ) THEN
+            --
+            g_rec_shop := dsc_api_k_shop.get_record;
+            --
+            -- validacion total
+            validate_all;            
+            --
+            -- completamos los datos del cliente
+            g_rec_shop.shop_co              := g_doc_shop.p_shop_co;
+            g_rec_shop.description          := g_doc_shop.p_description;
+            g_rec_shop.location_id          := g_rec_locations.id;
+            g_rec_shop.address              := g_doc_shop.p_address;
+            g_rec_shop.nu_gps_lat           := g_doc_shop.p_nu_gps_lat;
+            g_rec_shop.nu_gps_lon           := g_doc_shop.p_nu_gps_lon;
+            g_rec_shop.telephone_co         := g_doc_shop.p_telephone_co;
+            g_rec_shop.fax_co               := g_doc_shop.p_fax_co;
+            g_rec_shop.email                := g_doc_shop.p_email;
+            g_rec_shop.name_contact         := g_doc_shop.p_name_contact;
+            g_rec_shop.email_contact        := g_doc_shop.p_email_contact;
+            g_rec_shop.telephone_contact    := g_doc_shop.p_telephone_contact;
+            g_rec_shop.user_id              := g_rec_user.id;
+            g_rec_shop.created_at           := sysdate;
+            --
+            IF g_doc_shop.p_slug IS NOT NULL THEN 
+                g_rec_shop.uuid             :=  g_doc_shop.p_slug;
+            END IF;
+            --
+            IF g_doc_shop.p_uuid IS NOT NULL THEN 
+                g_rec_shop.slug             :=  g_doc_shop.p_uuid;
+            END IF;            
+            --
+            g_rec_shop.created_at          := sysdate;
+            --
+            -- creamos el registro
+            dsc_api_k_shop.upd( 
+                p_rec => g_rec_shop
+            );
+            --
+            COMMIT;
+            --
+            p_rec.p_uuid    := g_rec_shop.uuid;
+            p_rec.p_slug    := g_rec_shop.slug;
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            -- 
+        ELSE 
+            --
+            raise_error( 
+                p_cod_error => -20007,
+                p_msg_error => 'INVALID SHOP CODE'
+            );
+            --
+        END IF;
+        --
+        EXCEPTION 
+            WHEN e_validate_location  OR
+                 e_exist_shop_code    OR
+                 e_no_exist_shop_code OR
+                 e_validate_user THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| g_msg_error ||'" }';
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                ROLLBACK;
+                --
         --
     END update_shop;  
     --
@@ -244,4 +362,26 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         --
     END delete_shop;  
     --
+BEGIN    
+    --
+    -- verificamos la configuracion Actual 
+    g_cfg_co := nvl(sys_k_global.ref_f_global(
+        p_variable => 'CONFIGURATION_ID'
+    ), K_CFG_CO );
+    --
+    -- tomamos la configuracion local
+    g_reg_config := cfg_api_k_configuration.get_record( 
+        p_id => g_cfg_co
+    );
+    --
+    -- establecemos el lenguaje de trabajo
+    sys_k_global.p_seter(
+        p_variable  => 'LANGUAGE_CO', 
+        p_value     => g_reg_config.language_co
+    );
+    --
+    EXCEPTION 
+        WHEN OTHERS THEN 
+            dbms_output.put_line('Init Package: '||sqlerrm);
+    --      
 END prs_api_k_shop;
