@@ -29,10 +29,6 @@ BEGIN
     -- jSON
     l_json := '{ "shop_co":"XXX",'||
               '  "description":"ELIMINAR",'||
-              '  "location_co":"BQTO-CTRO",'||
-              '  "address":"XXXXXXXXXXXXXXXXXXX",'||
-              '  "nu_gps_lat": 0.00,'||
-              '  "nu_gps_lon": 0.00,'||
               '  "telephone_co":"+XXXXX-XXXXXXX",'||
               '  "fax_co":"",'||
               '  "email":"xxxxxx@gmail.com",'||

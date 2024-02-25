@@ -20,3 +20,4 @@ Luego de crear la tabla de espacio de trabajo y usuario se debe ejecutar los scr
 5.- Disparadores
 
 ### NOTA: Realizar el proceso de recompilacion para objetos invalidos.
+### Administracion de Modulos

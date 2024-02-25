@@ -368,7 +368,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 g_rec_customer.slug             :=  g_doc_customer.p_uuid;
             END IF;            
             --
-            g_rec_customer.created_at          := sysdate;
+            g_rec_customer.update_at := sysdate;
             --
             -- creamos el registro
             dsc_api_k_customer.upd( 
