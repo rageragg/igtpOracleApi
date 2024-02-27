@@ -48,17 +48,17 @@ BEGIN
     --
     dbms_output.put_line( '2.- Actualizando tienda');
     --
+    /*
         igtp.prs_api_k_shop.update_shop(
             p_rec       => r_shop_doc,
             p_result    => l_result
         );
-    /*
+    */
         --
-        igtp.prs_api_k_customer.update_shop( 
+        igtp.prs_api_k_shop.update_shop( 
             p_json      => l_json,
             p_result    => l_result
         );
-    */
     --
     COMMIT;
     --

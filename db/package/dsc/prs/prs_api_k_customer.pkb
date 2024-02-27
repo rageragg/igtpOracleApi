@@ -49,9 +49,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --
     -- raise_error 
     PROCEDURE raise_error( 
-        p_cod_error NUMBER,
-        p_msg_error VARCHAR2
-    ) IS 
+            p_cod_error NUMBER,
+            p_msg_error VARCHAR2
+        ) IS 
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
@@ -415,9 +415,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --
     -- update customer by json
     PROCEDURE update_customer( 
-        p_json      IN OUT VARCHAR2,
-        p_result    OUT VARCHAR2
-    ) IS 
+            p_json      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
         --
         l_obj       json_object_t;
         --
@@ -463,9 +463,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --
     -- update customer by json
     PROCEDURE delete_customer( 
-        p_customer_co   IN customers.customer_co%TYPE,
-        p_result        OUT VARCHAR2 
-    ) IS 
+            p_customer_co   IN customers.customer_co%TYPE,
+            p_result        OUT VARCHAR2 
+        ) IS 
         --
         g_reg_customer  customers%ROWTYPE;
         --

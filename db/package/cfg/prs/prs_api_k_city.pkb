@@ -321,9 +321,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- update RECORD
     PROCEDURE update_city( 
-        p_rec               IN OUT city_api_doc,
-        p_result            OUT VARCHAR2 
-    ) IS
+            p_rec               IN OUT city_api_doc,
+            p_result            OUT VARCHAR2 
+        ) IS
     BEGIN
         --
         g_doc_city.p_city_co            := p_rec.p_city_co;
