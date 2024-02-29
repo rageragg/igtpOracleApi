@@ -90,4 +90,10 @@ create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
         p_result        OUT VARCHAR2 
     );
     --
+    -- load file masive data
+    PROCEDURE load_file(
+        p_json      IN VARCHAR2,
+        p_result    OUT VARCHAR2
+    );
+    --
 END prs_api_k_customer;

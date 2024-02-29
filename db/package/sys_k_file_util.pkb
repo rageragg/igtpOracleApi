@@ -169,7 +169,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     BEGIN
         --
-        dbms_lob.createtemporary (l_returnvalue, false);
+        dbms_lob.createtemporary (l_returnvalue, FALSE);
         l_bfile := bfilename (p_directory_name, p_file_name);
         dbms_lob.fileopen (l_bfile, dbms_lob.file_readonly);
         dbms_lob.loadfromfile (l_returnvalue, l_bfile, dbms_lob.getlength(l_bfile));
@@ -188,18 +188,38 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END get_blob_from_file;
     --
-    FUNCTION get_clob_from_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2) RETURN CLOB IS
+    FUNCTION get_clob_from_file (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2
+        ) RETURN CLOB IS
         --
-        l_bfile          bfile;
-        l_returnvalue    CLOB;
+        l_bfile             BFILE;
+        l_returnvalue       CLOB;
+        l_dest_offset       INTEGER := 1;
+        l_src_offset        INTEGER := 1;
+        l_bfile_csid        NUMBER  := 0;
+        l_lang_context      INTEGER := 0;
+        l_warning           INTEGER := 0;
         --
     BEGIN
         --
-        dbms_lob.createtemporary (l_returnvalue, false);
+        dbms_lob.createtemporary (l_returnvalue, FALSE);
+        --
         l_bfile := bfilename (p_directory_name, p_file_name);
+        --
         dbms_lob.fileopen (l_bfile, dbms_lob.file_readonly);
-        dbms_lob.loadfromfile (l_returnvalue, l_bfile, dbms_lob.getlength(l_bfile));
+        --
+        dbms_lob.loadclobfromfile(
+                    dest_lob        => l_returnvalue,
+                    src_bfile       => l_bfile,
+                    amount          => dbms_lob.lobmaxsize,
+                    dest_offset     => l_dest_offset,
+                    src_offset      => l_src_offset,
+                    bfile_csid      => l_bfile_csid,
+                    lang_context    => l_lang_context,
+                    warning         => l_warning
+        );
+        --
         dbms_lob.fileclose (l_bfile);
         --
         RETURN l_returnvalue;
@@ -210,8 +230,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
                 IF dbms_lob.fileisopen (l_bfile) = 1 THEN
                     dbms_lob.fileclose (l_bfile);
                 END IF;
+                --
                 dbms_lob.freetemporary(l_returnvalue);
-                raise;
+                --
+                RAISE;
         --
     END get_clob_from_file;
     --
@@ -322,7 +344,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
         l_length      number;
         l_block_size  number; 
-        l_returnvalue BOOLEAN := false;
+        l_returnvalue BOOLEAN := FALSE;
         --
     BEGIN
         --

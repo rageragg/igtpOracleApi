@@ -368,7 +368,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 g_rec_customer.slug             :=  g_doc_customer.p_uuid;
             END IF;            
             --
-            g_rec_customer.update_at := sysdate;
+            g_rec_customer.updated_at := sysdate;
             --
             -- creamos el registro
             dsc_api_k_customer.upd( 
@@ -506,6 +506,59 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 ROLLBACK;
         --
     END delete_customer;
+    --
+    -- load file masive data
+    PROCEDURE load_file(
+            p_json      IN VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_directory_name    VARCHAR2(30)    := 'APP_INDIR';
+        l_file_name         VARCHAR2(128);
+        l_data              CLOB;
+        l_obj               json_object_t;
+        --
+        l_file_exists       BOOLEAN;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        l_file_name := l_obj.get_string('file_name');
+        --
+        IF l_file_name IS NOT NULL THEN 
+            --
+            l_file_exists := sys_k_file_util.file_exists(
+                p_directory_name    => l_directory_name,
+                p_file_name         => l_file_name
+            );
+            --
+            IF l_file_exists THEN 
+                --
+                -- leemos el archivo y lo transformamos en CLOB
+                l_data := sys_k_file_util.get_clob_from_file (
+                    p_directory_name    => l_directory_name,
+                    p_file_name         => l_file_name
+                );
+                --
+                -- ! DEPURACION
+                insert into test(data) values(l_data);
+                --
+                COMMIT;
+                --
+                p_result := '{ "status":"OK", "message":"SUCCESS" }';
+                --
+            ELSE 
+                --
+                p_result := '{ "status":"ERROR", "message":"FILE NOT FOUND" }';
+                --
+            END IF;
+            --
+        END IF;
+        --
+    END load_file;
     --   
 BEGIN    
     --
