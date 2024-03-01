@@ -1,9 +1,8 @@
---------------------------------------------------------
---  DDL for Package sys_k_date
---------------------------------------------------------
 
 CREATE OR REPLACE PACKAGE BODY sys_k_date IS
-
+    --------------------------------------------------------
+    --  DDL for Package sys_k_date
+    --------------------------------------------------------
     /*
         Purpose:    Package handles functionality related to DATE and time
         Remarks:    

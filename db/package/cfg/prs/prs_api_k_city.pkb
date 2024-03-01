@@ -49,7 +49,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         g_hay_error := TRUE;
         --
         g_msg_error := prs_k_api_language.f_message( 
-            p_language_co => sys_k_global.geter('LANGUAGE_CO'),
+            p_language_co => sys_k_global.geter(sys_k_constant.K_FIELD_LANGUAGE_CO),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
         );
@@ -454,7 +454,7 @@ BEGIN
     --
     -- verificamos la configuracion Actual 
     g_cfg_co := nvl(sys_k_global.ref_f_global(
-        p_variable => 'CONFIGURATION_ID'
+        p_variable => cfg_api_k_configuration.K_CONFIGURATION_ID
     ), K_CFG_CO );
     --
     -- tomamos la configuracion local
@@ -464,7 +464,7 @@ BEGIN
     --
     -- establecemos el lenguaje de trabajo
     sys_k_global.p_seter(
-        p_variable  => 'LANGUAGE_CO', 
+        p_variable  => sys_k_constant.K_FIELD_LANGUAGE_CO, 
         p_value     => g_reg_config.language_co
     );
     --

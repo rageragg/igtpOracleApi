@@ -15,8 +15,8 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_location IS
     --                                  administrativos de creacion de locaciones
     ---------------------------------------------------------------------------
     --
-    K_PROCESS    CONSTANT VARCHAR2(30)  := 'PRC_API_K_LOCATION';
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_PROCESS    CONSTANT VARCHAR2(30)  := sys_k_constant.K_LOCATION_PROCESS;
+    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
     --
     TYPE location_api_doc IS RECORD(
         p_location_co       locations.location_co%TYPE DEFAULT NULL, 

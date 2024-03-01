@@ -16,9 +16,9 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     --                                  administrativos de creacion de ciudades
     ---------------------------------------------------------------------------
     --
-    K_PROCESS    CONSTANT VARCHAR2(30)  := 'PRC_API_K_CITY';
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_CONTEXT    CONSTANT VARCHAR2(30)  := 'CITY-ADMINISTRATOR';
+    K_PROCESS    CONSTANT VARCHAR2(30)  := sys_k_constant.K_CITY_PROCESS;
+    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_CONTEXT    CONSTANT VARCHAR2(30)  := sys_k_constant.K_CITY_CONTEXT;
     --
     TYPE city_api_doc IS RECORD(
         p_city_co           cities.city_co%TYPE DEFAULT NULL, 

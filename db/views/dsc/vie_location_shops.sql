@@ -1,7 +1,6 @@
 --------------------------------------------------------
 --  DDL for View V_LOCATION_SHOPS
 --------------------------------------------------------
-
 CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_LOCATION_SHOPS" (
   "SHOP_CO", "SHOP_DESC", "NAME_CONTACT", 
   "EMAIL_CONTACT", "TELEPHONE_CONTACT", "LOCATION_CO", 

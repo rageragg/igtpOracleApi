@@ -4,9 +4,9 @@ CREATE OR REPLACE PACKAGE dsc_api_k_shop IS
     --  DDL for Package SHOPS_API
     --------------------------------------------------------
     --
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'SHOPS';
-    K_CONTEXT    CONSTANT VARCHAR2(30)  := 'SHOP-ADMINISTRATOR';
+    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_TABLE;
+    K_CONTEXT    CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_CONTEXT;
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
