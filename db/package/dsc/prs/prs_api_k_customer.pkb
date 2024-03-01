@@ -60,7 +60,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         g_hay_error := TRUE;
         --
         g_msg_error := prs_api_k_language.f_message( 
-            p_language_co => sys_k_global.geter('LANGUAGE_CO'),
+            p_language_co => sys_k_global.geter(sys_k_constant.K_FIELD_LANGUAGE_CO),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
         );
@@ -543,8 +543,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             p_result    OUT VARCHAR2
         ) IS 
         --
-        l_directory_indir   VARCHAR2(30)    := 'APP_INDIR';
-        l_directory_outdir  VARCHAR2(30)    := 'APP_OUTDIR';
+        l_directory_indir   VARCHAR2(30)    := sys_k_constant.K_IN_DIRECTORY;
+        l_directory_outdir  VARCHAR2(30)    := sys_k_constant.K_OUT_DIRECTORY;
         l_file_name         VARCHAR2(128);
         l_user_code         VARCHAR2(10);
         l_data              CLOB;
@@ -633,7 +633,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                     --
                     -- manejo de log
                     record_log( 
-                        p_context   => 'LOAD FILE CUSTOMER',
+                        p_context   => sys_k_constant.K_CUSTOMER_LOAD_CONTEXT,
                         p_line      => r_reg.line_number,
                         p_raw       => r_reg.line_raw,
                         p_result    => p_result,
@@ -647,7 +647,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 -- registramos el archivo log
                 sys_k_file_util.save_clob_to_file (
                     p_directory_name  => l_directory_outdir,
-                    p_file_name       => 'load_data_customers.log',
+                    p_file_name       => sys_k_constant.K_NAME_FILE_DATA_LOAD,
                     p_clob            => l_log
                 );
                 --
@@ -669,7 +669,7 @@ BEGIN
     --
     -- verificamos la configuracion Actual 
     g_cfg_co := nvl(sys_k_global.ref_f_global(
-        p_variable => 'CONFIGURATION_ID'
+        p_variable => sys_k_constant.K_CONFIGURATION_ID
     ), K_CFG_CO );
     --
     -- tomamos la configuracion local
@@ -679,7 +679,7 @@ BEGIN
     --
     -- establecemos el lenguaje de trabajo
     sys_k_global.p_seter(
-        p_variable  => 'LANGUAGE_CO', 
+        p_variable  => sys_k_constant.K_FIELD_LANGUAGE_CO, 
         p_value     => g_reg_config.language_co
     );
     --

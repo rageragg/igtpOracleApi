@@ -15,22 +15,22 @@ create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
     --                                  administrativos de creacion de clientes
     ---------------------------------------------------------------------------
     --
-    K_OWNER         CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_TABLE_NAME    CONSTANT VARCHAR2(30)  := 'CUSTOMERS';
+    K_OWNER         CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_TABLE_NAME    CONSTANT VARCHAR2(30)  := sys_k_constant.K_CUSTOMER_TABLE;
     K_LIMIT_LIST    CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST    CONSTANT PLS_INTEGER   := 2;
-    K_PROCESS       CONSTANT VARCHAR2(30)  := 'PRC_API_K_CUSTOMER';
-    K_CONTEXT       CONSTANT VARCHAR2(30)  := 'CUSTOMER-ADMINISTRATOR';
+    K_PROCESS       CONSTANT VARCHAR2(30)  := sys_k_constant.K_CUSTOMER_PROCESS;
+    K_CONTEXT       CONSTANT VARCHAR2(30)  := sys_k_constant.K_CUSTOMER_CONTEXT;
     --
     -- CONSTANTES DE NEGOCIO
     -- tipo de clientes
-    K_TYPE_CUSTOMER_FACTORY     CONSTANT CHAR(01) := 'F'; 
-    K_TYPE_CUSTOMER_DISTRIBUTOR CONSTANT CHAR(01) := 'D';
-    K_TYPE_CUSTOMER_MARKET      CONSTANT CHAR(01) := 'M';
+    K_TYPE_CUSTOMER_FACTORY     CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_FACTORY; 
+    K_TYPE_CUSTOMER_DISTRIBUTOR CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_DISTRIB;
+    K_TYPE_CUSTOMER_MARKET      CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_MARKET;
     -- categoria de clientes
-    K_CATEGORY_A                CONSTANT CHAR(01) := 'A';
-    K_CATEGORY_B                CONSTANT CHAR(01) := 'B';
-    K_CATEGORY_C                CONSTANT CHAR(01) := 'C';
+    K_CATEGORY_A                CONSTANT CHAR(01) := sys_k_constant.K_CUSTOMER_CATEGORY_A;
+    K_CATEGORY_B                CONSTANT CHAR(01) := sys_k_constant.K_CUSTOMER_CATEGORY_B;
+    K_CATEGORY_C                CONSTANT CHAR(01) := sys_k_constant.K_CUSTOMER_CATEGORY_C;
     --
     -- document
     TYPE customer_api_doc IS RECORD(

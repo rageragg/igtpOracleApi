@@ -3,6 +3,10 @@ CREATE OR REPLACE PACKAGE sys_k_constant IS
     -- user OWNER IGTP
     K_OWNER_APP                 CONSTANT VARCHAR2(20) := 'IGTP';
     --
+    -- directories
+    K_IN_DIRECTORY              CONSTANT VARCHAR2(30) := 'APP_INDIR';
+    K_OUT_DIRECTORY             CONSTANT VARCHAR2(30) := 'APP_OUTDIR';
+    --
     -- fields 
     K_FIELD_LANGUAGE_CO         CONSTANT VARCHAR2(20) := 'LANGUAGE_CO';
     K_CONFIGURATION_ID          CONSTANT VARCHAR2(20) := 'CONFIGURATION_ID';
@@ -67,32 +71,38 @@ CREATE OR REPLACE PACKAGE sys_k_constant IS
     K_TYPE_CUSTOMER_FACTORY     CONSTANT VARCHAR2(01) := 'F';
     K_TYPE_CUSTOMER_DISTRIB     CONSTANT VARCHAR2(01) := 'D';
     K_TYPE_CUSTOMER_MARKET      CONSTANT VARCHAR2(01) := 'M';
-    --
+    -- categoria de clientes
+    K_CUSTOMER_CATEGORY_A       CONSTANT CHAR(01) := 'A';
+    K_CUSTOMER_CATEGORY_B       CONSTANT CHAR(01) := 'B';
+    K_CUSTOMER_CATEGORY_C       CONSTANT CHAR(01) := 'C';
+
     -- type cost concepts
     K_TYPE_COST_CPT_FIXED       CONSTANT VARCHAR2(20) := 'FIXED  ';
     K_TYPE_COST_CPT_VEHICLE     CONSTANT VARCHAR2(20) := 'TYPE-VEHICLE';                
     K_TYPE_COST_CPT_CARGO       CONSTANT VARCHAR2(20) := 'TYPE-CARGO';                
     K_TYPE_COST_CPT_ROUTE       CONSTANT VARCHAR2(20) := 'ROUTE';
     --
-    -- type city 
+    -- city 
     K_CITY_PROCESS              CONSTANT VARCHAR2(20) := 'PRC_API_K_CITY';
     K_CITY_CONTEXT              CONSTANT VARCHAR2(20) := 'CITY-ADMINISTRATOR';
     --
-    -- type locations 
+    -- locations 
     K_LOCATION_PROCESS          CONSTANT VARCHAR2(24) := 'PRC_API_K_LOCATION';
     K_LOCATION_CONTEXT          CONSTANT VARCHAR2(24) := 'LOCATION-ADMINISTRATOR';
     --
-    -- type customers
+    -- customers
     K_CUSTOMER_PROCESS          CONSTANT VARCHAR2(24) := 'PRC_API_K_CUSTOMER';
     K_CUSTOMER_CONTEXT          CONSTANT VARCHAR2(24) := 'CUSTOMER-ADMINISTRATOR';
     K_CUSTOMER_TABLE            CONSTANT VARCHAR2(24) := 'CUSTOMERS';
+    K_CUSTOMER_LOAD_CONTEXT     CONSTANT VARCHAR2(24) := 'LOAD FILE CUSTOMER';
+    K_NAME_FILE_DATA_LOAD       CONSTANT VARCHAR2(24) := 'load_data_customers.log';
     --
-    -- type shops
+    -- shops
     K_SHOP_PROCESS              CONSTANT VARCHAR2(24) := 'PRC_API_K_SHOP';
     K_SHOP_CONTEXT              CONSTANT VARCHAR2(24) := 'SHOP-ADMINISTRATOR';
     K_SHOP_TABLE                CONSTANT VARCHAR2(24) := 'SHOPS';
     --
-    -- type type cargos
+    -- type cargos
     K_TYPE_CARGO_PROCESS        CONSTANT VARCHAR2(24) := 'PRC_API_K_TYPE_CARGOSP';
     K_TYPE_CARGO_CONTEXT        CONSTANT VARCHAR2(24) := 'TYPE_CARGO-ADMINISTRATOR';
     K_TYPE_CARGO_TABLE          CONSTANT VARCHAR2(24) := 'TYPE_CARGOS';

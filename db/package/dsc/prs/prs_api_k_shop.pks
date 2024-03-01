@@ -15,12 +15,12 @@ CREATE OR REPLACE PACKAGE prs_api_k_shop IS
     --                                  administrativos de creacion de tiendas
     ---------------------------------------------------------------------------
     --
-    K_OWNER         CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_TABLE_NAME    CONSTANT VARCHAR2(30)  := 'SHOPS';
+    K_OWNER         CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_TABLE_NAME    CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_TABLE;
     K_LIMIT_LIST    CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST    CONSTANT PLS_INTEGER   := 2;
-    K_PROCESS       CONSTANT VARCHAR2(30)  := 'PRS_API_K_SHOP';
-    K_CONTEXT       CONSTANT VARCHAR2(30)  := 'SHOP-ADMINISTRATOR';    
+    K_PROCESS       CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_PROCESS;
+    K_CONTEXT       CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_CONTEXT;    
     --
     -- CONSTANTES DE NEGOCIO
     --
