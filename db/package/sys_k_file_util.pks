@@ -58,9 +58,10 @@ CREATE OR REPLACE PACKAGE sys_k_file_util IS
                                 ) RETURN BLOB;
     --
     -- get CLOB from file
-    FUNCTION get_clob_from_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2
-                                ) RETURN CLOB;
+    FUNCTION get_clob_from_file (
+        p_directory_name IN VARCHAR2,
+        p_file_name IN VARCHAR2
+    ) RETURN CLOB;
     --
     -- save BLOB to file
     procedure save_blob_to_file (p_directory_name IN VARCHAR2,
@@ -68,9 +69,11 @@ CREATE OR REPLACE PACKAGE sys_k_file_util IS
                                  p_blob IN BLOB);  
     --
     -- save CLOB to file
-    procedure save_clob_to_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2,
-                                 p_clob IN CLOB);  
+    PROCEDURE save_clob_to_file (
+        p_directory_name  IN VARCHAR2,
+        p_file_name       IN VARCHAR2,
+        p_clob            IN CLOB
+    );  
     --
     -- save CLOB to file (raw)
     procedure save_clob_to_file_raw (p_directory_name IN VARCHAR2,

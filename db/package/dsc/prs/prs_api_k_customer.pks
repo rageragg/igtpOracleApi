@@ -60,6 +60,13 @@ create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
     TYPE customer_api_tab IS  TABLE OF customers%ROWTYPE;
     TYPE customer_doc_tab IS  TABLE OF customer_api_doc INDEX BY PLS_INTEGER;
     --
+    -- manejo de log
+    PROCEDURE record_log( 
+        p_line      => r_reg.line_number,
+        p_raw       => r_reg.line_raw,
+        p_result    => p_result
+    );    
+    --
     -- create customer by record
     PROCEDURE create_customer( 
         p_rec       IN OUT customer_api_doc,
