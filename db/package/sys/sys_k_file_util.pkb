@@ -131,13 +131,13 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
             l_sep_pos:=instr(p_file_name, g_file_ext_sep || l_file_ext, -1);
             -- copy everything except extension
             IF l_sep_pos > 0 THEN
-                l_returnvalue:=sys_k_string_util.copy_str(p_file_name, 1, l_sep_pos - 1);
+                l_returnvalue := sys_k_string_util.copy_str(p_file_name, 1, l_sep_pos - 1);
             ELSE
-                l_returnvalue:=p_file_name;
+                l_returnvalue := p_file_name;
             END IF;
             --
         ELSE
-            l_returnvalue:=p_file_name;
+            l_returnvalue := p_file_name;
         END IF;
         --
         RETURN l_returnvalue;
@@ -305,7 +305,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
                 IF utl_file.is_open (l_file) THEN
                     utl_file.fclose (l_file);
                 END IF;
-                raise;  
+                RAISE;  
         --
     END save_clob_to_file;  
     --

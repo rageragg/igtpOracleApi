@@ -183,6 +183,36 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END validate_all;
     --
+    -- ! crear un paquete que permita crear archivos .log
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+        --
+        l_data  CLOB;
+        l_str   VARCHAR2(8000);
+        --
+    BEGIN 
+        --
+        dbms_lob.createtemporary(
+            lob_loc => l_data,
+            cache   => FALSE
+        );
+        --
+        l_str := p_context||';'||p_line || ';' ||p_raw||';RESULT:'||p_result||chr(13);
+        --
+        dbms_lob.append( p_clob, l_str );
+        --
+        dbms_lob.freetemporary (
+            lob_loc => l_data
+        ); 
+        --
+    END record_log;   
+    --
     -- CREATE CUSTOMER BY DOCUMENT
     PROCEDURE create_customer( 
             p_rec       IN OUT customer_api_doc,
@@ -513,12 +543,38 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             p_result    OUT VARCHAR2
         ) IS 
         --
-        l_directory_name    VARCHAR2(30)    := 'APP_INDIR';
+        l_directory_indir   VARCHAR2(30)    := 'APP_INDIR';
+        l_directory_outdir  VARCHAR2(30)    := 'APP_OUTDIR';
         l_file_name         VARCHAR2(128);
+        l_user_code         VARCHAR2(10);
         l_data              CLOB;
+        l_log               CLOB;
         l_obj               json_object_t;
         --
         l_file_exists       BOOLEAN;
+        --
+        -- lectura de datos desde un CLOB
+        CURSOR c_csv IS
+            SELECT line_number, line_raw, 
+                   c001 customer_co, 
+                   c002 description, 
+                   c003 telephone_co, 
+                   c004 fax_co, 
+                   c005 email,
+                   c006 address,
+                   c007 type_customer,
+                   c008 sector,
+                   c009 category_co,
+                   c010 fiscal_document_co,
+                   c011 location_co,
+                   c012 telephone_contact,
+                   c013 name_contact,
+                   c014 email_contact
+              FROM sys_k_csv_util.clob_to_csv (
+                        p_csv_clob  => l_data,
+                        p_separator => ';',
+                        p_skip_rows => 1
+                   );
         --
     BEGIN 
         --
@@ -527,28 +583,77 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
         -- completamos los datos del registro customer
         l_file_name := l_obj.get_string('file_name');
+        l_user_code := l_obj.get_string('user_name');
         --
         IF l_file_name IS NOT NULL THEN 
             --
             l_file_exists := sys_k_file_util.file_exists(
-                p_directory_name    => l_directory_name,
+                p_directory_name    => l_directory_indir,
                 p_file_name         => l_file_name
             );
             --
             IF l_file_exists THEN 
                 --
+                -- creamos el log temporal
+                dbms_lob.createtemporary(
+                    lob_loc => l_log,
+                    cache   => FALSE
+                );
+                --
                 -- leemos el archivo y lo transformamos en CLOB
                 l_data := sys_k_file_util.get_clob_from_file (
-                    p_directory_name    => l_directory_name,
+                    p_directory_name    => l_directory_indir,
                     p_file_name         => l_file_name
                 );
                 --
-                -- ! DEPURACION
-                insert into test(data) values(l_data);
+                -- seleccion de datos
+                FOR r_reg in c_csv LOOP 
+                    --
+                    -- completamos los datos del registro customer
+                    g_doc_customer.p_customer_co        := r_reg.customer_co;
+                    g_doc_customer.p_description        := r_reg.description;
+                    g_doc_customer.p_telephone_co       := r_reg.telephone_co;
+                    g_doc_customer.p_fax_co             := r_reg.fax_co;
+                    g_doc_customer.p_email              := r_reg.email;
+                    g_doc_customer.p_address            := r_reg.address;
+                    g_doc_customer.p_k_type_customer    := r_reg.type_customer;
+                    g_doc_customer.p_k_sector           := r_reg.sector;
+                    g_doc_customer.p_k_category_co      := r_reg.category_co;
+                    g_doc_customer.p_fiscal_document_co := r_reg.fiscal_document_co;
+                    g_doc_customer.p_location_co        := r_reg.location_co;
+                    g_doc_customer.p_telephone_contact  := r_reg.telephone_contact;
+                    g_doc_customer.p_name_contact       := r_reg.name_contact;
+                    g_doc_customer.p_email_contact      := r_reg.email_contact;
+                    g_doc_customer.p_user_co            := l_user_code;
+                    --
+                    create_customer( 
+                            p_rec       => g_doc_customer,
+                            p_result    => p_result
+                    );
+                    --
+                    -- manejo de log
+                    record_log( 
+                        p_context   => 'LOAD FILE CUSTOMER',
+                        p_line      => r_reg.line_number,
+                        p_raw       => r_reg.line_raw,
+                        p_result    => p_result,
+                        p_clob      => l_log
+                    );
+                    --
+                END LOOP;
                 --
                 COMMIT;
                 --
-                p_result := '{ "status":"OK", "message":"SUCCESS" }';
+                -- registramos el archivo log
+                sys_k_file_util.save_clob_to_file (
+                    p_directory_name  => l_directory_outdir,
+                    p_file_name       => 'load_data_customers.log',
+                    p_clob            => l_log
+                );
+                --
+                dbms_lob.freetemporary (
+                    lob_loc => l_log
+                ); 
                 --
             ELSE 
                 --

@@ -5,7 +5,7 @@ DECLARE
     --
 BEGIN 
     --
-    l_json := '{"file_name":"customers.csv"}';
+    l_json := '{"file_name":"customers.csv", "user_name":"RGUERRA"}';
     --
     prs_api_k_customer.load_file(
         p_json      => l_json,
