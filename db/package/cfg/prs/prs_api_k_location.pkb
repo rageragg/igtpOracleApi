@@ -20,6 +20,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_reg_config                    configurations%ROWTYPE;
+    g_doc_location                  location_api_doc;
     --
     -- excepciones
     e_validate_city                 EXCEPTION;
@@ -32,12 +33,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     PRAGMA exception_init( e_exist_location_code, -20003 );
     PRAGMA exception_init( e_no_exist_location_code, -20004 );
     --    
-    --
     -- raise_error 
     PROCEDURE raise_error( 
-        p_cod_error NUMBER,
-        p_msg_error VARCHAR2
-    ) IS 
+            p_cod_error NUMBER,
+            p_msg_error VARCHAR2
+        ) IS 
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
@@ -55,20 +55,49 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         raise_application_error(g_cod_error, g_msg_error );
         -- 
     END raise_error;
+    -- ! crear un paquete que permita crear archivos .log
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+        --
+        l_data  CLOB;
+        l_str   VARCHAR2(8000);
+        --
+    BEGIN 
+        --
+        dbms_lob.createtemporary(
+            lob_loc => l_data,
+            cache   => FALSE
+        );
+        --
+        l_str := p_context||';'||p_line || ';' ||p_raw||';RESULT:'||p_result||chr(13);
+        --
+        dbms_lob.append( p_clob, l_str );
+        --
+        dbms_lob.freetemporary (
+            lob_loc => l_data
+        ); 
+        --
+    END record_log;   
     --    
     -- create locations
     PROCEDURE create_location (
-        p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
-        p_description       IN locations.description%TYPE DEFAULT NULL,
-        p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
-        p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
-        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
-        p_slug              IN locations.slug%TYPE DEFAULT NULL,
-        p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
-	    p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
-        p_user_co           IN users.user_co%TYPE DEFAULT NULL,
-        p_result            OUT VARCHAR2 
-    ) IS 
+            p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
+            p_description       IN locations.description%TYPE DEFAULT NULL,
+            p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
+            p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
+            p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+            p_slug              IN locations.slug%TYPE DEFAULT NULL,
+            p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
+            p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
+            p_user_co           IN users.user_co%TYPE DEFAULT NULL,
+            p_result            OUT VARCHAR2 
+        ) IS 
         --        
         l_reg_location      locations%ROWTYPE;
         l_reg_user          users%ROWTYPE;
@@ -131,7 +160,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --
         END IF;
         --
-        l_reg_location.user_id          := l_reg_user.id;
+        l_reg_location.user_id := l_reg_user.id;
         --
         cfg_api_k_location.ins( p_rec => l_reg_location );
         --
@@ -158,9 +187,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --  
     -- insert RECORD
     PROCEDURE create_location( 
-        p_rec       IN OUT location_api_doc,
-        p_result    OUT VARCHAR2  
-    ) IS 
+            p_rec       IN OUT location_api_doc,
+            p_result    OUT VARCHAR2  
+        ) IS 
         --        
         l_reg_location      locations%ROWTYPE;
         l_reg_user          users%ROWTYPE;
@@ -251,20 +280,19 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         --    
     END create_location;
     --  
-    --
     -- update
     PROCEDURE update_location(
-        p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
-        p_description       IN locations.description%TYPE DEFAULT NULL,
-        p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
-        p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
-        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
-        p_slug              IN locations.slug%TYPE DEFAULT NULL,
-        p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
-	    p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
-        p_user_co           IN users.user_co%TYPE DEFAULT NULL,
-        p_result            OUT VARCHAR2  
-    ) IS 
+            p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
+            p_description       IN locations.description%TYPE DEFAULT NULL,
+            p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
+            p_city_co           IN cities.city_co%TYPE DEFAULT NULL,
+            p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+            p_slug              IN locations.slug%TYPE DEFAULT NULL,
+            p_nu_gps_lat 		IN locations.nu_gps_lat%TYPE DEFAULT NULL, 
+            p_nu_gps_lon 		IN locations.nu_gps_lon%TYPE DEFAULT NULL,  
+            p_user_co           IN users.user_co%TYPE DEFAULT NULL,
+            p_result            OUT VARCHAR2  
+        ) IS 
         --
         l_reg_location          locations%ROWTYPE;
         l_reg_user              users%ROWTYPE;
@@ -376,9 +404,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --
     -- update RECORD 
     PROCEDURE update_location( 
-        p_rec       IN OUT location_api_doc,
-        p_result    OUT VARCHAR2  
-    ) IS
+            p_rec       IN OUT location_api_doc,
+            p_result    OUT VARCHAR2  
+        ) IS
         --
         l_reg_location          locations%ROWTYPE;
         l_reg_user              users%ROWTYPE;
@@ -493,9 +521,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --
     -- delete
     PROCEDURE delete_location( 
-        p_location_co   IN locations.location_co%TYPE,
-        p_result        OUT VARCHAR2 
-    ) IS 
+            p_location_co   IN locations.location_co%TYPE,
+            p_result        OUT VARCHAR2 
+        ) IS 
         --
         l_reg_locations     locations%ROWTYPE;
         --
@@ -541,7 +569,120 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 ROLLBACK;
         --
     END delete_location;
-    --        
+    --  
+    -- load file masive data
+    PROCEDURE load_file(
+            p_json      IN VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_directory_indir   VARCHAR2(30)    := sys_k_constant.K_IN_DIRECTORY;
+        l_directory_outdir  VARCHAR2(30)    := sys_k_constant.K_OUT_DIRECTORY;
+        l_file_name         VARCHAR2(128);
+        l_user_code         VARCHAR2(10);
+        l_data              CLOB;
+        l_log               CLOB;
+        l_obj               json_object_t;
+        --
+        l_file_exists       BOOLEAN;
+        --
+        -- lectura de datos desde un CLOB
+        CURSOR c_csv IS
+            SELECT line_number, line_raw, 
+                   c001 location_co, 
+                   c002 description, 
+                   c003 postal_co, 
+                   c004 city_co, 
+                   c005 nu_gps_lat,
+                   c006 nu_gps_lon,
+                   c007 user_co
+              FROM sys_k_csv_util.clob_to_csv (
+                        p_csv_clob  => l_data,
+                        p_separator => ';',
+                        p_skip_rows => 1
+                   );
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        l_file_name := l_obj.get_string('file_name');
+        l_user_code := l_obj.get_string('user_name');
+        --
+        IF l_file_name IS NOT NULL THEN 
+            --
+            l_file_exists := sys_k_file_util.file_exists(
+                p_directory_name    => l_directory_indir,
+                p_file_name         => l_file_name
+            );
+            --
+            IF l_file_exists THEN 
+                --
+                -- creamos el log temporal
+                dbms_lob.createtemporary(
+                    lob_loc => l_log,
+                    cache   => FALSE
+                );
+                --
+                -- leemos el archivo y lo transformamos en CLOB
+                l_data := sys_k_file_util.get_clob_from_file (
+                    p_directory_name    => l_directory_indir,
+                    p_file_name         => l_file_name
+                );
+                --
+                -- seleccion de datos
+                FOR r_reg in c_csv LOOP 
+                    --
+                    -- completamos los datos del registro customer
+                    g_doc_location.p_location_co        := r_reg.location_co;
+                    g_doc_location.p_description        := r_reg.description;
+                    g_doc_location.p_postal_co          := r_reg.postal_co;
+                    g_doc_location.p_city_co            := r_reg.city_co;
+                    g_doc_location.p_nu_gps_lat         := r_reg.nu_gps_lat;
+                    g_doc_location.p_nu_gps_lon         := r_reg.nu_gps_lon;
+                    g_doc_location.p_user_co            := r_reg.user_co;
+                    --
+                    create_location( 
+                            p_rec       => g_doc_location,
+                            p_result    => p_result
+                    );
+                    --
+                    -- manejo de log
+                    record_log( 
+                        p_context   => sys_k_constant.K_LOCATION_LOAD_CONTEXT,
+                        p_line      => r_reg.line_number,
+                        p_raw       => r_reg.line_raw,
+                        p_result    => p_result,
+                        p_clob      => l_log
+                    );
+                    --
+                END LOOP;
+                --
+                COMMIT;
+                --
+                -- registramos el archivo log
+                sys_k_file_util.save_clob_to_file (
+                    p_directory_name  => l_directory_outdir,
+                    p_file_name       => sys_k_constant.K_LOCATION_FILE_DATA_LOAD,
+                    p_clob            => l_log
+                );
+                --
+                dbms_lob.freetemporary (
+                    lob_loc => l_log
+                ); 
+                --
+            ELSE 
+                --
+                p_result := '{ "status":"ERROR", "message":"FILE NOT FOUND" }';
+                --
+            END IF;
+            --
+        END IF;
+        --
+    END load_file;
+    --       
 BEGIN
     --
     -- verificamos la configuracion Actual 
