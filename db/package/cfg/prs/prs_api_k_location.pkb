@@ -20,6 +20,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_reg_config                    configurations%ROWTYPE;
+    g_doc_locations                 location_api_doc;
     --
     -- excepciones
     e_validate_city                 EXCEPTION;
@@ -55,6 +56,26 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         raise_application_error(g_cod_error, g_msg_error );
         -- 
     END raise_error;
+    --
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+    BEGIN 
+        --
+        sys_k_utils.record_log( 
+            p_context   => sys_k_constant.K_CUSTOMER_LOAD_CONTEXT,
+            p_line      => r_reg.line_number,
+            p_raw       => r_reg.line_raw,
+            p_result    => p_result,
+            p_clob      => l_log
+        );
+        --
+    END record_log;  
     --    
     -- create locations
     PROCEDURE create_location (
@@ -541,7 +562,120 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 ROLLBACK;
         --
     END delete_location;
-    --        
+       --
+    -- load file masive data
+    PROCEDURE load_file(
+            p_json      IN VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_directory_indir   VARCHAR2(30)    := sys_k_constant.K_IN_DIRECTORY;
+        l_directory_outdir  VARCHAR2(30)    := sys_k_constant.K_OUT_DIRECTORY;
+        l_file_name         VARCHAR2(128);
+        l_user_code         VARCHAR2(10);
+        l_data              CLOB;
+        l_log               CLOB;
+        l_obj               json_object_t;
+        --
+        l_file_exists       BOOLEAN;
+        --
+        -- lectura de datos desde un CLOB
+        CURSOR c_csv IS
+            SELECT line_number, line_raw, 
+                   c001 location_co, 
+                   c002 description, 
+                   c003 postal_co, 
+                   c004 city_co, 
+                   c005 nu_gps_lat,
+                   c006 nu_gps_lon
+              FROM sys_k_csv_util.clob_to_csv (
+                        p_csv_clob  => l_data,
+                        p_separator => ';',
+                        p_skip_rows => 1
+                   );
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        l_file_name := l_obj.get_string('file_name');
+        l_user_code := l_obj.get_string('user_name');
+        --
+        IF l_file_name IS NOT NULL THEN 
+            --
+            l_file_exists := sys_k_file_util.file_exists(
+                p_directory_name    => l_directory_indir,
+                p_file_name         => l_file_name
+            );
+            --
+            IF l_file_exists THEN 
+                --
+                -- creamos el log temporal
+                dbms_lob.createtemporary(
+                    lob_loc => l_log,
+                    cache   => FALSE
+                );
+                --
+                -- leemos el archivo y lo transformamos en CLOB
+                l_data := sys_k_file_util.get_clob_from_file (
+                    p_directory_name    => l_directory_indir,
+                    p_file_name         => l_file_name
+                );
+                --
+                -- seleccion de datos
+                FOR r_reg in c_csv LOOP 
+                    --
+                    -- completamos los datos del registro customer
+                    g_doc_locations.p_location_co       := r_reg.location_co;
+                    g_doc_locations.p_description       := r_reg.description;
+                    g_doc_locations.p_postal_co         := r_reg.postal_co;
+                    g_doc_locations.p_city_co           := r_reg.city_co;
+                    g_doc_locations.p_nu_gps_lat        := r_reg.nu_gps_lat;
+                    g_doc_locations.p_nu_gps_lon        := r_reg.nu_gps_lon;
+                    g_doc_locations.p_user_co           := l_user_code;
+                    --
+                    create_location( 
+                            p_rec       => g_doc_locations,
+                            p_result    => p_result
+                    );
+                    --
+                    -- manejo de log
+                    record_log( 
+                        p_context   => sys_k_constant.K_LOCATION_LOAD_CONTEXT,
+                        p_line      => r_reg.line_number,
+                        p_raw       => r_reg.line_raw,
+                        p_result    => p_result,
+                        p_clob      => l_log
+                    );
+                    --
+                END LOOP;
+                --
+                COMMIT;
+                --
+                -- registramos el archivo log
+                sys_k_file_util.save_clob_to_file (
+                    p_directory_name  => l_directory_outdir,
+                    p_file_name       => sys_k_constant.K_NAME_FILE_LOCATION_LOAD,
+                    p_clob            => l_log
+                );
+                --
+                -- liberamos el temporal
+                dbms_lob.freetemporary (
+                    lob_loc => l_log
+                ); 
+                --
+            ELSE 
+                --
+                p_result := '{ "status":"ERROR", "message":"FILE NOT FOUND" }';
+                --
+            END IF;
+            --
+        END IF;
+        --
+    END load_file;
+    --          
 BEGIN
     --
     -- verificamos la configuracion Actual 

@@ -183,7 +183,6 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END validate_all;
     --
-    -- ! crear un paquete que permita crear archivos .log
     -- manejo de log
     PROCEDURE record_log( 
             p_context  IN VARCHAR2,
@@ -192,24 +191,15 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             p_result   IN VARCHAR,
             p_clob     IN OUT CLOB
         ) IS 
-        --
-        l_data  CLOB;
-        l_str   VARCHAR2(8000);
-        --
     BEGIN 
         --
-        dbms_lob.createtemporary(
-            lob_loc => l_data,
-            cache   => FALSE
+        sys_k_utils.record_log( 
+            p_context   => sys_k_constant.K_CUSTOMER_LOAD_CONTEXT,
+            p_line      => r_reg.line_number,
+            p_raw       => r_reg.line_raw,
+            p_result    => p_result,
+            p_clob      => l_log
         );
-        --
-        l_str := p_context||';'||p_line || ';' ||p_raw||';RESULT:'||p_result||chr(13);
-        --
-        dbms_lob.append( p_clob, l_str );
-        --
-        dbms_lob.freetemporary (
-            lob_loc => l_data
-        ); 
         --
     END record_log;   
     --
@@ -647,10 +637,11 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 -- registramos el archivo log
                 sys_k_file_util.save_clob_to_file (
                     p_directory_name  => l_directory_outdir,
-                    p_file_name       => sys_k_constant.K_NAME_FILE_DATA_LOAD,
+                    p_file_name       => sys_k_constant.K_NAME_FILE_CUSTOMER_LOAD,
                     p_clob            => l_log
                 );
                 --
+                -- liberamos el temporal
                 dbms_lob.freetemporary (
                     lob_loc => l_log
                 ); 

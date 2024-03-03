@@ -97,6 +97,15 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
                               p_order VARCHAR2
                             ) RETURN SYS_REFCURSOR;
     --
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        );
+    --
 END sys_k_utils;
 
 /

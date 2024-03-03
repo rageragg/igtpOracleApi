@@ -27,6 +27,7 @@ create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
     K_TYPE_CUSTOMER_FACTORY     CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_FACTORY; 
     K_TYPE_CUSTOMER_DISTRIBUTOR CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_DISTRIB;
     K_TYPE_CUSTOMER_MARKET      CONSTANT CHAR(01) := sys_k_constant.K_TYPE_CUSTOMER_MARKET;
+    --
     -- categoria de clientes
     K_CATEGORY_A                CONSTANT CHAR(01) := sys_k_constant.K_CUSTOMER_CATEGORY_A;
     K_CATEGORY_B                CONSTANT CHAR(01) := sys_k_constant.K_CUSTOMER_CATEGORY_B;

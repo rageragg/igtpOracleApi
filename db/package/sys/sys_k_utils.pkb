@@ -389,7 +389,31 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
                 RETURN NULL;
         --
     END f_get_refcursor;
-    --                   
+    -- 
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+        --
+        l_str   VARCHAR2(8000);
+        --
+    BEGIN 
+        --
+        l_str := p_context||';'||p_line || ';' ||p_raw||';RESULT:'||p_result||chr(13);
+        --
+        dbms_lob.append( p_clob, l_str );
+        --
+        EXCEPTION 
+            --
+            WHEN OTHERS THEN 
+                RAISE;
+        --
+    END record_log;
+    --                  
 END sys_k_utils;
 
 /
