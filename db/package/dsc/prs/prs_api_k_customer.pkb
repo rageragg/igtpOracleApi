@@ -637,7 +637,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                 -- registramos el archivo log
                 sys_k_file_util.save_clob_to_file (
                     p_directory_name  => l_directory_outdir,
-                    p_file_name       => sys_k_constant.K_NAME_FILE_CUSTOMER_LOAD,
+                    p_file_name       => sys_k_constant.K_CUSTOMER_FILE_DATA_LOAD,
                     p_clob            => l_log
                 );
                 --
