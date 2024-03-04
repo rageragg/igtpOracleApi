@@ -195,10 +195,10 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
         sys_k_utils.record_log( 
             p_context   => sys_k_constant.K_CUSTOMER_LOAD_CONTEXT,
-            p_line      => r_reg.line_number,
-            p_raw       => r_reg.line_raw,
+            p_line      => p_line,
+            p_raw       => p_raw,
             p_result    => p_result,
-            p_clob      => l_log
+            p_clob      => p_clob
         );
         --
     END record_log;   

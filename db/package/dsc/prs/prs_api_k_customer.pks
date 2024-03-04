@@ -63,9 +63,11 @@ create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
     --
     -- manejo de log
     PROCEDURE record_log( 
-        p_line      => r_reg.line_number,
-        p_raw       => r_reg.line_raw,
-        p_result    => p_result
+        p_context  IN VARCHAR2,
+        p_line     IN VARCHAR2,
+        p_raw      IN VARCHAR2,
+        p_result   IN VARCHAR,
+        p_clob     IN OUT CLOB
     );    
     --
     -- create customer by record
