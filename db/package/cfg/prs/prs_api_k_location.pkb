@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     --
     ---------------------------------------------------------------------------
@@ -44,7 +43,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         g_cod_error := p_cod_error;
         g_hay_error := TRUE;
         --
-        g_msg_error := prs_k_api_language.f_message( 
+        g_msg_error := prs_api_k_language.f_message( 
             p_language_co => sys_k_global.geter(sys_k_constant.K_FIELD_LANGUAGE_CO),
             p_context     => K_PROCESS,
             p_error_co    => g_cod_error 
@@ -68,10 +67,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         --
         sys_k_utils.record_log( 
             p_context   => sys_k_constant.K_LOCATION_LOAD_CONTEXT,
-            p_line      => r_reg.line_number,
-            p_raw       => r_reg.line_raw,
+            p_line      => p_line,
+            p_raw       => p_raw,
             p_result    => p_result,
-            p_clob      => l_log
+            p_clob      => p_clob
         );
         --
     END record_log; 
