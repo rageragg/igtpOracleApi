@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE sys_k_constant IS
     --
     -- user OWNER IGTP
-    K_OWNER_APP                 CONSTANT VARCHAR2(20) := 'IGTP';
+    c                 CONSTANT VARCHAR2(20) := 'IGTP';
     --
     -- directories
     K_IN_DIRECTORY              CONSTANT VARCHAR2(30) := 'APP_INDIR';
