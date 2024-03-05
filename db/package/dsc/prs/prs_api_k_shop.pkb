@@ -44,9 +44,9 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
     --
     -- raise_error 
     PROCEDURE raise_error( 
-        p_cod_error NUMBER,
-        p_msg_error VARCHAR2
-    ) IS 
+            p_cod_error NUMBER,
+            p_msg_error VARCHAR2
+        ) IS 
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
@@ -129,11 +129,31 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         --
     END validate_all;    
     --
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+    BEGIN 
+        --
+        sys_k_utils.record_log( 
+            p_context   => sys_k_constant.K_SHOP_LOAD_CONTEXT,
+            p_line      => p_line,
+            p_raw       => p_raw,
+            p_result    => p_result,
+            p_clob      => p_clob
+        );
+        --
+    END record_log;       
+    --
     -- create customer by record
     PROCEDURE create_shop( 
-        p_rec       IN OUT shop_api_doc,
-        p_result    OUT VARCHAR2
-    ) IS
+            p_rec       IN OUT shop_api_doc,
+            p_result    OUT VARCHAR2
+        ) IS
     BEGIN
         --
         -- se establece el valor a la global 
@@ -432,6 +452,174 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         --
     END delete_shop;  
     --
+    -- load file masive data
+    PROCEDURE load_file(
+            p_json      IN VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_directory_indir   VARCHAR2(30)    := sys_k_constant.K_IN_DIRECTORY;
+        l_directory_outdir  VARCHAR2(30)    := sys_k_constant.K_OUT_DIRECTORY;
+        l_file_name         VARCHAR2(128);
+        l_user_code         VARCHAR2(10);
+        l_data              CLOB;
+        l_log               CLOB;
+        l_obj               json_object_t;
+        --
+        l_file_exists       BOOLEAN;
+        l_is_number         BOOLEAN;
+        l_is_valid_record   BOOLEAN;
+        --
+        -- lectura de datos desde un CLOB
+        CURSOR c_csv IS
+            SELECT line_number, line_raw, 
+                   c001 shop_co, 
+                   c002 description, 
+                   c003 location_co, 
+                   c004 address, 
+                   c005 nu_gps_lat,
+                   c006 nu_gps_lon,
+                   c007 telephone_co,
+                   c008 fax_co,
+                   c009 email,
+                   c010 name_contact,
+                   c011 email_contact,
+                   c012 telephone_contact
+              FROM sys_k_csv_util.clob_to_csv (
+                        p_csv_clob  => l_data,
+                        p_separator => ';',
+                        p_skip_rows => 1
+                   );
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro customer
+        l_file_name := l_obj.get_string('file_name');
+        l_user_code := l_obj.get_string('user_name');
+        --
+        IF l_file_name IS NOT NULL THEN 
+            --
+            l_file_exists := sys_k_file_util.file_exists(
+                p_directory_name    => l_directory_indir,
+                p_file_name         => l_file_name
+            );
+            --
+            IF l_file_exists THEN 
+                --
+                -- creamos el log temporal
+                dbms_lob.createtemporary(
+                    lob_loc => l_log,
+                    cache   => FALSE
+                );
+                --
+                -- leemos el archivo y lo transformamos en CLOB
+                l_data := sys_k_file_util.get_clob_from_file (
+                    p_directory_name    => l_directory_indir,
+                    p_file_name         => l_file_name
+                );
+                --
+                -- seleccion de datos
+                FOR r_reg in c_csv LOOP 
+                    --
+                    -- completamos los datos del registro customer
+                    g_doc_shop.p_shop_co            := r_reg.shop_co;
+                    g_doc_shop.p_description        := r_reg.description;
+                    g_doc_shop.p_location_co        := r_reg.location_co;
+                    g_doc_shop.p_address            := r_reg.address;
+                    --
+                    r_reg.nu_gps_lat                := nvl( r_reg.nu_gps_lat, '0.00'); 
+                    r_reg.nu_gps_lon                := nvl( r_reg.nu_gps_lon, '0.00'); 
+                    --
+                    -- verificamos el valor sea convertible a numerico
+                    l_is_number := sys_k_string_util.is_str_number(
+                        p_str                => r_reg.nu_gps_lat,
+                        p_decimal_separator  => sys_k_string_util.get_nls_decimal_separator,
+                        p_thousand_separator => sys_k_string_util.get_nls_thousand_separator
+                    );
+                    --
+                    IF l_is_number THEN 
+                        --
+                        g_doc_shop.p_nu_gps_lat := sys_k_string_util.str_to_num (
+                            p_str                        => r_reg.nu_gps_lat,
+                            p_decimal_separator          => sys_k_string_util.get_nls_decimal_separator,
+                            p_thousand_separator         => sys_k_string_util.get_nls_thousand_separator,
+                            p_raise_error_if_parse_error => FALSE,
+                            p_value_name                 => NULL
+                        );
+                        --
+                    END IF;
+                    --
+                    -- verificamos el valor sea convertible a numerico
+                    l_is_number := sys_k_string_util.is_str_number(
+                        p_str                => r_reg.nu_gps_lon,
+                        p_decimal_separator  => sys_k_string_util.get_nls_decimal_separator,
+                        p_thousand_separator => sys_k_string_util.get_nls_thousand_separator
+                    );
+                    --
+                    IF l_is_number THEN 
+                        --
+                        g_doc_shop.p_nu_gps_lon := sys_k_string_util.str_to_num (
+                            p_str                        => r_reg.nu_gps_lon,
+                            p_decimal_separator          => sys_k_string_util.get_nls_decimal_separator,
+                            p_thousand_separator         => sys_k_string_util.get_nls_thousand_separator,
+                            p_raise_error_if_parse_error => FALSE,
+                            p_value_name                 => NULL
+                        );
+                        --
+                    END IF;
+                    --
+                    g_doc_shop.p_telephone_co       := r_reg.telephone_co;
+                    g_doc_shop.p_fax_co             := r_reg.fax_co;
+                    g_doc_shop.p_email              := r_reg.email;
+                    g_doc_shop.p_name_contact       := r_reg.name_contact;
+                    g_doc_shop.p_email_contact      := r_reg.email_contact;
+                    g_doc_shop.p_telephone_contact  := r_reg.telephone_contact;
+                    g_doc_shop.p_user_co            := l_user_code;
+                    --
+                    -- crear tienda
+                    create_shop( 
+                            p_rec       => g_doc_shop,
+                            p_result    => p_result
+                    );
+                    --
+                    -- manejo de log
+                    record_log( 
+                        p_context   => sys_k_constant.K_SHOP_LOAD_CONTEXT,
+                        p_line      => r_reg.line_number,
+                        p_raw       => r_reg.line_raw,
+                        p_result    => p_result,
+                        p_clob      => l_log
+                    );
+                    --
+                END LOOP;
+                --
+                COMMIT;
+                --
+                -- registramos el archivo log
+                sys_k_file_util.save_clob_to_file (
+                    p_directory_name  => l_directory_outdir,
+                    p_file_name       => sys_k_constant.K_SHOP_FILE_DATA_LOAD,
+                    p_clob            => l_log
+                );
+                --
+                -- liberamos el temporal
+                dbms_lob.freetemporary (
+                    lob_loc => l_log
+                ); 
+                --
+            ELSE 
+                --
+                p_result := '{ "status":"ERROR", "message":"FILE NOT FOUND" }';
+                --
+            END IF;
+            --
+        END IF;
+        --
+    END load_file;
+    --    
 BEGIN
     --
     -- verificamos la configuracion Actual 

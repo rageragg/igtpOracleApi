@@ -76,5 +76,11 @@ CREATE OR REPLACE PACKAGE prs_api_k_shop IS
         p_shop_co       IN shops.shop_co%TYPE,
         p_result        OUT VARCHAR2 
     );
+--
+    -- load file masive data
+    PROCEDURE load_file(
+        p_json      IN VARCHAR2,
+        p_result    OUT VARCHAR2
+    );    
     --
 END prs_api_k_shop;

@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE sys_k_constant IS
     --
     -- user OWNER IGTP
-    c                 CONSTANT VARCHAR2(20) := 'IGTP';
+    K_OWNER_APP                 CONSTANT VARCHAR2(20) := 'IGTP';
     --
     -- directories
     K_IN_DIRECTORY              CONSTANT VARCHAR2(30) := 'APP_INDIR';
@@ -104,6 +104,8 @@ CREATE OR REPLACE PACKAGE sys_k_constant IS
     K_SHOP_PROCESS              CONSTANT VARCHAR2(24) := 'PRC_API_K_SHOP';
     K_SHOP_CONTEXT              CONSTANT VARCHAR2(24) := 'SHOP-ADMINISTRATOR';
     K_SHOP_TABLE                CONSTANT VARCHAR2(24) := 'SHOPS';
+    K_SHOP_LOAD_CONTEXT         CONSTANT VARCHAR2(24) := 'LOAD FILE SHOPS';
+    K_SHOP_FILE_DATA_LOAD       CONSTANT VARCHAR2(24) := 'load_data_shops.log';
     --
     -- type cargos
     K_TYPE_CARGO_PROCESS        CONSTANT VARCHAR2(24) := 'PRC_API_K_TYPE_CARGOSP';

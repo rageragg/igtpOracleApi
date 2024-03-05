@@ -12,7 +12,8 @@ AS
         MBR     21.09.2006  Created
     */
     --
-    m_nls_decimal_separator        VARCHAR2(1);
+    m_nls_decimal_separator         VARCHAR2(1);
+    m_nls_thousand_separator        VARCHAR2(1);
     --
     /*
         Purpose:    Get decimal separator FOR session
@@ -51,6 +52,44 @@ AS
         RETURN l_returnvalue;
         --
     END get_nls_decimal_separator;
+    --
+    /*
+        Purpose:    Get thousand separator FOR session
+        Remarks:    The value is cached to avoid looking it up dynamically 
+                    each time this FUNCTION is called
+        Who     Date        Description
+        ------  ----------  -------------------------------------
+        RAGE    04.03.2024 Created      
+    */
+    FUNCTION get_nls_thousand_separator RETURN VARCHAR2 AS 
+        --
+        l_returnvalue VARCHAR2(1);
+        --
+    BEGIN
+        --
+        IF m_nls_thousand_separator IS NULL THEN
+            --
+            BEGIN
+                --
+                SELECT substr(value,2,1)
+                  INTO l_returnvalue
+                  FROM nls_session_parameters
+                 WHERE parameter = 'NLS_NUMERIC_CHARACTERS';
+                 --
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    l_returnvalue   :=  ',';
+            END;
+            --
+            m_nls_thousand_separator := l_returnvalue;
+            --
+        END IF;
+        --  
+        l_returnvalue := m_nls_thousand_separator;
+        --
+        RETURN l_returnvalue;
+        --
+    END get_nls_thousand_separator;    
     --
     /*
         Purpose:    RETURN string merged with substitution values

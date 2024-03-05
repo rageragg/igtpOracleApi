@@ -38,6 +38,12 @@ CREATE OR REPLACE PACKAGE sys_k_string_util AS
     --
     g_email_str_validate           CONSTANT VARCHAR2(64) := '[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+\.[a-zA-Z]{2,4}';
     --
+    -- get decima separator
+    FUNCTION get_nls_decimal_separator RETURN VARCHAR2;
+    --
+    -- get  separator
+    FUNCTION get_nls_thousand_separator RETURN VARCHAR2;    
+    --
     -- RETURN string merged with substitution values
     FUNCTION get_str (  p_msg    IN VARCHAR2,
                         p_value1 IN VARCHAR2 := NULL,
