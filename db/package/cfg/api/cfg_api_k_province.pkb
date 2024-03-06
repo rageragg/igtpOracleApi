@@ -103,7 +103,7 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_province IS
             p_updated_at      provinces.updated_at%TYPE
         ) IS
         --
-        ui  varchar2(60)    := sys_guid();
+        ui  varchar2(60)    := sys_k_utils.f_uuid();
         --
     BEGIN 
         --
