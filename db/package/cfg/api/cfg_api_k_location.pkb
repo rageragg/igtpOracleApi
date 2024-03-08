@@ -109,7 +109,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
         ) IS 
         --
-        ui  varchar2(60)    := sys_guid();
+        ui  varchar2(60)    := sys_k_utils.f_uuid();
         --        
     BEGIN
         --

@@ -83,6 +83,12 @@ CREATE OR REPLACE PACKAGE sys_k_constant IS
     K_TYPE_COST_CPT_CARGO       CONSTANT VARCHAR2(20) := 'TYPE-CARGO';                
     K_TYPE_COST_CPT_ROUTE       CONSTANT VARCHAR2(20) := 'ROUTE';
     --
+    -- country
+    K_COUNTRY_PROCESS           CONSTANT VARCHAR2(20) := 'PRC_API_K_COUNTRY';
+    --
+    -- province
+    K_PROVIDENCE_PROCESS        CONSTANT VARCHAR2(20) := 'PRC_API_K_PROVINCE';
+    --
     -- city 
     K_CITY_PROCESS              CONSTANT VARCHAR2(20) := 'PRC_API_K_CITY';
     K_CITY_CONTEXT              CONSTANT VARCHAR2(20) := 'CITY-ADMINISTRATOR';
