@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiaries IS
+CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiary IS
     ---------------------------------------------------------------------------
     --  DDL for Package subsidiaries_API (Process)
     --  REFERENCIAS
@@ -195,8 +195,9 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiaries IS
     END upd;     
     --
     -- del
-    PROCEDURE del ( p_id IN subsidiaries.id%TYPE
-    ) IS
+    PROCEDURE del ( 
+            p_id IN subsidiaries.id%TYPE
+        ) IS
     BEGIN
         --
         DELETE FROM subsidiaries
@@ -224,4 +225,4 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiaries IS
         --
     END exist;    
     --
-end dsc_api_k_subsidiaries;
+end dsc_api_k_subsidiary;

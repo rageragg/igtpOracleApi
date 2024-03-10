@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE dsc_api_k_subsidiaries IS
+CREATE OR REPLACE PACKAGE dsc_api_k_subsidiary IS
     ---------------------------------------------------------------------------
     --  DDL for Package SUBSIDIARIES_API (Process)
     --  REFERENCIAS
@@ -66,6 +66,9 @@ CREATE OR REPLACE PACKAGE dsc_api_k_subsidiaries IS
     -- update RECORD
     PROCEDURE upd( p_rec IN OUT subsidiaries%ROWTYPE );
     --
+    -- del
+    PROCEDURE del ( p_id IN subsidiaries.id%TYPE );
+    --
     -- TODO: desarrollar las funciones que evaluan la existencia
     -- exist shop by id
     FUNCTION exist( p_id IN subsidiaries.id%TYPE ) RETURN BOOLEAN;
@@ -73,4 +76,4 @@ CREATE OR REPLACE PACKAGE dsc_api_k_subsidiaries IS
     -- exist shop by code
     FUNCTION exist( p_subsidiary_co IN subsidiaries.subsidiary_co%TYPE DEFAULT NULL ) RETURN BOOLEAN;
     --
-END dsc_api_k_subsidiaries;    
+END dsc_api_k_subsidiary;    
