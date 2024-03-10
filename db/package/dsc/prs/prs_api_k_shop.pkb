@@ -186,6 +186,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
         g_rec_shop.name_contact         := g_doc_shop.p_name_contact;
         g_rec_shop.email_contact        := g_doc_shop.p_email_contact;
         g_rec_shop.telephone_contact    := g_doc_shop.p_telephone_contact;
+        g_rec_shop.uuid                 := NULL;
         g_rec_shop.user_id              := g_rec_user.id;
         g_rec_shop.created_at           := sysdate;
         --
@@ -577,6 +578,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_shop IS
                     g_doc_shop.p_name_contact       := r_reg.name_contact;
                     g_doc_shop.p_email_contact      := r_reg.email_contact;
                     g_doc_shop.p_telephone_contact  := r_reg.telephone_contact;
+                    g_doc_shop.p_slug               := NULL;
                     g_doc_shop.p_user_co            := l_user_code;
                     --
                     -- crear tienda

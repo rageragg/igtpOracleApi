@@ -355,7 +355,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         -- se establece el valor a la global 
         g_doc_customer  := p_rec;
         --
-        -- verificamos que el codigo de cliente no exista
+        -- verificamos que el codigo de cliente exista
         IF dsc_api_k_customer.exist( p_customer_co => p_rec.p_customer_co ) THEN
             --
             g_rec_customer := dsc_api_k_customer.get_record;
@@ -381,11 +381,11 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
             g_rec_customer.k_mca_inh           := g_doc_customer.p_k_mca_inh;
             --
             IF g_doc_customer.p_slug IS NOT NULL THEN 
-                g_rec_customer.uuid             :=  g_doc_customer.p_slug;
+                g_rec_customer.slug :=  g_doc_customer.p_slug;
             END IF;
             --
             IF g_doc_customer.p_uuid IS NOT NULL THEN 
-                g_rec_customer.slug             :=  g_doc_customer.p_uuid;
+                g_rec_customer.uuid :=  g_doc_customer.p_uuid;
             END IF;            
             --
             g_rec_customer.updated_at := sysdate;
@@ -614,6 +614,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
                     g_doc_customer.p_telephone_contact  := r_reg.telephone_contact;
                     g_doc_customer.p_name_contact       := r_reg.name_contact;
                     g_doc_customer.p_email_contact      := r_reg.email_contact;
+                    g_doc_customer.p_slug               := NULL;
                     g_doc_customer.p_user_co            := l_user_code;
                     --
                     create_customer( 

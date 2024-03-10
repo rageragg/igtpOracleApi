@@ -18,8 +18,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     g_hay_error                     BOOLEAN;
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
-    g_reg_config                    configurations%ROWTYPE;
+    g_rec_config                    configurations%ROWTYPE;
+    g_rec_location                  locations%ROWTYPE;
     g_doc_location                  location_api_doc;
+    g_rec_user                      igtp.users%ROWTYPE;
     --
     -- excepciones
     e_validate_city                 EXCEPTION;
@@ -89,8 +91,6 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             p_result            OUT VARCHAR2 
         ) IS 
         --        
-        l_reg_location      locations%ROWTYPE;
-        l_reg_user          users%ROWTYPE;
         l_reg_city          cities%ROWTYPE;
         --
     BEGIN 
@@ -127,32 +127,32 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             -- 
         ELSE 
             --
-            l_reg_user := sec_api_k_user.get_record;
+            g_rec_user := sec_api_k_user.get_record;
             --            
         END IF;
         --
-        l_reg_location.location_co      := p_location_co;
-        l_reg_location.description      := p_description; 
-        l_reg_location.postal_co        := p_postal_co; 
-        l_reg_location.city_id          := l_reg_city.id;
-        l_reg_location.nu_gps_lat       := p_nu_gps_lat;
-        l_reg_location.nu_gps_lon       := p_nu_gps_lon;
-        l_reg_location.uuid             := p_uuid; 
+        g_rec_location.location_co      := p_location_co;
+        g_rec_location.description      := p_description; 
+        g_rec_location.postal_co        := p_postal_co; 
+        g_rec_location.city_id          := l_reg_city.id;
+        g_rec_location.nu_gps_lat       := p_nu_gps_lat;
+        g_rec_location.nu_gps_lon       := p_nu_gps_lon;
+        g_rec_location.uuid             := p_uuid; 
         --
         -- creamos el slug
         IF p_slug IS NULL THEN 
             --
-            l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+            g_rec_location.slug :=  lower( substr(l_reg_city.slug||'-'||g_rec_location.location_co,1,60) );
             --
         ELSE
             --
-            l_reg_location.slug :=  p_slug;
+            g_rec_location.slug :=  p_slug;
             --
         END IF;
         --
-        l_reg_location.user_id := l_reg_user.id;
+        g_rec_location.user_id := g_rec_user.id;
         --
-        cfg_api_k_location.ins( p_rec => l_reg_location );
+        cfg_api_k_location.ins( p_rec => g_rec_location );
         --
         COMMIT;
         --
@@ -181,11 +181,12 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             p_result    OUT VARCHAR2  
         ) IS 
         --        
-        l_reg_location      locations%ROWTYPE;
-        l_reg_user          users%ROWTYPE;
         l_reg_city          cities%ROWTYPE;
         --    
     BEGIN 
+        --
+        -- se establece el valor a la global 
+        g_doc_location  := p_rec;
         --
         -- TODO: 1.- validar que el codigo de locacion no exista
         IF cfg_api_k_location.exist( p_location_co => p_rec.p_location_co ) THEN
@@ -219,35 +220,39 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             -- 
         ELSE 
             --
-            l_reg_user := sec_api_k_user.get_record;
+            g_rec_user := sec_api_k_user.get_record;
             --            
         END IF;
         --
-        l_reg_location.location_co      := p_rec.p_location_co;
-        l_reg_location.description      := p_rec.p_description; 
-        l_reg_location.postal_co        := p_rec.p_postal_co; 
-        l_reg_location.city_id          := l_reg_city.id;
-        l_reg_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
-        l_reg_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
-        l_reg_location.uuid             := p_rec.p_uuid; 
+        g_rec_location.id               := NULL;
+        g_rec_location.location_co      := g_doc_location.p_location_co;
+        g_rec_location.description      := g_doc_location.p_description; 
+        g_rec_location.postal_co        := g_doc_location.p_postal_co; 
+        g_rec_location.city_id          := l_reg_city.id;
+        g_rec_location.nu_gps_lat       := g_doc_location.p_nu_gps_lat;
+        g_rec_location.nu_gps_lon       := g_doc_location.p_nu_gps_lon;
+        g_rec_location.uuid             := NULL; 
+        g_rec_location.created_at       := sysdate;
+        g_rec_location.user_id          := g_rec_user.id;
         --
         -- creamos el slug
         IF p_rec.p_slug IS NULL THEN 
             --
-            l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+            g_rec_location.slug :=  lower( substr(l_reg_city.slug||'-'||g_rec_location.location_co,1,60) );
             --
         ELSE
             --
-            l_reg_location.slug :=  p_rec.p_slug;
+            g_rec_location.slug :=  p_rec.p_slug;
             --
         END IF;
         --
-        l_reg_location.user_id          := l_reg_user.id;
+        -- creamos el registro
+        cfg_api_k_location.ins( 
+            p_rec => g_rec_location 
+        );
         --
-        cfg_api_k_location.ins( p_rec => l_reg_location );
-        --
-        p_rec.p_uuid    := l_reg_location.uuid;
-        p_rec.p_slug    := l_reg_location.slug;                
+        p_rec.p_uuid    := g_rec_location.uuid;
+        p_rec.p_slug    := g_rec_location.slug;                
         --
         COMMIT;
         --
@@ -284,8 +289,6 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             p_result            OUT VARCHAR2  
         ) IS 
         --
-        l_reg_location          locations%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
         l_reg_city              cities%ROWTYPE;
         --
     BEGIN
@@ -294,7 +297,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_location := cfg_api_k_location.get_record;
+            g_rec_location := cfg_api_k_location.get_record;
             --
             IF NOT cfg_api_k_city.exist( p_city_co => p_city_co )  THEN
                 --
@@ -323,37 +326,37 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 --
             ELSE 
                 --
-                l_reg_user := sec_api_k_user.get_record;
+                g_rec_user := sec_api_k_user.get_record;
                 --
             END IF;
             --
-            l_reg_location.location_co      := p_location_co;
-            l_reg_location.description      := p_description; 
-            l_reg_location.postal_co        := p_postal_co; 
-            l_reg_location.city_id          := l_reg_city.id;
-            l_reg_location.nu_gps_lat       := p_nu_gps_lat;
-            l_reg_location.nu_gps_lon       := p_nu_gps_lon;
+            g_rec_location.location_co      := p_location_co;
+            g_rec_location.description      := p_description; 
+            g_rec_location.postal_co        := p_postal_co; 
+            g_rec_location.city_id          := l_reg_city.id;
+            g_rec_location.nu_gps_lat       := p_nu_gps_lat;
+            g_rec_location.nu_gps_lon       := p_nu_gps_lon;
             --
             -- creamos el slug
             IF p_uuid IS NOT NULL THEN 
-                l_reg_location.uuid             :=  p_uuid;
+                g_rec_location.uuid             :=  p_uuid;
             END IF;
             --
             IF p_slug IS NOT NULL THEN 
                 --
-                l_reg_location.slug             :=  p_slug;
+                g_rec_location.slug             :=  p_slug;
                 --
             ELSE
                 --
-                IF l_reg_location.slug IS NULL THEN 
-                    l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+                IF g_rec_location.slug IS NULL THEN 
+                    g_rec_location.slug :=  lower( substr(l_reg_city.slug||'-'||g_rec_location.location_co,1,60) );
                 END IF;
                 --
             END IF;
             --
-            l_reg_location.user_id          := l_reg_user.id;
+            g_rec_location.user_id          := g_rec_user.id;
             --
-            cfg_api_k_location.upd( p_rec => l_reg_location );
+            cfg_api_k_location.upd( p_rec => g_rec_location );
             --
             COMMIT;
             --
@@ -398,8 +401,6 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             p_result    OUT VARCHAR2  
         ) IS
         --
-        l_reg_location          locations%ROWTYPE;
-        l_reg_user              users%ROWTYPE;
         l_reg_city              cities%ROWTYPE;
         --
     BEGIN
@@ -408,7 +409,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         IF cfg_api_k_location.exist( p_location_co => p_rec.p_location_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_location := cfg_api_k_location.get_record;
+            g_rec_location := cfg_api_k_location.get_record;
             --
             IF NOT cfg_api_k_city.exist( p_city_co => p_rec.p_city_co )  THEN
                 --
@@ -437,40 +438,40 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 --
             ELSE 
                 --
-                l_reg_user := sec_api_k_user.get_record;
+                g_rec_user := sec_api_k_user.get_record;
                 --
             END IF;
             --
-            l_reg_location.location_co      := p_rec.p_location_co;
-            l_reg_location.description      := p_rec.p_description; 
-            l_reg_location.postal_co        := p_rec.p_postal_co; 
-            l_reg_location.city_id          := l_reg_city.id;
-            l_reg_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
-            l_reg_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
+            g_rec_location.location_co      := p_rec.p_location_co;
+            g_rec_location.description      := p_rec.p_description; 
+            g_rec_location.postal_co        := p_rec.p_postal_co; 
+            g_rec_location.city_id          := l_reg_city.id;
+            g_rec_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
+            g_rec_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
             --
             -- creamos el slug
             IF p_rec.p_uuid IS NOT NULL THEN 
-                l_reg_location.uuid             :=  p_rec.p_uuid;
+                g_rec_location.uuid             :=  p_rec.p_uuid;
             END IF;
             --
             IF p_rec.p_slug IS NOT NULL THEN 
                 --
-                l_reg_location.slug             :=  p_rec.p_slug;
+                g_rec_location.slug             :=  p_rec.p_slug;
                 --
             ELSE
                 --
-                IF l_reg_location.slug IS NULL THEN 
-                    l_reg_location.slug :=  lower( substr(l_reg_city.slug||'-'||l_reg_location.location_co,1,60) );
+                IF g_rec_location.slug IS NULL THEN 
+                    g_rec_location.slug :=  lower( substr(l_reg_city.slug||'-'||g_rec_location.location_co,1,60) );
                 END IF;
                 --
             END IF;
             --
-            l_reg_location.user_id          := l_reg_user.id;
+            g_rec_location.user_id          := g_rec_user.id;
             --
-            cfg_api_k_location.upd( p_rec => l_reg_location );
+            cfg_api_k_location.upd( p_rec => g_rec_location );
             --
-            p_rec.p_uuid    := l_reg_location.uuid;
-            p_rec.p_slug    := l_reg_location.slug;     
+            p_rec.p_uuid    := g_rec_location.uuid;
+            p_rec.p_slug    := g_rec_location.slug;     
             --
             COMMIT;
             --
@@ -514,17 +515,14 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             p_location_co   IN locations.location_co%TYPE,
             p_result        OUT VARCHAR2 
         ) IS 
-        --
-        l_reg_locations     locations%ROWTYPE;
-        --
     BEGIN 
         --
         IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
             --
             -- tomamos el registro encontrado
-            l_reg_locations := cfg_api_k_location.get_record;
+            g_rec_location := cfg_api_k_location.get_record;
             --
-            cfg_api_k_location.del( p_id => l_reg_locations.id );
+            cfg_api_k_location.del( p_id => g_rec_location.id );
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';
             --
@@ -575,6 +573,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         l_obj               json_object_t;
         --
         l_file_exists       BOOLEAN;
+        l_is_number         BOOLEAN;
+        l_is_valid_record   BOOLEAN;
         --
         -- lectura de datos desde un CLOB
         CURSOR c_csv IS
@@ -625,13 +625,53 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 FOR r_reg in c_csv LOOP 
                     --
                     -- completamos los datos del registro customer
-                    g_doc_location.p_location_co        := r_reg.location_co;
-                    g_doc_location.p_description        := r_reg.description;
-                    g_doc_location.p_postal_co          := r_reg.postal_co;
-                    g_doc_location.p_city_co            := r_reg.city_co;
-                    g_doc_location.p_nu_gps_lat         := r_reg.nu_gps_lat;
-                    g_doc_location.p_nu_gps_lon         := r_reg.nu_gps_lon;
-                    g_doc_location.p_user_co            := l_user_code;
+                    g_doc_location.p_location_co    := r_reg.location_co;
+                    g_doc_location.p_description    := r_reg.description;
+                    g_doc_location.p_postal_co      := r_reg.postal_co;
+                    g_doc_location.p_city_co        := r_reg.city_co;
+                    g_doc_location.p_slug           := NULL;
+                    g_doc_location.p_user_co        := l_user_code;
+                    --
+                    r_reg.nu_gps_lat                := nvl( r_reg.nu_gps_lat, '0.00'); 
+                    r_reg.nu_gps_lon                := nvl( r_reg.nu_gps_lon, '0.00'); 
+                    --
+                    -- verificamos el valor sea convertible a numerico
+                    l_is_number := sys_k_string_util.is_str_number(
+                        p_str                => r_reg.nu_gps_lat,
+                        p_decimal_separator  => sys_k_string_util.get_nls_decimal_separator,
+                        p_thousand_separator => sys_k_string_util.get_nls_thousand_separator
+                    );
+                    --
+                    IF l_is_number THEN 
+                        --
+                        g_doc_location.p_nu_gps_lat := sys_k_string_util.str_to_num (
+                            p_str                        => r_reg.nu_gps_lat,
+                            p_decimal_separator          => sys_k_string_util.get_nls_decimal_separator,
+                            p_thousand_separator         => sys_k_string_util.get_nls_thousand_separator,
+                            p_raise_error_if_parse_error => FALSE,
+                            p_value_name                 => NULL
+                        );
+                        --
+                    END IF;
+                    --
+                    -- verificamos el valor sea convertible a numerico
+                    l_is_number := sys_k_string_util.is_str_number(
+                        p_str                => r_reg.nu_gps_lon,
+                        p_decimal_separator  => sys_k_string_util.get_nls_decimal_separator,
+                        p_thousand_separator => sys_k_string_util.get_nls_thousand_separator
+                    );
+                    --
+                    IF l_is_number THEN 
+                        --
+                        g_doc_location.p_nu_gps_lon := sys_k_string_util.str_to_num (
+                            p_str                        => r_reg.nu_gps_lon,
+                            p_decimal_separator          => sys_k_string_util.get_nls_decimal_separator,
+                            p_thousand_separator         => sys_k_string_util.get_nls_thousand_separator,
+                            p_raise_error_if_parse_error => FALSE,
+                            p_value_name                 => NULL
+                        );
+                        --
+                    END IF;                    
                     --
                     create_location( 
                             p_rec       => g_doc_location,
@@ -681,14 +721,14 @@ BEGIN
     ), K_CFG_CO );
     --
     -- tomamos la configuracion local
-    g_reg_config := cfg_api_k_configuration.get_record( 
+    g_rec_config := cfg_api_k_configuration.get_record( 
         p_id => g_cfg_co
     );
     --
     -- establecemos el lenguaje de trabajo
     sys_k_global.p_seter(
         p_variable  => sys_k_constant.K_FIELD_LANGUAGE_CO, 
-        p_value     => g_reg_config.language_co
+        p_value     => g_rec_config.language_co
     );
     --
     EXCEPTION 
