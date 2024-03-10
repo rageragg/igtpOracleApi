@@ -1,8 +1,19 @@
 
 CREATE OR REPLACE PACKAGE dsc_api_k_shop IS
-    --------------------------------------------------------
-    --  DDL for Package SHOPS_API
-    --------------------------------------------------------
+    ---------------------------------------------------------------------------
+    --  DDL for Package SHOPS_API (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de
+    --                                  tiendas
+    ---------------------------------------------------------------------------
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := sys_k_constant.K_SHOP_TABLE;

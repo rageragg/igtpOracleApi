@@ -1,9 +1,20 @@
 
 
 CREATE OR REPLACE package body dsc_api_k_shop IS 
-    --------------------------------------------------------
-    --  DDL for Package SHOPS_API
-    --------------------------------------------------------
+    ---------------------------------------------------------------------------
+    --  DDL for Package SHOPS_API (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de
+    --                                  tiendas
+    ---------------------------------------------------------------------------
     --
     g_record        shops%ROWTYPE;    
     --
