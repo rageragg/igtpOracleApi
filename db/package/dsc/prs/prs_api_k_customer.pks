@@ -1,4 +1,4 @@
-create or replace NONEDITIONABLE PACKAGE prs_api_k_customer IS
+CREATE OR REPLACE NONEDITIONABLE PACKAGE prs_api_k_customer IS
     ---------------------------------------------------------------------------
     --  DDL for Package CUSTOMERS_API (Process)
     --  REFERENCIAS
