@@ -1,8 +1,28 @@
---------------------------------------------------------
---  DDL for Package lgc_api_k_route
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE BODY igtp.lgc_api_k_route IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package routes_API (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de
+    --                                  rutas
+    ---------------------------------------------------------------------------
+    --
+    g_record        routes%ROWTYPE;   
+    --
+    -- get DATA 
+    FUNCTION get_record RETURN routes%ROWTYPE IS
+    BEGIN 
+        --
+        RETURN g_record;
+        --
+    END get_record;  
     --
     -- get DATA RECORD by ID
     FUNCTION get_record( p_id in routes.id%TYPE )  RETURN routes%ROWTYPE IS 
@@ -217,5 +237,25 @@ CREATE OR REPLACE PACKAGE BODY igtp.lgc_api_k_route IS
         --
     END del;
     --  
+    -- exist route by id
+    FUNCTION exist( p_id IN routes.id%TYPE ) RETURN BOOLEAN IS
+    BEGIN 
+        --
+        g_record := get_record( p_id => p_id );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;
+    --
+    -- exist route by code
+    FUNCTION exist( p_route_co IN routes.route_co%TYPE ) RETURN BOOLEAN IS 
+    BEGIN 
+        --
+        g_record := get_record( p_route_co => p_route_co );
+        --
+        RETURN g_record.id IS NOT NULL;
+        --
+    END exist;    
+    --
 END lgc_api_k_route;
 /
