@@ -76,7 +76,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_subsidiary IS
         --
         g_msg_error := nvl(g_msg_error, p_msg_error );
         --
-        raise_application_error(g_cod_error, g_msg_error );
+        RAISE_APPLICATION_ERROR(g_cod_error, g_msg_error );
         -- 
     END raise_error;      
     --
