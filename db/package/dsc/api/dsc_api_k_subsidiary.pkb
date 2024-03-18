@@ -205,7 +205,7 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiary IS
         -- 
     END del;
     --
-    -- exist shop by id
+    -- exist subsidiare by id
     FUNCTION exist( p_id IN subsidiaries.id%TYPE ) RETURN BOOLEAN IS
     BEGIN 
         --
@@ -215,7 +215,7 @@ CREATE OR REPLACE PACKAGE BODY dsc_api_k_subsidiary IS
         --
     END exist;
     --
-    -- exist customer by code
+    -- exist subsidiare by code
     FUNCTION exist( p_subsidiary_co IN subsidiaries.subsidiary_co%TYPE ) RETURN BOOLEAN IS 
     BEGIN 
         --

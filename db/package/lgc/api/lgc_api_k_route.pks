@@ -4,8 +4,8 @@
 
 CREATE OR REPLACE package igtp.lgc_api_k_route IS
     --
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
-    K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'ROUTES';
+    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_TABLE_NAME CONSTANT VARCHAR2(30)  := sys_k_constant.K_ROUTE_TABLE;
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
     --
@@ -62,5 +62,12 @@ CREATE OR REPLACE package igtp.lgc_api_k_route IS
     --
     -- delete
     procedure del ( p_id routes.id%TYPE );
+    --
+    -- TODO: desarrollar las funciones que evaluan la existencia
+    -- exist shop by id
+    FUNCTION exist( p_id IN routes.id%TYPE ) RETURN BOOLEAN;
+    --
+    -- exist shop by code
+    FUNCTION exist( p_route_co IN routes.route_co%TYPE DEFAULT NULL ) RETURN BOOLEAN;
     --
 END lgc_api_k_route;

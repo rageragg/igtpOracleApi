@@ -139,7 +139,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_subsidiary IS
     BEGIN 
         --
         sys_k_utils.record_log( 
-            p_context   => sys_k_constant.K_SHOP_LOAD_CONTEXT,
+            p_context   => sys_k_constant.K_SUBSIDIARY_LOAD_CONTEXT,
             p_line      => p_line,
             p_raw       => p_raw,
             p_result    => p_result,
