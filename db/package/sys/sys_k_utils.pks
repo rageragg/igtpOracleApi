@@ -106,6 +106,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
             p_clob     IN OUT CLOB
         );
     --
+    -- devuelve el conjunto de caracteres
+    FUNCTION f_character_set RETURN NVARCHAR2;
+    --
 END sys_k_utils;
 
 /

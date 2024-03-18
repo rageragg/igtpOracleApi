@@ -771,25 +771,34 @@ as
     return img;
   end;
 --
-  procedure init
-  is
-  begin
+  PROCEDURE init IS
+  BEGIN
+    --
     t_ncharset := nls_charset_name( nls_charset_id( 'NCHAR_CS' ) );
     t_lan_ter  := substr( sys_context( 'userenv', 'LANGUAGE' ), 1, instr( sys_context( 'userenv', 'LANGUAGE' ), '.' ) );
-    dbms_lob.createtemporary( pdf_doc, true );
+    --      
+    dbms_lob.createtemporary( 
+      lob_loc => pdf_doc, 
+      cache   => true 
+    );
+    --
     settings := null;
-    objects_tab.delete;
-    pages_tab.delete;
-    fonts.delete;
-    used_fonts.delete;
-    images.delete;
+    --
+    objects_tab.DELETE;
+    pages_tab.DELETE;
+    fonts.DELETE;
+    used_fonts.DELETE;
+    images.DELETE;
+    --
     objects_tab( 0 ) := 0;
+    --
     init_core_fonts;
     set_format;
     set_margins;
     new_page;
     set_font( 'helvetica' );
-  end;
+    --
+  END init;
 --
   function get_pdf
   return blob

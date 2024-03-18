@@ -413,7 +413,23 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
                 RAISE;
         --
     END record_log;
-    --                  
+    -- 
+    -- devuelve el conjunto de caracteres
+    FUNCTION f_character_set RETURN NVARCHAR2 IS
+    BEGIN
+        -- 
+        RETURN nls_charset_name( nls_charset_id( 'NCHAR_CS' ) );
+        --
+    END f_character_set;
+    --
+    -- devuelve el lenguaje territorial
+    FUNCTION f_language_ter RETURN VARCHAR2 IS
+    BEGIN 
+        --
+        RETURN substr( sys_context( 'userenv', 'LANGUAGE' ), 1, instr( sys_context( 'userenv', 'LANGUAGE' ), '.' ) );              
+        --
+    END f_language_ter;
+    --
 END sys_k_utils;
 
 /
