@@ -169,14 +169,14 @@ CREATE OR REPLACE PACKAGE sys_k_xlsx_builder AUTHID CURRENT_USER AS
         , p_height PLS_INTEGER := 100  -- pixels
         , p_sheet PLS_INTEGER := NULL
         );
---
-  PROCEDURE mergecells
-    ( p_tl_col PLS_INTEGER -- top left
-    , p_tl_row PLS_INTEGER
-    , p_br_col PLS_INTEGER -- bottom right
-    , p_br_row PLS_INTEGER
-    , p_sheet PLS_INTEGER := NULL
-    );
+    --
+    PROCEDURE mergecells
+        ( p_tl_col PLS_INTEGER -- top left
+        , p_tl_row PLS_INTEGER
+        , p_br_col PLS_INTEGER -- bottom right
+        , p_br_row PLS_INTEGER
+        , p_sheet PLS_INTEGER := NULL
+        );
     --
     PROCEDURE list_validation
         ( p_sqref_col PLS_INTEGER

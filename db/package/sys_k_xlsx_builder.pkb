@@ -345,9 +345,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
         --
     END finish_zip;
     --
-    FUNCTION alfan_col( p_col PLS_INTEGER )
-    RETURN VARCHAR2
-    IS
+    FUNCTION alfan_col( p_col PLS_INTEGER ) RETURN VARCHAR2 IS
     BEGIN
         --
         RETURN CASE
@@ -445,26 +443,30 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
         t_width NUMBER;
         t_nr_chr PLS_INTEGER;
     BEGIN
-        IF p_format IS NULL
-        THEN
-        RETURN;
+        --
+        IF p_format IS NULL THEN
+            RETURN;
         END IF;
-        IF instr( p_format, ';' ) > 0
-        THEN
-        t_nr_chr := length( translate( substr( p_format, 1, instr( p_format, ';' ) - 1 ), 'a\"', 'a' ) );
+        --
+        IF instr( p_format, ';' ) > 0 THEN
+            t_nr_chr := length( translate( substr( p_format, 1, instr( p_format, ';' ) - 1 ), 'a\"', 'a' ) );
         ELSE
-        t_nr_chr := length( translate( p_format, 'a\"', 'a' ) );
+            t_nr_chr := length( translate( p_format, 'a\"', 'a' ) );
         END IF;
+        --
         t_width := trunc( ( t_nr_chr * 7 + 5 ) / 7 * 256 ) / 256; -- assume default 11 point Calibri
-        IF workbook.sheets( p_sheet ).widths.exists( p_col )
-        THEN
-        workbook.sheets( p_sheet ).widths( p_col ) :=
-            greatest( workbook.sheets( p_sheet ).widths( p_col )
-                    , t_width
-                    );
+        --
+        IF workbook.sheets( p_sheet ).widths.exists( p_col ) THEN
+            --
+            workbook.sheets( p_sheet ).widths( p_col ) :=
+                greatest( workbook.sheets( p_sheet ).widths( p_col )
+                        , t_width
+                        );
+            --
         ELSE
-        workbook.sheets( p_sheet ).widths( p_col ) := greatest( t_width, 8.43 );
+            workbook.sheets( p_sheet ).widths( p_col ) := greatest( t_width, 8.43 );
         END IF;
+        --
     END set_col_width;
     --
     FUNCTION OraFmt2Excel( p_format VARCHAR2 := NULL ) RETURN VARCHAR2 IS
@@ -499,6 +501,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
         END IF;
         --
         t_cnt := workbook.numFmts.count();
+        --
         FOR i IN 1 .. t_cnt LOOP
             --
             IF workbook.numFmts( i ).formatCode = p_format THEN
@@ -575,28 +578,37 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
         --
     END get_font;
     --
-    FUNCTION get_fill( p_patternType VARCHAR2, 
-                       p_fgRGB VARCHAR2 := NULL      )
-    RETURN PLS_INTEGER
-    IS
+    FUNCTION get_fill( 
+            p_patternType VARCHAR2, 
+            p_fgRGB VARCHAR2 := NULL      
+        ) RETURN PLS_INTEGER IS
+        --
         t_ind PLS_INTEGER;
+        --
     BEGIN
-        IF workbook.fills.count() > 0
-        THEN
-        FOR f IN 0 .. workbook.fills.count() - 1
-        LOOP
-            IF (   workbook.fills( f ).patternType = p_patternType
-            AND nvl( workbook.fills( f ).fgRGB, 'x' ) = nvl( upper( p_fgRGB ), 'x' )
-            )
-            THEN
-            RETURN f;
-            END IF;
-        END LOOP;
+        --
+        IF workbook.fills.count() > 0 THEN
+            --
+            FOR f IN 0 .. workbook.fills.count() - 1  LOOP
+                --
+                IF ( 
+                    workbook.fills( f ).patternType = p_patternType  AND nvl( workbook.fills( f ).fgRGB, 'x' ) = nvl( upper( p_fgRGB ), 'x' )
+                ) THEN
+                    --
+                    RETURN f;
+                    --
+                END IF;
+                --
+            END LOOP;
+            --
         END IF;
+        --
         t_ind := workbook.fills.count();
         workbook.fills( t_ind ).patternType := p_patternType;
         workbook.fills( t_ind ).fgRGB := upper( p_fgRGB );
+        --
         RETURN t_ind;
+        --
     END get_fill;
     --
     FUNCTION get_border
@@ -715,104 +727,124 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
     END get_XfId;
     --
     PROCEDURE cell
-        ( p_col PLS_INTEGER
-        , p_row PLS_INTEGER
-        , p_value NUMBER
-        , p_numFmtId PLS_INTEGER := NULL
-        , p_fontId PLS_INTEGER := NULL
-        , p_fillId PLS_INTEGER := NULL
-        , p_borderId PLS_INTEGER := NULL
-        , p_alignment tp_alignment := NULL
-        , p_sheet PLS_INTEGER := NULL
-        )
-    IS
+            ( p_col PLS_INTEGER
+            , p_row PLS_INTEGER
+            , p_value NUMBER
+            , p_numFmtId PLS_INTEGER := NULL
+            , p_fontId PLS_INTEGER := NULL
+            , p_fillId PLS_INTEGER := NULL
+            , p_borderId PLS_INTEGER := NULL
+            , p_alignment tp_alignment := NULL
+            , p_sheet PLS_INTEGER := NULL
+            )
+        IS
+        --
         t_sheet PLS_INTEGER := nvl( p_sheet, workbook.sheets.count() );
+        --
     BEGIN
-        IF p_value IS NOT NULL
-        THEN
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := p_value;
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := NULL;
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := get_XfId( t_sheet, p_col, p_row, p_numFmtId, p_fontId, p_fillId, p_borderId, p_alignment );
-        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col ) 
-        THEN
+        --
+        IF p_value IS NOT NULL THEN
+            --
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := p_value;
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := NULL;
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := get_XfId( t_sheet, p_col, p_row, p_numFmtId, p_fontId, p_fillId, p_borderId, p_alignment );
+            --
+        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col ) THEN
+            --
             workbook.sheets( t_sheet ).rows( p_row ).delete( p_col );
+            --
         END IF;
+        --
     END cell;
     --
-    FUNCTION add_string( p_string VARCHAR2 )
-    RETURN PLS_INTEGER
-    IS
+    FUNCTION add_string( p_string VARCHAR2 ) RETURN PLS_INTEGER IS
+        --
         t_cnt PLS_INTEGER;
+        --
     BEGIN
-        IF workbook.strings.exists( p_string )
-        THEN
-        t_cnt := workbook.strings( p_string );
+        --
+        IF workbook.strings.exists( p_string ) THEN
+            t_cnt := workbook.strings( p_string );
         ELSE
-        t_cnt := workbook.strings.count();  
-        workbook.str_ind( t_cnt ) := p_string;
-        workbook.strings( nvl( p_string, '' ) ) := t_cnt;
+            t_cnt := workbook.strings.count();  
+            workbook.str_ind( t_cnt ) := p_string;
+            workbook.strings( nvl( p_string, '' ) ) := t_cnt;
         END IF;
+        --
         workbook.str_cnt := workbook.str_cnt + 1;
+        --
         RETURN t_cnt;
+        --
     END add_string;
     --
-    FUNCTION clean_string (p_string IN VARCHAR2)
-    RETURN VARCHAR2
-    IS
+    FUNCTION clean_string (
+            p_string IN VARCHAR2
+        ) RETURN VARCHAR2  IS
+        --
         invalid_ascii constant VARCHAR2(32) :=
         chr(00)||chr(01)||chr(02)||chr(03)||chr(04)||chr(05)||chr(06)||chr(07)||
         chr(08)||                  chr(11)||chr(12)||         chr(14)||chr(15)||
         chr(16)||chr(17)||chr(18)||chr(19)||chr(20)||chr(21)||chr(22)||chr(23)||
-        chr(24)||chr(25)||chr(26)||chr(27)||chr(28)||chr(29)||chr(30)||chr(31)
-        ;
+        chr(24)||chr(25)||chr(26)||chr(27)||chr(28)||chr(29)||chr(30)||chr(31);
+        --
     BEGIN
+        --
         RETURN translate(translate( p_string, invalid_ascii, chr(1)), chr(0)||chr(1), ' ');
+        --
     END clean_string;
     --
     PROCEDURE cell
-        ( p_col PLS_INTEGER
-        , p_row PLS_INTEGER
-        , p_value VARCHAR2
-        , p_numFmtId PLS_INTEGER := NULL
-        , p_fontId PLS_INTEGER := NULL
-        , p_fillId PLS_INTEGER := NULL
-        , p_borderId PLS_INTEGER := NULL
-        , p_alignment tp_alignment := NULL
-        , p_sheet PLS_INTEGER := NULL
-        )
-    IS
+            ( p_col PLS_INTEGER
+            , p_row PLS_INTEGER
+            , p_value VARCHAR2
+            , p_numFmtId PLS_INTEGER := NULL
+            , p_fontId PLS_INTEGER := NULL
+            , p_fillId PLS_INTEGER := NULL
+            , p_borderId PLS_INTEGER := NULL
+            , p_alignment tp_alignment := NULL
+            , p_sheet PLS_INTEGER := NULL
+            )
+        IS
+        --
         t_sheet PLS_INTEGER := nvl( p_sheet, workbook.sheets.count() );
         t_alignment tp_alignment := p_alignment;
+        --
     BEGIN
-        IF p_value IS NOT NULL 
-        THEN
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := add_string( clean_string( p_value ));
-        IF t_alignment.wrapText IS NULL AND instr( p_value, chr(13) ) > 0
-        THEN
-            t_alignment.wrapText := true;
-        END IF;
+        --
+        IF p_value IS NOT NULL THEN
+            --
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := add_string( clean_string( p_value ));
+            --
+            IF t_alignment.wrapText IS NULL AND instr( p_value, chr(13) ) > 0 THEN
+                t_alignment.wrapText := true;
+            END IF;
+            --
             workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := 't="s" ' || get_XfId( t_sheet, p_col, p_row, p_numFmtId, p_fontId, p_fillId, p_borderId, t_alignment );
-        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col )
-        THEN
-        workbook.sheets( t_sheet ).rows( p_row ).delete( p_col );
+            --
+        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col ) THEN
+            workbook.sheets( t_sheet ).rows( p_row ).delete( p_col );
         END IF;
+        --
     END cell;
     --
     PROCEDURE cell
-        ( p_col PLS_INTEGER
-        , p_row PLS_INTEGER
-        , p_value DATE
-        , p_numFmtId PLS_INTEGER := NULL
-        , p_fontId PLS_INTEGER := NULL
-        , p_fillId PLS_INTEGER := NULL
-        , p_borderId PLS_INTEGER := NULL
-        , p_alignment tp_alignment := NULL
-        , p_sheet PLS_INTEGER := NULL
-        )
-    IS
-        t_numFmtId PLS_INTEGER := p_numFmtId;
-        t_sheet PLS_INTEGER := nvl( p_sheet, workbook.sheets.count() );
+            ( 
+                p_col PLS_INTEGER
+                , p_row PLS_INTEGER
+                , p_value DATE
+                , p_numFmtId PLS_INTEGER := NULL
+                , p_fontId PLS_INTEGER := NULL
+                , p_fillId PLS_INTEGER := NULL
+                , p_borderId PLS_INTEGER := NULL
+                , p_alignment tp_alignment := NULL
+                , p_sheet PLS_INTEGER := NULL
+            )  IS
+            --
+            t_numFmtId PLS_INTEGER := p_numFmtId;
+            t_sheet PLS_INTEGER := nvl( p_sheet, workbook.sheets.count() );
+            --
     BEGIN
+        --
         workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := p_value - to_date('01-01-1904','DD-MM-YYYY');
         IF t_numFmtId IS NULL
         AND NOT (   workbook.sheets( t_sheet ).col_fmts.exists( p_col )
@@ -822,33 +854,39 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
                 AND workbook.sheets( t_sheet ).row_fmts( p_row ).numFmtId IS NOT NULL
                 )
         THEN
-        t_numFmtId := get_numFmt( 'dd/mm/yyyy' );
+            t_numFmtId := get_numFmt( 'dd/mm/yyyy' );
         END IF;
+        --
         workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := get_XfId( t_sheet, p_col, p_row, t_numFmtId, p_fontId, p_fillId, p_borderId, p_alignment );
+        --
     END cell;
     --
     PROCEDURE hyperlink
-        ( p_col PLS_INTEGER
-        , p_row PLS_INTEGER
-        , p_url VARCHAR2
-        , p_value VARCHAR2 := NULL
-        , p_sheet PLS_INTEGER := NULL
-        )
-    IS
+            ( p_col PLS_INTEGER
+            , p_row PLS_INTEGER
+            , p_url VARCHAR2
+            , p_value VARCHAR2 := NULL
+            , p_sheet PLS_INTEGER := NULL
+            )
+        IS
+        --
         t_ind PLS_INTEGER;
         t_sheet PLS_INTEGER := nvl( p_sheet, workbook.sheets.count() );
+        --
     BEGIN
-        IF nvl( p_value, p_url ) IS NOT NULL
-        THEN
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := add_string( clean_string( nvl( p_value, p_url )));
-        workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := 't="s" ' || get_XfId( t_sheet, p_col, p_row, '', get_font( 'Calibri', p_theme => 10, p_underline => true ) );
-        t_ind := workbook.sheets( t_sheet ).hyperlinks.count() + 1;
-        workbook.sheets( t_sheet ).hyperlinks( t_ind ).cell := alfan_col( p_col ) || p_row;
-        workbook.sheets( t_sheet ).hyperlinks( t_ind ).url := p_url;
-        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col )
-        THEN
-        workbook.sheets( t_sheet ).rows( p_row ).delete( p_col );
+        --
+        IF nvl( p_value, p_url ) IS NOT NULL THEN
+            --
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).value := add_string( clean_string( nvl( p_value, p_url )));
+            workbook.sheets( t_sheet ).rows( p_row )( p_col ).style := 't="s" ' || get_XfId( t_sheet, p_col, p_row, '', get_font( 'Calibri', p_theme => 10, p_underline => true ) );
+            t_ind := workbook.sheets( t_sheet ).hyperlinks.count() + 1;
+            workbook.sheets( t_sheet ).hyperlinks( t_ind ).cell := alfan_col( p_col ) || p_row;
+            workbook.sheets( t_sheet ).hyperlinks( t_ind ).url := p_url;
+            --
+        ELSIF workbook.sheets( t_sheet ).rows( p_row ).exists( p_col ) THEN
+            workbook.sheets( t_sheet ).rows( p_row ).delete( p_col );
         END IF;
+        --
     END hyperlink;
     --
     PROCEDURE comment
