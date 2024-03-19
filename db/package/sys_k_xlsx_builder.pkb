@@ -375,23 +375,23 @@ CREATE OR REPLACE PACKAGE BODY sys_k_xlsx_builder IS
             --
             t_row_ind := workbook.sheets( s ).rows.first();
             --
-        WHILE t_row_ind IS NOT NULL LOOP
+            WHILE t_row_ind IS NOT NULL LOOP
+                --
+                workbook.sheets( s ).rows( t_row_ind ).delete();
+                t_row_ind := workbook.sheets( s ).rows.next( t_row_ind );
+                --
+            END LOOP;
             --
-            workbook.sheets( s ).rows( t_row_ind ).delete();
-            t_row_ind := workbook.sheets( s ).rows.next( t_row_ind );
+            workbook.sheets( s ).rows.delete();
+            workbook.sheets( s ).widths.delete();
+            workbook.sheets( s ).autofilters.delete();
+            workbook.sheets( s ).hyperlinks.delete();
+            workbook.sheets( s ).col_fmts.delete();
+            workbook.sheets( s ).row_fmts.delete();
+            workbook.sheets( s ).comments.delete();
+            workbook.sheets( s ).mergecells.delete();
+            workbook.sheets( s ).validations.delete();
             --
-        END LOOP;
-        --
-        workbook.sheets( s ).rows.delete();
-        workbook.sheets( s ).widths.delete();
-        workbook.sheets( s ).autofilters.delete();
-        workbook.sheets( s ).hyperlinks.delete();
-        workbook.sheets( s ).col_fmts.delete();
-        workbook.sheets( s ).row_fmts.delete();
-        workbook.sheets( s ).comments.delete();
-        workbook.sheets( s ).mergecells.delete();
-        workbook.sheets( s ).validations.delete();
-        --
         END LOOP;
         --
         workbook.strings.delete();
