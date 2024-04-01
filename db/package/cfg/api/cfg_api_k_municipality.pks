@@ -66,5 +66,4 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
     FUNCTION exist( p_municipality_co IN municipalities.municipality_co%TYPE  ) RETURN BOOLEAN;
     --    
 END cfg_api_k_municipality;
-
 /

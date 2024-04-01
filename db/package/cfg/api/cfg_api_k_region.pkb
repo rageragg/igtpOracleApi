@@ -233,3 +233,4 @@ CREATE OR REPLACE PACKAGE BODY cfg_api_k_region IS
     END exist;
     --
 END cfg_api_k_region;
+/

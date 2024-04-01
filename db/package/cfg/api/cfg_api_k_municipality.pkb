@@ -207,5 +207,4 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     END exist;
     --   
 END cfg_api_k_municipality;
-
 /
