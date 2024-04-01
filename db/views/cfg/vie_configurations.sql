@@ -8,7 +8,7 @@ CREATE OR REPLACE FORCE NONEDITIONABLE VIEW "IGTP"."V_CONFIGURATIONS" (
 	"COMPANY_TELEPHONE_CO", "COMPANY_EMAIL", "DAYS_PER_YEAR", 
 	"WEEKS_PER_YEAR", "MONTHS_PER_YEAR", "DAYS_PER_MONTH", 
 	"DAYS_PER_WEEK", "HOURS_PER_DAY", "HOURS_PER_WEEK", 
-	"HOURS_PER_MONTH"
+	"HOURS_PER_MONTH", "LANGUAGE_CO"
 ) AS 
 SELECT 	local_currency_co,
 		foreign_currency_co,
@@ -25,6 +25,7 @@ SELECT 	local_currency_co,
 		days_per_week,
 		hours_per_day,
 		(hours_per_day*days_per_week) hours_per_week,
-		(hours_per_day*days_per_month) hours_per_month
+		(hours_per_day*days_per_month) hours_per_month,
+		language_co
 FROM configurations
 ;

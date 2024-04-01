@@ -69,3 +69,4 @@ CREATE OR REPLACE PACKAGE cfg_api_k_province IS
     FUNCTION exist( p_province_co IN provinces.province_co%TYPE ) RETURN BOOLEAN;
     --    
 END cfg_api_k_province;
+/

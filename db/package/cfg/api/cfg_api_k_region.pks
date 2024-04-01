@@ -63,3 +63,4 @@ CREATE OR REPLACE PACKAGE cfg_api_k_region IS
     FUNCTION exist( p_region_co IN regions.region_co%TYPE ) RETURN BOOLEAN;
     --    
 END cfg_api_k_region;
+/
