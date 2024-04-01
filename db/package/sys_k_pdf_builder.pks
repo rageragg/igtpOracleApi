@@ -1,66 +1,68 @@
-CREATE OR REPLACE package sys_k_pdf_builder
-as
-
-  /*
-
-  Purpose:   Package to generate PDF files
-
-  Remarks:   By Anton Scheffer, see http://technology.amis.nl/blog/8650/as_pdf-generating-a-pdf-document-with-some-plsql
-
-  Who     Date        Description
-  ------  ----------  -------------------------------------
-  ASC     20.10.2010  Created
-  
-  */
-
---
-  type tp_settings is record
-    ( page_width number
-    , page_height number
-    , margin_left number
-    , margin_right number
-    , margin_top number
-    , margin_bottom number
-    , encoding varchar2(100)
-    , current_font pls_integer
-    , current_fontsizePt pls_integer
-    , x   number
-    , y   number
-    , page_nr pls_integer
+CREATE OR REPLACE PACKAGE SYS_K_PDF_BUILDER
+AS
+    ---------------------------------------------------------------------------
+    --  DDL:        for Package PDF (API)
+    --  PURPOSE:    Package to generate PDF files
+    --  REFERENCES
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  20-10-2010  Anton Scheffer      Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de tiendas
+    --  see http://technology.amis.nl/blog/8650/as_pdf-generating-a-pdf-document-with-some-plsql
+    ---------------------------------------------------------------------------
+    --
+    TYPE tp_settings IS RECORD( 
+        page_width            NUMBER
+        page_height         NUMBER,
+        margin_left         NUMBER,
+        margin_right        NUMBER,
+        margin_top          NUMBER,
+        margin_bottom       NUMBER,
+        encoding            VARCHAR2(100),
+        current_font        PLS_INTEGER,
+        current_fontsizePt  PLS_INTEGER,
+        x                   NUMBER,
+        y                   NUMBER,
+        page_nr             PLS_INTEGER
     );
---
-  procedure init;
---
-  function get_pdf
-  return blob;
---
-  procedure save_pdf
-    ( p_dir in varchar2 := 'MY_DIR'
-    , p_filename in varchar2 := 'my.pdf'
-    );
---
-  procedure show_pdf;
---
-  function conv2user_units( p_value in number, p_unit in varchar2 )
-  return number;
+  --
+  PROCEDURE init;
+  --
+  FUNCTION get_pdf return blob;
+  --
+  PROCEDURE save_pdf( 
+      p_dir       IN VARCHAR2 := 'APP_OUTDIR',
+      p_filename  IN VARCHAR2 := 'my.pdf'
+  );
+  --
+  PROCEDURE show_pdf;
+  --
+  FUNCTION conv2user_units( 
+      p_value IN NUMBER, 
+      p_unit  IN VARCHAR2 
+  ) RETURN NUMBER;
 --
   procedure set_format
-    ( p_format in varchar2 := 'A4'
-    , p_orientation in varchar2 := 'PORTRAIT'
+    ( p_format IN VARCHAR2 := 'A4'
+    , p_orientation IN VARCHAR2 := 'PORTRAIT'
     );
 --
   procedure set_pagesize
-    ( p_width in number
-    , p_height in number
-    , p_unit in varchar2 := 'cm'
+    ( p_width IN NUMBER
+    , p_height IN NUMBER
+    , p_unit IN VARCHAR2 := 'cm'
     );
 --
   procedure set_margins
-    ( p_top in number := 3
-    , p_left in number := 1
-    , p_bottom in number := 4
-    , p_right in number := 1
-    , p_unit in varchar2 := 'cm'
+    ( p_top IN NUMBER := 3
+    , p_left IN NUMBER := 1
+    , p_bottom IN NUMBER := 4
+    , p_right IN NUMBER := 1
+    , p_unit IN VARCHAR2 := 'cm'
     );
 --
   function get_settings
@@ -69,94 +71,94 @@ as
   procedure new_page;
 --
   procedure set_font
-    ( p_family in varchar2
-    , p_style  in varchar2 := 'N'
-    , p_fontsizePt in pls_integer := null
-    , p_encoding in varchar2 := 'WINDOWS-1252'
+    ( p_family IN VARCHAR2
+    , p_style  IN VARCHAR2 := 'N'
+    , p_fontsizePt IN PLS_INTEGER := null
+    , p_encoding IN VARCHAR2 := 'WINDOWS-1252'
     );
 --
-  procedure add2page( p_txt in nclob );
+  procedure add2page( p_txt IN nclob );
 --
-  procedure put_txt( p_x in number, p_y in number, p_txt in nclob );
+  procedure put_txt( p_x IN NUMBER, p_y IN NUMBER, p_txt IN nclob );
 --
-  function string_width( p_txt in nclob )
-  return number;
+  function string_width( p_txt IN nclob )
+  return NUMBER;
 --
   procedure write
-    ( p_txt in nclob
-    , p_x in number := null 
-    , p_y in number := null
-    , p_line_height in number := null
-    , p_start in number := null  -- left side of the available text box
-    , p_width in number := null  -- width of the available text box
-    , p_alignment in varchar2 := null
+    ( p_txt IN nclob
+    , p_x IN NUMBER := null 
+    , p_y IN NUMBER := null
+    , p_line_height IN NUMBER := null
+    , p_start IN NUMBER := null  -- left side of the available text box
+    , p_width IN NUMBER := null  -- width of the available text box
+    , p_alignment IN VARCHAR2 := null
     );
 --
-  procedure set_color( p_rgb in varchar2 := '000000' );
+  procedure set_color( p_rgb IN VARCHAR2 := '000000' );
 --
   procedure set_color
-    ( p_red in number := 0
-    , p_green in number := 0
-    , p_blue in number := 0 
+    ( p_red IN NUMBER := 0
+    , p_green IN NUMBER := 0
+    , p_blue IN NUMBER := 0 
     );
 --
-  procedure set_bk_color( p_rgb in varchar2 := 'ffffff' );
+  procedure set_bk_color( p_rgb IN VARCHAR2 := 'ffffff' );
 --
   procedure set_bk_color
-    ( p_red in number := 255
-    , p_green in number := 255
-    , p_blue in number := 255 
+    ( p_red IN NUMBER := 255
+    , p_green IN NUMBER := 255
+    , p_blue IN NUMBER := 255 
     );
 --
   procedure horizontal_line
-    ( p_x in number
-    , p_y in number
-    , p_width in number
-    , p_line_width in number := 0.5
-    , p_line_color in varchar2 := '000000'
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_width IN NUMBER
+    , p_line_width IN NUMBER := 0.5
+    , p_line_color IN VARCHAR2 := '000000'
     );
 --
   procedure vertical_line
-    ( p_x in number
-    , p_y in number
-    , p_height in number
-    , p_line_width in number := 0.5
-    , p_line_color in varchar2 := '000000'
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_height IN NUMBER
+    , p_line_width IN NUMBER := 0.5
+    , p_line_color IN VARCHAR2 := '000000'
     );
 --
   procedure rect
-    ( p_x in number
-    , p_y in number
-    , p_width in number
-    , p_height in number
-    , p_line_color in varchar2 := null
-    , p_fill_color in varchar2 := null
-    , p_line_width in number := 0.5
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_width IN NUMBER
+    , p_height IN NUMBER
+    , p_line_color IN VARCHAR2 := null
+    , p_fill_color IN VARCHAR2 := null
+    , p_line_width IN NUMBER := 0.5
     );
 --
   procedure put_image
-     ( p_dir in varchar2
-     , p_file_name in varchar2
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     ( p_dir IN VARCHAR2
+     , p_file_name IN VARCHAR2
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      );
 --
   procedure put_image
-     ( p_url in varchar2
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     ( p_url IN VARCHAR2
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      );
 --
   procedure put_image
-     ( p_img in blob
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     ( p_img IN blob
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      );
 --
 
