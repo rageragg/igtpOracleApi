@@ -1,7 +1,7 @@
 CREATE OR REPLACE package body sys_k_pdf_builder
 as
 --
-  type tp_objects_tab is table of number(10) index by pls_integer;
+  type tp_objects_tab is table of NUMBER(10) index by pls_integer;
   type tp_pages_tab is table of blob index by pls_integer;
   type tp_char_width_tab is table of pls_integer index by pls_integer;
   type tp_font is record
@@ -44,7 +44,7 @@ as
 --
   procedure init_core_fonts
   is
-    function init_standard_withs( p_compressed_tab in varchar2 )
+    function init_standard_withs( p_compressed_tab IN VARCHAR2 )
     return tp_char_width_tab
     is
       t_rv tp_char_width_tab;
@@ -237,7 +237,7 @@ as
       t_ind := -1;
       loop
         t_ind := dbms_lob.instr( t_rv, tab_raw( i ), t_ind + 2 );
-        exit when t_ind <= 0;
+        exit WHEN t_ind <= 0;
         dbms_lob.copy( t_rv, t_rv, dbms_lob.lobmaxsize, t_ind + 1, t_ind );
         dbms_lob.copy( t_rv, tab_raw( 1 ), 1, t_ind, 1 );
       end loop;
@@ -246,13 +246,13 @@ as
   end;
 --
   function raw2num( p_value in raw )
-  return number
+  RETURN NUMBER
   is
   begin -- note: FFFFFFFF => -1
     return utl_raw.cast_to_binary_integer( p_value );
   end;
 --
-  function to_char_round( p_value in number, p_precision in pls_integer := 2 )
+  function to_char_round( p_value IN NUMBER, p_precision in pls_integer := 2 )
   return varchar2
   is
   begin
@@ -265,7 +265,7 @@ as
                 );
   end;
 --
-  function file2blob( p_dir in varchar2, p_file_name in varchar2 )
+  function file2blob( p_dir IN VARCHAR2, p_file_name IN VARCHAR2 )
   return blob
   is
     file_lob bfile;
@@ -278,7 +278,7 @@ as
     dbms_lob.close( file_lob );
     return file_blob;
   exception
-    when others then
+    WHEN others then
       if dbms_lob.isopen( file_lob ) = 1
       then
         dbms_lob.close( file_lob );
@@ -290,22 +290,35 @@ as
       raise;
   end;
 --
-  procedure raw2pdfDoc( p_txt in blob )
-  is
-  begin
-    dbms_lob.append( pdf_doc, p_txt );
-  end;
+  PROCEDURE raw2pdfDoc( 
+      p_txt IN BLOB 
+    ) IS
+  BEGIN
+    --
+    dbms_lob.append( 
+      pdf_doc, 
+      p_txt 
+    );
+    --
+  END raw2pdfDoc;
 --
-  procedure add2pdfDoc( p_txt in varchar2 )
-  is
-  begin
-    raw2pdfDoc( utl_raw.concat( utl_raw.cast_to_raw( p_txt ), hextoraw( '0D0A' ) ) );
-  end;
+  PROCEDURE add2pdfDoc( 
+      p_txt IN VARCHAR2 
+    ) IS
+  BEGIN
+    --
+    raw2pdfDoc( 
+      utl_raw.concat( utl_raw.cast_to_raw( p_txt ), 
+        hextoraw( '0D0A' ) 
+      ) 
+    );
+    --
+  END add2pdfDoc;
 --
-  function add_object2pdfDoc( p_txt in varchar2 := null )
-  return number
+  function add_object2pdfDoc( p_txt IN VARCHAR2 := null )
+  RETURN NUMBER
   is
-    t_self number(10);
+    t_self NUMBER(10);
   begin
     t_self := objects_tab.count();
     objects_tab( t_self ) := dbms_lob.getlength( pdf_doc );
@@ -317,9 +330,9 @@ as
     return t_self;
   end;
 --
-  procedure add_object2pdfDoc( p_txt in varchar2 := null )
+  procedure add_object2pdfDoc( p_txt IN VARCHAR2 := null )
   is
-    t_self number(10);
+    t_self NUMBER(10);
   begin
     t_self := add_object2pdfDoc( p_txt );
   end;
@@ -353,7 +366,7 @@ as
     return t_blob;
   end;
 --
-  procedure put_stream( p_stream in blob, p_compress in boolean := true, p_extra in varchar2 := '' )
+  procedure put_stream( p_stream in blob, p_compress in boolean := true, p_extra IN VARCHAR2 := '' )
   is
     t_blob blob;
   begin
@@ -370,10 +383,10 @@ as
     end if;
   end;
 --
-  function add_stream( p_stream in blob, p_extra in varchar2 := '', p_compress in boolean := true )
-  return number
+  function add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := true )
+  RETURN NUMBER
   is
-    t_self number(10);
+    t_self NUMBER(10);
   begin
     t_self := add_object2pdfDoc;
     add2pdfDoc( '<<' );
@@ -383,7 +396,7 @@ as
   end;
 --
   function add_info
-  return number
+  RETURN NUMBER
   is
     t_banner varchar2(1000);
   begin
@@ -395,7 +408,7 @@ as
 --
       t_banner := '/Producer (' || t_banner || ')';
     exception
-      when others
+      WHEN others
       then
         null;
     end;
@@ -408,7 +421,7 @@ as
   end;
 --
   function add_font( p_index in pls_integer )
-  return number
+  RETURN NUMBER
   is
   begin
     return add_object2pdfDoc
@@ -421,8 +434,8 @@ as
 --
   procedure add_image( p_img in tp_img )
   is
-    t_self   number(10);
-    t_pallet number(10);
+    t_self   NUMBER(10);
+    t_pallet NUMBER(10);
   begin
     if p_img.color_tab is not null
     then
@@ -459,10 +472,10 @@ as
   end;
 --
   function add_resources
-  return number
+  RETURN NUMBER
   is
     t_ind pls_integer;
-    t_self number(10);
+    t_self NUMBER(10);
     t_fonts tp_objects_tab;
   begin
 --
@@ -509,11 +522,11 @@ as
 --
   procedure add_page
     ( p_page_nr in pls_integer
-    , p_parent in number
-    , p_resources in number
+    , p_parent IN NUMBER
+    , p_resources IN NUMBER
     )
   is
-    t_content number(10);
+    t_content NUMBER(10);
   begin
     t_content := add_stream( pages_tab( p_page_nr ) );
     add_object2pdfDoc;
@@ -526,10 +539,10 @@ as
   end;
 --
   function add_pages
-  return number
+  RETURN NUMBER
   is
-    t_self number(10);
-    t_resources number(10);
+    t_self NUMBER(10);
+    t_resources NUMBER(10);
   begin
     t_resources := add_resources;
     t_self := add_object2pdfDoc;
@@ -553,7 +566,7 @@ as
   end;
 --
   function add_catalogue
-  return number
+  RETURN NUMBER
   is
   begin
     return add_object2pdfDoc
@@ -562,25 +575,33 @@ as
              || '/OpenAction [0 /XYZ null null 1]'
              );
   end;
---
-  procedure finish_pdf
-  is
-    t_xref number(10);
-    t_info number(10);
-    t_catalogue number(10);
+  --
+  PROCEDURE finish_pdf IS
+    --
+    t_xref      NUMBER(10);
+    t_info      NUMBER(10);
+    t_catalogue NUMBER(10);
+    --
   begin
+    --
     add2pdfDoc( '%PDF-1.3' );
+    --
     raw2pdfDoc( hextoraw( '25E2E3CFD30D0A' ) ); -- add a hex comment
-    t_info := add_info;
+    --
+    t_info      := add_info;
     t_catalogue := add_catalogue;
-    t_xref := dbms_lob.getlength( pdf_doc );
+    t_xref      := dbms_lob.getlength( pdf_doc );
+    --
     add2pdfDoc( 'xref' );
     add2pdfDoc( '0 ' || to_char( objects_tab.count() ) );
     add2pdfDoc( '0000000000 65535 f ' );
-    for i in 1 .. objects_tab.count() - 1
-    loop
+    --
+    FOR i in 1 .. objects_tab.count() - 1 LOOP
+      --
       add2pdfDoc( to_char( objects_tab( i ), 'fm0000000000' ) || ' 00000 n' );  -- this line should be exactly 20 bytes, including EOL
-    end loop;
+      --
+    END LOOP;
+    --
     add2pdfDoc( 'trailer' );
     add2pdfDoc( '<< /Root ' || to_char( t_catalogue ) || ' 0 R' );
     add2pdfDoc( '/Info ' || to_char( t_info ) || ' 0 R' );
@@ -647,29 +668,29 @@ as
     color_type pls_integer;
   begin
     if rawtohex( dbms_lob.substr( p_img_blob, 8, 1 ) ) != '89504E470D0A1A0A'
-    then -- not the right signature
+    THEN -- not the right signature
       return null;
     end if;
     dbms_lob.createtemporary( t_img.pixels, true );
     ind := 9;
     loop
       len := raw2num( dbms_lob.substr( p_img_blob, 4, ind ) ); -- length
-      exit when len is null or ind > dbms_lob.getlength( p_img_blob );
+      exit WHEN len is null or ind > dbms_lob.getlength( p_img_blob );
       case utl_raw.cast_to_varchar2( dbms_lob.substr( p_img_blob, 4, ind + 4 ) ) -- Chunk type
-      when 'IHDR'
+      WHEN 'IHDR'
       then
         t_img.width := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 8 ) );
         t_img.height := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 12 ) );
         t_img.color_res := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 16 ) );
         color_type := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 17 ) );
         t_img.greyscale := color_type in ( 0, 4 );
-        when 'PLTE'
+        WHEN 'PLTE'
         then
           t_img.color_tab := dbms_lob.substr( p_img_blob, len, ind + 8 );
-        when 'IDAT'
+        WHEN 'IDAT'
         then
           dbms_lob.append( t_img.pixels, dbms_lob.substr( p_img_blob, len, ind + 8 ) );
-        when 'IEND'
+        WHEN 'IEND'
         then
           exit;
         else
@@ -679,7 +700,7 @@ as
     end loop;
 --
     t_img.type := 'png';
-    t_img.nr_colors := case color_type when 0 then 1 when 2 then 3 when 3 then 1 when 4 then 2 else 4 end;
+    t_img.nr_colors := case color_type WHEN 0 THEN 1 WHEN 2 THEN 3 WHEN 3 THEN 1 WHEN 4 THEN 2 else 4 end;
 --
     return t_img;
   end;
@@ -694,7 +715,7 @@ as
     if (  dbms_lob.substr( p_img_blob, 2, 1 ) != hextoraw( 'FFD8' )  -- SOI Start of Image
        or dbms_lob.substr( p_img_blob, 2, dbms_lob.getlength( p_img_blob ) - 1 )  != hextoraw( 'FFD9' )  -- EOI End of Image
        )
-    then -- this is not a jpg I can handle
+    THEN -- this is not a jpg I can handle
       return null;
     end if;
 --
@@ -712,9 +733,9 @@ as
       t_ind := t_ind + 2 + raw2num( dbms_lob.substr( t_img.pixels, 2, t_ind + 2 ) );
       loop
         buf := dbms_lob.substr( t_img.pixels, 2, t_ind );
-        exit when buf = hextoraw( 'FFDA' ); -- SOS Start of Scan
-        exit when buf = hextoraw( 'FFD9' ); -- EOI End Of Image
-        exit when substr( rawtohex( buf ), 1, 2 ) != 'FF';
+        exit WHEN buf = hextoraw( 'FFDA' ); -- SOS Start of Scan
+        exit WHEN buf = hextoraw( 'FFD9' ); -- EOI End Of Image
+        exit WHEN substr( rawtohex( buf ), 1, 2 ) != 'FF';
         if rawtohex( buf ) in ( 'FFD0' -- RSTn
                               , 'FFD1'
                               , 'FFD2'
@@ -742,7 +763,7 @@ as
     return t_img;
   end;
 --
-  function parse_img( p_blob in blob, p_type in varchar2 := null, p_adler32 in varchar2 := null )
+  function parse_img( p_blob in blob, p_type IN VARCHAR2 := null, p_adler32 IN VARCHAR2 := null )
   return tp_img
   is
     img tp_img;
@@ -759,8 +780,8 @@ as
     end if;
 --
     img := case lower( t_type )
-             when 'png' then parse_png( p_blob )
-             when 'jpg' then parse_jpg( p_blob )
+             WHEN 'png' THEN parse_png( p_blob )
+             WHEN 'jpg' THEN parse_jpg( p_blob )
            end;
 --
     if img.width is not null
@@ -807,88 +828,103 @@ as
     finish_pdf;
     return pdf_doc;
   end;
---
-  procedure save_pdf
-    ( p_dir in varchar2 := 'MY_DIR'
-    , p_filename in varchar2 := 'my.pdf'
-    )
-  is
-    t_fh utl_file.file_type;
-    t_len pls_integer := 32767;
-  begin
+  --
+  PROCEDURE save_pdf( 
+        p_dir       IN VARCHAR2 := 'APP_OUTDIR',
+        p_filename  IN VARCHAR2 := 'my.pdf'
+    ) IS
+      --
+      t_fh utl_file.file_type;
+      t_len pls_integer := 32767;
+      --
+  BEGIN
+    --
     t_fh := utl_file.fopen( p_dir, p_filename, 'wb' );
+    --
     finish_pdf;
-    for i in 0 .. trunc( ( dbms_lob.getlength( pdf_doc ) - 1 ) / t_len )
-    loop
+    --
+    FOR i in 0 .. trunc( ( dbms_lob.getlength( pdf_doc ) - 1 ) / t_len ) LOOP
+      --
       utl_file.put_raw( t_fh, dbms_lob.substr( pdf_doc, t_len, i * t_len + 1 ) );
-    end loop;
+      --
+    END LOOP;
+    --
     utl_file.fclose( t_fh );
+    --
     dbms_lob.freetemporary( pdf_doc );
-  end;
---
-  procedure show_pdf
-  is
-  begin
+    --
+  END save_pdf;
+  --
+  PROCEDURE show_pdf IS
+  BEGIN
+    --
     finish_pdf;
+    --
     owa_util.mime_header( 'application/pdf', false );
+    --
     htp.print( 'Content-Length: ' || dbms_lob.getlength( pdf_doc ) );
     htp.print( 'Content-disposition: inline' );
     htp.print( 'Content-Description: Generated by as_xslfo2pdf' );
+    --
     owa_util.http_header_close;
     wpg_docload.download_file( pdf_doc );
     dbms_lob.freetemporary( pdf_doc );
-  end;
---
-  function conv2user_units( p_value in number, p_unit in varchar2 )
-  return number
-  is
-  begin
-    return case lower( p_unit )
-             when 'mm'    then p_value * 72 / 25.4
-             when 'cm'    then p_value * 72 / 2.54
-             when 'pt'    then p_value -- also point
-             when 'point' then p_value
-             when 'inch'  then p_value * 72
-             when 'in'    then p_value * 72 -- also inch
-             when 'pica'  then p_value * 12
-             when 'p'     then p_value * 12 -- also pica
-             when 'pc'    then p_value * 12 -- also pica
-             when 'em'    then p_value * 12 -- also pica
-             when 'px'    then p_value-- pixel voorlopig op point zetten
-             when 'px'    then p_value * 0.8 -- pixel
+    --
+  END show_pdf;
+  --
+  FUNCTION conv2user_units( 
+      p_value IN NUMBER, 
+      p_unit  IN VARCHAR2 
+    ) RETURN NUMBER IS
+  BEGIN
+    --
+    RETURN CASE lower( p_unit )
+             WHEN 'mm'    THEN p_value * 72 / 25.4
+             WHEN 'cm'    THEN p_value * 72 / 2.54
+             WHEN 'pt'    THEN p_value -- also point
+             WHEN 'point' THEN p_value
+             WHEN 'inch'  THEN p_value * 72
+             WHEN 'in'    THEN p_value * 72 -- also inch
+             WHEN 'pica'  THEN p_value * 12
+             WHEN 'p'     THEN p_value * 12 -- also pica
+             WHEN 'pc'    THEN p_value * 12 -- also pica
+             WHEN 'em'    THEN p_value * 12 -- also pica
+             WHEN 'px'    THEN p_value-- pixel voorlopig op point zetten
+             WHEN 'px'    THEN p_value * 0.8 -- pixel
              else null
-           end;
-  end;
+           END;
+    --
+  end conv2user_units;
 --
   procedure set_format
-    ( p_format in varchar2 := 'A4'
-    , p_orientation in varchar2 := 'PORTRAIT'
+    ( p_format IN VARCHAR2 := 'A4'
+    , p_orientation IN VARCHAR2 := 'PORTRAIT'
     )
   is
-    t_tmp number;
+    t_tmp NUMBER;
   begin
     case upper( p_format )
-      when 'A3'
+      WHEN 'A3'
       then
         settings.page_height := conv2user_units( 420, 'mm' );
         settings.page_width  := conv2user_units( 297, 'mm' );
-      when 'A4'
+      WHEN 'A4'
       then
         settings.page_height := conv2user_units( 297, 'mm' );
         settings.page_width  := conv2user_units( 210, 'mm' );
-      when 'A5'
+      WHEN 'A5'
       then
         settings.page_height := conv2user_units( 210, 'mm' );
         settings.page_width  := conv2user_units( 148, 'mm' );
-      when 'A6'
+      WHEN 'A6'
       then
         settings.page_height := conv2user_units( 148, 'mm' );
         settings.page_width  := conv2user_units( 105, 'mm' );
-      when 'LEGAL'
+      WHEN 'LEGAL'
       then
         settings.page_height := conv2user_units( 356, 'mm' );
         settings.page_width  := conv2user_units( 216, 'mm' );
-      when 'LETTER'
+      WHEN 'LETTER'
       then
         settings.page_height := conv2user_units( 279, 'mm' );
         settings.page_width  := conv2user_units( 216, 'mm' );
@@ -897,7 +933,7 @@ as
     end case;
 --
     case
-      when upper( p_orientation ) in ( 'L', 'LANDSCAPE' )
+      WHEN upper( p_orientation ) in ( 'L', 'LANDSCAPE' )
       then
         if settings.page_height > settings.page_width
         then
@@ -905,7 +941,7 @@ as
           settings.page_height := settings.page_width;
           settings.page_width := t_tmp;
         end if;
-      when upper( p_orientation ) in ( 'P', 'PORTRAIT' )
+      WHEN upper( p_orientation ) in ( 'P', 'PORTRAIT' )
       then
         if settings.page_height < settings.page_width
         then
@@ -919,9 +955,9 @@ as
   end;
 --
   procedure set_pagesize
-    ( p_width in number
-    , p_height in number
-    , p_unit in varchar2 := 'cm'
+    ( p_width IN NUMBER
+    , p_height IN NUMBER
+    , p_unit IN VARCHAR2 := 'cm'
     )
   is
   begin
@@ -930,11 +966,11 @@ as
   end;
 --
   procedure set_margins
-    ( p_top in number := 3
-    , p_left in number := 1
-    , p_bottom in number := 4
-    , p_right in number := 1
-    , p_unit in varchar2 := 'cm'
+    ( p_top IN NUMBER := 3
+    , p_left IN NUMBER := 1
+    , p_bottom IN NUMBER := 4
+    , p_right IN NUMBER := 1
+    , p_unit IN VARCHAR2 := 'cm'
     )
   is
   begin
@@ -945,10 +981,10 @@ as
   end;
 --
   procedure set_font
-    ( p_family in varchar2
-    , p_style  in varchar2 := 'N'
+    ( p_family IN VARCHAR2
+    , p_style  IN VARCHAR2 := 'N'
     , p_fontsizePt in pls_integer := null
-    , p_encoding in varchar2 := 'WINDOWS-1252'
+    , p_encoding IN VARCHAR2 := 'WINDOWS-1252'
     )
   is
     t_style varchar2(100);
@@ -971,8 +1007,8 @@ as
                       , 'BOLD', 'B' )
                       , 'ITALIC', 'I' )
                       , 'OBLIQUE', 'I' );
-    t_style := nvl( t_style, case when settings.current_font is null then 'N' else fonts( settings.current_font ).style end );
-    t_family := nvl( lower( p_family ), case when settings.current_font is null then 'helvetica' else fonts( settings.current_font ).family end );
+    t_style := nvl( t_style, case WHEN settings.current_font is null THEN 'N' else fonts( settings.current_font ).style end );
+    t_family := nvl( lower( p_family ), case WHEN settings.current_font is null THEN 'helvetica' else fonts( settings.current_font ).family end );
     for i in fonts.first .. fonts.last
     loop
       if (   fonts( i ).family = t_family
@@ -1028,7 +1064,7 @@ as
     add2page( nclob2blob( p_txt ) );
   end;
 --
-  procedure put_txt( p_x in number, p_y in number, p_txt in blob )
+  procedure put_txt( p_x IN NUMBER, p_y IN NUMBER, p_txt in blob )
   is
   begin
     add2page( utl_raw.concat( utl_raw.cast_to_raw( 'BT ' )
@@ -1040,7 +1076,7 @@ as
             );
   end;
 --
-  procedure put_txt( p_x in number, p_y in number, p_txt in nclob )
+  procedure put_txt( p_x IN NUMBER, p_y IN NUMBER, p_txt in nclob )
   is
   begin
     if p_txt is not null
@@ -1050,10 +1086,10 @@ as
   end;
 --
   function string_width( p_txt in nclob )
-  return number
+  RETURN NUMBER
   is
     t_tmp blob;
-    t_width number;
+    t_width NUMBER;
     t_char pls_integer;
   begin
     if p_txt is null
@@ -1075,23 +1111,23 @@ as
 --
   procedure write
     ( p_txt in nclob
-    , p_x in number := null
-    , p_y in number := null
-    , p_line_height in number := null
-    , p_start in number := null  -- left side of the available text box
-    , p_width in number := null  -- width of the available text box
-    , p_alignment in varchar2 := null
+    , p_x IN NUMBER := null
+    , p_y IN NUMBER := null
+    , p_line_height IN NUMBER := null
+    , p_start IN NUMBER := null  -- left side of the available text box
+    , p_width IN NUMBER := null  -- width of the available text box
+    , p_alignment IN VARCHAR2 := null
     )
   is
-    t_x number := nvl( p_x, settings.x );
-    t_y number := nvl( p_y, settings.y );
-    t_line_height number := nvl( p_line_height, settings.current_fontsizePt );
-    t_start number := nvl( p_start, settings.margin_right );
-    t_width number := nvl( p_width
+    t_x NUMBER := nvl( p_x, settings.x );
+    t_y NUMBER := nvl( p_y, settings.y );
+    t_line_height NUMBER := nvl( p_line_height, settings.current_fontsizePt );
+    t_start NUMBER := nvl( p_start, settings.margin_right );
+    t_width NUMBER := nvl( p_width
                          , settings.page_width - settings.margin_right
                          - settings.margin_left
                          );
-    t_len number;
+    t_len NUMBER;
     t_cnt pls_integer;
     t_ind pls_integer;
   begin
@@ -1107,8 +1143,8 @@ as
       write( substrc( p_txt, t_ind + 1 ), t_start, t_y - t_line_height, t_line_height, t_start, t_width, p_alignment );
       return;
     end if;
-    t_x := case when t_x < 0 then t_start else t_x end;
-    t_y := case when t_y < 0 then settings.y - t_line_height else t_y end;
+    t_x := case WHEN t_x < 0 THEN t_start else t_x end;
+    t_y := case WHEN t_y < 0 THEN settings.y - t_line_height else t_y end;
     t_len := string_width( p_txt );
     if t_len > t_width - t_x + t_start
     then
@@ -1147,7 +1183,7 @@ as
     end if;
   end;
 --
-  function rgb( p_hex_rgb in varchar2 )
+  function rgb( p_hex_rgb IN VARCHAR2 )
   return varchar2
   is
   begin
@@ -1157,24 +1193,24 @@ as
   end;
 --
   procedure set_color
-    ( p_rgb in varchar2 := '000000'
+    ( p_rgb IN VARCHAR2 := '000000'
     , p_backgr in boolean
     )
   is
   begin
-    add2page( rgb( p_rgb ) || case when p_backgr then 'RG' else 'rg' end );
+    add2page( rgb( p_rgb ) || case WHEN p_backgr THEN 'RG' else 'rg' end );
   end;
 --
-  procedure set_color( p_rgb in varchar2 := '000000' )
+  procedure set_color( p_rgb IN VARCHAR2 := '000000' )
   is
   begin
     set_color( p_rgb, false );
   end;
 --
   procedure set_color
-    ( p_red in number := 0
-    , p_green in number := 0
-    , p_blue in number := 0
+    ( p_red IN NUMBER := 0
+    , p_green IN NUMBER := 0
+    , p_blue IN NUMBER := 0
     )
   is
   begin
@@ -1191,16 +1227,16 @@ as
     end if;
   end;
 --
-  procedure set_bk_color( p_rgb in varchar2 := 'ffffff' )
+  procedure set_bk_color( p_rgb IN VARCHAR2 := 'ffffff' )
   is
   begin
     set_color( p_rgb, true );
   end;
 --
   procedure set_bk_color
-    ( p_red in number := 255
-    , p_green in number := 255
-    , p_blue in number := 255
+    ( p_red IN NUMBER := 255
+    , p_green IN NUMBER := 255
+    , p_blue IN NUMBER := 255
     )
   is
   begin
@@ -1218,11 +1254,11 @@ as
   end;
 --
   procedure horizontal_line
-    ( p_x in number
-    , p_y in number
-    , p_width in number
-    , p_line_width in number := 0.5
-    , p_line_color in varchar2 := '000000'
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_width IN NUMBER
+    , p_line_width IN NUMBER := 0.5
+    , p_line_color IN VARCHAR2 := '000000'
     )
   is
     t_use_color boolean;
@@ -1240,17 +1276,17 @@ as
             || to_char_round( p_y, 5 ) || ' '
             || to_char_round( p_width, 5 ) || ' '
             || to_char_round( p_line_width, 5 ) || ' re '
-            || case when t_use_color then 'b' else 'f' end
+            || case WHEN t_use_color THEN 'b' else 'f' end
             );
     add2page( 'Q' );
   end;
 --
   procedure vertical_line
-    ( p_x in number
-    , p_y in number
-    , p_height in number
-    , p_line_width in number := 0.5
-    , p_line_color in varchar2 := '000000'
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_height IN NUMBER
+    , p_line_width IN NUMBER := 0.5
+    , p_line_color IN VARCHAR2 := '000000'
     )
   is
   begin
@@ -1258,13 +1294,13 @@ as
   end;
 --
   procedure rect
-    ( p_x in number
-    , p_y in number
-    , p_width in number
-    , p_height in number
-    , p_line_color in varchar2 := null
-    , p_fill_color in varchar2 := null
-    , p_line_width in number := 0.5
+    ( p_x IN NUMBER
+    , p_y IN NUMBER
+    , p_width IN NUMBER
+    , p_height IN NUMBER
+    , p_line_color IN VARCHAR2 := null
+    , p_fill_color IN VARCHAR2 := null
+    , p_line_width IN NUMBER := 0.5
     )
   is
   begin
@@ -1287,18 +1323,18 @@ as
             || to_char_round( p_y, 5 ) || ' '
             || to_char_round( p_width, 5 ) || ' '
             || to_char_round( p_height, 5 ) || ' re '
-            || case when p_fill_color is null then 'S' else 'b' end
+            || case WHEN p_fill_color is null THEN 'S' else 'b' end
             );
     add2page( 'Q' );
   end;
 --
   procedure put_image
-     ( p_dir in varchar2
-     , p_file_name in varchar2
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     ( p_dir IN VARCHAR2
+     , p_file_name IN VARCHAR2
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      )
   is
     t_blob blob;
@@ -1309,11 +1345,11 @@ as
   end;
 --
   procedure put_image
-     ( p_url in varchar2
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     ( p_url IN VARCHAR2
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      )
   is
     t_blob blob;
@@ -1325,10 +1361,10 @@ as
 --
   procedure put_image
      ( p_img in blob
-     , p_x in number
-     , p_y in number
-     , p_width in number := null
-     , p_height in number := null
+     , p_x IN NUMBER
+     , p_y IN NUMBER
+     , p_width IN NUMBER := null
+     , p_height IN NUMBER := null
      )
   is
     t_ind pls_integer;
@@ -1342,7 +1378,7 @@ as
     t_ind := images.first;
     while t_ind is not null
     loop
-      exit when images( t_ind ).adler32 = t_adler32;
+      exit WHEN images( t_ind ).adler32 = t_adler32;
       t_ind := images.next( t_ind );
     end loop;
 --
@@ -1358,8 +1394,8 @@ as
     else
       add2page( 'q ' || to_char_round( nvl( p_width, images( t_ind ).width ) ) || ' 0 0 '
               || to_char_round( nvl( p_height, images( t_ind ).height ) ) || ' '
-              || to_char_round( case when p_x > 0 then p_x else - p_x - images( t_ind ).width / 2 end ) || ' '
-              || to_char_round( case when p_y > 0 then p_y else - p_y + images( t_ind ).height / 2 end ) || ' '
+              || to_char_round( case WHEN p_x > 0 THEN p_x else - p_x - images( t_ind ).width / 2 end ) || ' '
+              || to_char_round( case WHEN p_y > 0 THEN p_y else - p_y + images( t_ind ).height / 2 end ) || ' '
               || ' cm /I' || to_char( t_ind ) || ' Do Q'
               );
     end if;
