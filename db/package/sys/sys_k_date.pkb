@@ -377,9 +377,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_date IS
         --
         LOOP
             --
-            l_day := l_day + 1;
-            l_returnvalue.day := l_day;
-            l_returnvalue.the_date := l_date;
+            l_day                   := l_day + 1;
+            l_returnvalue.day       := l_day;
+            l_returnvalue.the_date  := l_date;
+            l_returnvalue.name_day  := to_char(l_date,'DAY');
             --
             PIPE ROW (l_returnvalue);
             --

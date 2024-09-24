@@ -17,10 +17,11 @@ begin
         bulk collect into l_tab_cities
         limit 5;
         --
-        l_count_rep := l_count_rep + 1;
-        dbms_output.put_line( '----- ' || to_char( l_tab_cities.count ) || 'Rep: ('|| l_count_rep || ') -----');
-        --
         if l_tab_cities.count > 0  then
+            --
+            l_count_rep := l_count_rep + 1;
+            --
+            dbms_output.put_line( '----- ' || to_char( l_tab_cities.count ) || 'Rep: ('|| l_count_rep || ') -----');
             --
             for indx in l_tab_cities.first .. l_tab_cities.last loop
                 dbms_output.put_line( 

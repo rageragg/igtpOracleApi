@@ -633,9 +633,7 @@ as
     settings := null;
   end;
 --
-  function get_settings
-  return tp_settings
-  is
+  function get_settings return tp_settings is
   begin
     return settings;
   end;
