@@ -6,13 +6,20 @@ CREATE OR REPLACE PACKAGE utl_k_gen_xls IS
   */
   /*
     -- ! Ejemplo de uso de utl_k_gen_xls:
+    -----------------------------------------------------------------
+    Flujo
+      1.- Crear el documento
+      2.- Agregar estilos (opcional)
+      3.- Crear la hoja del documento
+      4.- Crear contenido del documento
+      5.- Cerrar el documento
     --
-  BEGIN
+    BEGIN
       --
       -- ! se crea el archivo fisico (libro), en el directorio
       utl_k_gen_xls.create_excel(
           p_directory => 'APP_OUTDIR',
-          p_file_name => 'reporte.xls'
+          p_file_name => 'reporte-boletos.xls'
       );
       --
       -- ! se agregan estilos para las celdas
@@ -112,75 +119,199 @@ CREATE OR REPLACE PACKAGE utl_k_gen_xls IS
       --
       utl_k_gen_xls.close_file;
       --
-  END;
+    END;
+    --
+    -- ! SALIDA
+    ------------------------------
+    | TITULO REPORTE             |	
+    ------------------------------
+    | BOLETOS	        |     PESO |
+    ------------------------------ 
+    | 12523-2255	    | 7,507.00 |
+    | 2532-2555	      | 6,855.00 |
+    ------------------------------
+  */
+  DEBUG_FLAG     BOOLEAN := FALSE;
   --
-  -- ! SALIDA
-  ------------------------------
-  | TITULO REPORTE             |	
-  ------------------------------
-  | BOLETOS	        |     PESO |
-  ------------------------------ 
-  | 12523-2255	    | 7,507.00 |
-  | 2532-2555	      | 6,855.00 |
-  ------------------------------
-*/
-
-  debug_flag BOOLEAN := FALSE  ;
+  T_ENTERO       CONSTANT PLS_INTEGER:= 1;
+  T_NUMERICO     CONSTANT PLS_INTEGER:= 2;
+  T_MONEDA       CONSTANT PLS_INTEGER:= 3;
+  T_ALFANUMERICO CONSTANT PLS_INTEGER:= 4;
+  T_FECHA        CONSTANT PLS_INTEGER:= 5;
+  T_FORMULA      CONSTANT PLS_INTEGER:= 6;
+  T_NUM_MASCARA  CONSTANT PLS_INTEGER:= 7;
   --
-  t_ENTERO         CONSTANT PLS_INTEGER:= 1;
-  t_NUMERICO       CONSTANT PLS_INTEGER:= 2;
-  t_MONEDA         CONSTANT PLS_INTEGER:= 3;
-  t_ALFANUMERICO   CONSTANT PLS_INTEGER:= 4;
-  t_FECHA          CONSTANT PLS_INTEGER:= 5;
-  t_FORMULA        CONSTANT PLS_INTEGER:= 6;
-  t_NUM_MASCARA    CONSTANT PLS_INTEGER:= 7;
+  SUBTYPE typecell IS PLS_INTEGER RANGE 1..7;
   --
-  SUBTYPE tipoCelda IS PLS_INTEGER Range 1..7;
-  --
-  PROCEDURE create_excel( 
-    p_directory IN VARCHAR2 DEFAULT NULL,  
-    p_file_name IN VARCHAR2 DEFAULT NULL 
+  /*
+    Crea un documento en el sistema de archivo
+    Parametros:
+      p_directory   : Alias del directorio donde se
+                      creara el documento
+        p_file_nane : Nombre del documento
+      )
+  */
+  PROCEDURE create_excel(
+    p_directory IN VARCHAR2 DEFAULT NULL,
+    p_file_name IN VARCHAR2 DEFAULT NULL
   );
   --
-  PROCEDURE create_excel_apps ;
+  /*
+    Inicializa el proceso para crear el documento XLS
+  */
+  PROCEDURE create_excel_apps;
   --
-  PROCEDURE create_style( 
-    p_style_name IN VARCHAR2
-    , p_fontname IN VARCHAR2 DEFAULT NULL
-    , p_fontcolor IN VARCHAR2 DEFAULT 'Black'
-    , p_fontsize IN NUMBER DEFAULT null
-    , p_bold IN BOOLEAN DEFAULT FALSE
-    , p_italic IN BOOLEAN DEFAULT FALSE
-    , p_underline IN VARCHAR2 DEFAULT NULL
-    , p_backcolor IN VARCHAR2 DEFAULT NULL
-    , p_v_alignment in varchar2 default null
-    , p_h_alignment in varchar2 default null
+  /*
+    Agrega a la configuracion del documento un estilo de celda
+      Parametros:
+        p_style_name    : Nombre del estilo
+        p_fontname      : Nombre de la fuente de letra a aplicar
+        p_fontcolor     : Color de las letras de la celda, Por defecto 'Black' (Negro)
+        p_fontsize      : Tamanio de la letras de la celda
+        p_bold          : Si se resalta la letra con NEGRILLA de la celda, Por defecto no aplica
+        p_italic        : Si la letra es cursiva de la celda, Por defecto no aplica
+        p_underline     : Si la letra esta subrayada en la celda
+        p_backcolor     : Color de fondo de la celda
+        p_v_alignment   : Alineacion vertical de la celda ("Top", "Center", "Bottom") => (Arriba, Centro, Abajo)
+        p_h_alignment   : alineacion horizontal de la celda ("Right", "Center", "Left") => (Derecha, Centro, Izquierda)
+  */
+  PROCEDURE create_style(
+    p_style_name  IN VARCHAR2,
+    p_fontname    IN VARCHAR2 DEFAULT NULL,
+    p_fontcolor   IN VARCHAR2 DEFAULT 'Black',
+    p_fontsize    IN NUMBER DEFAULT NULL,
+    p_bold        IN BOOLEAN DEFAULT FALSE,
+    p_italic      IN BOOLEAN DEFAULT FALSE,
+    p_underline   IN VARCHAR2 DEFAULT NULL,
+    p_backcolor   IN VARCHAR2 DEFAULT NULL,
+    p_v_alignment IN VARCHAR2 DEFAULT NULL,
+    p_h_alignment IN VARCHAR2 DEFAULT NULL
   );
   --
+  /*
+    Establece una formula en la celda
+      Parametros:
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+        p_value           : formula que se establece
+  */
   PROCEDURE write_cell_formula(
-    p_row NUMBER ,
-    p_column NUMBER,
-    p_worksheet_name IN VARCHAR2,
-    p_value IN VARCHAR2
+    p_row             IN NUMBER,
+    p_column          IN NUMBER,
+    p_worksheet_name  IN VARCHAR2,
+    p_value           IN VARCHAR2
   );
+ 
   --
+
+ /*
+    Establece el valor en la celda, segun el tipo de datos
+      Parametros:
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+        p_value           : valor que se establece
+        p_type_cell      : Entre 1..7
+                              ENTERO       (1)
+                              NUMERICO     (2)
+                              MONEDA       (3)
+                              ALFANUMERICO (4)
+                              FECHA        (5)
+                              FORMULA      (6)
+                              NUM_MASCARA  (7)
+        p_style           : Estilo de la celda                              
+  */
   PROCEDURE write_cell(
-    p_row NUMBER,
-    p_column NUMBER,
-    p_worksheet_name IN VARCHAR2,
-    p_value IN VARCHAR2,
-    p_tipo_celda tipoCelda,
-    p_style IN VARCHAR2 DEFAULT NULL
+    p_row             IN NUMBER,
+    p_column          IN NUMBER,
+    p_worksheet_name  IN VARCHAR2,
+    p_value           IN VARCHAR2,
+    p_type_cell       IN typecell,
+    p_style           IN VARCHAR2 DEFAULT NULL
+  );
+   --
+  /*
+    Cierra el documento y libera recursos
+  */
+  PROCEDURE close_file;
+  --
+  /*
+    Crea una hoja de calculo dentro del documento
+  */
+  PROCEDURE create_worksheet(
+    p_worksheet_name IN VARCHAR2
   );
   --
-  PROCEDURE close_file ;
+  /*
+    Escribe un valor numerico en la celda
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+        p_value           : valor que se establece
+        p_style           : nombre del estilo a aplicar   
+  */
+  PROCEDURE write_cell_num(
+    p_row             IN NUMBER,
+    p_column          IN NUMBER,
+    p_worksheet_name  IN VARCHAR2,
+    p_value           IN NUMBER,
+    p_style           IN VARCHAR2 DEFAULT NULL
+  );
   --
-  PROCEDURE create_worksheet( p_worksheet_name IN VARCHAR2 ) ;
-  PROCEDURE write_cell_num(p_row NUMBER ,  p_column NUMBER, p_worksheet_name IN VARCHAR2,  p_value IN NUMBER , p_style IN VARCHAR2 DEFAULT NULL);
-  PROCEDURE write_cell_char(p_row NUMBER, p_column NUMBER, p_worksheet_name IN VARCHAR2,  p_value IN VARCHAR2, p_style IN VARCHAR2 DEFAULT NULL ,p_merge IN pls_integer default 1 );
-  PROCEDURE write_cell_null(p_row NUMBER ,  p_column NUMBER , p_worksheet_name IN VARCHAR2, p_style IN VARCHAR2);
+    /*
+    Escribe un valor caracteres en la celda
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+        p_value           : valor que se establece
+        p_style           : nombre del estilo a aplicar   
+  */
+  PROCEDURE write_cell_char(
+    p_row             IN NUMBER,
+    p_column          IN NUMBER,
+    p_worksheet_name  IN VARCHAR2,
+    p_value           IN VARCHAR2,
+    p_style           IN VARCHAR2 DEFAULT NULL,
+    p_merge           IN PLS_INTEGER DEFAULT 1
+  );
   --
-  PROCEDURE set_row_height( p_row IN NUMBER , p_height IN NUMBER, p_worksheet IN VARCHAR2  ) ;
-  PROCEDURE set_column_width( p_column IN NUMBER , p_width IN NUMBER , p_worksheet IN VARCHAR2  ) ;
+  /*
+    Escribe un valor nulo (vacio) en la celda
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+        p_style           : nombre del estilo a aplicar   
+  */
+  PROCEDURE write_cell_null(
+    p_row             IN NUMBER,
+    p_column          IN NUMBER,
+    p_worksheet_name  IN VARCHAR2,
+    p_style           IN VARCHAR2
+  );
+  --
+  /*
+    Escribe la altura de la celda
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+  */
+  PROCEDURE set_row_height(
+    p_row       IN NUMBER,
+    p_height    IN NUMBER,
+    p_worksheet IN VARCHAR2
+  );
+  --
+  /*
+    Escribe el ancho de la celda
+        p_row             : Fila en la hoja del documento
+        p_column          : Columna en la hoja del documento
+        p_worksheet_name  : Nombre de la hoja del documento
+  */
+  PROCEDURE set_column_width(
+    p_column    IN NUMBER,
+    p_width     IN NUMBER,
+    p_worksheet IN VARCHAR2
+  );
   --
 END utl_k_gen_xls;
