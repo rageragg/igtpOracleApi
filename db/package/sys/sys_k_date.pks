@@ -41,7 +41,8 @@ CREATE OR REPLACE PACKAGE sys_k_date IS
         month          NUMBER,
         day            NUMBER,
         days_in_month  NUMBER,
-        the_date       DATE
+        the_date       DATE,
+        name_day       VARCHAR2(30)
     );
     --
     TYPE t_period_date_tab IS TABLE OF t_period_date;
