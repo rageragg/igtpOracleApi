@@ -1,3 +1,4 @@
+[
 {
     "PONumber":1600,
     "Reference":"ABULL-20140421",
@@ -46,8 +47,7 @@
         "city":"Penobsky",
         "state":"UT"
     }
-}
-
+},
 {
     "PONumber" : 672,
     "Reference" : "SBELL-20141017",
@@ -97,3 +97,4 @@
     ],
     "lastUpdated":"2024-04-07T09:37:41.177000+08:00"
 }
+]
