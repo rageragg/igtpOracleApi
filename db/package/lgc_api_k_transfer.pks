@@ -99,7 +99,10 @@ CREATE OR REPLACE PACKAGE lgc_api_k_transfer IS
     PROCEDURE upd( p_rec IN OUT transfers%ROWTYPE );
     --
     -- delete
-    PROCEDURE del ( p_id IN transfers.id%TYPE );
+    PROCEDURE del( p_id IN transfers.id%TYPE );
     --
+    -- max secuence
+    FUNCTION get_max_secuence( p_id IN transfers.id%TYPE ) RETURN NUMBER;
+    -- 
 END lgc_api_k_transfer;
 /
