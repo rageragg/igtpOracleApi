@@ -43,6 +43,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         dt      typecell, 
         merg    pls_integer 
     );
+    --
     TYPE tbl_cell_data IS TABLE OF rec_cell_data INDEX BY binary_INTEGER ;
     g_cells         tbl_cell_data ;
     g_null_cells    tbl_cell_data ;
@@ -53,6 +54,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         wd NUMBER, 
         w VARCHAR2(30)  
     ) ;
+    --
     TYPE tbl_columns_data IS TABLE OF rec_columns_data Index BY BINARY_INTEGER ;
     g_columns       tbl_columns_data ;
     g_null_columns  tbl_columns_data ;
@@ -63,10 +65,11 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         ht NUMBER , 
         w VARCHAR2(30) 
     ) ;
+    --
     TYPE tbl_rows_data IS TABLE OF rec_rows_data Index BY BINARY_INTEGER ;
     g_rows      tbl_ROWS_data ;
     g_null_rows tbl_rows_data ;
-    g_ROW_count NUMBER ;
+    g_row_count NUMBER ;
     --
     /*
         Procedimiento para depuracion
@@ -130,7 +133,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         --
         g_Cell_count        := 0;
         g_style_count       := 0;
-        g_ROW_count         := 0;
+        g_row_count         := 0;
         g_column_count      := 0;
         g_data_count        := 0;
         g_worksheets_count  := 0;
@@ -154,7 +157,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         --
         IF g_apps_env = 'N' THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'Ya ha llamado al procedimiento create_excel (No aplicaciones). No se puede configurar env para create_excel_apps.'
             );
@@ -179,7 +182,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         -- CHECK the env value
         IF g_apps_env = 'Y' THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'Ya ha llamado al procedimiento create_excel_apps. No se puede configurar env en create_excel que no sea de aplicaciones.'
             );
@@ -192,7 +195,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         --
         IF ( p_directory IS NULL OR p_file_name IS NULL ) THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'Directorio y/o Nombre de Archivo no deben ser Nulos'
             );
@@ -202,31 +205,31 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         -- control interno de archivo 
         BEGIN
             --
-            -- verIFicamos que el archivo no este abierto
+            -- verificamos que el archivo no este abierto
             IF NOT utl_file.is_open (l_file) THEN       
                 --
-                l_file := utl_file.fopen( p_directory, p_file_name , 'w') ;
+                l_file := utl_file.fopen( p_directory, p_file_name , 'w', 16384) ;
                 --
             END IF;
             --
             EXCEPTION
                 WHEN utl_file.write_error THEN
-                    raise_application_error( 
+                    RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Error de Escritura. VerIFique si el archivo ya esta abierto o los permisos al directorio'
                     );
                 WHEN utl_file.INVALID_OPERATION THEN
-                    raise_application_error( 
+                    RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - No pudo abrir archivo u operar en el. VerIFique si el archivo ya esta abierto'
                     );
                 WHEN utl_file.invalid_path THEN
-                    raise_application_error( 
+                    RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Ruta invalida. VerIFique que el directorio es valido y que tiene acceso'
                     );
                 WHEN others THEN
-                    raise_application_error( 
+                    RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Error Generico.'
                     );
@@ -261,7 +264,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         -- se verIFica que el estilo este definido
         IF style_defined( p_style_name ) THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'Ya el estilo '||p_style_name||' fue definido'
             );
@@ -272,7 +275,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         --
         IF upper(p_style_name) = 'DEFAULT' THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'El estilo DEFAULT no es permitido definirlo nuevamente'
             );
@@ -281,7 +284,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         --
         IF upper(p_style_name) IS NULL  THEN
             --
-            raise_application_error( 
+            RAISE_APPLICATION_ERROR( 
                 -20001 , 
                 'Nombre de estilo NO PUEDE SER NULO'
             );
@@ -334,7 +337,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
             IF p_v_alignment IS NOT NULL THEN
                 --
                 IF upper(p_v_alignment) NOT IN ('TOP','CENTER','BOTTOM') THEN
-                    raise_application_error(
+                    RAISE_APPLICATION_ERROR(
                         -20001, 
                         'El valor de alineacion vertical es incorrecto, valores correctos son: ("TOP","CENTER","BOTTOM")'
                     );
@@ -348,7 +351,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
             IF p_h_alignment IS NOT NULL THEN
                 --
                 IF upper(p_h_alignment) not in ('LEFT','CENTER','RIGHT') THEN
-                    raise_application_error(
+                    RAISE_APPLICATION_ERROR(
                         -20001, 
                         'El valor de alineacion horizontal es incorrecto, valores correctos son: ("LEFT","CENTER","RIGHT")'
                     );
@@ -364,6 +367,8 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         END IF;
         --
         g_styles(g_style_count).def :=  g_styles(g_style_count).def || ' </Style>' ;
+        --
+        p( 'Estilo '||p_style_name ||' creado satisfactoriamente.');
         --
     END create_style;
     --
@@ -423,51 +428,100 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         l_last_row      NUMBER := 0 ;
         l_style         VARCHAR2(140) ;
         l_row_change    VARCHAR2(100) ;
-        l_margen        VARCHAR2(40)    := ' ss:MergeAcross="';
-        l_file_header   VARCHAR2(2000)  := header_string;
+        l_margen varchar2(40):= ' ss:MergeAcross="';
+        --
+        l_file_header VARCHAR2(2000) := 
+            '<?xml version="1.0"  encoding="ISO-8859-1"?><?mso-application progid="Excel.Sheet"?>
+            <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+            xmlns:o="urn:schemas-microsoft-com:office:office"
+            xmlns:x="urn:schemas-microsoft-com:office:excel"
+            xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+            xmlns:html="http://www.w3.org/TR/REC-html40">
+            <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+            <LastAuthor>a</LastAuthor>
+            <Created>1996-10-14T23:33:28Z</Created>
+            <LastSaved>2007-05-10T04:00:57Z</LastSaved>
+            <Version>11.5606</Version>
+            </DocumentProperties>
+            <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+            <WindowHeight>9300</WindowHeight>
+            <WindowWidth>15135</WindowWidth>
+            <WindowTopX>120</WindowTopX>
+            <WindowTopY>120</WindowTopY>
+            <AcceptLabelsInFormulas/>
+            <ProtectStructure>False</ProtectStructure>
+            <ProtectWindows>False</ProtectWindows>
+            </ExcelWorkbook>
+            <Styles>
+            <Style ss:ID="Default" ss:Name="Normal">
+            <Alignment ss:Vertical="Bottom"/>
+            <Borders/>
+            <Font/>
+            <Interior/>
+            <NumberFormat/>
+            <Protection/>
+            </Style>
+            <Style ss:ID="s999" ss:Name="Moneda">
+            <NumberFormat ss:Format="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>
+            </Style>
+            <Style ss:ID="s99" ss:Parent="s999">
+            <Font ss:FontName="Arial"/>
+            </Style>
+            <Style ss:ID="s98">
+            <NumberFormat ss:Format="Short Date"/>
+            </Style>
+            <Style ss:ID="s97">
+            <NumberFormat ss:Format="#,##0.00"/>
+            </Style>';
         --
     BEGIN
         --
-        IF utl_k_gen_xls.g_Cell_count = 0 THEN
-            raise_application_error( 
-                -20007 , 
-                'No se han escrito celdas, esta versión de gen_xl_xml necesita al menos una celda para escribirse
-            ');
+        IF g_Cell_count = 0 THEN
+            --
+            RAISE_APPLICATION_ERROR( -20007 , 'No cells have been written, this version of gen_xl_xml needs at least one cell to be written');
+            --
         END IF;
         --
-        IF utl_k_gen_xls.g_worksheets_count = 0 THEN
-            raise_application_error( 
-                -20008 , 
-                'No se han creado hojas de trabajo, esta versión no admite la creación automática de hojas de trabajo'
-            );
+        IF g_worksheets_count = 0 THEN
+            --
+            RAISE_APPLICATION_ERROR( -20008 , 'No worksheets have been created, this version does not support automatic worksheet creation');
+            --
         END IF;
         --
-        p( utl_k_gen_xls.g_Cell_count) ;
+        p( 'Cabeceras');
         --
-        -- Escriba la parte xml del encabezado EN el ARCHIVO
         g_data_count := g_data_count + 1 ;
         g_excel_data( g_data_count ) :=  l_file_header ;
         --
         FOR i IN 1..g_style_count LOOP
             --
-            g_data_count                    := g_data_count + 1 ;
-            g_excel_data( g_data_count )    := g_styles(i).def ;
+            p( ' Estilo : '||i);
+            --
+            g_data_count := g_data_count + 1 ;
+            g_excel_data( g_data_count ) := g_styles(i).def ;
             --
         END LOOP ;
-        --
+        -- 
         g_data_count := g_data_count + 1 ;
         g_excel_data( g_data_count ) := ' </Styles>' ;
         --
+        p( 'Cant. Hojas de Trabajo '|| g_worksheets_count );
+        --
         FOR j IN 1..g_worksheets_count LOOP
             --
-            -- PARA cada hoja de trabajo necesitamos CREAR EL INICIO DE la fila
-            l_last_row := 0; 
+            l_last_row := 0;
             --
-            l_row_change                    := NULL ;
-            g_data_count                    := g_data_count + 1 ;
-            g_excel_data( g_data_count )    := ' <Worksheet ss:Name="'|| g_worksheets( j).w ||'"> ' ;
-            g_data_count                    := g_data_count + 1 ;
-            -- 
+            p( '()()------------------------------------------------------------ last row '||l_last_row );
+            --
+            l_row_change := NULL ;
+            g_data_count := g_data_count + 1 ;
+            g_excel_data( g_data_count ) := ' <Worksheet ss:Name="'|| g_worksheets( j).w ||'"> ' ;
+
+            p( '-------------------------------------------------------------');
+            p( '****************.Generando Hoja '|| g_worksheets( j).w);
+            p( '-------------------------------------------------------------');
+            --
+            g_data_count := g_data_count + 1 ;
             g_excel_data( g_data_count ) := '<Table x:FullColumns="1"  x:FullRows="1">' ;
             --
             FOR i IN 1..g_column_count LOOP
@@ -480,27 +534,38 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                 END IF;
                 --
             END LOOP ;
-            -- 
-            FOR i IN 1..g_cell_count LOOP 
+            ---------------------------------------------
+            -- datos de las celdas
+            ---------------------------------------------
+            FOR i IN 1..g_cell_count LOOP
+                --
+                p( '()()()()()()()()()()()()  '|| i);
                 --
                 IF  g_cells(i).w <> g_worksheets(j).w  THEN
-                    --
-                    NULL;
+                    p( '........................Cell : W :'|| g_worksheets( j).w ||'=> r='|| g_cells(i).r ||',c ='|| g_cells(i).c||',w='|| g_cells(i).w );
+                    p( '...No es de este hoja ');
                     --
                 ELSE
                     --
+                    p( '........................Cell : W :'|| g_worksheets( j).w ||'=> r='|| g_cells(i).r ||',c ='|| g_cells(i).c||',w='|| g_cells(i).w );
+                    --
                     IF g_cells(i).s IS NOT NULL AND NOT style_defined( g_cells(i).s ) THEN
-                        raise_application_error( 
-                            -20001 , 
-                            'Style "'||g_cells(i).s ||'" no está definido. Nota: los estilos distinguen entre mayúsculas y minúsculas y verifican los espacios utilizados al pasar el estilo.'
-                        );
+                        --
+                        RAISE_APPLICATION_ERROR( -20001 , 'Style "'||g_cells(i).s ||'" is not defined, Note : Styles are case sensative and check spaces used while passing style');
+                        --
                     END IF;
+                    --
+                    p( '()()------------------------------------------------------------ Ultima fila '||l_last_row );
                     --
                     IF l_last_row = 0 THEN
                         --
                         FOR t IN 1..g_row_count LOOP
                             --
+                            p( '...chequenado altura => Row =' ||g_rows(t).r ||', w='||g_rows(t).w);
+                            --
                             IF g_rows(t).r = g_cells(i).r AND  g_rows(t).w = g_worksheets(j).w THEN
+                                --
+                                p( '...Cambiando Altura') ;
                                 --
                                 l_row_change := ' ss:AutoFitHeight="0" ss:Height="'|| g_rows(t).ht||'" '     ;
                                 g_data_count := g_data_count + 1 ;
@@ -511,15 +576,19 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                                 --
                             ELSE
                                 --
+                                p( '...NO cambia altura') ;
                                 l_row_change := NULL ;
                                 --
                             END IF ;
                             --
-                        END LOOP  ;
+                        END LOOP;
                         --
                         IF l_ROW_CHANGE IS NULL THEN
                             --
                             g_data_count := g_data_count + 1 ;
+                            --
+                            p( '...Creando nueva fila');
+                            --
                             g_excel_data( g_data_count ) := ' <Row ss:Index="'||g_cells(i).r||'"'|| l_row_change  ||'>' ;
                             l_last_row := g_cells(i).r ;
                             --
@@ -528,43 +597,41 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                     END IF;
                     --
                     IF g_cells(i).s IS NOT NULL THEN
-                        --
+                        p( '...Agregando Estilo');
                         l_style := ' ss:StyleID="'||g_cells(i).s||'"' ;
-                        --
                     ELSE
-                        --
+                        p( '...Celda sin estilo');
                         l_style := NULL ;
-                        --
                     END IF;
+                    --
+                    p( '()()------------------------------------------------------------ Ultima Fila '||l_last_row );
                     --
                     IF g_cells(i).r <> l_last_row THEN
                         --
-                        g_data_count                    := g_data_count + 1 ;
-                        g_excel_data( g_data_count )    := '  </Row>' ;
+                        p('...closing the row.'||g_cells(i).r);
+                        g_data_count := g_data_count + 1 ;
+                        g_excel_data( g_data_count ) := '  </Row>' ;
+                        --
+                        p( 'ROWCOUNT : '||g_row_count );
                         --
                         FOR t IN 1..g_ROW_count LOOP
-                            --
+                            p( '.....Height check => Row =' ||g_rows(t).r ||', w='||g_rows(t).w);
                             IF g_rows(t).r = g_cells(i).r AND  g_rows(t).w = g_worksheets(j).w THEN
-                                --
+                                p( '.....Changing height') ;
                                 l_row_change := ' ss:AutoFitHeight="0" ss:Height="'|| g_rows(t).ht||'" '     ;
                                     g_data_count := g_data_count + 1 ;
                                     g_excel_data( g_data_count ) := ' <Row ss:Index="'||g_cells(i).r||'"'|| l_row_change  ||'>' ;
-                                --    
-                                EXIT;
-                                --
+                                EXIT   ;
                             ELSE
-                                --
-                                l_row_change := NULL;
-                                --
+                                p( '.....NO change height') ;
+                                l_row_change := NULL ;
                             END IF ;
-                            --
-                        END LOOP;
+
+                        END LOOP  ;
                         --
                         IF l_row_change IS NULL THEN
-                            --
                             g_data_count := g_data_count + 1 ;
                             g_excel_data( g_data_count ) := ' <Row ss:Index="'||g_cells(i).r||'"'|| l_row_change  ||'>' ;
-                            --
                         END IF;
                         --
                         IF g_cells(i).v IS NULL THEN
@@ -575,20 +642,20 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                             ---V 1.01  Damos el formato a la celda, deacuerdo al tipo seleccionado
                             ---Estilos en comentario para moneda, fecha y numerico. Habia duplicidad de estilo.  Hay que investigar...
                             Case g_cells(i).dt
-                                When t_FORMULA THEN
+                                When t_FORMULA Then
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'"' || l_style || 'ss:Formula="'|| g_cells(i).v ||'"' ||' ></Cell>';
-                                When t_MONEDA THEN
-                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s99"><Data ss:Type="NUMBER">'||g_cells(i).v||'</Data></Cell>';
-                                When t_FECHA THEN
+                                When t_MONEDA Then
+                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s99"><Data ss:Type="Number">'||g_cells(i).v||'</Data></Cell>';
+                                When t_FECHA Then
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s98"><Data ss:Type="DateTime">'||g_cells(i).v||'</Data></Cell>';
-                                When t_NUMERICO THEN
-                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s97"><Data ss:Type="NUMBER">'||g_cells(i).v||'</Data></Cell>';
-                                When t_ALFANUMERICO THEN
-                                IF g_cells(i).merg > 1 THEN
+                                When t_NUMERICO Then
+                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s97"><Data ss:Type="Number">'||g_cells(i).v||'</Data></Cell>';
+                                When t_ALFANUMERICO Then
+                                if g_cells(i).merg > 1 then
                                     l_margen:= ' ss:MergeAcross="' || g_cells(i).merg ||'" ';
                                 else
                                     l_margen := ' ';
-                                END IF;
+                                end if;
                                 g_excel_data( g_data_count ) := '<Cell'||l_margen||' ss:Index="'||g_cells(i).c||'"' || l_style ||' ><Data ss:Type="String">'||g_cells(i).v||'</Data></Cell>';
                                 Else
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'"' || l_style ||' ><Data ss:Type="String">'||g_cells(i).v||'</Data></Cell>';
@@ -598,7 +665,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                         l_last_row :=g_cells(i).r ;
                         --
                     ELSE
-                            --
+                        --
                         IF g_cells(i).v IS NULL THEN
                             g_data_count := g_data_count + 1 ;
                             g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'"' || l_style ||' > </Cell>';
@@ -606,20 +673,20 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                             g_data_count := g_data_count + 1 ;
                             --Estilos en comentario para moneda, fecha y numerico. Habia duplicidad de estilo.  Hay que investigar...
                             Case g_cells(i).dt
-                                When t_FORMULA THEN
+                                When t_FORMULA Then
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'"' || l_style || 'ss:Formula="'|| g_cells(i).v ||'"' ||' ></Cell>';
-                                When t_MONEDA THEN
-                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s99"><Data ss:Type="NUMBER">'||g_cells(i).v||'</Data></Cell>';
-                                When t_FECHA THEN
+                                When t_MONEDA Then
+                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s99"><Data ss:Type="Number">'||g_cells(i).v||'</Data></Cell>';
+                                When t_FECHA Then
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s98"><Data ss:Type="DateTime">'||g_cells(i).v||'</Data></Cell>';
-                                When t_NUMERICO THEN
-                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s97"><Data ss:Type="NUMBER">'||g_cells(i).v||'</Data></Cell>';
-                                When t_ALFANUMERICO THEN
-                                IF g_cells(i).merg > 1 THEN
+                                When t_NUMERICO Then
+                                g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'" ss:StyleID="s97"><Data ss:Type="Number">'||g_cells(i).v||'</Data></Cell>';
+                                When t_ALFANUMERICO Then
+                                if g_cells(i).merg > 1 then
                                     l_margen:= ' ss:MergeAcross="' || g_cells(i).merg ||'" ';
                                 else
                                     l_margen := ' ';
-                                END IF;
+                                end if;
                                 g_excel_data( g_data_count ) := '<Cell'||l_margen||'ss:Index="'||g_cells(i).c||'"' || l_style ||' ><Data ss:Type="String">'||g_cells(i).v||'</Data></Cell>';
                                 Else
                                 g_excel_data( g_data_count ) := '<Cell ss:Index="'||g_cells(i).c||'"' || l_style ||' ><Data ss:Type="String">'||g_cells(i).v||'</Data></Cell>';
@@ -627,44 +694,48 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                         END IF ;
                         --
                     END IF ;
-                    --
+
                 END IF ;
                 --
-            END LOOP;
-            --
+            END LOOP ; -- LOOP OF g_cells_count
+
+            p('...closing the row.');
             g_data_count := g_data_count + 1 ;
             g_excel_data( g_data_count ) := '  </Row>' ;
             --
+            -- ??? does following COMMENT will have sheet NAME FOR debugging
+            p( '-------------------------------------------------------------');
+            p( '....End of writing cell data, closing table tag');
             g_data_count := g_data_count + 1 ;
             g_excel_data( g_data_count ) := '  </Table>' ;
             --
             g_data_count := g_data_count + 1 ;
             g_excel_data( g_data_count ) := g_worksheets(j).wftr ;
+            p( '..Closed the worksheet '|| g_worksheets( j).w );
             --
         END LOOP ;
         --
         g_data_count := g_data_count + 1 ;
         g_excel_data( g_data_count ) := '</Workbook>' ;
         --
+        p( 'Closed the workbook tag');
+        --
         IF g_apps_env = 'N' THEN
             --
             FOR i IN 1..g_data_count LOOP
-                UTL_FILE.put_line( l_file, g_excel_data(i ));
+                utl_FILE.put_line( l_file, g_excel_data(i ));
             END LOOP ;
             --
             utl_file.fclose( l_file );
+            --
+            p( 'File closed ');
             --
         ELSIF g_apps_env = 'Y' THEN
             --
             NULL;
             --
         ELSE
-            --
-            raise_application_error( 
-                -20001 , 
-                'Env no configurado (aplicaciones o no aplicaciones) Comuníquese con el soporte técnico.' 
-            );
-            --
+            RAISE_APPLICATION_ERROR( -20001 , 'Env not set, ( Apps or not Apps ) Contact Support.' );
         END IF;
         --
     END close_file;
@@ -699,7 +770,7 @@ BEGIN
 
     -- CHECK IF this cell has been used previously.
     IF cell_used( p_row , p_column , p_worksheet_name ) THEN
-        raise_application_error( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used.Check IF you have missed to increment row NUMBER in your code. ');
+        RAISE_APPLICATION_ERROR( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used.Check IF you have missed to increment row NUMBER in your code. ');
     END IF;
 
     g_cell_count := g_cell_count + 1 ;
@@ -721,7 +792,7 @@ BEGIN
 
     -- CHECK IF this cell has been used previously.
     IF cell_used( p_row , p_column , p_worksheet_name ) THEN
-        raise_application_error( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used.Check IF you have missed to increment row NUMBER in your code. ');
+        RAISE_APPLICATION_ERROR( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used.Check IF you have missed to increment row NUMBER in your code. ');
     END IF;
 
 -- IF worksheet NAME IS NOT passed THEN use first USER created sheet ELSE use DEFAULT sheet A ; N ; D ; C ; F
@@ -747,7 +818,7 @@ BEGIN
 ---
     -- CHECK IF this cell has been used previously.
     IF cell_used( p_row , p_column , p_worksheet_name ) THEN
-        raise_application_error( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used. Check IF you have missed to increment row NUMBER in your code.');
+        RAISE_APPLICATION_ERROR( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used. Check IF you have missed to increment row NUMBER in your code.');
     END IF;
 
     g_cell_count := g_cell_count + 1 ;
@@ -768,15 +839,15 @@ PROCEDURE write_cell_formula(
     p_worksheet_name    IN VARCHAR2,
     p_value             IN VARCHAR2
 ) IS
---l_ws_exist BOOLEAN ;
---l_worksheet VARCHAR2(2000) ;
+    --l_ws_exist BOOLEAN ;
+    --l_worksheet VARCHAR2(2000) ;
 BEGIN
---  ???  IF worksheet NAME IS NOT passed THEN use first USER created sheet ELSE use DEFAULT sheet
--- this PROCEDURE just adds the data INTO the g_cells TABLE
----
+    --  ???  IF worksheet NAME IS NOT passed THEN use first USER created sheet ELSE use DEFAULT sheet
+    -- this PROCEDURE just adds the data INTO the g_cells TABLE
+    ---
     -- CHECK IF this cell has been used previously.
     IF cell_used( p_row , p_column , p_worksheet_name ) THEN
-        raise_application_error( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used. Check IF you have missed to increment row NUMBER in your code.');
+        RAISE_APPLICATION_ERROR( -20001 , 'The cell ( Row: '||p_row ||' Column:'||p_column ||' Worksheet:'||p_worksheet_name ||') is already used. Check IF you have missed to increment row NUMBER in your code.');
     END IF;
 
     g_cell_count := g_cell_count + 1 ;
@@ -786,29 +857,30 @@ BEGIN
     g_cells( g_cell_count  ).w := p_worksheet_name ;
     g_cells( g_cell_count  ).dt := t_FORMULA ;
 
-END ;
----FIN V 1.01
-
+END write_cell_formula;
+--
 PROCEDURE write_cell_null(p_row NUMBER ,  p_column NUMBER , p_worksheet_name IN VARCHAR2, p_style IN VARCHAR2 ) IS
 BEGIN
--- ????    NULL IS allowed here FOR time being. one OPTION IS TO warn USER that NULL IS passed but otherwise
--- the excel generates without error
+    -- 
     g_cell_count := g_cell_count + 1 ;
     g_cells( g_cell_count  ).r := p_row ;
     g_cells( g_cell_count  ).c := p_column ;
-    g_cells( g_cell_count  ).v := null ;
+    g_cells( g_cell_count  ).v := NULL ;
     g_cells( g_cell_count  ).w := p_worksheet_name ;
     g_cells( g_cell_count  ).s := p_style ;
     g_cells( g_cell_count  ).dt := NULL ;
-END ;
+    --
+END write_cell_null;
 
 PROCEDURE set_row_height( p_row IN NUMBER , p_height IN NUMBER, p_worksheet IN VARCHAR2 ) IS
 BEGIN
-    g_ROW_count := g_ROW_count + 1 ;
+    --
+    g_row_count := g_row_count + 1 ;
     g_rows( g_row_count ).r := p_row ;
     g_rows( g_row_count ).ht := p_height ;
     g_rows( g_row_count ).w := p_worksheet ;
-END ;
+    --
+END set_row_height;
 
 PROCEDURE set_column_width( p_column IN NUMBER , p_width IN NUMBER, p_worksheet IN VARCHAR2  ) IS
 BEGIN
@@ -817,6 +889,6 @@ BEGIN
     g_columns( g_column_count ).wd := p_width ;
     g_columns( g_column_count ).w := p_worksheet ;
 
-END ;
+END set_column_width;
 
 END utl_k_gen_xls;
