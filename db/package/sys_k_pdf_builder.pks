@@ -16,7 +16,7 @@ AS
     ---------------------------------------------------------------------------
     --
     TYPE tp_settings IS RECORD( 
-        page_width            NUMBER
+        page_width          NUMBER,
         page_height         NUMBER,
         margin_left         NUMBER,
         margin_right        NUMBER,
