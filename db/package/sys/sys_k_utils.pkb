@@ -237,7 +237,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
     END f_list_day_of_week;   
     --
     -- devuelve los segundos desde una fecha especifica
-    FUNCTION f_get_segundos (p_fecha DATE) RETURN NUMBER
+    FUNCTION f_get_seconds (p_fecha DATE) RETURN NUMBER
     IS
         dFechaBase DATE := to_date('01011970','ddmmyyyy');
         nSegundo   NUMBER;
@@ -251,7 +251,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
         --
         RETURN nSegundo;
         --
-    END f_get_segundos;
+    END f_get_seconds;
     --
     -- devuelve una tabla con las columnas de una determinada tabla
     FUNCTION get_map_data( p_owner      VARCHAR2,

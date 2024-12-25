@@ -66,7 +66,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
     FUNCTION f_list_day_of_week( p_date DATE ) RETURN sys_refcursor;
     --
     -- devuelve los segundos desde una fecha especifica
-    FUNCTION f_get_segundos (p_fecha DATE) RETURN NUMBER;
+    FUNCTION f_get_seconds (p_fecha DATE) RETURN NUMBER;
     --
     -- devuelve una tabla con las columnas de una determinada tabla
     FUNCTION get_map_data( p_owner      VARCHAR2,
