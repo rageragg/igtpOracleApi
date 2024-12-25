@@ -92,6 +92,21 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     END validate_all;
     --
+    -- process events
+    PROCEDURE process_event( p_event VARCHAR2 ) IS 
+    BEGIN 
+        --
+        -- TODO: procesos de eventos
+        /*
+            sys_k_process.p_execute_event(
+                process_co      => K_PROCESS,
+                p_event         => p_event
+            );
+        */
+        NULL;
+        --
+    END process_event;
+    --
     -- create city
     PROCEDURE create_city (
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
@@ -143,7 +158,15 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
         g_reg_city.user_id          :=  g_reg_user.id;
         --
+        process_event( 
+            p_event =>  sys_k_constant.K_DB_EP_BF_INSERT
+        );
+        --
         cfg_api_k_city.ins( p_rec => g_reg_city );
+        --
+        process_event( 
+            p_event =>  sys_k_constant.K_DB_EP_AF_INSERT
+        );
         --
         COMMIT;
         --
@@ -168,9 +191,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- insert RECORD
     PROCEDURE create_city( 
-        p_rec               IN OUT city_api_doc,
-        p_result            OUT VARCHAR2 
-    ) IS 
+            p_rec               IN OUT city_api_doc,
+            p_result            OUT VARCHAR2 
+        ) IS 
     BEGIN
         --
         g_doc_city.p_city_co            := p_rec.p_city_co;
@@ -239,16 +262,16 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- update
     PROCEDURE update_city(
-        p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
-        p_description       IN cities.description%TYPE DEFAULT NULL,
-        p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
-        p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
-        p_municipality_co   IN municipalities.municipality_co%TYPE DEFAULT NULL,
-        p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
-        p_slug              IN cities.slug%TYPE DEFAULT NULL,
-        p_user_co           IN users.user_co%TYPE DEFAULT NULL,
-        p_result            OUT VARCHAR2 
-    ) IS
+            p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
+            p_description       IN cities.description%TYPE DEFAULT NULL,
+            p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
+            p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
+            p_municipality_co   IN municipalities.municipality_co%TYPE DEFAULT NULL,
+            p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
+            p_slug              IN cities.slug%TYPE DEFAULT NULL,
+            p_user_co           IN users.user_co%TYPE DEFAULT NULL,
+            p_result            OUT VARCHAR2 
+        ) IS
     BEGIN
         --
         g_doc_city.p_city_co            := p_city_co;
@@ -400,9 +423,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- delete
     PROCEDURE delete_city( 
-        p_city_co   IN cities.city_co%TYPE,
-        p_result    OUT VARCHAR2 
-    ) IS 
+            p_city_co   IN cities.city_co%TYPE,
+            p_result    OUT VARCHAR2 
+        ) IS 
         --
         g_reg_city              cities%ROWTYPE;
         --

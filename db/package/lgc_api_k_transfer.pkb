@@ -291,4 +291,24 @@ CREATE OR REPLACE PACKAGE BODY lgc_api_k_transfer IS
         --
     END del;
     --
+    -- max secuence
+    FUNCTION get_max_secuence( p_id IN transfers.id%TYPE ) RETURN NUMBER IS 
+        --
+        l_max_secuence NUMBER;
+        --
+    BEGIN 
+        --
+        SELECT max(sequence_number) 
+          INTO l_max_secuence
+          FROM igtp.transfers 
+         WHERE freight_id = p_id;
+        --
+        RETURN l_max_secuence;
+        --
+        EXCEPTION 
+            WHEN NO_DATA_FOUND THEN 
+                RETURN 0;
+        --        
+    END get_max_secuence;
+    --
 END lgc_api_k_transfer;
