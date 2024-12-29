@@ -109,6 +109,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
     -- devuelve el conjunto de caracteres
     FUNCTION f_character_set RETURN NVARCHAR2;
     --
+    -- devuelve el lenguaje territorial
+    FUNCTION f_language_ter RETURN VARCHAR2;
+    --
 END sys_k_utils;
 
 /

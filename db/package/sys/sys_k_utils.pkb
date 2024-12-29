@@ -385,12 +385,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
         EXCEPTION 
             --
             WHEN OTHERS THEN 
-                dbms_output.put_line(SQLERRM);
                 RETURN NULL;
         --
     END f_get_refcursor;
     -- 
-    -- manejo de log
+    -- manejo de log, agrega una linea al archivo de memoria
     PROCEDURE record_log( 
             p_context  IN VARCHAR2,
             p_line     IN VARCHAR2,
