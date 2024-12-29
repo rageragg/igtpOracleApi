@@ -116,16 +116,16 @@ AS
         --
     BEGIN
         --
-        l_returnvalue:=p_msg;
+        l_returnvalue := p_msg;
         --
-        l_returnvalue:=replace(l_returnvalue, '%1', nvl(p_value1, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%2', nvl(p_value2, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%3', nvl(p_value3, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%4', nvl(p_value4, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%5', nvl(p_value5, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%6', nvl(p_value6, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%7', nvl(p_value7, '(blank)'));
-        l_returnvalue:=replace(l_returnvalue, '%8', nvl(p_value8, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%1', nvl(p_value1, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%2', nvl(p_value2, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%3', nvl(p_value3, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%4', nvl(p_value4, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%5', nvl(p_value5, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%6', nvl(p_value6, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%7', nvl(p_value7, '(blank)'));
+        l_returnvalue := replace(l_returnvalue, '%8', nvl(p_value8, '(blank)'));
         --
         RETURN l_returnvalue;
         --
