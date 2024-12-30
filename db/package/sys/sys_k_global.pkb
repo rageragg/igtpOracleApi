@@ -343,12 +343,12 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
          --
          IF g_row IS NULL THEN
             --
-            g_row    := g_tb_variables.FIRST;
+            g_row     := g_tb_variables.FIRST;
             l_retorno := g_tb_variables(g_row).nam_variable || ' <' || g_tb_variables(g_row).val_variable || '>';
             --
          ELSIF g_row != g_tb_variables.LAST THEN
             --
-            g_row    := g_tb_variables.NEXT(g_row);
+            g_row     := g_tb_variables.NEXT(g_row);
             l_retorno := g_tb_variables(g_row).nam_variable || ' <' || g_tb_variables(g_row).val_variable || '>';
             --
          ELSE
