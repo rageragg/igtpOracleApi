@@ -1,212 +1,247 @@
-CREATE OR REPLACE package body sys_k_pdf_builder
-as
---
-  type tp_objects_tab is table of NUMBER(10) index by pls_integer;
-  type tp_pages_tab is table of blob index by pls_integer;
-  type tp_char_width_tab is table of pls_integer index by pls_integer;
-  type tp_font is record
-    ( char_width_tab tp_char_width_tab
-    , standard boolean
-    , family varchar2(100)
-    , style varchar2(2) -- N Normal
-                        -- I Italic
-                        -- B Bold
-                        -- BI Bold Italic
-    , subtype varchar2(15) := 'Type1'
-    , name varchar2(100)
-    , encoding varchar2(100) := 'WINDOWS-1252'
-    );
-  type tp_font_tab is table of tp_font index by pls_integer;
-  type tp_pls_tab is table of pls_integer index by pls_integer;
-  type tp_img is record
-    ( adler32 varchar2(8)
-    , width  pls_integer
-    , height pls_integer
-    , color_res pls_integer
-    , color_tab raw(768)
-    , greyscale boolean
-    , pixels blob
-    , type varchar2(5)
-    , nr_colors pls_integer
-    );
-  type tp_img_tab is table of tp_img index by pls_integer;
---
--- pacakges globals
-  pdf_doc blob; -- the blob containing the build PDF document
-  objects_tab tp_objects_tab;
-  pages_tab tp_pages_tab;
-  settings tp_settings;
-  fonts tp_font_tab;
-  used_fonts tp_pls_tab;
-  images tp_img_tab;
-  t_ncharset varchar2(1000);
-  t_lan_ter  varchar2(1000);
---
-  procedure init_core_fonts
-  is
-    function init_standard_withs( p_compressed_tab IN VARCHAR2 )
-    return tp_char_width_tab
-    is
-      t_rv tp_char_width_tab;
-      t_tmp raw(32767);
-    begin
-      t_tmp := utl_compress.lz_uncompress( utl_encode.base64_decode( utl_raw.cast_to_raw( p_compressed_tab ) ) );
-      for i in 0 .. 255
-      loop
+CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
+  ---------------------------------------------------------------------------
+  --  DDL:        for Package PDF (API)
+  --  PURPOSE:    Package to generate PDF files
+  --  REFERENCES
+  --  NOMBRE                          TIPO
+  --  =============================== =======================================
+  --
+  --  MODIFICATIONS
+  --  DATE        AUTOR               DESCRIPTIONS
+  --  =========== =================== =======================================
+  --  20-10-2010  Anton Scheffer      Actualizacion de metodos de procesos
+  --                                  administrativos de creacion archivos PDF
+  --  see http://technology.amis.nl/blog/8650/as_pdf-generating-a-pdf-document-with-some-plsql
+  ---------------------------------------------------------------------------
+  --
+  TYPE tp_objects_tab IS TABLE OF NUMBER(10) INDEX BY PLS_INTEGER;
+  TYPE tp_pages_tab IS TABLE OF BLOB INDEX BY PLS_INTEGER;
+  TYPE tp_char_width_tab IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
+  --
+  TYPE tp_font IS RECORD( 
+    char_width_tab  tp_char_width_tab, 
+    standard        BOOLEAN, 
+    family          VARCHAR2(100), 
+    style           VARCHAR2(2), -- N Normal, I Italic, B Bold, BI Bold Italic
+    subtype         VARCHAR2(15) := 'Type1',
+    name            VARCHAR2(100),
+    encoding        VARCHAR2(100) := 'WINDOWS-1252'
+  );
+  --
+  TYPE tp_font_tab IS TABLE OF tp_font INDEX BY PLS_INTEGER;
+  TYPE tp_pls_tab IS TABLE OF PLS_INTEGER INDEX BY PLS_INTEGER;
+  --
+  TYPE tp_img is record( 
+    adler32     VARCHAR2(8)
+    , width     PLS_INTEGER
+    , height    PLS_INTEGER
+    , color_res PLS_INTEGER
+    , color_tab RAW(768)
+    , greyscale BOOLEAN
+    , pixels    BLOB
+    , TYPE      VARCHAR2(5)
+    , nr_colors PLS_INTEGER
+  );
+  --
+  TYPE tp_img_tab IS TABLE OF tp_img  INDEX BY  PLS_INTEGER;
+  --
+  -- pacakges globals
+  pdf_doc       BLOB; -- the blob containing the build PDF document
+  objects_tab   tp_objects_tab;
+  pages_tab     tp_pages_tab;
+  settings      tp_settings;
+  fonts         tp_font_tab;
+  used_fonts    tp_pls_tab;
+  images        tp_img_tab;
+  t_ncharset    VARCHAR2(1000);
+  t_lan_ter     VARCHAR2(1000);
+  --
+  PROCEDURE init_core_fonts IS
+    --
+    FUNCTION init_standard_withs( 
+        p_compressed_tab IN VARCHAR2 
+      ) RETURN tp_char_width_tab IS
+      --
+      t_rv    tp_char_width_tab;
+      t_tmp   RAW(32767);
+      --
+    BEGIN
+      --
+      t_tmp := utl_compress.lz_uncompress( 
+        utl_encode.base64_decode( utl_raw.cast_to_raw( p_compressed_tab ) ) 
+      );
+      --
+      FOR i IN 0 .. 255 LOOP
         t_rv( i ) := utl_raw.cast_to_binary_integer( utl_raw.substr( t_tmp, i * 4 + 1, 4 ) );
-      end loop;
-      return t_rv;
-    end;
-  begin
-    fonts( 1 ).family := 'helvetica';
-    fonts( 1 ).style := 'N'; -- Normal
-    fonts( 1 ).name := 'Helvetica';
-    fonts( 1 ).standard := true;
-    fonts( 1 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC81Tuw3CMBC94FQMgMQOLAGVGzNCGtc0dAxAT+8lsgE7RKJFomOA' ||
-        'SLT4frHjBEFJ8XSX87372C8A1Qr+Ax5gsWGYU7QBAK4x7gTnGLOS6xJPOd8w5NsM' ||
-        '2OvFvQidAP04j1nyN3F7iSNny3E6DylPeeqbNqvti31vMpfLZuzH86oPdwaeo6X+' ||
-        '5X6Oz5VHtTqJKfYRNVu6y0ZyG66rdcxzXJe+Q/KJ59kql+bTt5K6lKucXvxWeHKf' ||
-        '+p6Tfersfh7RHuXMZjHsdUkxBeWtM60gDjLTLoHeKsyDdu6m8VK3qhnUQAmca9BG' ||
-        'Dq3nP+sV/4FcD6WOf9K/ne+hdav+DTuNLeYABAAA'
-      );
---
-    fonts( 2 ).family := 'helvetica';
-    fonts( 2 ).style := 'I'; -- Italic
-    fonts( 2 ).name := 'Helvetica-Oblique';
-    fonts( 2 ).standard := true;
-    fonts( 2 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC81Tuw3CMBC94FQMgMQOLAGVGzNCGtc0dAxAT+8lsgE7RKJFomOA' || 
-        'SLT4frHjBEFJ8XSX87372C8A1Qr+Ax5gsWGYU7QBAK4x7gTnGLOS6xJPOd8w5NsM' || 
-        '2OvFvQidAP04j1nyN3F7iSNny3E6DylPeeqbNqvti31vMpfLZuzH86oPdwaeo6X+' || 
-        '5X6Oz5VHtTqJKfYRNVu6y0ZyG66rdcxzXJe+Q/KJ59kql+bTt5K6lKucXvxWeHKf' || 
-        '+p6Tfersfh7RHuXMZjHsdUkxBeWtM60gDjLTLoHeKsyDdu6m8VK3qhnUQAmca9BG' || 
-        'Dq3nP+sV/4FcD6WOf9K/ne+hdav+DTuNLeYABAAA'
-      );
---
-    fonts( 3 ).family := 'helvetica';
-    fonts( 3 ).style := 'B'; -- Bold
-    fonts( 3 ).name := 'Helvetica-Bold';
-    fonts( 3 ).standard := true;
-    fonts( 3 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8VSsRHCMAx0SJcBcgyRJaBKkxXSqKahYwB6+iyRTbhLSUdHRZUB' || 
-        'sOWXLF8SKCn+ZL/0kizZuaJ2/0fn8XBu10SUF28n59wbvoCr51oTD61ofkHyhBwK' || 
-        '8rXusVaGAb4q3rXOBP4Qz+wfUpzo5FyO4MBr39IH+uLclFvmCTrz1mB5PpSD52N1' || 
-        'DfqS988xptibWfbw9Sa/jytf+dz4PqQz6wi63uxxBpCXY7uUj88jNDNy1mYGdl97' || 
-        '856nt2f4WsOFed4SpzumNCvlT+jpmKC7WgH3PJn9DaZfA42vlgh96d+wkHy0/V95' || 
-        'xyv8oj59QbvBN2I/iAuqEAAEAAA='
-      );
---
-    fonts( 4 ).family := 'helvetica';
-    fonts( 4 ).style := 'BI'; -- Bold Italic
-    fonts( 4 ).name := 'Helvetica-BoldOblique';
-    fonts( 4 ).standard := true;
-    fonts( 4 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8VSsRHCMAx0SJcBcgyRJaBKkxXSqKahYwB6+iyRTbhLSUdHRZUB' || 
-        'sOWXLF8SKCn+ZL/0kizZuaJ2/0fn8XBu10SUF28n59wbvoCr51oTD61ofkHyhBwK' || 
-        '8rXusVaGAb4q3rXOBP4Qz+wfUpzo5FyO4MBr39IH+uLclFvmCTrz1mB5PpSD52N1' || 
-        'DfqS988xptibWfbw9Sa/jytf+dz4PqQz6wi63uxxBpCXY7uUj88jNDNy1mYGdl97' || 
-        '856nt2f4WsOFed4SpzumNCvlT+jpmKC7WgH3PJn9DaZfA42vlgh96d+wkHy0/V95' || 
-        'xyv8oj59QbvBN2I/iAuqEAAEAAA='
-      );
---
-    fonts( 5 ).family := 'times';
-    fonts( 5 ).style := 'N'; -- Normal
-    fonts( 5 ).name := 'Times-Roman';
-    fonts( 5 ).standard := true;
-    fonts( 5 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8WSKxLCQAyG+3Bopo4bVHbwHGCvUNNT9AB4JEwvgUBimUF3wCNR' || 
-        'qAoGRZL9twlQikR8kzTvZBtF0SP6O7Ej1kTnSRfEhHw7+Jy3J4XGi8w05yeZh2sE' || 
-        '4j312ZDeEg1gvSJy6C36L9WX1urr4xrolfrSrYmrUCeDPGMu5+cQ3Ur3OXvQ+TYf' || 
-        '+2FGexOZvTM1L3S3o5fJjGQJX2n68U2ur3X5m3cTvfbxsk9pcsMee60rdTjnhNkc' || 
-        'Zip9HOv9+7/tI3Oif3InOdV/oLdx3gq2HIRaB1Ob7XPk35QwwxDyxg3e09Dv6nSf' || 
-        'rxQjvty8ywDce9CXvdF9R+4y4o+7J1P/I9sABAAA'
-      );
---
-    fonts( 6 ).family := 'times';
-    fonts( 6 ).style := 'I'; -- Italic
-    fonts( 6 ).name := 'Times-Italic';
-    fonts( 6 ).standard := true;
-    fonts( 6 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8WSPQ6CQBCFF+i01NB5g63tPcBegYZTeAB6SxNLjLUH4BTEeAYr' || 
-        'Kwpj5ezsW2YgoKXFl2Hnb9+wY4x5m7+TOOJMdIFsRywodkfMBX9aSz7bXGp+gj6+' || 
-        'R4TvOtJ3CU5Eq85tgGsbxG3QN8iFZY1WzpxXwkckFTR7e1G6osZGWT1bDuBnTeP5' || 
-        'KtW/E71c0yB2IFbBphuyBXIL9Y/9fPvhf8se6vsa8nmeQtU6NSf6ch9fc8P9DpqK' || 
-        'cPa5/I7VxDwruTN9kV3LDvQ+h1m8z4I4x9LIbnn/Fv6nwOdyGq+d33jk7/cxztyq' || 
-        'XRhTz/it7Mscg7fT5CO+9ahnYk20Hww5IrwABAAA'
-      );
---
-    fonts( 7 ).family := 'times';
-    fonts( 7 ).style := 'B'; -- Bold
-    fonts( 7 ).name := 'Times-Bold';
-    fonts( 7 ).standard := true;
-    fonts( 7 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8VSuw3CQAy9XBqUAVKxAZkgHQUNEiukySxpqOjTMQEDZIrUDICE' || 
-        'RHUVVfy9c0IQJcWTfbafv+ece7u/Izs553cgAyN/APagl+wjgN3XKZ5kmTg/IXkw' || 
-        'h4JqXUEfAb1I1VvwFYysk9iCffmN4+gtccSr5nlwDpuTepCZ/MH0FZibDUnO7MoR' || 
-        'HXdDuvgjpzNxgevG+dF/hr3dWfoNyEZ8Taqn+7d7ozmqpGM8zdMYruFrXopVjvY2' || 
-        'in9gXe+5vBf1KfX9E6TOVBsb8i5iqwQyv9+a3Gg/Cv+VoDtaQ7xdPwfNYRDji09g' || 
-        'X/FvLNGmO62B9jSsoFwgfM+jf1z/SPwrkTMBOkCTBQAEAAA='
-      );
---
-    fonts( 8 ).family := 'times';
-    fonts( 8 ).style := 'BI'; -- Bold Italic
-    fonts( 8 ).name := 'Times-BoldItalic';
-    fonts( 8 ).standard := true;
-    fonts( 8 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC8WSuw2DMBCGHegYwEuECajIAGwQ0TBFBnCfPktkAKagzgCRIqWi' || 
-        'oso9fr+Qo5RB+nT2ve+wMWYzf+fgjKmOJFelPhENnS0xANJXHfwHSBtjfoI8nMMj' || 
-        'tXo63xKW/Cx9ONRn3US6C/wWvYeYNr+LH2IY6cHGPkJfvsc5kX7mFjF+Vqs9iT6d' || 
-        'zwEL26y1Qz62nWlvD5VSf4R9zPuon/ne+C45+XxXf5lnTGLTOZCXPx8v9Qfdjdid' || 
-        '5vD/f/+/pE/Ur14kG+xjTHRc84pZWsC2Hjk2+Hgbx78j4Z8W4DlL+rBnEN5Bie6L' || 
-        'fsL+1u/InuYCdsdaeAs+RxftKfGdfQDlDF/kAAQAAA=='
-      );
---
-    fonts( 9 ).family := 'courier';
-    fonts( 9 ).style := 'N'; -- Normal
-    fonts( 9 ).name := 'Courier';
-    fonts( 9 ).standard := true;
-    for i in 0 .. 255
-    loop
+      END LOOP;
+      --
+      RETURN t_rv;
+      --
+    END init_standard_withs;
+    --
+  BEGIN
+    --
+    fonts( 1 ).family   := 'helvetica';
+    fonts( 1 ).style    := 'N'; -- Normal
+    fonts( 1 ).name     := 'Helvetica';
+    fonts( 1 ).standard := TRUE;
+    --
+    fonts( 1 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC81Tuw3CMBC94FQMgMQOLAGVGzNCGtc0dAxAT+8lsgE7RKJFomOA' ||
+      'SLT4frHjBEFJ8XSX87372C8A1Qr+Ax5gsWGYU7QBAK4x7gTnGLOS6xJPOd8w5NsM' ||
+      '2OvFvQidAP04j1nyN3F7iSNny3E6DylPeeqbNqvti31vMpfLZuzH86oPdwaeo6X+' ||
+      '5X6Oz5VHtTqJKfYRNVu6y0ZyG66rdcxzXJe+Q/KJ59kql+bTt5K6lKucXvxWeHKf' ||
+      '+p6Tfersfh7RHuXMZjHsdUkxBeWtM60gDjLTLoHeKsyDdu6m8VK3qhnUQAmca9BG' ||
+      'Dq3nP+sV/4FcD6WOf9K/ne+hdav+DTuNLeYABAAA'
+    );
+    --
+    fonts( 2 ).family   := 'helvetica';
+    fonts( 2 ).style    := 'I'; -- Italic
+    fonts( 2 ).name     := 'Helvetica-Oblique';
+    fonts( 2 ).standard := TRUE;
+    --
+    fonts( 2 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC81Tuw3CMBC94FQMgMQOLAGVGzNCGtc0dAxAT+8lsgE7RKJFomOA' || 
+      'SLT4frHjBEFJ8XSX87372C8A1Qr+Ax5gsWGYU7QBAK4x7gTnGLOS6xJPOd8w5NsM' || 
+      '2OvFvQidAP04j1nyN3F7iSNny3E6DylPeeqbNqvti31vMpfLZuzH86oPdwaeo6X+' || 
+      '5X6Oz5VHtTqJKfYRNVu6y0ZyG66rdcxzXJe+Q/KJ59kql+bTt5K6lKucXvxWeHKf' || 
+      '+p6Tfersfh7RHuXMZjHsdUkxBeWtM60gDjLTLoHeKsyDdu6m8VK3qhnUQAmca9BG' || 
+      'Dq3nP+sV/4FcD6WOf9K/ne+hdav+DTuNLeYABAAA'
+    );
+    --
+    fonts( 3 ).family   := 'helvetica';
+    fonts( 3 ).style    := 'B'; -- Bold
+    fonts( 3 ).name     := 'Helvetica-Bold';
+    fonts( 3 ).standard := TRUE;
+    --
+    fonts( 3 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC8VSsRHCMAx0SJcBcgyRJaBKkxXSqKahYwB6+iyRTbhLSUdHRZUB' || 
+      'sOWXLF8SKCn+ZL/0kizZuaJ2/0fn8XBu10SUF28n59wbvoCr51oTD61ofkHyhBwK' || 
+      '8rXusVaGAb4q3rXOBP4Qz+wfUpzo5FyO4MBr39IH+uLclFvmCTrz1mB5PpSD52N1' || 
+      'DfqS988xptibWfbw9Sa/jytf+dz4PqQz6wi63uxxBpCXY7uUj88jNDNy1mYGdl97' || 
+      '856nt2f4WsOFed4SpzumNCvlT+jpmKC7WgH3PJn9DaZfA42vlgh96d+wkHy0/V95' || 
+      'xyv8oj59QbvBN2I/iAuqEAAEAAA='
+    );
+    --
+    fonts( 4 ).family   := 'helvetica';
+    fonts( 4 ).style    := 'BI'; -- Bold Italic
+    fonts( 4 ).name     := 'Helvetica-BoldOblique';
+    fonts( 4 ).standard := TRUE;
+    --
+    fonts( 4 ).char_width_tab := init_standard_withs ( 
+      'H4sIAAAAAAAAC8VSsRHCMAx0SJcBcgyRJaBKkxXSqKahYwB6+iyRTbhLSUdHRZUB' || 
+      'sOWXLF8SKCn+ZL/0kizZuaJ2/0fn8XBu10SUF28n59wbvoCr51oTD61ofkHyhBwK' || 
+      '8rXusVaGAb4q3rXOBP4Qz+wfUpzo5FyO4MBr39IH+uLclFvmCTrz1mB5PpSD52N1' || 
+      'DfqS988xptibWfbw9Sa/jytf+dz4PqQz6wi63uxxBpCXY7uUj88jNDNy1mYGdl97' || 
+      '856nt2f4WsOFed4SpzumNCvlT+jpmKC7WgH3PJn9DaZfA42vlgh96d+wkHy0/V95' || 
+      'xyv8oj59QbvBN2I/iAuqEAAEAAA='
+    );
+    --
+    fonts( 5 ).family   := 'times';
+    fonts( 5 ).style    := 'N'; -- Normal
+    fonts( 5 ).name     := 'Times-Roman';
+    fonts( 5 ).standard := TRUE;
+    --
+    fonts( 5 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC8WSKxLCQAyG+3Bopo4bVHbwHGCvUNNT9AB4JEwvgUBimUF3wCNR' || 
+      'qAoGRZL9twlQikR8kzTvZBtF0SP6O7Ej1kTnSRfEhHw7+Jy3J4XGi8w05yeZh2sE' || 
+      '4j312ZDeEg1gvSJy6C36L9WX1urr4xrolfrSrYmrUCeDPGMu5+cQ3Ur3OXvQ+TYf' || 
+      '+2FGexOZvTM1L3S3o5fJjGQJX2n68U2ur3X5m3cTvfbxsk9pcsMee60rdTjnhNkc' || 
+      'Zip9HOv9+7/tI3Oif3InOdV/oLdx3gq2HIRaB1Ob7XPk35QwwxDyxg3e09Dv6nSf' || 
+      'rxQjvty8ywDce9CXvdF9R+4y4o+7J1P/I9sABAAA'
+    );
+    --
+    fonts( 6 ).family   := 'times';
+    fonts( 6 ).style    := 'I'; -- Italic
+    fonts( 6 ).name     := 'Times-Italic';
+    fonts( 6 ).standard := TRUE;
+    --
+    fonts( 6 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC8WSPQ6CQBCFF+i01NB5g63tPcBegYZTeAB6SxNLjLUH4BTEeAYr' || 
+      'Kwpj5ezsW2YgoKXFl2Hnb9+wY4x5m7+TOOJMdIFsRywodkfMBX9aSz7bXGp+gj6+' || 
+      'R4TvOtJ3CU5Eq85tgGsbxG3QN8iFZY1WzpxXwkckFTR7e1G6osZGWT1bDuBnTeP5' || 
+      'KtW/E71c0yB2IFbBphuyBXIL9Y/9fPvhf8se6vsa8nmeQtU6NSf6ch9fc8P9DpqK' || 
+      'cPa5/I7VxDwruTN9kV3LDvQ+h1m8z4I4x9LIbnn/Fv6nwOdyGq+d33jk7/cxztyq' || 
+      'XRhTz/it7Mscg7fT5CO+9ahnYk20Hww5IrwABAAA'
+    );
+    --
+    fonts( 7 ).family   := 'times';
+    fonts( 7 ).style    := 'B'; -- Bold
+    fonts( 7 ).name     := 'Times-Bold';
+    fonts( 7 ).standard := TRUE;
+    --
+    fonts( 7 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC8VSuw3CQAy9XBqUAVKxAZkgHQUNEiukySxpqOjTMQEDZIrUDICE' || 
+      'RHUVVfy9c0IQJcWTfbafv+ece7u/Izs553cgAyN/APagl+wjgN3XKZ5kmTg/IXkw' || 
+      'h4JqXUEfAb1I1VvwFYysk9iCffmN4+gtccSr5nlwDpuTepCZ/MH0FZibDUnO7MoR' || 
+      'HXdDuvgjpzNxgevG+dF/hr3dWfoNyEZ8Taqn+7d7ozmqpGM8zdMYruFrXopVjvY2' || 
+      'in9gXe+5vBf1KfX9E6TOVBsb8i5iqwQyv9+a3Gg/Cv+VoDtaQ7xdPwfNYRDji09g' || 
+      'X/FvLNGmO62B9jSsoFwgfM+jf1z/SPwrkTMBOkCTBQAEAAA='
+    );
+    --
+    fonts( 8 ).family   := 'times';
+    fonts( 8 ).style    := 'BI'; -- Bold Italic
+    fonts( 8 ).name     := 'Times-BoldItalic';
+    fonts( 8 ).standard := TRUE;
+    --
+    fonts( 8 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC8WSuw2DMBCGHegYwEuECajIAGwQ0TBFBnCfPktkAKagzgCRIqWi' || 
+      'oso9fr+Qo5RB+nT2ve+wMWYzf+fgjKmOJFelPhENnS0xANJXHfwHSBtjfoI8nMMj' || 
+      'tXo63xKW/Cx9ONRn3US6C/wWvYeYNr+LH2IY6cHGPkJfvsc5kX7mFjF+Vqs9iT6d' || 
+      'zwEL26y1Qz62nWlvD5VSf4R9zPuon/ne+C45+XxXf5lnTGLTOZCXPx8v9Qfdjdid' || 
+      '5vD/f/+/pE/Ur14kG+xjTHRc84pZWsC2Hjk2+Hgbx78j4Z8W4DlL+rBnEN5Bie6L' || 
+      'fsL+1u/InuYCdsdaeAs+RxftKfGdfQDlDF/kAAQAAA=='
+    );
+    --
+    fonts( 9 ).family   := 'courier';
+    fonts( 9 ).style    := 'N'; -- Normal
+    fonts( 9 ).name     := 'Courier';
+    fonts( 9 ).standard := TRUE;
+    --
+    FOR i IN 0 .. 255 LOOP
+      --
       fonts( 9 ).char_width_tab( i ) := 600;
-    end loop;
---
-    fonts( 10 ).family := 'courier';
-    fonts( 10 ).style := 'I'; -- Italic
-    fonts( 10 ).name := 'Courier-Oblique';
-    fonts( 10 ).standard := true;
-    fonts( 10 ).char_width_tab := fonts( 9 ).char_width_tab;
---
-    fonts( 11 ).family := 'courier';
-    fonts( 11 ).style := 'BI'; -- Bold
-    fonts( 11 ).name := 'Courier-Bold';
-    fonts( 11 ).standard := true;
-    fonts( 11 ).char_width_tab := fonts( 9 ).char_width_tab;
---
-    fonts( 12 ).family := 'courier';
-    fonts( 12 ).style := 'BI'; -- Bold Italic
-    fonts( 12 ).name := 'Courier-BoldOblique';
-    fonts( 12 ).standard := true;
-    fonts( 12 ).char_width_tab := fonts( 9 ).char_width_tab;
---
-    fonts( 13 ).family := 'symbol';
-    fonts( 13 ).style := 'N'; -- Normal
-    fonts( 13 ).name := 'Symbol';
-    fonts( 13 ).standard := true;
-    fonts( 13 ).char_width_tab := init_standard_withs
-      ( 'H4sIAAAAAAAAC82SIU8DQRCFZ28xIE+cqcbha4tENKk/gQCJJ6AweIK9H1CHqKnp' || 
-        'D2gTFBaDIcFwCQkJSTG83fem7SU0qYNLvry5nZ25t7NnZkv7c8LQrFhAP6GHZvEY' || 
-        'HOB9ylxGubTfNVRc34mKpFonzBQ/gUZ6Ds7AN6i5lv1dKv8Ab1eKQYSV4hUcgZFq' || 
-        'J/Sec7fQHtdTn3iqfvdrb7m3e2pZW+xDG3oIJ/Li3gfMr949rlU74DyT1/AuTX1f' || 
-        'YGhOzTP8B0/RggsEX/I03vgXPrrslZjfM8/pGu40t2ZjHgud97F7337mXP/GO4h9' || 
-        '3WmPPaOJ/jrOs9yC52MlrtUzfWupfTX51X/L+13Vl/J/s4W2S3pSfSh5DmeXerMf' || 
-        '+LXhWQAEAAA='
-      );
---
-    fonts( 14 ).family := 'zapfdingbats';
-    fonts( 14 ).style := 'N'; -- Normal
-    fonts( 14 ).name := 'ZapfDingbats';
-    fonts( 14 ).standard := true;
+      --
+    END LOOP;
+    --
+    fonts( 10 ).family          := 'courier';
+    fonts( 10 ).style           := 'I'; -- Italic
+    fonts( 10 ).name            := 'Courier-Oblique';
+    fonts( 10 ).standard        := TRUE;
+    fonts( 10 ).char_width_tab  := fonts( 9 ).char_width_tab;
+    --
+    fonts( 11 ).family          := 'courier';
+    fonts( 11 ).style           := 'BI'; -- Bold
+    fonts( 11 ).name            := 'Courier-Bold';
+    fonts( 11 ).standard        := TRUE;
+    fonts( 11 ).char_width_tab  := fonts( 9 ).char_width_tab;
+    --
+    fonts( 12 ).family          := 'courier';
+    fonts( 12 ).style           := 'BI'; -- Bold Italic
+    fonts( 12 ).name            := 'Courier-BoldOblique';
+    fonts( 12 ).standard        := TRUE;
+    fonts( 12 ).char_width_tab  := fonts( 9 ).char_width_tab;
+    --
+    fonts( 13 ).family    := 'symbol';
+    fonts( 13 ).style     := 'N'; -- Normal
+    fonts( 13 ).name      := 'Symbol';
+    fonts( 13 ).standard  := TRUE;
+    --
+    fonts( 13 ).char_width_tab := init_standard_withs( 
+      'H4sIAAAAAAAAC82SIU8DQRCFZ28xIE+cqcbha4tENKk/gQCJJ6AweIK9H1CHqKnp' || 
+      'D2gTFBaDIcFwCQkJSTG83fem7SU0qYNLvry5nZ25t7NnZkv7c8LQrFhAP6GHZvEY' || 
+      'HOB9ylxGubTfNVRc34mKpFonzBQ/gUZ6Ds7AN6i5lv1dKv8Ab1eKQYSV4hUcgZFq' || 
+      'J/Sec7fQHtdTn3iqfvdrb7m3e2pZW+xDG3oIJ/Li3gfMr949rlU74DyT1/AuTX1f' || 
+      'YGhOzTP8B0/RggsEX/I03vgXPrrslZjfM8/pGu40t2ZjHgud97F7337mXP/GO4h9' || 
+      '3WmPPaOJ/jrOs9yC52MlrtUzfWupfTX51X/L+13Vl/J/s4W2S3pSfSh5DmeXerMf' || 
+      '+LXhWQAEAAA='
+    );
+    --
+    fonts( 14 ).family    := 'zapfdingbats';
+    fonts( 14 ).style     := 'N'; -- Normal
+    fonts( 14 ).name      := 'ZapfDingbats';
+    fonts( 14 ).standard  := TRUE;
+    --
     fonts( 14 ).char_width_tab := init_standard_withs
       ( 'H4sIAAAAAAAAC83ROy9EQRjG8TkzjdJl163SSHR0EpdsVkSi2UahFhUljUKUIgoq' || 
         'CrvJCtFQyG6EbSSERGxhC0ofQAQFxbIi8T/7PoUPIOEkvzxzzsycdy7O/fUTtToX' || 
@@ -217,15 +252,15 @@ as
         'GYZsTN0GdrDL/Ao5j1GZNr5kwqydX5z1syoiYEq5gCtlSrXi+mVbi3PfVAuhoQAE' || 
         'AAA='
       );
---
-  end;
---
+    --
+  END init_core_fonts;
+  --
   function pdf_string( p_txt in blob )
   return blob
   is
     t_rv blob;
     t_ind integer;
-    type tp_tab_raw is table of raw(1);
+    TYPE tp_tab_raw IS TABLE OF raw(1);
     tab_raw tp_tab_raw := tp_tab_raw( utl_raw.cast_to_raw( '\' )
                                     , utl_raw.cast_to_raw( '(' )
                                     , utl_raw.cast_to_raw( ')' )
@@ -252,7 +287,7 @@ as
     return utl_raw.cast_to_binary_integer( p_value );
   end;
 --
-  function to_char_round( p_value IN NUMBER, p_precision in pls_integer := 2 )
+  function to_char_round( p_value IN NUMBER, p_precision in PLS_INTEGER := 2 )
   return varchar2
   is
   begin
@@ -273,7 +308,7 @@ as
   begin
     file_lob := bfilename( p_dir, p_file_name );
     dbms_lob.open( file_lob, dbms_lob.file_readonly );
-    dbms_lob.createtemporary( file_blob, true );
+    dbms_lob.createtemporary( file_blob, TRUE );
     dbms_lob.loadfromfile( file_blob, file_lob, dbms_lob.lobmaxsize );
     dbms_lob.close( file_lob );
     return file_blob;
@@ -340,8 +375,8 @@ as
   function adler32( p_src in blob )
   return varchar2
   is
-    s1 pls_integer := 1;
-    s2 pls_integer := 0;
+    s1 PLS_INTEGER := 1;
+    s2 PLS_INTEGER := 0;
   begin
     for i in 1 .. dbms_lob.getlength( p_src )
     loop
@@ -366,7 +401,7 @@ as
     return t_blob;
   end;
 --
-  procedure put_stream( p_stream in blob, p_compress in boolean := true, p_extra IN VARCHAR2 := '' )
+  procedure put_stream( p_stream in blob, p_compress in boolean := TRUE, p_extra IN VARCHAR2 := '' )
   is
     t_blob blob;
   begin
@@ -383,7 +418,7 @@ as
     end if;
   end;
 --
-  function add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := true )
+  function add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := TRUE )
   RETURN NUMBER
   is
     t_self NUMBER(10);
@@ -420,12 +455,12 @@ as
              );
   end;
 --
-  function add_font( p_index in pls_integer )
+  function add_font( p_index in PLS_INTEGER )
   RETURN NUMBER
   is
   begin
     return add_object2pdfDoc
-             (  '/Type/Font'
+             (  '/TYPE/Font'
              || '/Subtype/' || fonts( p_index ).subtype
              || '/BaseFont/' || fonts( p_index ).name
              || '/Encoding/WinAnsiEncoding' -- code page 1252
@@ -445,7 +480,7 @@ as
       add2pdfDoc( 'endobj' );
     end if;
     t_self := add_object2pdfDoc;
-    add2pdfDoc( '<</Type /XObject /Subtype /Image' );
+    add2pdfDoc( '<</TYPE /XObject /Subtype /Image' );
     add2pdfDoc( ' /Width ' || to_char( p_img.width ) || ' /Height ' || to_char( p_img.height ) );
     add2pdfDoc( '/BitsPerComponent ' || to_char( p_img.color_res ) );
     if p_img.color_tab is null
@@ -459,10 +494,10 @@ as
     else
       add2pdfDoc( '/ColorSpace [/Indexed /DeviceRGB ' || to_char( utl_raw.length( p_img.color_tab ) / 3 - 1 ) || ' ' || to_char( t_pallet ) || ' 0 R]' );
     end if;
-    if p_img.type = 'jpg'
+    if p_img.TYPE = 'jpg'
     then
       put_stream( p_img.pixels, false, '/Filter /DCTDecode' );
-    elsif p_img.type = 'png'
+    elsif p_img.TYPE = 'png'
     then
       put_stream( p_img.pixels, false, ' /Filter /FlateDecode /DecodeParms <</Predictor 15 /Colors ' || p_img.nr_colors || '/BitsPerComponent ' || p_img.color_res || ' /Columns ' || p_img.width || ' >>' );
     else
@@ -474,7 +509,7 @@ as
   function add_resources
   RETURN NUMBER
   is
-    t_ind pls_integer;
+    t_ind PLS_INTEGER;
     t_self NUMBER(10);
     t_fonts tp_objects_tab;
   begin
@@ -521,7 +556,7 @@ as
   end;
 --
   procedure add_page
-    ( p_page_nr in pls_integer
+    ( p_page_nr in PLS_INTEGER
     , p_parent IN NUMBER
     , p_resources IN NUMBER
     )
@@ -530,7 +565,7 @@ as
   begin
     t_content := add_stream( pages_tab( p_page_nr ) );
     add_object2pdfDoc;
-    add2pdfDoc( '<< /Type /Page' );
+    add2pdfDoc( '<< /TYPE /Page' );
     add2pdfDoc( '/Parent ' || to_char( p_parent ) || ' 0 R' );
     add2pdfDoc( '/Contents ' || to_char( t_content ) || ' 0 R' );
     add2pdfDoc( '/Resources ' || to_char( p_resources ) || ' 0 R' );
@@ -546,7 +581,7 @@ as
   begin
     t_resources := add_resources;
     t_self := add_object2pdfDoc;
-    add2pdfDoc( '<</Type/Pages/Kids [' );
+    add2pdfDoc( '<</TYPE/Pages/Kids [' );
     for i in pages_tab.first .. pages_tab.last
     loop
       add2pdfDoc( to_char( t_self + i * 2 + 2 ) || ' 0 R' );
@@ -570,7 +605,7 @@ as
   is
   begin
     return add_object2pdfDoc
-             (  '/Type/Catalog'
+             (  '/TYPE/Catalog'
              || '/Pages ' || to_char( add_pages ) || ' 0 R'
              || '/OpenAction [0 /XYZ null null 1]'
              );
@@ -642,7 +677,7 @@ as
   is
   begin
     pages_tab( pages_tab.count() ) := null;
-    dbms_lob.createtemporary( pages_tab( pages_tab.count() - 1 ), true );
+    dbms_lob.createtemporary( pages_tab( pages_tab.count() - 1 ), TRUE );
 --
     settings.x := settings.margin_left;
     settings.y := settings.page_height - settings.margin_top - nvl( settings.current_fontsizePt, 12 );
@@ -663,18 +698,18 @@ as
     buf raw(32767);
     len integer;
     ind integer;
-    color_type pls_integer;
+    color_type PLS_INTEGER;
   begin
     if rawtohex( dbms_lob.substr( p_img_blob, 8, 1 ) ) != '89504E470D0A1A0A'
     THEN -- not the right signature
       return null;
     end if;
-    dbms_lob.createtemporary( t_img.pixels, true );
+    dbms_lob.createtemporary( t_img.pixels, TRUE );
     ind := 9;
     loop
       len := raw2num( dbms_lob.substr( p_img_blob, 4, ind ) ); -- length
       exit WHEN len is null or ind > dbms_lob.getlength( p_img_blob );
-      case utl_raw.cast_to_varchar2( dbms_lob.substr( p_img_blob, 4, ind + 4 ) ) -- Chunk type
+      case utl_raw.cast_to_varchar2( dbms_lob.substr( p_img_blob, 4, ind + 4 ) ) -- Chunk TYPE
       WHEN 'IHDR'
       then
         t_img.width := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 8 ) );
@@ -694,10 +729,10 @@ as
         else
           null;
       end case;
-      ind := ind + 4 + 4 + len + 4; -- Length + Chunk type + Chunk data + CRC
+      ind := ind + 4 + 4 + len + 4; -- Length + Chunk TYPE + Chunk data + CRC
     end loop;
 --
-    t_img.type := 'png';
+    t_img.TYPE := 'png';
     t_img.nr_colors := case color_type WHEN 0 THEN 1 WHEN 2 THEN 3 WHEN 3 THEN 1 WHEN 4 THEN 2 else 4 end;
 --
     return t_img;
@@ -718,7 +753,7 @@ as
     end if;
 --
     t_img.pixels := p_img_blob;
-    t_img.type := 'jpg';
+    t_img.TYPE := 'jpg';
     if dbms_lob.substr( t_img.pixels, 2, 3 ) in ( hextoraw( 'FFE0' ) -- a APP0 jpg
                                                 , hextoraw( 'FFE1' ) -- a APP1 jpg
                                                 )
@@ -798,7 +833,7 @@ as
     --      
     dbms_lob.createtemporary( 
       lob_loc => pdf_doc, 
-      cache   => true 
+      cache   => TRUE 
     );
     --
     settings := null;
@@ -833,7 +868,7 @@ as
     ) IS
       --
       t_fh utl_file.file_type;
-      t_len pls_integer := 32767;
+      t_len PLS_INTEGER := 32767;
       --
   BEGIN
     --
@@ -981,7 +1016,7 @@ as
   procedure set_font
     ( p_family IN VARCHAR2
     , p_style  IN VARCHAR2 := 'N'
-    , p_fontsizePt in pls_integer := null
+    , p_fontsizePt in PLS_INTEGER := null
     , p_encoding IN VARCHAR2 := 'WINDOWS-1252'
     )
   is
@@ -1088,7 +1123,7 @@ as
   is
     t_tmp blob;
     t_width NUMBER;
-    t_char pls_integer;
+    t_char PLS_INTEGER;
   begin
     if p_txt is null
     then
@@ -1126,8 +1161,8 @@ as
                          - settings.margin_left
                          );
     t_len NUMBER;
-    t_cnt pls_integer;
-    t_ind pls_integer;
+    t_cnt PLS_INTEGER;
+    t_ind PLS_INTEGER;
   begin
     if p_txt is null
     then
@@ -1228,7 +1263,7 @@ as
   procedure set_bk_color( p_rgb IN VARCHAR2 := 'ffffff' )
   is
   begin
-    set_color( p_rgb, true );
+    set_color( p_rgb, TRUE );
   end;
 --
   procedure set_bk_color
@@ -1246,7 +1281,7 @@ as
       set_color(  to_char( p_red, 'fm0x' )
                || to_char( p_green, 'fm0x' )
                || to_char( p_blue, 'fm0x' )
-               , true
+               , TRUE
                );
     end if;
   end;
@@ -1365,7 +1400,7 @@ as
      , p_height IN NUMBER := null
      )
   is
-    t_ind pls_integer;
+    t_ind PLS_INTEGER;
     t_adler32 varchar2(8);
   begin
     if p_img is null
