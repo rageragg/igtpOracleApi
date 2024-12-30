@@ -255,8 +255,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     --
   END init_core_fonts;
   --
-  function pdf_string( p_txt in blob )
-  return blob
+  FUNCTION pdf_string( p_txt in blob )
+  RETURN blob
   is
     t_rv blob;
     t_ind integer;
@@ -277,21 +277,21 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
         dbms_lob.copy( t_rv, tab_raw( 1 ), 1, t_ind, 1 );
       end loop;
     end loop;
-    return t_rv;
-  end;
---
-  function raw2num( p_value in raw )
+    RETURN t_rv;
+  end pdf_string;
+  --
+  FUNCTION raw2num( p_value in raw )
   RETURN NUMBER
   is
   begin -- note: FFFFFFFF => -1
-    return utl_raw.cast_to_binary_integer( p_value );
-  end;
+    RETURN utl_raw.cast_to_binary_integer( p_value );
+  end raw2num;
 --
-  function to_char_round( p_value IN NUMBER, p_precision in PLS_INTEGER := 2 )
-  return varchar2
+  FUNCTION to_char_round( p_value IN NUMBER, p_precision in PLS_INTEGER := 2 )
+  RETURN VARCHAR2
   is
   begin
-    return rtrim( rtrim( to_char( p_value, rpad( '9999999990D'
+    RETURN rtrim( rtrim( to_char( p_value, rpad( '9999999990D'
                                                , 11 + p_precision
                                                , '0'
                                                )
@@ -300,8 +300,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
                 );
   end;
 --
-  function file2blob( p_dir IN VARCHAR2, p_file_name IN VARCHAR2 )
-  return blob
+  FUNCTION file2blob( p_dir IN VARCHAR2, p_file_name IN VARCHAR2 )
+  RETURN blob
   is
     file_lob bfile;
     file_blob blob;
@@ -311,7 +311,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     dbms_lob.createtemporary( file_blob, TRUE );
     dbms_lob.loadfromfile( file_blob, file_lob, dbms_lob.lobmaxsize );
     dbms_lob.close( file_lob );
-    return file_blob;
+    RETURN file_blob;
   exception
     WHEN others then
       if dbms_lob.isopen( file_lob ) = 1
@@ -350,7 +350,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     --
   END add2pdfDoc;
 --
-  function add_object2pdfDoc( p_txt IN VARCHAR2 := null )
+  FUNCTION add_object2pdfDoc( p_txt IN VARCHAR2 := null )
   RETURN NUMBER
   is
     t_self NUMBER(10);
@@ -362,7 +362,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     then
       add2pdfDoc( '<<' || p_txt || '>>' || chr(13) || chr(10) || 'endobj' );
     end if;
-    return t_self;
+    RETURN t_self;
   end;
 --
   procedure add_object2pdfDoc( p_txt IN VARCHAR2 := null )
@@ -372,8 +372,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     t_self := add_object2pdfDoc( p_txt );
   end;
 --
-  function adler32( p_src in blob )
-  return varchar2
+  FUNCTION adler32( p_src in blob )
+  RETURN VARCHAR2
   is
     s1 PLS_INTEGER := 1;
     s2 PLS_INTEGER := 0;
@@ -383,11 +383,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       s1 := mod( s1 + utl_raw.cast_to_binary_integer( dbms_lob.substr( p_src, 1, i ) ), 65521 );
       s2 := mod( s2 + s1, 65521);
     end loop;
-    return to_char( s2, 'fm0XXX' ) || to_char( s1, 'fm0XXX' );
+    RETURN to_char( s2, 'fm0XXX' ) || to_char( s1, 'fm0XXX' );
   end;
 --
-  function Flate_encode( p_val in blob )
-  return blob
+  FUNCTION Flate_encode( p_val in blob )
+  RETURN blob
   is
     t_cpr blob;
     t_blob blob;
@@ -398,7 +398,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     dbms_lob.copy( t_blob, t_cpr, dbms_lob.getlength( t_cpr ) - 10 - 8, 3, 11 );
     dbms_lob.append( t_blob, hextoraw( adler32( p_val ) ) );
     dbms_lob.freetemporary( t_cpr );
-    return t_blob;
+    RETURN t_blob;
   end;
 --
   procedure put_stream( p_stream in blob, p_compress in boolean := TRUE, p_extra IN VARCHAR2 := '' )
@@ -418,7 +418,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     end if;
   end;
 --
-  function add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := TRUE )
+  FUNCTION add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := TRUE )
   RETURN NUMBER
   is
     t_self NUMBER(10);
@@ -427,10 +427,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     add2pdfDoc( '<<' );
     put_stream( p_stream, p_compress, p_extra );
     add2pdfDoc( 'endobj' );
-    return t_self;
+    RETURN t_self;
   end;
 --
-  function add_info
+  FUNCTION add_info
   RETURN NUMBER
   is
     t_banner varchar2(1000);
@@ -448,18 +448,18 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
         null;
     end;
 --
-    return add_object2pdfDoc
+    RETURN add_object2pdfDoc
              (  '/CreationDate (D:' || to_char( sysdate, 'YYYYMMDDhh24miss' ) || ')'
              || '/Creator (AS-PDF mini 0.2.0 by Anton Scheffer)'
              || t_banner
              );
   end;
 --
-  function add_font( p_index in PLS_INTEGER )
+  FUNCTION add_font( p_index in PLS_INTEGER )
   RETURN NUMBER
   is
   begin
-    return add_object2pdfDoc
+    RETURN add_object2pdfDoc
              (  '/TYPE/Font'
              || '/Subtype/' || fonts( p_index ).subtype
              || '/BaseFont/' || fonts( p_index ).name
@@ -506,7 +506,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     add2pdfDoc( 'endobj' );
   end;
 --
-  function add_resources
+  FUNCTION add_resources
   RETURN NUMBER
   is
     t_ind PLS_INTEGER;
@@ -552,7 +552,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       end loop;
     end if;
 --
-    return t_self;
+    RETURN t_self;
   end;
 --
   procedure add_page
@@ -573,7 +573,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     add2pdfDoc( 'endobj' );
   end;
 --
-  function add_pages
+  FUNCTION add_pages
   RETURN NUMBER
   is
     t_self NUMBER(10);
@@ -597,14 +597,14 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       add_page( i, t_self, t_resources );
     end loop;
 --
-    return t_self;
+    RETURN t_self;
   end;
 --
-  function add_catalogue
+  FUNCTION add_catalogue
   RETURN NUMBER
   is
   begin
-    return add_object2pdfDoc
+    RETURN add_object2pdfDoc
              (  '/TYPE/Catalog'
              || '/Pages ' || to_char( add_pages ) || ' 0 R'
              || '/OpenAction [0 /XYZ null null 1]'
@@ -668,9 +668,9 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     settings := null;
   end;
 --
-  function get_settings return tp_settings is
+  FUNCTION get_settings RETURN tp_settings is
   begin
-    return settings;
+    RETURN settings;
   end;
 --
   procedure new_page
@@ -691,8 +691,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     end if;
   end;
 --
-  function parse_png( p_img_blob in blob )
-  return tp_img
+  FUNCTION parse_png( p_img_blob in blob )
+  RETURN tp_img
   is
     t_img tp_img;
     buf raw(32767);
@@ -702,7 +702,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   begin
     if rawtohex( dbms_lob.substr( p_img_blob, 8, 1 ) ) != '89504E470D0A1A0A'
     THEN -- not the right signature
-      return null;
+      RETURN null;
     end if;
     dbms_lob.createtemporary( t_img.pixels, TRUE );
     ind := 9;
@@ -735,11 +735,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     t_img.TYPE := 'png';
     t_img.nr_colors := case color_type WHEN 0 THEN 1 WHEN 2 THEN 3 WHEN 3 THEN 1 WHEN 4 THEN 2 else 4 end;
 --
-    return t_img;
+    RETURN t_img;
   end;
 --
-  function parse_jpg( p_img_blob in blob )
-  return tp_img
+  FUNCTION parse_jpg( p_img_blob in blob )
+  RETURN tp_img
   is
     buf raw(4);
     t_img tp_img;
@@ -749,7 +749,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
        or dbms_lob.substr( p_img_blob, 2, dbms_lob.getlength( p_img_blob ) - 1 )  != hextoraw( 'FFD9' )  -- EOI End of Image
        )
     THEN -- this is not a jpg I can handle
-      return null;
+      RETURN null;
     end if;
 --
     t_img.pixels := p_img_blob;
@@ -793,11 +793,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       end loop;
     end if;
 --
-    return t_img;
+    RETURN t_img;
   end;
 --
-  function parse_img( p_blob in blob, p_type IN VARCHAR2 := null, p_adler32 IN VARCHAR2 := null )
-  return tp_img
+  FUNCTION parse_img( p_blob in blob, p_type IN VARCHAR2 := null, p_adler32 IN VARCHAR2 := null )
+  RETURN tp_img
   is
     img tp_img;
     t_type varchar2(5) := p_type;
@@ -822,7 +822,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       img.adler32 := nvl( p_adler32, adler32( p_blob ) );
     end if;
 --
-    return img;
+    RETURN img;
   end;
 --
   PROCEDURE init IS
@@ -854,12 +854,12 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     --
   END init;
 --
-  function get_pdf
-  return blob
+  FUNCTION get_pdf
+  RETURN blob
   is
   begin
     finish_pdf;
-    return pdf_doc;
+    RETURN pdf_doc;
   end;
   --
   PROCEDURE save_pdf( 
@@ -1028,7 +1028,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
        and p_fontsizePt is null
        )
     then
-      return;
+      RETURN;
     end if;
     t_style := replace(
                replace(
@@ -1066,15 +1066,15 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     end loop;
   end;
 --
-  function nclob2blob( p_txt in nclob )
-  return blob
+  FUNCTION nclob2blob( p_txt in nclob )
+  RETURN blob
   is
   begin
     if p_txt is null or p_txt = ''
     then
-      return null;
+      RETURN null;
     end if;
-    return utl_raw.convert( utl_raw.cast_to_raw( p_txt )
+    RETURN utl_raw.convert( utl_raw.cast_to_raw( p_txt )
                           , t_lan_ter || settings.encoding
                           , t_lan_ter || t_ncharset
                           );
@@ -1118,7 +1118,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     end if;
   end;
 --
-  function string_width( p_txt in nclob )
+  FUNCTION string_width( p_txt in nclob )
   RETURN NUMBER
   is
     t_tmp blob;
@@ -1127,7 +1127,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   begin
     if p_txt is null
     then
-      return 0;
+      RETURN 0;
     end if;
 --
     t_width := 0;
@@ -1139,7 +1139,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
                + fonts( settings.current_font ).char_width_tab( t_char )
                * ( settings.current_fontsizePt / 1000 );
     end loop;
-    return t_width;
+    RETURN t_width;
   end;
 --
   procedure write
@@ -1166,7 +1166,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   begin
     if p_txt is null
     then
-      return;
+      RETURN;
     end if;
 --
     t_ind := instrc( p_txt, chr(10) );
@@ -1174,7 +1174,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     then
       write( rtrim( substrc( p_txt, 1, t_ind - 1 ), chr(13) ), t_x, t_y, t_line_height, t_start, t_width, p_alignment );
       write( substrc( p_txt, t_ind + 1 ), t_start, t_y - t_line_height, t_line_height, t_start, t_width, p_alignment );
-      return;
+      RETURN;
     end if;
     t_x := case WHEN t_x < 0 THEN t_start else t_x end;
     t_y := case WHEN t_y < 0 THEN settings.y - t_line_height else t_y end;
@@ -1216,11 +1216,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     end if;
   end;
 --
-  function rgb( p_hex_rgb IN VARCHAR2 )
-  return varchar2
+  FUNCTION rgb( p_hex_rgb IN VARCHAR2 )
+  RETURN VARCHAR2
   is
   begin
-    return to_char_round( nvl( to_number( substr( ltrim( p_hex_rgb, '#' ), 1, 2 ), 'xx' ) / 255, 0 ), 5 ) || ' ' ||
+    RETURN to_char_round( nvl( to_number( substr( ltrim( p_hex_rgb, '#' ), 1, 2 ), 'xx' ) / 255, 0 ), 5 ) || ' ' ||
            to_char_round( nvl( to_number( substr( ltrim( p_hex_rgb, '#' ), 3, 2 ), 'xx' ) / 255, 0 ), 5 ) || ' ' ||
            to_char_round( nvl( to_number( substr( ltrim( p_hex_rgb, '#' ), 5, 2 ), 'xx' ) / 255, 0 ), 5 ) || ' ';
   end;
@@ -1405,7 +1405,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   begin
     if p_img is null
     then
-      return;
+      RETURN;
     end if;
     t_adler32 := adler32( p_img );
     t_ind := images.first;

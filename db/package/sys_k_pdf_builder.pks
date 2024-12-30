@@ -64,24 +64,27 @@ AS
       p_right   IN NUMBER := 1, 
       p_unit    IN VARCHAR2 := 'cm'
     );
-  --
-  FUNCTION get_settings RETURN tp_settings;
-  --
-  PROCEDURE new_page;
-  --
-  PROCEDURE set_font
-    ( p_family IN VARCHAR2
-    , p_style  IN VARCHAR2 := 'N'
-    , p_fontsizePt IN PLS_INTEGER := NULL
-    , p_encoding IN VARCHAR2 := 'WINDOWS-1252'
+    --
+    FUNCTION get_settings RETURN tp_settings;
+    --
+    PROCEDURE new_page;
+    --
+    PROCEDURE set_font( 
+      p_family      IN VARCHAR2, 
+      p_style       IN VARCHAR2     := 'N', 
+      p_fontsizePt  IN PLS_INTEGER  := NULL, 
+      p_encoding    IN VARCHAR2     := 'WINDOWS-1252'
     );
---
-  procedure add2page( p_txt IN nclob );
---
-  procedure put_txt( p_x IN NUMBER, p_y IN NUMBER, p_txt IN nclob );
---
-  function string_width( p_txt IN nclob )
-  return NUMBER;
+    --
+    PROCEDURE add2page( p_txt IN NCLOB );
+    --
+    PROCEDURE put_txt( 
+      p_x     IN NUMBER, 
+      p_y     IN NUMBER, 
+      p_txt   IN NCLOB 
+    );
+    --
+  FUNCTION string_width( p_txt IN NCLOB ) RETURN NUMBER;
 --
   procedure write
     ( p_txt IN nclob
