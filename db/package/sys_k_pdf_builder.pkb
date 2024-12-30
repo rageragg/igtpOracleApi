@@ -255,42 +255,61 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     --
   END init_core_fonts;
   --
-  FUNCTION pdf_string( p_txt in blob )
-  RETURN blob
-  is
-    t_rv blob;
-    t_ind integer;
+  FUNCTION pdf_string( 
+      p_txt IN BLOB 
+    ) RETURN BLOB IS
+    --
+    t_rv    BLOB;
+    t_ind   INTEGER;
+    --
     TYPE tp_tab_raw IS TABLE OF raw(1);
-    tab_raw tp_tab_raw := tp_tab_raw( utl_raw.cast_to_raw( '\' )
-                                    , utl_raw.cast_to_raw( '(' )
-                                    , utl_raw.cast_to_raw( ')' )
-                                    );
-  begin
+    --
+    tab_raw tp_tab_raw := tp_tab_raw( 
+      utl_raw.cast_to_raw( '\' ), 
+      utl_raw.cast_to_raw( '(' ), 
+      utl_raw.cast_to_raw( ')' )
+    );
+    --
+  BEGIN
+    --
     t_rv := p_txt;
-    for i in tab_raw.first .. tab_raw.last
-    loop 
+    --
+    FOR i IN tab_raw.FIRST .. tab_raw.LAST LOOP 
+      --
       t_ind := -1;
-      loop
+      --
+      LOOP
+        --
         t_ind := dbms_lob.instr( t_rv, tab_raw( i ), t_ind + 2 );
-        exit WHEN t_ind <= 0;
+        --
+        EXIT WHEN t_ind <= 0;
+        --
         dbms_lob.copy( t_rv, t_rv, dbms_lob.lobmaxsize, t_ind + 1, t_ind );
         dbms_lob.copy( t_rv, tab_raw( 1 ), 1, t_ind, 1 );
-      end loop;
-    end loop;
+        --
+      END LOOP;
+      --
+    END LOOP;
+    --
     RETURN t_rv;
-  end pdf_string;
+    --
+  END pdf_string;
   --
-  FUNCTION raw2num( p_value in raw )
-  RETURN NUMBER
-  is
-  begin -- note: FFFFFFFF => -1
+  FUNCTION raw2num( 
+      p_value IN RAW 
+    ) RETURN NUMBER IS
+  BEGIN -- note: FFFFFFFF => -1
+    --
     RETURN utl_raw.cast_to_binary_integer( p_value );
-  end raw2num;
---
-  FUNCTION to_char_round( p_value IN NUMBER, p_precision in PLS_INTEGER := 2 )
-  RETURN VARCHAR2
-  is
-  begin
+    --
+  END raw2num;
+  --
+  FUNCTION to_char_round( 
+      p_value     IN NUMBER, 
+      p_precision IN PLS_INTEGER := 2 
+    ) RETURN VARCHAR2 IS
+  BEGIN
+    --
     RETURN rtrim( rtrim( to_char( p_value, rpad( '9999999990D'
                                                , 11 + p_precision
                                                , '0'
@@ -298,32 +317,46 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
                                 , 'NLS_NUMERIC_CHARACTERS = ''.,''' ), '0' )
                 , '.'
                 );
-  end;
---
-  FUNCTION file2blob( p_dir IN VARCHAR2, p_file_name IN VARCHAR2 )
-  RETURN blob
-  is
-    file_lob bfile;
-    file_blob blob;
-  begin
+    --
+  END to_char_round;
+  --
+  FUNCTION file2blob( 
+      p_dir       IN VARCHAR2, 
+      p_file_name IN VARCHAR2 
+    ) RETURN BLOB IS
+    --
+    file_lob  BFILE;
+    file_blob BLOB;
+    --
+  BEGIN
+    --
     file_lob := bfilename( p_dir, p_file_name );
+    --
     dbms_lob.open( file_lob, dbms_lob.file_readonly );
     dbms_lob.createtemporary( file_blob, TRUE );
     dbms_lob.loadfromfile( file_blob, file_lob, dbms_lob.lobmaxsize );
     dbms_lob.close( file_lob );
+    --
     RETURN file_blob;
-  exception
-    WHEN others then
-      if dbms_lob.isopen( file_lob ) = 1
-      then
-        dbms_lob.close( file_lob );
-      end if;
-      if dbms_lob.istemporary( file_blob ) = 1
-      then
-        dbms_lob.freetemporary( file_blob );
-      end if;
-      raise;
-  end;
+    --
+    EXCEPTION
+      WHEN OTHERS THEN
+        --
+        IF dbms_lob.isopen( file_lob ) = 1 THEN
+          --
+          dbms_lob.close( file_lob );
+          --
+        END IF;
+        --
+        IF dbms_lob.istemporary( file_blob ) = 1 THEN
+          --
+          dbms_lob.freetemporary( file_blob );
+          --
+        END IF;
+        --
+        RAISE;
+        --
+  END file2blob;
 --
   PROCEDURE raw2pdfDoc( 
       p_txt IN BLOB 
@@ -336,71 +369,104 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     );
     --
   END raw2pdfDoc;
---
+  --
   PROCEDURE add2pdfDoc( 
       p_txt IN VARCHAR2 
     ) IS
   BEGIN
     --
     raw2pdfDoc( 
-      utl_raw.concat( utl_raw.cast_to_raw( p_txt ), 
+      utl_raw.concat( 
+        utl_raw.cast_to_raw( p_txt ), 
         hextoraw( '0D0A' ) 
       ) 
     );
     --
   END add2pdfDoc;
---
-  FUNCTION add_object2pdfDoc( p_txt IN VARCHAR2 := null )
-  RETURN NUMBER
-  is
+  --
+  FUNCTION add_object2pdfDoc( 
+      p_txt IN VARCHAR2 := null 
+    ) RETURN NUMBER IS
+    --
     t_self NUMBER(10);
-  begin
-    t_self := objects_tab.count();
+    --
+  BEGIN
+    --
+    t_self := objects_tab.COUNT();
+    --
     objects_tab( t_self ) := dbms_lob.getlength( pdf_doc );
     add2pdfDoc( t_self || ' 0 obj' );
-    if p_txt is not null
-    then
+    --
+    IF p_txt IS NOT NULL THEN
+      --
       add2pdfDoc( '<<' || p_txt || '>>' || chr(13) || chr(10) || 'endobj' );
-    end if;
+      --
+    END IF;
+    --
     RETURN t_self;
-  end;
---
-  procedure add_object2pdfDoc( p_txt IN VARCHAR2 := null )
-  is
+    --
+  END add_object2pdfDoc;
+  --
+  PROCEDURE add_object2pdfDoc( 
+      p_txt IN VARCHAR2 := null 
+    ) IS
+    --
     t_self NUMBER(10);
-  begin
+    --
+  BEGIN
+    --
     t_self := add_object2pdfDoc( p_txt );
-  end;
---
-  FUNCTION adler32( p_src in blob )
-  RETURN VARCHAR2
-  is
+    --
+  END add_object2pdfDoc;
+  --
+  FUNCTION adler32( 
+      p_src IN BLOB 
+    ) RETURN VARCHAR2 IS
+    --
     s1 PLS_INTEGER := 1;
     s2 PLS_INTEGER := 0;
-  begin
-    for i in 1 .. dbms_lob.getlength( p_src )
-    loop
-      s1 := mod( s1 + utl_raw.cast_to_binary_integer( dbms_lob.substr( p_src, 1, i ) ), 65521 );
-      s2 := mod( s2 + s1, 65521);
-    end loop;
+    --
+  BEGIN
+    --
+    FOR i in 1 .. dbms_lob.getlength( p_src ) LOOP
+      --
+      s1 := mod( 
+                s1 + utl_raw.cast_to_binary_integer( 
+                  dbms_lob.substr( p_src, 1, i ) 
+                ), 
+                65521 
+      );
+      --
+      s2 := mod( 
+                  s2 + s1, 
+                  65521
+               );
+      --
+    END LOOP;
+    --
     RETURN to_char( s2, 'fm0XXX' ) || to_char( s1, 'fm0XXX' );
-  end;
---
-  FUNCTION Flate_encode( p_val in blob )
-  RETURN blob
-  is
+    --
+  END adler32;
+  --
+  FUNCTION flate_encode( 
+      p_val IN BLOB 
+    ) RETURN BLOB IS
+    --
     t_cpr blob;
     t_blob blob;
---
-  begin
+    --
+  BEGIN
+    --
     t_cpr := utl_compress.lz_compress( p_val );
     t_blob := hextoraw( '789C' );
     dbms_lob.copy( t_blob, t_cpr, dbms_lob.getlength( t_cpr ) - 10 - 8, 3, 11 );
     dbms_lob.append( t_blob, hextoraw( adler32( p_val ) ) );
     dbms_lob.freetemporary( t_cpr );
+    --
     RETURN t_blob;
-  end;
---
+    --
+  END flate_encode;
+  --
   procedure put_stream( p_stream in blob, p_compress in boolean := TRUE, p_extra IN VARCHAR2 := '' )
   is
     t_blob blob;
