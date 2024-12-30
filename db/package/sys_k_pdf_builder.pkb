@@ -467,60 +467,81 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     --
   END flate_encode;
   --
-  procedure put_stream( p_stream in blob, p_compress in boolean := TRUE, p_extra IN VARCHAR2 := '' )
-  is
-    t_blob blob;
-  begin
-    if p_compress
-    then
+  PROCEDURE put_stream( 
+      p_stream    IN BLOB, 
+      p_compress  IN BOOLEAN := TRUE, 
+      p_extra     IN VARCHAR2 := '' 
+    ) IS
+    --
+    t_blob BLOB;
+    --
+  BEGIN
+    --
+    IF p_compress THEN
+      --
       t_blob := Flate_encode( p_stream );
       put_stream( t_blob, false, '/Filter /FlateDecode ' || p_extra );
       dbms_lob.freetemporary( t_blob );
-    else
+      --
+    ELSE
+      --
       add2pdfDoc( '/Length ' || dbms_lob.getlength( p_stream ) || p_extra || ' >>' );
       add2pdfDoc( 'stream' );
       raw2pdfDoc( p_stream );
       add2pdfDoc( 'endstream' );
-    end if;
-  end;
---
-  FUNCTION add_stream( p_stream in blob, p_extra IN VARCHAR2 := '', p_compress in boolean := TRUE )
-  RETURN NUMBER
-  is
-    t_self NUMBER(10);
-  begin
+      --
+    END IF;
+    --
+  END put_stream;
+  --
+  FUNCTION add_stream( 
+      p_stream    IN BLOB, 
+      p_extra     IN VARCHAR2 := '', 
+      p_compress  IN BOOLEAN := TRUE 
+    ) RETURN NUMBER IS
+      --
+      t_self NUMBER(10);
+      --
+  BEGIN
+    --
     t_self := add_object2pdfDoc;
+    --
     add2pdfDoc( '<<' );
     put_stream( p_stream, p_compress, p_extra );
     add2pdfDoc( 'endobj' );
+    --
     RETURN t_self;
-  end;
---
-  FUNCTION add_info
-  RETURN NUMBER
-  is
+    --
+  END add_stream;
+  --
+  FUNCTION add_info RETURN NUMBER IS
+    --
     t_banner varchar2(1000);
-  begin
-    begin
-      select 'running on ' || replace( replace( replace( substr( banner, 1, 950), '\', '\\' ), '(', '\(' ), ')', '\)' )
-      into t_banner
-      from v$version
-      where instr( upper( banner ), 'DATABASE' ) > 0;
---
+    --
+  BEGIN
+    --
+    BEGIN
+      --
+      SELECT 'running on ' || replace( replace( replace( substr( banner, 1, 950), '\', '\\' ), '(', '\(' ), ')', '\)' )
+        INTO t_banner
+        FROM v$version
+       WHERE instr( upper( banner ), 'DATABASE' ) > 0;
+      --
       t_banner := '/Producer (' || t_banner || ')';
-    exception
-      WHEN others
-      then
-        null;
-    end;
---
-    RETURN add_object2pdfDoc
-             (  '/CreationDate (D:' || to_char( sysdate, 'YYYYMMDDhh24miss' ) || ')'
-             || '/Creator (AS-PDF mini 0.2.0 by Anton Scheffer)'
-             || t_banner
-             );
-  end;
---
+      --
+      EXCEPTION
+        WHEN OTHERS THEN
+          NULL;
+    END;
+    --
+    RETURN add_object2pdfDoc(  
+      '/CreationDate (D:' || to_char( sysdate, 'YYYYMMDDhh24miss' ) || ')'|| 
+      '/Creator (AS-PDF mini 0.2.0 by Anton Scheffer)'|| 
+      t_banner
+    );
+    --
+  END add_info;
+  --
   FUNCTION add_font( p_index in PLS_INTEGER )
   RETURN NUMBER
   is
