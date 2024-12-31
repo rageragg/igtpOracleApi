@@ -962,41 +962,59 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
 --
     RETURN t_img;
   END;
---
-  FUNCTION parse_img( p_blob in blob, p_type IN VARCHAR2 := null, p_adler32 IN VARCHAR2 := null )
-  RETURN tp_img
-  is
+  --
+  FUNCTION parse_img( 
+      p_blob    IN BLOB, 
+      p_type    IN VARCHAR2 := null, 
+      p_adler32 IN VARCHAR2 := null 
+    ) RETURN tp_img IS
+    --
     img tp_img;
     t_type varchar2(5) := p_type;
-  begin
-    IF t_type is null
-    THEN
-      IF rawtohex( dbms_lob.substr( p_blob, 8, 1 ) ) = '89504E470D0A1A0A'
-      THEN
+    --
+  BEGIN
+    --
+    IF t_type IS NULL THEN
+      --
+      IF rawtohex( dbms_lob.substr( p_blob, 8, 1 ) ) = '89504E470D0A1A0A' THEN
+        --
         t_type := 'png';
+        --
       ELSE
+        --
         t_type := 'jpg';
+        --
       END IF;
+      --
     END IF;
---
-    img := case lower( t_type )
-             WHEN 'png' THEN parse_png( p_blob )
-             WHEN 'jpg' THEN parse_jpg( p_blob )
-           END;
---
-    IF img.width IS NOT NULL
-    THEN
+    --
+    img :=  CASE lower( t_type )
+              WHEN 'png' THEN parse_png( p_blob )
+              WHEN 'jpg' THEN parse_jpg( p_blob )
+            END;
+    --
+    IF img.width IS NOT NULL THEN
+      --
       img.adler32 := nvl( p_adler32, adler32( p_blob ) );
+      --
     END IF;
---
+    --
     RETURN img;
-  END;
---
+    --
+  END parse_img;
+  --
   PROCEDURE init IS
   BEGIN
     --
-    t_ncharset := nls_charset_name( nls_charset_id( 'NCHAR_CS' ) );
-    t_lan_ter  := substr( sys_context( 'userenv', 'LANGUAGE' ), 1, instr( sys_context( 'userenv', 'LANGUAGE' ), '.' ) );
+    t_ncharset := nls_charset_name( 
+      nls_charset_id( 'NCHAR_CS' ) 
+    );
+    --
+    t_lan_ter  := substr( 
+      sys_context( 'userenv', 'LANGUAGE' ), 
+      1, 
+      instr( sys_context( 'userenv', 'LANGUAGE' ), '.' ) 
+    );
     --      
     dbms_lob.createtemporary( 
       lob_loc => pdf_doc, 
