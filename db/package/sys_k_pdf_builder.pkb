@@ -721,44 +721,52 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     add2pdfDoc( 'endobj' );
     --
   END add_page;
---
-  FUNCTION add_pages
-  RETURN NUMBER
-  is
-    t_self NUMBER(10);
-    t_resources NUMBER(10);
-  begin
+  --
+  FUNCTION add_pages RETURN NUMBER IS
+    --
+    t_self        NUMBER(10);
+    t_resources   NUMBER(10);
+    --
+  BEGIN
+    --
     t_resources := add_resources;
-    t_self := add_object2pdfDoc;
+    t_self      := add_object2pdfDoc;
+    --
     add2pdfDoc( '<</TYPE/Pages/Kids [' );
-    for i in pages_tab.FIRST .. pages_tab.LAST
-    LOOP
+    --
+    FOR i IN pages_tab.FIRST .. pages_tab.LAST LOOP
+      --
       add2pdfDoc( to_char( t_self + i * 2 + 2 ) || ' 0 R' );
+      --
     END LOOP;
+    --
     add2pdfDoc( ']' );
     add2pdfDoc( '/Count ' || pages_tab.count() );
     add2pdfDoc( '/MediaBox [0 0 ' || to_char_round( settings.page_width, 0 ) || ' ' || to_char_round( settings.page_height, 0 ) || ']' );
     add2pdfDoc( '>>' );
     add2pdfDoc( 'endobj' );
---
-    for i in pages_tab.FIRST .. pages_tab.LAST
-    LOOP
+    --
+    FOR i IN pages_tab.FIRST .. pages_tab.LAST LOOP
+      --
       add_page( i, t_self, t_resources );
+      --
     END LOOP;
---
+    --
     RETURN t_self;
-  END;
---
-  FUNCTION add_catalogue
-  RETURN NUMBER
-  is
-  begin
-    RETURN add_object2pdfDoc
-             (  '/TYPE/Catalog'
-             || '/Pages ' || to_char( add_pages ) || ' 0 R'
-             || '/OpenAction [0 /XYZ null null 1]'
-             );
-  END;
+    --
+  END add_pages;
+  --
+  FUNCTION add_catalogue RETURN NUMBER IS
+  BEGIN
+    --
+    RETURN add_object2pdfDoc(  
+      '/TYPE/Catalog' || 
+      '/Pages ' || 
+      to_char( add_pages ) || ' 0 R' || 
+      '/OpenAction [0 /XYZ null null 1]'
+    );
+    --
+  END add_catalogue;
   --
   PROCEDURE finish_pdf IS
     --
@@ -766,7 +774,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     t_info      NUMBER(10);
     t_catalogue NUMBER(10);
     --
-  begin
+  BEGIN
     --
     add2pdfDoc( '%PDF-1.3' );
     --
@@ -794,33 +802,43 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     add2pdfDoc( 'startxref' );
     add2pdfDoc( to_char( t_xref ) );
     add2pdfDoc( '%%EOF' );
---
+    --
     objects_tab.delete;
-    for i in pages_tab.FIRST .. pages_tab.LAST
-    LOOP
+    FOR i IN pages_tab.FIRST .. pages_tab.LAST LOOP
+      --
       dbms_lob.freetemporary( pages_tab( i ) );
+      --
     END LOOP;
+    --
     pages_tab.delete;
     fonts.delete;
     used_fonts.delete;
-    IF images.count() > 0
-    THEN
-      for i in images.FIRST .. images.LAST
-      LOOP
-        IF dbms_lob.istemporary( images( i ).pixels ) = 1
-        THEN
+    --
+    IF images.count() > 0 THEN
+      --
+      FOR i IN images.FIRST .. images.LAST LOOP
+        --
+        IF dbms_lob.istemporary( images( i ).pixels ) = 1 THEN
+          --
           dbms_lob.freetemporary( images( i ).pixels );
+          --
         END IF;
+        --
       END LOOP;
+      --
     END IF;
+    --
     images.delete;
     settings := null;
-  END;
---
-  FUNCTION get_settings RETURN tp_settings is
-  begin
+    --
+  END finish_pdf;
+  --
+  FUNCTION get_settings RETURN tp_settings IS
+  BEGIN
+    --
     RETURN settings;
-  END;
+    --
+  END get_settings;
 --
   procedure new_page
   is
