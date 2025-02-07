@@ -385,7 +385,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   END add2pdfDoc;
   --
   FUNCTION add_object2pdfDoc( 
-      p_txt IN VARCHAR2 := null 
+      p_txt IN VARCHAR2 := NULL 
     ) RETURN NUMBER IS
     --
     t_self NUMBER(10);
@@ -408,7 +408,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   END add_object2pdfDoc;
   --
   PROCEDURE add_object2pdfDoc( 
-      p_txt IN VARCHAR2 := null 
+      p_txt IN VARCHAR2 := NULL 
     ) IS
     --
     t_self NUMBER(10);
@@ -763,7 +763,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       '/TYPE/Catalog' || 
       '/Pages ' || 
       to_char( add_pages ) || ' 0 R' || 
-      '/OpenAction [0 /XYZ null null 1]'
+      '/OpenAction [0 /XYZ NULL NULL 1]'
     );
     --
   END add_catalogue;
@@ -829,7 +829,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     END IF;
     --
     images.delete;
-    settings := null;
+    settings := NULL;
     --
   END finish_pdf;
   --
@@ -839,89 +839,117 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     RETURN settings;
     --
   END get_settings;
---
-  procedure new_page
-  is
-  begin
-    pages_tab( pages_tab.count() ) := null;
+  --
+  PROCEDURE new_page IS
+  BEGIN
+    --
+    pages_tab( pages_tab.count() ) := NULL;
     dbms_lob.createtemporary( pages_tab( pages_tab.count() - 1 ), TRUE );
---
+    --
     settings.x := settings.margin_left;
     settings.y := settings.page_height - settings.margin_top - nvl( settings.current_fontsizePt, 12 );
     settings.page_nr := pages_tab.count();
---
-    IF settings.current_font IS NOT NULL
-    THEN
+    --
+    IF settings.current_font IS NOT NULL THEN
+      --
       add2page( 'BT /F' || settings.current_font || ' ' ||
                 to_char_round( settings.current_fontsizePt ) || ' Tf ET'
               );
+      --
     END IF;
-  END;
---
-  FUNCTION parse_png( p_img_blob in blob )
-  RETURN tp_img
-  is
-    t_img tp_img;
-    buf raw(32767);
-    len integer;
-    ind integer;
-    color_type PLS_INTEGER;
-  begin
-    IF rawtohex( dbms_lob.substr( p_img_blob, 8, 1 ) ) != '89504E470D0A1A0A'
-    THEN -- not the right signature
-      RETURN null;
+    --
+  END new_page;
+  --
+  FUNCTION parse_png( 
+      p_img_blob IN BLOB 
+    ) RETURN tp_img IS
+    --
+    t_img       tp_img;
+    buf         RAW(32767);
+    len         INTEGER;
+    ind         INTEGER;
+    color_type  PLS_INTEGER;
+    --
+  BEGIN
+    --
+    IF rawtohex( dbms_lob.substr( p_img_blob, 8, 1 ) ) != '89504E470D0A1A0A'  THEN -- not the right signature
+      RETURN NULL;
     END IF;
+    --
     dbms_lob.createtemporary( t_img.pixels, TRUE );
+    --
     ind := 9;
+    --
     LOOP
+      --
       len := raw2num( dbms_lob.substr( p_img_blob, 4, ind ) ); -- length
-      exit WHEN len is null or ind > dbms_lob.getlength( p_img_blob );
-      case utl_raw.cast_to_varchar2( dbms_lob.substr( p_img_blob, 4, ind + 4 ) ) -- Chunk TYPE
-      WHEN 'IHDR'
-      THEN
-        t_img.width := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 8 ) );
-        t_img.height := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 12 ) );
-        t_img.color_res := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 16 ) );
-        color_type := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 17 ) );
-        t_img.greyscale := color_type in ( 0, 4 );
-        WHEN 'PLTE'
-        THEN
+      EXIT WHEN len is NULL or ind > dbms_lob.getlength( p_img_blob );
+      --
+      CASE utl_raw.cast_to_varchar2( dbms_lob.substr( p_img_blob, 4, ind + 4 ) ) -- Chunk TYPE
+        WHEN 'IHDR' THEN
+          --
+          t_img.width := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 8 ) );
+          t_img.height := raw2num( dbms_lob.substr( p_img_blob, 4, ind + 12 ) );
+          t_img.color_res := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 16 ) );
+          color_type := raw2num( dbms_lob.substr( p_img_blob, 1, ind + 17 ) );
+          t_img.greyscale := color_type in ( 0, 4 );
+          --
+        WHEN 'PLTE' THEN
+          --
           t_img.color_tab := dbms_lob.substr( p_img_blob, len, ind + 8 );
-        WHEN 'IDAT'
-        THEN
+          --
+        WHEN 'IDAT' THEN
+          --
           dbms_lob.append( t_img.pixels, dbms_lob.substr( p_img_blob, len, ind + 8 ) );
-        WHEN 'IEND'
-        THEN
-          exit;
+          --
+        WHEN 'IEND' THEN
+          --
+          EXIT;
+          --
         ELSE
-          null;
-      END case;
+          --
+          NULL;
+          --
+      END CASE;
+      --
       ind := ind + 4 + 4 + len + 4; -- Length + Chunk TYPE + Chunk data + CRC
+      --
     END LOOP;
---
+    --
     t_img.TYPE := 'png';
-    t_img.nr_colors := case color_type WHEN 0 THEN 1 WHEN 2 THEN 3 WHEN 3 THEN 1 WHEN 4 THEN 2 ELSE 4 END;
---
+    t_img.nr_colors := CASE color_type 
+                        WHEN 0 THEN 1 
+                        WHEN 2 THEN 3 
+                        WHEN 3 THEN 1 
+                        WHEN 4 THEN 2 
+                        ELSE 4 
+                      END;
+    --
     RETURN t_img;
-  END;
---
-  FUNCTION parse_jpg( p_img_blob in blob )
-  RETURN tp_img
-  is
-    buf raw(4);
-    t_img tp_img;
-    t_ind integer;
-  begin
+    --
+  END parse_png;
+  --
+  FUNCTION parse_jpg( 
+      p_img_blob IN BLOB 
+    ) RETURN tp_img
+    IS
+    --
+    buf     raw(4);
+    t_img   tp_img;
+    t_ind   INTEGER;
+    --
+  BEGIN
+    --
     IF (  dbms_lob.substr( p_img_blob, 2, 1 ) != hextoraw( 'FFD8' )  -- SOI Start of Image
-       or dbms_lob.substr( p_img_blob, 2, dbms_lob.getlength( p_img_blob ) - 1 )  != hextoraw( 'FFD9' )  -- EOI END of Image
+       OR dbms_lob.substr( p_img_blob, 2, dbms_lob.getlength( p_img_blob ) - 1 )  != hextoraw( 'FFD9' )  -- EOI END of Image
        )
     THEN -- this is not a jpg I can handle
-      RETURN null;
+      RETURN NULL;
     END IF;
---
+    --
     t_img.pixels := p_img_blob;
     t_img.TYPE := 'jpg';
-    IF dbms_lob.substr( t_img.pixels, 2, 3 ) in ( hextoraw( 'FFE0' ) -- a APP0 jpg
+    IF dbms_lob.substr( t_img.pixels, 2, 3 ) IN ( hextoraw( 'FFE0' ) -- a APP0 jpg
                                                 , hextoraw( 'FFE1' ) -- a APP1 jpg
                                                 )
     THEN
@@ -965,8 +993,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   --
   FUNCTION parse_img( 
       p_blob    IN BLOB, 
-      p_type    IN VARCHAR2 := null, 
-      p_adler32 IN VARCHAR2 := null 
+      p_type    IN VARCHAR2 := NULL, 
+      p_adler32 IN VARCHAR2 := NULL 
     ) RETURN tp_img IS
     --
     img tp_img;
@@ -1021,7 +1049,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       cache   => TRUE 
     );
     --
-    settings := null;
+    settings := NULL;
     --
     objects_tab.DELETE;
     pages_tab.DELETE;
@@ -1109,7 +1137,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
              WHEN 'em'    THEN p_value * 12 -- also pica
              WHEN 'px'    THEN p_value-- pixel voorlopig op point zetten
              WHEN 'px'    THEN p_value * 0.8 -- pixel
-             ELSE null
+             ELSE NULL
            END;
     --
   END conv2user_units;
@@ -1121,7 +1149,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   is
     t_tmp NUMBER;
   begin
-    case upper( p_format )
+    CASE upper( p_format )
       WHEN 'A3'
       THEN
         settings.page_height := conv2user_units( 420, 'mm' );
@@ -1147,10 +1175,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
         settings.page_height := conv2user_units( 279, 'mm' );
         settings.page_width  := conv2user_units( 216, 'mm' );
       ELSE
-        null;
-    END case;
+        NULL;
+    END CASE;
 --
-    case
+    CASE
       WHEN upper( p_orientation ) in ( 'L', 'LANDSCAPE' )
       THEN
         IF settings.page_height > settings.page_width
@@ -1168,8 +1196,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
           settings.page_width := t_tmp;
         END IF;
       ELSE
-        null;
-    END case;
+        NULL;
+    END CASE;
   END;
 --
   procedure set_pagesize
@@ -1201,16 +1229,16 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   procedure set_font
     ( p_family IN VARCHAR2
     , p_style  IN VARCHAR2 := 'N'
-    , p_fontsizePt in PLS_INTEGER := null
+    , p_fontsizePt in PLS_INTEGER := NULL
     , p_encoding IN VARCHAR2 := 'WINDOWS-1252'
     )
   is
     t_style varchar2(100);
     t_family varchar2(100);
   begin
-    IF (   p_family is null
-       and p_style is null
-       and p_fontsizePt is null
+    IF (   p_family is NULL
+       and p_style is NULL
+       and p_fontsizePt is NULL
        )
     THEN
       RETURN;
@@ -1225,8 +1253,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
                       , 'BOLD', 'B' )
                       , 'ITALIC', 'I' )
                       , 'OBLIQUE', 'I' );
-    t_style := nvl( t_style, case WHEN settings.current_font is null THEN 'N' ELSE fonts( settings.current_font ).style END );
-    t_family := nvl( lower( p_family ), case WHEN settings.current_font is null THEN 'helvetica' ELSE fonts( settings.current_font ).family END );
+    t_style := nvl( t_style, CASE WHEN settings.current_font is NULL THEN 'N' ELSE fonts( settings.current_font ).style END );
+    t_family := nvl( lower( p_family ), CASE WHEN settings.current_font is NULL THEN 'helvetica' ELSE fonts( settings.current_font ).family END );
     for i in fonts.FIRST .. fonts.LAST
     LOOP
       IF (   fonts( i ).family = t_family
@@ -1255,9 +1283,9 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
   RETURN blob
   is
   begin
-    IF p_txt is null or p_txt = ''
+    IF p_txt is NULL or p_txt = ''
     THEN
-      RETURN null;
+      RETURN NULL;
     END IF;
     RETURN utl_raw.convert( utl_raw.cast_to_raw( p_txt )
                           , t_lan_ter || settings.encoding
@@ -1310,7 +1338,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     t_width NUMBER;
     t_char PLS_INTEGER;
   begin
-    IF p_txt is null
+    IF p_txt is NULL
     THEN
       RETURN 0;
     END IF;
@@ -1326,80 +1354,105 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     END LOOP;
     RETURN t_width;
   END;
---
-  procedure write
-    ( p_txt in nclob
-    , p_x IN NUMBER := null
-    , p_y IN NUMBER := null
-    , p_line_height IN NUMBER := null
-    , p_start IN NUMBER := null  -- left side of the available text box
-    , p_width IN NUMBER := null  -- width of the available text box
-    , p_alignment IN VARCHAR2 := null
-    )
-  is
-    t_x NUMBER := nvl( p_x, settings.x );
-    t_y NUMBER := nvl( p_y, settings.y );
+  --
+  PROCEDURE write( 
+      p_txt           IN NCLOB
+      , p_x           IN NUMBER := NULL
+      , p_y           IN NUMBER := NULL
+      , p_line_height IN NUMBER := NULL
+      , p_start       IN NUMBER := NULL  -- left side of the available text box
+      , p_width       IN NUMBER := NULL  -- width of the available text box
+      , p_alignment   IN VARCHAR2 := NULL
+    ) IS
+    --
+    t_x           NUMBER := nvl( p_x, settings.x );
+    t_y           NUMBER := nvl( p_y, settings.y );
     t_line_height NUMBER := nvl( p_line_height, settings.current_fontsizePt );
-    t_start NUMBER := nvl( p_start, settings.margin_right );
-    t_width NUMBER := nvl( p_width
+    t_start       NUMBER := nvl( p_start, settings.margin_right );
+    t_width       NUMBER := nvl( p_width
                          , settings.page_width - settings.margin_right
                          - settings.margin_left
                          );
-    t_len NUMBER;
-    t_cnt PLS_INTEGER;
-    t_ind PLS_INTEGER;
-  begin
-    IF p_txt is null
-    THEN
+    t_len         NUMBER;
+    t_cnt         PLS_INTEGER;
+    t_ind         PLS_INTEGER;
+    --
+  BEGIN
+    --
+    IF p_txt IS NULL THEN
       RETURN;
     END IF;
---
+    --
     t_ind := instrc( p_txt, chr(10) );
-    IF t_ind > 0
-    THEN
+    --
+    IF t_ind > 0 THEN
+      --
       write( rtrim( substrc( p_txt, 1, t_ind - 1 ), chr(13) ), t_x, t_y, t_line_height, t_start, t_width, p_alignment );
       write( substrc( p_txt, t_ind + 1 ), t_start, t_y - t_line_height, t_line_height, t_start, t_width, p_alignment );
+      --
       RETURN;
+      --
     END IF;
-    t_x := case WHEN t_x < 0 THEN t_start ELSE t_x END;
-    t_y := case WHEN t_y < 0 THEN settings.y - t_line_height ELSE t_y END;
+    --
+    t_x := CASE WHEN t_x < 0 THEN t_start ELSE t_x END;
+    t_y := CASE WHEN t_y < 0 THEN settings.y - t_line_height ELSE t_y END;
+    --
     t_len := string_width( p_txt );
-    IF t_len > t_width - t_x + t_start
-    THEN
+    --
+    IF t_len > t_width - t_x + t_start THEN
+      --
       t_cnt := 0;
+      --
       WHILE (   instrc( p_txt, ' ', 1, t_cnt + 1 ) > 0
             and string_width( substrc( p_txt, 1, instrc( p_txt, ' ', 1, t_cnt + 1 ) - 1 ) ) <= t_width - t_x + t_start
             )
       LOOP
+        --
         t_cnt := t_cnt + 1;
+        --
       END LOOP;
-      IF t_cnt > 0
-      THEN
+      --
+      IF t_cnt > 0 THEN
+        --
         write( substrc( p_txt, 1, instrc( p_txt, ' ', 1, t_cnt ) - 1 ), t_x, t_y, t_line_height, t_start, t_width, p_alignment );
-        write( substrc( p_txt, instrc( p_txt, ' ', 1, t_cnt ) + 1 ), null, null, t_line_height, t_start, t_width, p_alignment );
+        write( substrc( p_txt, instrc( p_txt, ' ', 1, t_cnt ) + 1 ), NULL, NULL, t_line_height, t_start, t_width, p_alignment );
+        --
       ELSE
-        IF t_x > t_start
-        THEN
+        --
+        IF t_x > t_start THEN
+          --
           write( p_txt, t_start, t_y - t_line_height, t_line_height, t_start, t_width, p_alignment );
+          --
         ELSE
+          --
           t_ind := trunc( length( p_txt ) / 2 );
           write( substrc( p_txt, 1, t_ind ), t_x, t_y, t_line_height, t_start, t_width, p_alignment );
-          write( substrc( p_txt, t_ind + 1 ), null, null, t_line_height, t_start, t_width, p_alignment );
+          write( substrc( p_txt, t_ind + 1 ), NULL, NULL, t_line_height, t_start, t_width, p_alignment );
+          --
         END IF;
+        --
       END IF;
+      --
     ELSE
-      IF instr( p_alignment, 'right' ) > 0 or instr( p_alignment, 'END' ) > 0
-      THEN
+      --
+      IF instr( p_alignment, 'right' ) > 0 or instr( p_alignment, 'END' ) > 0 THEN
+        --
         t_x := t_start + t_width - t_len;
-      ELSIF instr( p_alignment, 'center' ) > 0
-      THEN
+        --
+      ELSIF instr( p_alignment, 'center' ) > 0 THEN
+        --
         t_x := ( t_width + t_x + t_start - string_width( p_txt ) ) / 2;
+        --
       END IF;
+      --
       put_txt( t_x, t_y, p_txt );
+      --
       settings.x := t_x + t_len + string_width( ' ' );
       settings.y := t_y ;
+      --
     END IF;
-  END;
+    --
+  END write;
 --
   FUNCTION rgb( p_hex_rgb IN VARCHAR2 )
   RETURN VARCHAR2
@@ -1416,7 +1469,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     )
   is
   begin
-    add2page( rgb( p_rgb ) || case WHEN p_backgr THEN 'RG' ELSE 'rg' END );
+    add2page( rgb( p_rgb ) || CASE WHEN p_backgr THEN 'RG' ELSE 'rg' END );
   END;
 --
   procedure set_color( p_rgb IN VARCHAR2 := '000000' )
@@ -1494,7 +1547,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
             || to_char_round( p_y, 5 ) || ' '
             || to_char_round( p_width, 5 ) || ' '
             || to_char_round( p_line_width, 5 ) || ' re '
-            || case WHEN t_use_color THEN 'b' ELSE 'f' END
+            || CASE WHEN t_use_color THEN 'b' ELSE 'f' END
             );
     add2page( 'Q' );
   END;
@@ -1516,8 +1569,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
     , p_y IN NUMBER
     , p_width IN NUMBER
     , p_height IN NUMBER
-    , p_line_color IN VARCHAR2 := null
-    , p_fill_color IN VARCHAR2 := null
+    , p_line_color IN VARCHAR2 := NULL
+    , p_fill_color IN VARCHAR2 := NULL
     , p_line_width IN NUMBER := 0.5
     )
   is
@@ -1541,7 +1594,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
             || to_char_round( p_y, 5 ) || ' '
             || to_char_round( p_width, 5 ) || ' '
             || to_char_round( p_height, 5 ) || ' re '
-            || case WHEN p_fill_color is null THEN 'S' ELSE 'b' END
+            || CASE WHEN p_fill_color is NULL THEN 'S' ELSE 'b' END
             );
     add2page( 'Q' );
   END;
@@ -1551,8 +1604,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
      , p_file_name IN VARCHAR2
      , p_x IN NUMBER
      , p_y IN NUMBER
-     , p_width IN NUMBER := null
-     , p_height IN NUMBER := null
+     , p_width IN NUMBER := NULL
+     , p_height IN NUMBER := NULL
      )
   is
     t_blob blob;
@@ -1566,8 +1619,8 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
      ( p_url IN VARCHAR2
      , p_x IN NUMBER
      , p_y IN NUMBER
-     , p_width IN NUMBER := null
-     , p_height IN NUMBER := null
+     , p_width IN NUMBER := NULL
+     , p_height IN NUMBER := NULL
      )
   is
     t_blob blob;
@@ -1581,14 +1634,14 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
      ( p_img in blob
      , p_x IN NUMBER
      , p_y IN NUMBER
-     , p_width IN NUMBER := null
-     , p_height IN NUMBER := null
+     , p_width IN NUMBER := NULL
+     , p_height IN NUMBER := NULL
      )
   is
     t_ind PLS_INTEGER;
     t_adler32 varchar2(8);
   begin
-    IF p_img is null
+    IF p_img is NULL
     THEN
       RETURN;
     END IF;
@@ -1600,20 +1653,20 @@ CREATE OR REPLACE PACKAGE BODY sys_k_pdf_builder AS
       t_ind := images.next( t_ind );
     END LOOP;
 --
-    IF t_ind is null
+    IF t_ind is NULL
     THEN
       t_ind := images.count() + 1;
       images( t_ind ) := parse_img( p_img, p_adler32 => t_adler32 );
     END IF;
 --
-    IF images( t_ind ).adler32 is null
+    IF images( t_ind ).adler32 is NULL
     THEN
       images.delete( t_ind );
     ELSE
       add2page( 'q ' || to_char_round( nvl( p_width, images( t_ind ).width ) ) || ' 0 0 '
               || to_char_round( nvl( p_height, images( t_ind ).height ) ) || ' '
-              || to_char_round( case WHEN p_x > 0 THEN p_x ELSE - p_x - images( t_ind ).width / 2 END ) || ' '
-              || to_char_round( case WHEN p_y > 0 THEN p_y ELSE - p_y + images( t_ind ).height / 2 END ) || ' '
+              || to_char_round( CASE WHEN p_x > 0 THEN p_x ELSE - p_x - images( t_ind ).width / 2 END ) || ' '
+              || to_char_round( CASE WHEN p_y > 0 THEN p_y ELSE - p_y + images( t_ind ).height / 2 END ) || ' '
               || ' cm /I' || to_char( t_ind ) || ' Do Q'
               );
     END IF;
