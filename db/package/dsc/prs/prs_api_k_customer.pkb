@@ -210,6 +210,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         ) IS
     BEGIN 
         --
+        --
         -- se establece el valor a la global 
         g_doc_customer  := p_rec;
         --
@@ -659,6 +660,8 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
     --   
 BEGIN    
     --
+    -- TODO: inyectar el codigo de ejecucion INICIAL "PROCESOS DINAMICOS" 
+    --
     -- verificamos la configuracion Actual 
     g_cfg_co := nvl(sys_k_global.ref_f_global(
         p_variable => sys_k_constant.K_CONFIGURATION_ID
@@ -674,6 +677,7 @@ BEGIN
         p_variable  => sys_k_constant.K_FIELD_LANGUAGE_CO, 
         p_value     => g_reg_config.language_co
     );
+    -- TODO: inyectar el codigo de ejecucion FINAL "PROCESOS DINAMICOS" 
     --
     EXCEPTION 
         WHEN OTHERS THEN 
