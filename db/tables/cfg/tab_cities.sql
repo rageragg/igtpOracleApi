@@ -13,6 +13,7 @@ CREATE TABLE "IGTP"."CITIES" (
    "UUID"            VARCHAR2(60 BYTE), 
    "NU_GPS_LAT"      NUMBER(8,4), 
    "NU_GPS_LON"      NUMBER(8,4),
+   "POPULATION"      NUMBER(8,0),
    "USER_ID"         NUMBER(8,0), 
    "CREATED_AT"      DATE DEFAULT sysdate, 
    "UPDATED_AT"      DATE DEFAULT sysdate
