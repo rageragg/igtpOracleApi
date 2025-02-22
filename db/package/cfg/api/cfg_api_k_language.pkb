@@ -1,4 +1,19 @@
 CREATE OR REPLACE PACKAGE BODY cfg_api_k_language IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package CFG_API_K_LANGUAGE (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  CFG_API_K_CONFIGURATION         PAQUETE DE BASE
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
+    --  SYS_K_GLOBAL                    PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de lenguaje
+    ---------------------------------------------------------------------------
     --
     -- get DATA RETURN RECORD by ID
     FUNCTION get_record( p_id IN igtp.languages.id%TYPE ) RETURN igtp.languages%ROWTYPE IS 
