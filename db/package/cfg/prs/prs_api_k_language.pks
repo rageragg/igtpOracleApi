@@ -1,9 +1,19 @@
---------------------------------------------------------
---  DDL for Package Body LANGUAGE_API
---  PROCESS
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE prs_api_k_language IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package PRS_API_K_LANGUAGE (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  CFG_API_K_CONFIGURATION         PAQUETE DE BASE
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
+    --  SYS_K_GLOBAL                    PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de lenguaje
+    ---------------------------------------------------------------------------
     --
     K_OWNER         CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
     K_CONTEXT       CONSTANT VARCHAR2(30)  := 'LANGUAGE-ADMINISTRATOS';

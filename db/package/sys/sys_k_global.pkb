@@ -1,12 +1,20 @@
---------------------------------------------------------
---  DDL for Package Body sys_k_global
---------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
-   --
-   /* --------------------------------
-   || Tratamiento de Globales (PL/SQL)
-   */---------------------------------
+    ---------------------------------------------------------------------------
+    --  DDL for Package SYS_K_GLOBAL (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  CFG_API_K_CITY                  PAQUETE DE BASE
+    --  CFG_API_K_MUNICIPALITY          PAQUETE DE BASE
+    --  PRS_API_K_LANGUAGE              PAQUETE DE BASE
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de las globales
+    ---------------------------------------------------------------------------
    --
    /* --------------------------------------------------
    || Aqui comienza la declaracion de variables GLOBALES

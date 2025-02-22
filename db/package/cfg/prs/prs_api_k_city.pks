@@ -1,13 +1,14 @@
 
 CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     ---------------------------------------------------------------------------
-    --  DDL for Package CITIES_API (Process)
+    --  DDL for Package PRS_API_K_CITY (Process)
     --  REFERENCIAS
     --  NOMBRE                          TIPO
     --  =============================== =======================================
     --  CFG_API_K_CITY                  PAQUETE DE BASE
     --  CFG_API_K_MUNICIPALITY          PAQUETE DE BASE
     --  PRS_API_K_LANGUAGE              PAQUETE DE BASE
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
     --
     --  MODIFICATIONS
     --  DATE        AUTOR               DESCRIPTIONS
