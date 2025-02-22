@@ -1,8 +1,18 @@
---------------------------------------------------------
---  DDL for Package Body configuration_API
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE BODY cfg_api_k_configuration IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package CFG_API_K_CONFIGURATION (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
+    --  SYS_K_GLOBAL                    PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de configuracion
+    ---------------------------------------------------------------------------
     --
     -- identificador actual de configuracion
     g_id    igtp.configurations.id%TYPE;

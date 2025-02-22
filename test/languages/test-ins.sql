@@ -19,7 +19,7 @@ begin
         "cause_error": "PRUEBA!"
     }'; 
     --
-    l_ok := prs_k_api_language.f_ins_upd_diccionary(
+    l_ok := prs_api_k_language.f_ins_upd_diccionary(
                                                     p_json          => l_json,
                                                     p_result        => l_result 
                                                 );

@@ -1,8 +1,18 @@
---------------------------------------------------------
---  DDL for Package Body CONFIGURATIONS_API
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE cfg_api_k_configuration IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package CFG_API_K_CONFIGURATION (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --  SYS_K_CONSTANT                  PAQUETE DE BASE
+    --  SYS_K_GLOBAL                    PAQUETE DE BASE
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de configuracion
+    ---------------------------------------------------------------------------
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'CONFIGURATIONS';
