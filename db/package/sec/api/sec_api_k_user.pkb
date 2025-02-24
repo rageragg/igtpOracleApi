@@ -1,8 +1,15 @@
---------------------------------------------------------
---  DDL for Package sec_api_k_user
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE BODY sec_api_k_user IS
+    --
+    ---------------------------------------------------------------------------
+    --  DDL for Package body CURITY_API (Process)
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de seguridad
+    --
+    -- TODO: Compactar codigo repetitivo en funciones de utilerias
+    ---------------------------------------------------------------------------
     --
     g_record        users%ROWTYPE;
     --

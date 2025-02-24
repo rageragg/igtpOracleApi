@@ -1,8 +1,15 @@
---------------------------------------------------------
---  DDL for Package Body USERS_API
---------------------------------------------------------
-
 CREATE OR REPLACE PACKAGE sec_api_k_user IS
+    --
+    ---------------------------------------------------------------------------
+    --  DDL for Package body CURITY_API (Process)
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --  2023-08-12  RAGECA - RGUERRA    Actualizacion de metodos de procesos
+    --                                  administrativos de creacion de seguridad
+    --
+    -- TODO: Compactar codigo repetitivo en funciones de utilerias
+    ---------------------------------------------------------------------------
     --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'users';

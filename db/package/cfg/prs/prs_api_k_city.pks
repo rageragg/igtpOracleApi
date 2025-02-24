@@ -32,7 +32,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_user_co           users.user_co%TYPE DEFAULT NULL
     );
     --
-    -- create city
+    -- create city by document
     PROCEDURE create_city (
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
         p_description       IN cities.description%TYPE DEFAULT NULL,
@@ -45,13 +45,19 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_result            OUT VARCHAR2 
     );
     --
-    -- insert RECORD
+    -- create city by record
     PROCEDURE create_city( 
         p_rec       IN OUT city_api_doc,
         p_result    OUT VARCHAR2  
     );
     --
-    -- update
+    -- create city by json
+    PROCEDURE create_city( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2
+    );
+    --
+    -- update city by documents
     PROCEDURE update_city(
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
         p_description       IN cities.description%TYPE DEFAULT NULL,
@@ -64,13 +70,19 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_result            OUT VARCHAR2  
     );
     --
-    -- update RECORD
+    -- update city by record
     PROCEDURE update_city( 
         p_rec       IN OUT city_api_doc,
         p_result    OUT VARCHAR2  
+    );
+    --
+    -- update city by json
+    PROCEDURE update_city( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2  
     );    
     --
-    -- delete
+    -- delete city by di
     PROCEDURE delete_city( 
         p_city_co   IN cities.city_co%TYPE,
         p_result    OUT VARCHAR2 

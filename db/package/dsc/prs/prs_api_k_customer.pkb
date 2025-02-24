@@ -294,7 +294,7 @@ CREATE OR REPLACE PACKAGE BODY prs_api_k_customer IS
         --
     END create_customer;
     --
-    -- CREATE CUSTOMER BY JSON
+    -- create customer by json
     PROCEDURE create_customer( 
             p_json      IN OUT VARCHAR2,
             p_result    OUT VARCHAR2

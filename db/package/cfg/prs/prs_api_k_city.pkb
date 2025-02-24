@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
+CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
     --
     ---------------------------------------------------------------------------
     --  DDL for Package body CITIES_API (Process)
@@ -20,7 +20,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_reg_config                    configurations%ROWTYPE;
-    g_doc_city                      prs_k_api_city.city_api_doc;
+    g_doc_city                      prs_api_k_city.city_api_doc;
     --
     g_reg_municipality              municipalities%ROWTYPE;
     g_reg_user                      users%ROWTYPE;
@@ -39,9 +39,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
     --
     -- raise_error 
     PROCEDURE raise_error( 
-        p_cod_error NUMBER,
-        p_msg_error VARCHAR2
-    ) IS 
+            p_cod_error NUMBER,
+            p_msg_error VARCHAR2
+        ) IS 
     BEGIN 
         --
         -- TODO: regionalizacion de mensajes
@@ -107,7 +107,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     END process_event;
     --
-    -- create city
+    -- create city by document
     PROCEDURE create_city (
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
             p_description       IN cities.description%TYPE DEFAULT NULL,
@@ -189,7 +189,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     END create_city;
     --
-    -- insert RECORD
+    -- insert city by record
     PROCEDURE create_city( 
             p_rec               IN OUT city_api_doc,
             p_result            OUT VARCHAR2 
@@ -260,7 +260,50 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     END create_city;
     --
-    -- update
+    -- create city by json
+    PROCEDURE create_city( 
+            p_json      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro ciudad
+        g_doc_city.p_city_co            := l_obj.get_string('city_co');
+        g_doc_city.p_description        := l_obj.get_string('description');
+        g_doc_city.p_telephone_co       := l_obj.get_string('telephone_co');
+        g_doc_city.p_postal_co          := l_obj.get_string('p_postal_co');
+        g_doc_city.p_municipality_co    := l_obj.get_string('p_municipality_co');
+        g_doc_city.p_slug               := l_obj.get_string('slug');
+        g_doc_city.p_user_co            := l_obj.get_string('user_co');
+        --
+        create_city( 
+            p_rec       => g_doc_city,
+            p_result    => p_result
+        );
+        --
+        l_obj.put('slug', g_doc_city.p_slug);
+        l_obj.put('uuid', g_doc_city.p_uuid);
+        p_json := l_obj.stringify; 
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
+        --
+    END create_city;
+    --
+    -- update city by document
     PROCEDURE update_city(
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
             p_description       IN cities.description%TYPE DEFAULT NULL,
@@ -342,7 +385,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
         --
     END update_city;
     --
-    -- update RECORD
+    -- update city by record
     PROCEDURE update_city( 
             p_rec               IN OUT city_api_doc,
             p_result            OUT VARCHAR2 
@@ -419,7 +462,50 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_k_api_city IS
                 --
                 ROLLBACK;
         --
-    END update_city;   
+    END update_city; 
+    --
+    -- update city by json
+    PROCEDURE update_city( 
+            p_json      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro ciudad
+        g_doc_city.p_city_co            := l_obj.get_string('city_co');
+        g_doc_city.p_description        := l_obj.get_string('description');
+        g_doc_city.p_telephone_co       := l_obj.get_string('telephone_co');
+        g_doc_city.p_postal_co          := l_obj.get_string('p_postal_co');
+        g_doc_city.p_municipality_co    := l_obj.get_string('p_municipality_co');
+        g_doc_city.p_slug               := l_obj.get_string('slug');
+        g_doc_city.p_user_co            := l_obj.get_string('user_co');
+        --
+        update_city( 
+                p_rec       => g_doc_city,
+                p_result    => p_result
+        );
+        --
+        l_obj.put('slug', g_doc_city.p_slug);
+        l_obj.put('uuid', g_doc_city.p_uuid);
+        p_json := l_obj.stringify; 
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
+        --
+    END update_city;  
     --
     -- delete
     PROCEDURE delete_city( 
@@ -495,5 +581,5 @@ BEGIN
         WHEN OTHERS THEN 
             dbms_output.put_line('Init Package: '||sqlerrm);
     --
-END prs_k_api_city;
+END prs_api_k_city;
 
