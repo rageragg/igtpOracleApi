@@ -2,8 +2,8 @@
 --  DDL for Index PROCESS_PK
 --------------------------------------------------------
 
-CREATE UNIQUE INDEX "IGTP"."PROCESS_PK" 
-  ON "IGTP"."PROCESSES" ("ID") 
+CREATE UNIQUE INDEX "IGTP"."PROCCESSES_PK" 
+  ON "IGTP"."PROCCESSES" ("ID") 
   PCTFREE 10 
   INITRANS 2 
   MAXTRANS 255 COMPUTE STATISTICS 
