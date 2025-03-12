@@ -4,7 +4,6 @@
 --  DATE        AUTOR               DESCRIPTIONS
 --  =========== =================== =======================================
 ---------------------------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
     K_PROCESS    CONSTANT VARCHAR2(20)  := 'CFG_API_K_CITY';

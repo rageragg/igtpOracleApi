@@ -107,6 +107,69 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
     END process_event;
     --
+    -- obteniendo el registro 
+    FUNCTION get_record(
+        p_city_co   cities.city_co%TYPE,
+        p_result            OUT VARCHAR2 
+    ) RETURN city_api_doc IS 
+    BEGIN 
+        --
+        -- validamos que el codigo de ciudad exista
+        IF NOT igtp.cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20003,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            --  
+        END IF;
+        --
+        -- obtenemos el registro de la ciudad
+        g_reg_city := igtp.cfg_api_k_city.get_record;
+        --
+        g_doc_city.p_city_co        := g_reg_city.city_co;
+        g_doc_city.p_description    := g_reg_city.description;
+        g_doc_city.p_telephone_co   := g_reg_city.telephone_co;
+        g_doc_city.p_postal_co      := g_reg_city.postal_co;
+        g_doc_city.p_slug           := g_reg_city.slug;
+        g_doc_city.p_uuid           := g_reg_city.uuid;
+        g_doc_city.p_nu_gps_lat     := g_reg_city.nu_gps_lat;
+        g_doc_city.p_nu_gps_lon     := g_reg_city.nu_gps_lon;
+        --
+        -- obtenemos el registro de la municipalidad
+        g_reg_municipality := igtp.cfg_api_k_municipality.get_record( 
+            p_id => g_reg_city.municipality_id
+        );
+        --
+        g_doc_city.p_municipality_co := g_reg_municipality.municipality_co;
+        --
+        -- obtenemos el registro del usuario
+        g_reg_user := igtp.sec_api_k_user.get_record( 
+            p_id => g_reg_city.user_id
+        );
+        --
+        g_doc_city.p_user_co := g_reg_user.user_co;
+        --
+        --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
+        RETURN g_doc_city;
+        --
+        EXCEPTION
+            WHEN e_exist_city_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+        --
+    END get_record;
+    --
     -- create city by document
     PROCEDURE create_city (
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 

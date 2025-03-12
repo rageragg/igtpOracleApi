@@ -29,8 +29,16 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_municipality_co   municipalities.municipality_co%TYPE DEFAULT NULL,
         p_uuid              cities.uuid%TYPE DEFAULT NULL,
         p_slug              cities.slug%TYPE DEFAULT NULL,
+        p_nu_gps_lat        cities.nu_gps_lat%TYPE DEFAULT NULL,
+        p_nu_gps_lon        cities.nu_gps_lon%TYPE DEFAULT NULL,
         p_user_co           users.user_co%TYPE DEFAULT NULL
     );
+    --
+    -- obteniendo el registro 
+    FUNCTION get_record(
+        p_city_co   cities.city_co%TYPE,
+        p_result            OUT VARCHAR2 
+    ) RETURN city_api_doc;
     --
     -- create city by document
     PROCEDURE create_city (

@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE sec_api_k_user IS
+CREATE OR REPLACE PACKAGE igtp.sec_api_k_user IS
     --
     ---------------------------------------------------------------------------
     --  DDL for Package body CURITY_API (Process)

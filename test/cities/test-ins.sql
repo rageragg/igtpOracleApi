@@ -1,7 +1,7 @@
 DECLARE
     --
     -- datos del documento
-    r_city_data         igtp.prs_k_api_city.city_api_doc;
+    r_city_data         igtp.prs_api_k_city.city_api_doc;
     r_municipality_data igtp.municipalities%ROWTYPE;
     l_result        VARCHAR2(2048);
     l_ins_ok        BOOLEAN;
@@ -13,11 +13,11 @@ BEGIN
     --
     dbms_output.put_line( '1.- llenado de documento');
     -- llenado de documento
-    r_city_data.p_city_co           := 'POR-GUAN';
-    r_city_data.p_description       := 'GUANARE (Portuguesa)';
+    r_city_data.p_city_co           := 'BOL-CBOL';
+    r_city_data.p_description       := 'CIUDAD BOLIVAR (Bolivar)';
     r_city_data.p_telephone_co      := '000';
     r_city_data.p_postal_co         := '0000';
-    r_city_data.p_municipality_co   := 'POR-GUAN';
+    r_city_data.p_municipality_co   := 'BOL-CRN';
     r_city_data.p_uuid              := NULL;
     r_city_data.p_slug              := NULL;
     r_city_data.p_user_co           := 'RGUERRA';
@@ -30,7 +30,7 @@ BEGIN
         p_result    => l_result
     );
     */
-    igtp.prs_k_api_city.create_city(
+    igtp.prs_api_k_city.create_city(
         p_city_co           => r_city_data.p_city_co,
         p_description       => r_city_data.p_description,
         p_telephone_co      => r_city_data.p_telephone_co,

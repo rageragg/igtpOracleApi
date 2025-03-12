@@ -4,7 +4,6 @@
 --  DATE        AUTOR               DESCRIPTIONS
 --  =========== =================== =======================================
 ---------------------------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     --
     g_record        cities%ROWTYPE;
