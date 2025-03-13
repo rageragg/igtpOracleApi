@@ -8,7 +8,7 @@
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS 
     --
     K_PROCESS    CONSTANT VARCHAR2(20)  := 'CFG_API_K_LOCATION';
-    K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
+    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'LOCATIONS';
     K_LIMIT_LIST CONSTANT PLS_INTEGER   := 512;
     K_ORDER_LIST CONSTANT PLS_INTEGER   := 2;
@@ -29,14 +29,14 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
     --
     -- insert
     PROCEDURE ins (
-        p_id                IN locations.id%type,
+        p_id                IN OUT locations.id%type,
         p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 
         p_description       IN locations.description%TYPE DEFAULT NULL, 
         p_postal_co         IN locations.postal_co%TYPE DEFAULT NULL, 
         p_city_id           IN locations.city_id%TYPE DEFAULT NULL, 
         p_nu_gps_lat        IN locations.nu_gps_lat%TYPE DEFAULT NULL,
         p_nu_gps_lon        IN locations.nu_gps_lon%TYPE DEFAULT NULL, 
-        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+        p_uuid              IN OUT locations.uuid%TYPE,
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
@@ -55,7 +55,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
         p_city_id           IN locations.city_id%TYPE DEFAULT NULL, 
         p_nu_gps_lat        IN locations.nu_gps_lat%TYPE DEFAULT NULL,
         p_nu_gps_lon        IN locations.nu_gps_lon%TYPE DEFAULT NULL, 
-        p_uuid              IN locations.uuid%TYPE DEFAULT NULL,
+        p_uuid              IN OUT locations.uuid%TYPE,
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN locations.created_at%TYPE DEFAULT NULL,

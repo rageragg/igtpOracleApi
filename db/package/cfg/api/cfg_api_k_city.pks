@@ -28,17 +28,17 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
     --
     -- insert
     PROCEDURE ins (
-        p_id                IN cities.id%TYPE,
+        p_id                IN OUT cities.id%TYPE,
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
         p_description       IN cities.description%TYPE DEFAULT NULL,
         p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
         p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
         p_municipality_id   IN cities.municipality_id%TYPE DEFAULT NULL,
         p_population        IN cities.population%TYPE DEFAULT NULL,   
-        p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
+        p_uuid              IN OUT cities.uuid%TYPE,
         p_slug              IN cities.slug%TYPE DEFAULT NULL,
         p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
-        p_created_at        IN cities.created_at%TYPE DEFAULT NULL, 
+        p_created_at        IN OUT cities.created_at%TYPE, 
         p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
     );
     --
@@ -54,10 +54,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
         p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
         p_municipality_id   IN cities.municipality_id%TYPE DEFAULT NULL,
         p_population        IN cities.population%TYPE DEFAULT NULL,
-        p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
+        p_uuid              IN OUT cities.uuid%TYPE,
         p_slug              IN cities.slug%TYPE DEFAULT NULL,
         p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
-        p_created_at        IN cities.created_at%TYPE DEFAULT NULL, 
+        p_created_at        IN OUT cities.created_at%TYPE, 
         p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
     );
     --

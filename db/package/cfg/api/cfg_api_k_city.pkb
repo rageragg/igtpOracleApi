@@ -92,27 +92,33 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     --
     -- insert
     PROCEDURE ins (
-            p_id                IN cities.ID%TYPE,
+            p_id                IN OUT cities.ID%TYPE,
             p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
             p_description       IN cities.description%TYPE DEFAULT NULL,
             p_telephone_co      IN cities.telephone_co%TYPE DEFAULT NULL, 
             p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
             p_municipality_id   IN cities.municipality_id%TYPE DEFAULT NULL,
             p_population        IN cities.population%TYPE DEFAULT NULL,
-            p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
+            p_uuid              IN OUT cities.uuid%TYPE,
             p_slug              IN cities.slug%TYPE DEFAULT NULL,
             p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
-            p_created_at        IN cities.created_at%TYPE DEFAULT NULL, 
+            p_created_at        IN OUT cities.created_at%TYPE, 
             p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
         ) IS
         --
-        ui  varchar2(60)    := sys_guid();
-        --
     BEGIN
         --
-        IF p_uuid IS NOT NULL THEN 
-            ui := sys_k_utils.f_uuid();
+        IF p_id IS NULL THEN 
+            p_id := inc_id;
+        END IF;
+        --
+        IF p_uuid IS NULL THEN 
+            p_uuid :=  sys_k_utils.f_uuid();
         END IF;    
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF;
         --
         INSERT INTO igtp.cities(
             id,
@@ -135,7 +141,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_postal_co,
             p_municipality_id,
             p_population,
-            ui,
+            p_uuid,
             p_slug,
             p_user_id,
             p_created_at,
@@ -148,7 +154,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     PROCEDURE ins ( p_rec IN OUT cities%ROWTYPE ) IS
     BEGIN
         --
-        p_rec.created_at := sysdate;
+        IF p_rec.created_at IS NULL THEN 
+            p_rec.created_at := sysdate;
+        END IF;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
@@ -173,22 +181,21 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_postal_co         IN cities.postal_co%TYPE DEFAULT NULL, 
             p_municipality_id   IN cities.municipality_id%TYPE DEFAULT NULL,
             p_population        IN cities.population%TYPE DEFAULT NULL,
-            p_uuid              IN cities.uuid%TYPE DEFAULT NULL,
+            p_uuid              IN OUT cities.uuid%TYPE,
             p_slug              IN cities.slug%TYPE DEFAULT NULL,
             p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
-            p_created_at        IN cities.created_at%TYPE DEFAULT NULL, 
+            p_created_at        IN OUT cities.created_at%TYPE, 
             p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
         ) IS
-        --
-        l_uuid  cities.uuid%TYPE;
-        --
     BEGIN
         --
         IF p_uuid IS NULL THEN 
-            l_uuid := sys_k_utils.f_uuid();
-        ELSE 
-            l_uuid := p_uuid;
+            p_uuid := sys_k_utils.f_uuid();
         END IF;   
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF;
         --
         UPDATE igtp.cities 
         SET city_co         = p_city_co,
@@ -197,7 +204,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             postal_co       = p_postal_co,
             municipality_id = p_municipality_id,
             population      = p_population,
-            uuid            = l_uuid,
+            uuid            = p_uuid,
             slug            = p_slug,
             user_id         = p_user_id,
             created_at      = p_created_at,
@@ -252,5 +259,4 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     END exist;
     --
 END cfg_api_k_city;
-
 /
