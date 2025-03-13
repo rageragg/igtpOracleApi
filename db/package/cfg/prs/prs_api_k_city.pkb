@@ -109,9 +109,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
     --
     -- obteniendo el registro 
     FUNCTION get_record(
-        p_city_co   cities.city_co%TYPE,
-        p_result            OUT VARCHAR2 
-    ) RETURN city_api_doc IS 
+            p_city_co   cities.city_co%TYPE,
+            p_result            OUT VARCHAR2 
+        ) RETURN city_api_doc IS 
     BEGIN 
         --
         -- validamos que el codigo de ciudad exista
@@ -159,6 +159,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             WHEN e_exist_city_code THEN 
                 --
                 p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --
+                RETURN NULL;
                 -- 
             WHEN OTHERS THEN 
                 --
@@ -167,6 +169,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
                     p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
                     --
                 END IF;
+                --
+                RETURN NULL;
+                --
         --
     END get_record;
     --
