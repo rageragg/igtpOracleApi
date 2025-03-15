@@ -1,0 +1,54 @@
+{
+    "num_policy": "42001235658",
+    "policyholder": {
+        "typ_document": "CED",
+        "cod_document": "10075340",
+        "surnames": "GUERRA ESTE",
+        "names": "RONALD ALFONSO",
+        "type_beneficiary": 1,
+        "phone": "983-555-6509",
+        "address": {
+            "street": "200 Sporting Green",
+            "city": "South San Francisco",
+            "state": "CA",
+            "zipCode": 99236,
+            "country": "United States of America"
+        }
+    },
+    "fec_emision": "01012025",
+    "fec_efec_poliza": "01012025",
+    "fec_vcto_poliza": "01012026",
+    "num_renewal": 0,
+    "last_spto": 0,
+    "risks": [
+        {
+            "num_risk": 1,
+            "policy_beneficiary": {
+                "typ_document": "CED",
+                "cod_document": "10075340",
+                "surnames": "GUERRA ESTE",
+                "names": "RONALD ALFONSO",
+                "type_beneficiary": 2,
+                "phone": "983-555-6509",
+                "address": {
+                    "street": "200 Sporting Green",
+                    "city": "South San Francisco",
+                    "state": "CA",
+                    "zipCode": 99236,
+                    "country": "United States of America"
+                }
+            },
+            "risk_data": {
+                "typ_risk": "HOUSE",
+                "sum insured": 2000,
+                "address": {
+                    "street": "200 Sporting Green",
+                    "city": "South San Francisco",
+                    "state": "CA",
+                    "zipCode": 99236,
+                    "country": "United States of America"
+                }
+            }
+        }
+    ]
+}
