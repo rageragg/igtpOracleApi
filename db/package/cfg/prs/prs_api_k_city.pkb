@@ -92,18 +92,50 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
     END validate_all;
     --
-    -- process events
-    PROCEDURE process_event( p_event VARCHAR2 ) IS 
+    -- se establece los valores globales
+    FUNCTION get_globals RETURN VARCHAR2 IS 
+        --
+        l_obj       json_object_t;
+        --
     BEGIN 
         --
+        l_obj   := json_object_t();
+        l_obj.put( 'id', g_reg_city.id );
+        l_obj.put( 'city_co', g_reg_city.city_co );
+        l_obj.put( 'description', g_reg_city.description );
+        l_obj.put( 'telephone_co', g_reg_city.telephone_co );
+        l_obj.put( 'postal_co', g_reg_city.postal_co );
+        l_obj.put( 'municipality_id', g_reg_city.municipality_id );
+        l_obj.put( 'uuid', g_reg_city.uuid );
+        l_obj.put( 'slug', g_reg_city.slug );
+        l_obj.put( 'user_id', g_reg_city.user_id );
+        l_obj.put( 'created_at', g_reg_city.created_at );
+        --
+        RETURN l_obj.stringify;
+        --
+    END get_globals;
+    --
+    -- process events
+    PROCEDURE process_event( p_event VARCHAR2 ) IS 
+        --
+        l_pay_load VARCHAR2(32000);
+        --
+    BEGIN 
+        --
+        l_pay_load := get_globals;
+        --
+        -- TODO: establecer las variables globales
+        sys_k_global.p_seter(
+            p_variable  => 'PARAMETERS', 
+            p_value     => l_pay_load
+        );
+        --
         -- TODO: procesos de eventos
-        /*
-            sys_k_process.p_execute_event(
-                process_co      => K_PROCESS,
-                p_event         => p_event
-            );
-        */
-        NULL;
+        prs_k_proccess.p_execute_event(
+            p_proccess_co       => K_PROCESS,
+            p_context           => K_CONTEXT,
+            p_k_event_process   => p_event
+        );
         --
     END process_event;
     --

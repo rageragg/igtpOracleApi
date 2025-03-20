@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE sys_k_proccess IS
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'PROCCESSES';
     --
-    TYPE proccess_api_tab IS TABLE OF igtp.proccesses%ROWTYPE;
+    TYPE proccess_api_tab IS TABLE OF igtp.proccesses%ROWTYPE INDEX BY PLS_INTEGER;
     --
     -- get DATA RETURN RECORD by PRELOAD with function exist
     FUNCTION get_record RETURN igtp.proccesses%ROWTYPE;
@@ -21,6 +21,13 @@ CREATE OR REPLACE PACKAGE sys_k_proccess IS
         p_k_event_process   IN proccesses.k_event_process%TYPE,
         p_sequence          IN proccesses.sequence%TYPE
     ) RETURN igtp.proccesses%ROWTYPE;
+    --
+    -- get LIST DATA RECORD BY CO
+    FUNCTION get_lst_record( 
+        p_proccess_co       IN proccesses.proccess_co%TYPE,
+        p_context           IN proccesses.context%TYPE,
+        p_k_event_process   IN proccesses.k_event_process%TYPE
+    ) RETURN proccess_api_tab;
     --
     -- insert proccess by document
     PROCEDURE ins (
