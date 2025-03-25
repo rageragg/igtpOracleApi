@@ -234,7 +234,8 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
     PROCEDURE del ( p_id in cities.id%TYPE ) IS
     BEGIN
         --
-        DELETE FROM igtp.cities WHERE id = p_id;
+        DELETE FROM igtp.cities 
+            WHERE id = p_id;
         --
     END del;
     --

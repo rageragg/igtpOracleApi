@@ -80,8 +80,8 @@ begin
     r_customer.user_co            := l_obj.get_string('user_co');
     --
     l_ok := prs_api_k_customer.ins( 
-            p_rec       => r_customer,
-            p_result    => l_result
+        p_rec       => r_customer,
+        p_result    => l_result
     );
     --
     -- verificacion de resultado

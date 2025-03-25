@@ -52,7 +52,28 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
         --
         RETURN l_data;
         --
-    END get_record;  
+    END get_record;
+    --
+    -- get DATA RETURN Array
+    FUNCTION get_list RETURN municipalities_api_tab IS 
+        --
+        l_data municipalities_api_tab;
+        --
+        CURSOR c_data IS 
+            SELECT * FROM igtp.municipalities ORDER BY K_ORDER_LIST;
+        --    
+    BEGIN 
+        --
+        OPEN c_data;
+        LOOP
+            FETCH c_data BULK COLLECT INTO l_data LIMIT K_LIMIT_LIST;   
+            EXIT WHEN c_data%NOTFOUND;
+        END LOOP;
+        CLOSE c_data;
+        --
+        RETURN l_data;
+        --
+    END get_list;   
     --
     -- create incremental id
     FUNCTION inc_id RETURN NUMBER IS 
@@ -73,24 +94,30 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     --       
     -- insert
     PROCEDURE ins (
-            p_id               IN municipalities.id%TYPE,
+            p_id               IN OUT municipalities.id%TYPE,
             p_municipality_co  IN municipalities.municipality_co%TYPE DEFAULT NULL, 
             p_description      IN municipalities.description%TYPE DEFAULT NULL, 
             p_province_id      IN municipalities.province_id%TYPE DEFAULT NULL, 
-            p_uuid             IN municipalities.uuid%TYPE DEFAULT NULL,
+            p_uuid             IN OUT municipalities.uuid%TYPE,
             p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
             p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
-            p_created_at       IN municipalities.created_at%TYPE DEFAULT NULL, 
+            p_created_at       IN OUT municipalities.created_at%TYPE, 
             p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
         ) IS
-        --
-        ui  varchar2(60)    := sys_k_utils.f_uuid();
-        --        
+        --     
     BEGIN
         --
-        IF p_uuid IS NOT NULL THEN 
-            ui := p_uuid;
-        END IF;   
+        IF p_id IS NULL THEN 
+            p_id := inc_id;
+        END IF;
+        --
+        IF p_uuid IS NULL THEN 
+            p_uuid :=  sys_k_utils.f_uuid();
+        END IF;    
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF;
         --
         INSERT INTO municipalities(
             id,
@@ -107,7 +134,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
             p_description,
             p_municipality_co,
             p_province_id,
-            ui,
+            p_uuid,
             p_slug,
             p_user_id,
             p_created_at,
@@ -120,15 +147,17 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     PROCEDURE ins ( p_rec  IN OUT municipalities%ROWTYPE ) IS 
     BEGIN 
         --
-        p_rec.created_at    := sysdate;
+        IF p_rec.created_at IS NULL THEN 
+            p_rec.created_at := sysdate;
+        END IF;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
-        END IF; 
-        --
+        END IF;
+        --    
         IF p_rec.uuid IS NULL THEN 
             p_rec.uuid := sys_k_utils.f_uuid();
-        END IF;  
+        END IF;    
         --
         INSERT INTO municipalities 
              VALUES p_rec
@@ -142,13 +171,21 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
             p_municipality_co  IN municipalities.municipality_co%TYPE DEFAULT NULL, 
             p_description      IN municipalities.description%TYPE DEFAULT NULL, 
             p_province_id      IN municipalities.province_id%TYPE DEFAULT NULL, 
-            p_uuid             IN municipalities.uuid%TYPE DEFAULT NULL,
+            p_uuid             IN OUT municipalities.uuid%TYPE,
             p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
             p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
-            p_created_at       IN municipalities.created_at%TYPE DEFAULT NULL, 
+            p_created_at       IN OUT municipalities.created_at%TYPE, 
             p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
         ) IS
     BEGIN
+        --
+        IF p_uuid IS NULL THEN 
+            p_uuid := sys_k_utils.f_uuid();
+        END IF;   
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF;
         --
         UPDATE municipalities 
            SET description = p_description,
@@ -167,6 +204,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     PROCEDURE upd ( p_rec  IN OUT municipalities%ROWTYPE ) IS 
     BEGIN 
         --
+        IF p_rec.uuid IS NULL THEN 
+            p_rec.uuid := sys_k_utils.f_uuid();
+        END IF;   
+        --
         p_rec.updated_at := sysdate;
         --
         UPDATE municipalities 
@@ -179,8 +220,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     -- del
     PROCEDURE del ( p_id IN municipalities.id%TYPE ) IS
     BEGIN
+        --
         DELETE FROM municipalities
-              WHERE id = p_id;
+            WHERE id = p_id;
+        --
     END del;
     --
     -- exist
