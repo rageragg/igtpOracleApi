@@ -106,24 +106,27 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         l_obj.put( 'telephone_co', g_reg_city.telephone_co );
         l_obj.put( 'postal_co', g_reg_city.postal_co );
         l_obj.put( 'municipality_id', g_reg_city.municipality_id );
+        l_obj.put( 'municipality_co', g_doc_city.p_municipality_co );
         l_obj.put( 'uuid', g_reg_city.uuid );
         l_obj.put( 'slug', g_reg_city.slug );
         l_obj.put( 'user_id', g_reg_city.user_id );
+        l_obj.put( 'user_co', g_doc_city.p_user_co );
         l_obj.put( 'created_at', g_reg_city.created_at );
         --
         RETURN l_obj.stringify;
         --
     END get_json;
     --
-    -- establece los valores globales
+    -- establece los valores globales json
     PROCEDURE set_global IS
     BEGIN 
         --
+        -- global format JSON
         sys_k_global.p_seter(
-            p_variable  => 'CITY_JSON', 
+            p_variable  => sys_k_constant.K_CITY_JSON, 
             p_value     => get_json
         );
-        --
+          --
     END set_global;
     --
     -- process events
@@ -269,17 +272,22 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
         g_reg_city.user_id          :=  g_reg_user.id;
         --
+        -- ejecucion de procesos previos a insertar
         process_event( 
             p_event =>  sys_k_constant.K_DB_EP_BF_INSERT
         );
         --
         cfg_api_k_city.ins( p_rec => g_reg_city );
         --
+        -- ejecucion de procesos posteriores a insertar
         process_event( 
             p_event =>  sys_k_constant.K_DB_EP_AF_INSERT
         );
         --
         COMMIT;
+        --
+        -- se establece los valores globales json
+        set_global;
         --
         p_result := '{ "status":"OK", "message":"SUCCESS" }';
         --
