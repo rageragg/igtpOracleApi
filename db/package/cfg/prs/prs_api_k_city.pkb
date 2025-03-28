@@ -92,8 +92,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
     END validate_all;
     --
-    -- se establece los valores globales
-    FUNCTION get_globals RETURN VARCHAR2 IS 
+    -- se establece los valores json
+    FUNCTION get_json RETURN VARCHAR2 IS 
         --
         l_obj       json_object_t;
         --
@@ -113,7 +113,18 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
         RETURN l_obj.stringify;
         --
-    END get_globals;
+    END get_json;
+    --
+    -- establece los valores globales
+    PROCEDURE set_global IS
+    BEGIN 
+        --
+        sys_k_global.p_seter(
+            p_variable  => 'CITY_JSON', 
+            p_value     => get_json
+        );
+        --
+    END set_global;
     --
     -- process events
     PROCEDURE process_event( p_event VARCHAR2 ) IS 
@@ -122,7 +133,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
     BEGIN 
         --
-        l_pay_load := get_globals;
+        l_pay_load := get_json;
         --
         -- TODO: establecer las variables globales
         sys_k_global.p_seter(
@@ -400,6 +411,43 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
                 --
                 ROLLBACK;
                 --
+        --
+    END create_city;
+    --
+    -- create city by global data
+    PROCEDURE create_city( 
+            p_result    OUT VARCHAR2  
+        ) IS
+        --
+        l_rec   city_api_doc;
+        --
+    BEGIN
+        --
+        -- global format JSON
+        l_rec.p_city_co           := sys_k_global.ref_f_global(p_variable => 'city_co');
+        l_rec.p_description       := sys_k_global.ref_f_global(p_variable => 'description');
+        l_rec.p_telephone_co      := sys_k_global.ref_f_global(p_variable => 'telephone_co');
+        l_rec.p_postal_co         := sys_k_global.ref_f_global(p_variable => 'postal_co');
+        l_rec.p_municipality_co   := sys_k_global.ref_f_global(p_variable => 'municipality_co');
+        l_rec.p_uuid              := sys_k_global.ref_f_global(p_variable => 'uuid');
+        l_rec.p_slug              := sys_k_global.ref_f_global(p_variable => 'slug');
+        l_rec.p_user_co           := sys_k_global.ref_f_global(p_variable => 'user_co');
+        --
+        create_city( 
+            p_rec       => l_rec,
+            p_result    => p_result
+        );
+        --
+        set_global;
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
         --
     END create_city;
     --

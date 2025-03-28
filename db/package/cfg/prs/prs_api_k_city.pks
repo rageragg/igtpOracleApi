@@ -65,6 +65,11 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_result    OUT VARCHAR2
     );
     --
+    -- create city by global data
+    PROCEDURE create_city( 
+        p_result    OUT VARCHAR2  
+    );
+    --
     -- update city by documents
     PROCEDURE update_city(
         p_city_co           IN cities.city_co%TYPE DEFAULT NULL, 
