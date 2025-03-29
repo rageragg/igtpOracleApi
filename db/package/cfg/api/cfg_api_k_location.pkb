@@ -17,7 +17,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
     END get_record;    
     --
-    -- get DATA RETURN RECORD
+    -- get DATA RECORD BY ID
     FUNCTION get_record( p_id in locations.id%TYPE ) RETURN locations%ROWTYPE IS
         --
         l_data locations%ROWTYPE;
@@ -105,7 +105,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_uuid              IN OUT locations.uuid%TYPE,
             p_slug              IN locations.slug%TYPE DEFAULT NULL, 
             p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
-            p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
+            p_created_at        IN OUT locations.created_at%TYPE,
             p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
         ) IS   
     BEGIN
@@ -116,7 +116,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         IF p_uuid IS NULL THEN 
             p_uuid := sys_k_utils.f_uuid();
-        END IF;    
+        END IF;   
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF; 
         --
         INSERT INTO locations(
             id,
@@ -152,7 +156,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
     PROCEDURE ins( p_rec IN OUT locations%ROWTYPE ) IS  
     BEGIN 
         --
-        p_rec.created_at    := sysdate;
+        IF p_rec.created_at IS NULL THEN 
+            p_rec.created_at := sysdate;
+        END IF;
         --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
@@ -180,7 +186,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         p_uuid              IN OUT locations.uuid%TYPE,
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
-        p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
+        p_created_at        IN OUT locations.created_at%TYPE,
         p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
         ) IS
         -- 
@@ -188,7 +194,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         IF p_uuid IS NULL THEN 
             p_uuid := sys_k_utils.f_uuid();
-        END IF;  
+        END IF;
+        --
+        IF p_created_at IS NULL THEN 
+            p_created_at := sysdate;
+        END IF;        
         --
         UPDATE locations 
         SET postal_co   = p_postal_co,

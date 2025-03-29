@@ -1,32 +1,44 @@
---------------------------------------------------------
---  DDL for Package sys_k_dinamic
---------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
+    ---------------------------------------------------------------------------
+    --  DDL for Package PRS_K_PROCCESS (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
     --
-    /* -------------------- DESCRIPCION -------------------- 
-    || Permite realizar acciones dinamicas, tales como eje-
-    || cuciones de procedimientos, sentencias, etc.
-    */ -----------------------------------------------------
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --                                  Permite realizar acciones dinamicas, tales como eje-
+    --                                  cuciones de procedimientos, sentencias, etc.
+    ---------------------------------------------------------------------------
     --
-    TYPE t_t_values IS TABLE OF VARCHAR2(200) INDEX BY BINARY_INTEGER;
+    TYPE t_t_values IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
     TYPE c_return1 IS REF CURSOR;
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2, p_val_col VARCHAR2);
+    PROCEDURE p_set_val( 
+        p_nam_col VARCHAR2, 
+        p_val_col VARCHAR2
+    );
     --
     /* --------------------------------------------------------
     || Rellena tabla PL con los valores que se necesitan para
     || la condicion del cursor variable
     */ --------------------------------------------------------
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2, p_val_col NUMBER );
+    PROCEDURE p_set_val( 
+        p_nam_col VARCHAR2, 
+        p_val_col NUMBER 
+    );
     --
     /* --------------------------------------------------------
     || Rellena tabla PL con los valores que se necesitan para
     || la condicion del cursor variable
     */ --------------------------------------------------------
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2, p_val_col DATE );
+    PROCEDURE p_set_val( 
+        p_nam_col VARCHAR2, 
+        p_val_col DATE 
+    );
     --
     /* --------------------------------------------------------
     || Rellena tabla PL con los valores que se necesitan para
@@ -34,10 +46,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     */ --------------------------------------------------------
     --
     FUNCTION f_value_in_table(
-                                p_table   VARCHAR2,
-                                p_column VARCHAR2,
-                                p_where   VARCHAR2
-                             ) RETURN VARCHAR2;
+        p_table     VARCHAR2,
+        p_column    VARCHAR2,
+        p_where     VARCHAR2
+    ) RETURN VARCHAR2;
     --
     /* --------------------------------------------------------
     || Devuelve la primera fila que comple la condicion de la
@@ -45,11 +57,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     */ --------------------------------------------------------
     --
     FUNCTION f_value_in_table(
-                                p_table     VARCHAR2,
-                                p_column   VARCHAR2,
-                                p_where     VARCHAR2,
-                                p_t_values t_t_values 
-                             ) RETURN VARCHAR2;
+        p_table     VARCHAR2,
+        p_column    VARCHAR2,
+        p_where     VARCHAR2,
+        p_t_values  t_t_values 
+    ) RETURN VARCHAR2;
     --
     /* --------------------------------------------------------
     || Devuelve la primera fila que cumple la condicion de la
@@ -58,13 +70,18 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     || en la variable de tipo tabla p_t_values
     */ --------------------------------------------------------
     --
-    PROCEDURE p_exec_procedure(p_procedure VARCHAR2);
+    PROCEDURE p_exec_procedure(
+        p_procedure VARCHAR2
+    );
     --
     /* --------------------------------------------------------
     || Ejecuta el procedimiento enviado como parametro
     */ --------------------------------------------------------
     --
-    PROCEDURE p_exec_procedure(p_procedure VARCHAR2, p_t_values t_t_values);
+    PROCEDURE p_exec_procedure(
+        p_procedure VARCHAR2, 
+        p_t_values t_t_values
+    );
     --
     /* --------------------------------------------------------
     || Ejecuta el procedimiento enviado como par?metro asignadose
@@ -72,7 +89,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     || p_t_values.
     */ --------------------------------------------------------
     --
-    FUNCTION f_exec_statement(p_statement VARCHAR2) RETURN NUMBER;
+    FUNCTION f_exec_statement(
+        p_statement VARCHAR2
+    ) RETURN NUMBER;
     --
     /* --------------------------------------------------------
     || Ejecuta la sentencia SQL eviada como parametro. Si la 
@@ -81,9 +100,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     */ --------------------------------------------------------
     --
     FUNCTION f_exec_statement(   
-                                    p_statement VARCHAR2, 
-                                    p_t_values t_t_values 
-                                ) RETURN NUMBER;
+        p_statement VARCHAR2, 
+        p_t_values  t_t_values 
+    ) RETURN NUMBER;
     --
     /* --------------------------------------------------------
     || Ejecuta la sentencia SQL eviada como parametro. Si la 
@@ -93,23 +112,31 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     || par?metro p_t_values de tipo tabla
     */ --------------------------------------------------------
     --
-    PROCEDURE p_ejecuta_sentencia(p_statement VARCHAR2);
+    PROCEDURE p_ejecuta_sentencia(
+        p_statement VARCHAR2
+    );
     --
     /* --------------------------------------------------------
     || Ejecuta la sentencia SQL eviada como parametro.
     */ --------------------------------------------------------
     --
-    PROCEDURE p_ejecuta_sentencia(p_statement VARCHAR2,
-                                p_t_values t_t_values);
+    PROCEDURE p_ejecuta_sentencia(
+        p_statement VARCHAR2,
+        p_t_values t_t_values
+    );
     --
     /* --------------------------------------------------------
     || Ejecuta la sentencia SQL eviada como parametro.
     || Los par?metros que lleve la sentencia SQL, se reciben
     || en el par?metro p_t_values de tipo tabla.
     */ --------------------------------------------------------
-    PROCEDURE p_statement_session(p_statement VARCHAR2);
+    PROCEDURE p_statement_session(
+        p_statement VARCHAR2
+    );
     --
-    PROCEDURE p_statement_and_commit(p_statement VARCHAR2);
+    PROCEDURE p_statement_and_commit(
+        p_statement VARCHAR2
+    );
     --
     --
     /**---------------------------------------------------------------------------
@@ -125,12 +152,14 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
     || #param    p_order_by         IN      Cadena con el ORDER BY.
     */ ----------------------------------------------------------------------------
     --
-    FUNCTION f_open_cursor( p_t_values   t_t_values,
-                            p_select      VARCHAR2,
-                            p_from        VARCHAR2,
-                            p_where       VARCHAR2,
-                            p_where_rest VARCHAR2,
-                            p_order_by    VARCHAR2) RETURN c_return1;
+    FUNCTION f_open_cursor( 
+        p_t_values   t_t_values,
+        p_select        VARCHAR2,
+        p_from          VARCHAR2,
+        p_where         VARCHAR2,
+        p_where_rest    VARCHAR2,
+        p_order_by      VARCHAR2
+    ) RETURN c_return1;
     --
 END sys_k_dinamic;
 

@@ -95,7 +95,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         --
     BEGIN 
         --
-        -- TODO: 1.- validar que el codigo de locacion no exista
+        -- validar que el codigo de locacion no exista
         IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
             --
             raise_error( 
@@ -105,6 +105,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --  
         END IF;
         --
+        -- valida que el codigo de la ciudad existe
         IF NOT cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
             --
             raise_error( 
@@ -114,10 +115,12 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             -- 
         ELSE 
             --
+            -- obtenemos el registro de ciudad
             l_reg_city := cfg_api_k_city.get_record;
             --            
         END IF;
         --
+        -- valida que el usuario exista
         IF NOT sec_api_k_user.exist( p_user_co =>  p_user_co ) THEN
             --
             raise_error( 
@@ -127,6 +130,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             -- 
         ELSE 
             --
+            -- obtenemos el registro de usuario
             g_rec_user := sec_api_k_user.get_record;
             --            
         END IF;
@@ -150,8 +154,10 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --
         END IF;
         --
+        -- establecemos el id del usuario
         g_rec_location.user_id := g_rec_user.id;
         --
+        -- realizamos la insercion de los datos
         cfg_api_k_location.ins( p_rec => g_rec_location );
         --
         COMMIT;
@@ -246,10 +252,14 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --
         END IF;
         --
+        -- TODO: Process before insert
+        --
         -- creamos el registro
         cfg_api_k_location.ins( 
             p_rec => g_rec_location 
         );
+        --
+        -- TODO: Process after insert
         --
         p_rec.p_uuid    := g_rec_location.uuid;
         p_rec.p_slug    := g_rec_location.slug;                
@@ -293,12 +303,13 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         --
     BEGIN
         --
-        -- TODO: 1.- validar que el codigo de ciudad exista
+        -- TODO: 1.- validar que el codigo de locacion exista
         IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
             --
             -- tomamos el registro encontrado
             g_rec_location := cfg_api_k_location.get_record;
             --
+            -- validamos que el codigo de la ciudad exista
             IF NOT cfg_api_k_city.exist( p_city_co => p_city_co )  THEN
                 --
                 -- TODO: regionalizacion de mensajes
@@ -312,10 +323,12 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 -- 
             ELSE 
                 --
+                -- obtenemos el registro de ciudad
                 l_reg_city := cfg_api_k_city.get_record;
                 --
             END IF;
             --
+            -- valimaos que el usuario exista
             IF NOT sec_api_k_user.exist(p_user_co => p_user_co) THEN
                 --
                 -- TODO: regionalizacion de mensajes
@@ -326,6 +339,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 --
             ELSE 
                 --
+                -- obtenemos el registro de usuario
                 g_rec_user := sec_api_k_user.get_record;
                 --
             END IF;
@@ -337,11 +351,14 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             g_rec_location.nu_gps_lat       := p_nu_gps_lat;
             g_rec_location.nu_gps_lon       := p_nu_gps_lon;
             --
-            -- creamos el slug
+            -- creamos el uuid
             IF p_uuid IS NOT NULL THEN 
+                --
                 g_rec_location.uuid             :=  p_uuid;
+                --
             END IF;
             --
+            -- creamos el slug 
             IF p_slug IS NOT NULL THEN 
                 --
                 g_rec_location.slug             :=  p_slug;
@@ -349,14 +366,20 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             ELSE
                 --
                 IF g_rec_location.slug IS NULL THEN 
+                    --
                     g_rec_location.slug :=  lower( substr(l_reg_city.slug||'-'||g_rec_location.location_co,1,60) );
+                    --
                 END IF;
                 --
             END IF;
             --
             g_rec_location.user_id          := g_rec_user.id;
             --
+            -- TODO: Process before insert
+            --
             cfg_api_k_location.upd( p_rec => g_rec_location );
+            --
+            -- TODO: Process after insert
             --
             COMMIT;
             --
@@ -405,12 +428,13 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         --
     BEGIN
         --
-        -- TODO: 1.- validar que el codigo de ciudad exista
+        -- validar que el codigo de ciudad exista
         IF cfg_api_k_location.exist( p_location_co => p_rec.p_location_co ) THEN
             --
             -- tomamos el registro encontrado
             g_rec_location := cfg_api_k_location.get_record;
             --
+            -- validamos que el codigo de la ciudad exista
             IF NOT cfg_api_k_city.exist( p_city_co => p_rec.p_city_co )  THEN
                 --
                 -- TODO: regionalizacion de mensajes
@@ -424,10 +448,12 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 -- 
             ELSE 
                 --
+                -- obtenemos el registro de ciudad
                 l_reg_city := cfg_api_k_city.get_record;
                 --
             END IF;
             --
+            -- valimaos que el usuario exista
             IF NOT sec_api_k_user.exist(p_user_co => p_rec.p_user_co) THEN
                 --
                 -- TODO: regionalizacion de mensajes
@@ -438,6 +464,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 --
             ELSE 
                 --
+                -- tomamos el registro de usuario
                 g_rec_user := sec_api_k_user.get_record;
                 --
             END IF;
@@ -449,11 +476,14 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             g_rec_location.nu_gps_lat       := p_rec.p_nu_gps_lat;
             g_rec_location.nu_gps_lon       := p_rec.p_nu_gps_lon;
             --
-            -- creamos el slug
+            -- creamos el uuid
             IF p_rec.p_uuid IS NOT NULL THEN 
+                --
                 g_rec_location.uuid             :=  p_rec.p_uuid;
+                --
             END IF;
             --
+            -- creamos el slug 
             IF p_rec.p_slug IS NOT NULL THEN 
                 --
                 g_rec_location.slug             :=  p_rec.p_slug;
@@ -468,7 +498,11 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --
             g_rec_location.user_id          := g_rec_user.id;
             --
+            -- TODO: Process before insert
+            --
             cfg_api_k_location.upd( p_rec => g_rec_location );
+            --
+            -- TODO: Process after insert
             --
             p_rec.p_uuid    := g_rec_location.uuid;
             p_rec.p_slug    := g_rec_location.slug;     
@@ -517,11 +551,13 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         ) IS 
     BEGIN 
         --
+        -- validamos que exista el codigo de ciudad
         IF cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
             --
             -- tomamos el registro encontrado
             g_rec_location := cfg_api_k_location.get_record;
             --
+            -- eliminamos el registro
             cfg_api_k_location.del( p_id => g_rec_location.id );
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';

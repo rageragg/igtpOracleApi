@@ -3,13 +3,18 @@
 --------------------------------------------------------
 
   CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_dinamic AS
+    ---------------------------------------------------------------------------
+    --  DDL for Package PRS_K_PROCCESS (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
     --
-    /* -------------------- DESCRIPCION -------------------- 
-    || Permite realizar acciones dinamicas, tales como eje-
-    || cuciones de procedimientos, sentencias, etc.
-    */ -----------------------------------------------------
-    --
-    /* -------------------- VERSION = 1.01 -------------------- */
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    --                                  Permite realizar acciones dinamicas, tales como eje-
+    --                                  cuciones de procedimientos, sentencias, etc.
+    ---------------------------------------------------------------------------
     --
     /* --------------------------------------------------------
     || Aqui comienza la declaracion de tablas GLOBALES
@@ -40,7 +45,10 @@
     || Genera la traza
     */ --------------------------------------------------------
     --
-    PROCEDURE mx( p_tit VARCHAR2, p_val VARCHAR2) IS
+    PROCEDURE mx( 
+            p_tit VARCHAR2, 
+            p_val VARCHAR2
+        ) IS
     BEGIN
         --
         sys_k_global.seter('fic_traza','dangel'      );
@@ -88,15 +96,18 @@
     || 
     */ --------------------------------------------------------
     -- 
-    PROCEDURE pp_bind_variable(p_cursor INTEGER) IS
+    PROCEDURE pp_bind_variable(
+            p_cursor INTEGER
+        ) IS
     BEGIN
         --
         FOR l_row_c IN NVL(g_tb_variables.FIRST,0)..NVL(g_tb_variables.LAST,-1) LOOP
             --
-            --
-            DBMS_SQL.BIND_VARIABLE( p_cursor,g_tb_variables(l_row_c).nam_col,
-                                    g_tb_variables(l_row_c).val_col
-                                );
+            dbms_sql.bind_variable( 
+                c       =>  p_cursor,
+                name    =>  g_tb_variables(l_row_c).nam_col,
+                value   =>  g_tb_variables(l_row_c).val_col
+            );
             --
         END LOOP;
         --
@@ -113,9 +124,10 @@
     || la condicion del cursor variable
     */ --------------------------------------------------------
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2,
-                            p_val_col VARCHAR2
-                        ) IS
+    PROCEDURE p_set_val(
+            p_nam_col VARCHAR2,
+            p_val_col VARCHAR2
+        ) IS
         --
         l_position INTEGER;
         --
@@ -135,9 +147,10 @@
     || la condicion del cursor variable
     */ --------------------------------------------------------
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2,
-                         p_val_col NUMBER
-                       ) IS
+    PROCEDURE p_set_val( 
+            p_nam_col VARCHAR2,
+            p_val_col NUMBER
+        ) IS
         --
         l_position INTEGER;
         --
@@ -157,9 +170,10 @@
     || la condicion del cursor variable
     */ --------------------------------------------------------
     --
-    PROCEDURE p_set_val( p_nam_col VARCHAR2,
-                         p_val_col DATE 
-                        ) IS
+    PROCEDURE p_set_val( 
+            p_nam_col VARCHAR2,
+            p_val_col DATE 
+        ) IS
         --
         l_position INTEGER;
         --
@@ -179,10 +193,11 @@
     || columna y tabla eviada como parametro
     */ --------------------------------------------------------
     --
-    FUNCTION f_value_in_table( p_table   VARCHAR2,
-                                p_column VARCHAR2,
-                                p_where   VARCHAR2
-                                ) RETURN VARCHAR2 IS
+    FUNCTION f_value_in_table( 
+            p_table   VARCHAR2,
+            p_column VARCHAR2,
+            p_where   VARCHAR2
+        ) RETURN VARCHAR2 IS
         --
         l_cursor      INTEGER;
         l_rows        INTEGER;
@@ -194,20 +209,20 @@
         --
     BEGIN
         --
-        l_cursor := DBMS_SQL.open_cursor;
+        l_cursor := dbms_sql.open_cursor;
         --
-        DBMS_SQL.parse(l_cursor,l_statement,DBMS_SQL.v7);
+        dbms_sql.parse(l_cursor,l_statement,dbms_sql.v7);
         --
-        DBMS_SQL.define_column(l_cursor,1,l_value,l_k_lng);
+        dbms_sql.define_column(l_cursor,1,l_value,l_k_lng);
         --
         pp_bind_variable(l_cursor);
         --
-        l_rows := DBMS_SQL.execute(l_cursor);
-        l_rows := DBMS_SQL.fetch_rows(l_cursor);
+        l_rows := dbms_sql.execute(l_cursor);
+        l_rows := dbms_sql.fetch_rows(l_cursor);
         --
-        DBMS_SQL.column_value(l_cursor,1,l_value);
+        dbms_sql.column_value(l_cursor,1,l_value);
         --
-        DBMS_SQL.close_cursor(l_cursor);
+        dbms_sql.close_cursor(l_cursor);
         --
         g_tb_variables.DELETE;
         --
@@ -216,7 +231,7 @@
         EXCEPTION
             WHEN OTHERS THEN
                 --
-                DBMS_SQL.close_cursor(l_cursor);
+                dbms_sql.close_cursor(l_cursor);
                 --
                 g_tb_variables.DELETE;
                 --
@@ -234,11 +249,11 @@
     */ --------------------------------------------------------
     --
     FUNCTION f_value_in_table(
-                            p_table     VARCHAR2,
-                            p_column   VARCHAR2,
-                            p_where     VARCHAR2,
-                            p_t_values t_t_values
-                            ) RETURN VARCHAR2 IS
+            p_table     VARCHAR2,
+            p_column    VARCHAR2,
+            p_where     VARCHAR2,
+            p_t_values  t_t_values
+        ) RETURN VARCHAR2 IS
         --
         l_value       VARCHAR2(0100);
         l_statement   VARCHAR2(2000) := 'SELECT ' || p_column || '  FROM ' || p_table   || ' ' || p_where;
@@ -247,19 +262,17 @@
         --
     BEGIN
         --  
-        l_c_cursor := f_open_cursor ( p_t_values   => p_t_values,
-                                        p_select      => l_statement,
-                                        p_from        => NULL,
-                                        p_where       => NULL,
-                                        p_where_rest => NULL,
-                                        p_order_by    => NULL
-                                    );
+        l_c_cursor := f_open_cursor ( 
+            p_t_values      => p_t_values,
+            p_select        => l_statement,
+            p_from          => NULL,
+            p_where         => NULL,
+            p_where_rest    => NULL,
+            p_order_by      => NULL
+        );
         --
         FETCH l_c_cursor INTO l_value;
-            --
-            -- Solamente cogemos el primer registro
-            -- y salimos
-            --
+        --
         CLOSE l_c_cursor;                                                  
         --
         RETURN l_value;
@@ -277,7 +290,9 @@
     || Ejecuta el procedimiento enviado como parametro
     */ --------------------------------------------------------
     --
-    PROCEDURE p_exec_procedure(p_procedure VARCHAR2) IS
+    PROCEDURE p_exec_procedure(
+            p_procedure VARCHAR2
+        ) IS
         --
         l_k_init  CONSTANT VARCHAR2(05) := 'BEGIN';
         l_k_end   CONSTANT VARCHAR2(06) := '; END;';
@@ -388,15 +403,15 @@
         --
     BEGIN
         --
-        l_cursor := DBMS_SQL.open_cursor;
+        l_cursor := dbms_sql.open_cursor;
         --
-        DBMS_SQL.parse(l_cursor,p_statement,DBMS_SQL.v7);
+        dbms_sql.parse(l_cursor,p_statement,dbms_sql.v7);
         --
         pp_bind_variable(l_cursor);
         --
-        l_rows := DBMS_SQL.EXECUTE(l_cursor);
+        l_rows := dbms_sql.EXECUTE(l_cursor);
         --
-        DBMS_SQL.close_cursor(l_cursor);
+        dbms_sql.close_cursor(l_cursor);
         --
         g_tb_variables.DELETE;
         --
@@ -405,7 +420,7 @@
         EXCEPTION
             WHEN OTHERS THEN
                 --
-                DBMS_SQL.close_cursor(l_cursor);
+                dbms_sql.close_cursor(l_cursor);
                 --
                 g_tb_variables.DELETE;
                 --

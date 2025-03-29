@@ -18,7 +18,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     ---------------------------------------------------------------------------
     --
     K_PROCESS    CONSTANT VARCHAR2(30)  := sys_k_constant.K_CITY_PROCESS;
-    K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_OWNER      CONSTANT VARCHAR2(30)  := sys_k_constant.K_OWNER_APP;
     K_CONTEXT    CONSTANT VARCHAR2(30)  := sys_k_constant.K_CITY_CONTEXT;
     --
     TYPE city_api_doc IS RECORD(
@@ -63,6 +63,11 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     PROCEDURE create_city( 
         p_json      IN OUT VARCHAR2,
         p_result    OUT VARCHAR2
+    );
+    --
+    -- create city by global data
+    PROCEDURE create_city( 
+        p_result    OUT VARCHAR2  
     );
     --
     -- update city by documents

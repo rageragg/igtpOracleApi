@@ -39,7 +39,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
         p_uuid              IN OUT locations.uuid%TYPE,
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
-        p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
+        p_created_at        IN OUT locations.created_at%TYPE,
         p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
     );
     --
@@ -58,7 +58,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
         p_uuid              IN OUT locations.uuid%TYPE,
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
-        p_created_at        IN locations.created_at%TYPE DEFAULT NULL,
+        p_created_at        IN OUT locations.created_at%TYPE,
         p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
     );
     --
@@ -75,5 +75,4 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
     FUNCTION exist( p_location_co IN locations.location_co%TYPE ) RETURN BOOLEAN;
     --
 END cfg_api_k_location;
-
 /

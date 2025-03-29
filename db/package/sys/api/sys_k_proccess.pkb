@@ -61,6 +61,39 @@ IS
         --
     END get_record;
     --
+    -- get LIST DATA RECORD BY CO
+    FUNCTION get_lst_record( 
+            p_proccess_co       IN proccesses.proccess_co%TYPE,
+            p_context           IN proccesses.context%TYPE,
+            p_k_event_process   IN proccesses.k_event_process%TYPE
+        ) RETURN proccess_api_tab IS 
+        --
+        l_data proccesses%ROWTYPE;
+        l_lst  proccess_api_tab;
+        idx    PLS_INTEGER;
+        --
+        CURSOR c_data IS 
+            SELECT * 
+              FROM igtp.proccesses 
+             WHERE proccess_co      = p_proccess_co
+               AND context          = p_context
+               AND k_event_process  = p_k_event_process;
+        -- 
+    BEGIN 
+        --
+        idx := 0;
+        --
+        FOR r_data IN c_data LOOP 
+            --
+            idx         := idx + 1;
+            l_lst(idx)  := r_data;
+            --
+        END LOOP;
+        --
+        RETURN l_lst;
+        --
+    END get_lst_record;
+    --
     -- create incremental id
     FUNCTION inc_id RETURN NUMBER IS 
         --

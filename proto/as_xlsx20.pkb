@@ -8,11 +8,11 @@ CREATE OR REPLACE PACKAGE BODY as_xlsx IS
     SUBTYPE tp_author IS VARCHAR2(32767 CHAR);
     --
     TYPE tp_XF_fmt IS RECORD( 
-      numFmtId  PLS_INTEGER
-      fontId    PLS_INTEGER
-      fillId    PLS_INTEGER
-      borderId  PLS_INTEGER
-      alignment tp_alignment
+      numFmtId  PLS_INTEGER,
+      fontId    PLS_INTEGER,
+      fillId    PLS_INTEGER,
+      borderId  PLS_INTEGER,
+      alignment tp_alignment,
       height    NUMBER
     );
     --

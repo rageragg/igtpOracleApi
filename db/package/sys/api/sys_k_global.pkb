@@ -21,7 +21,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_global AS
    */ --------------------------------------------------
    --
    SUBTYPE t_nam_variable IS VARCHAR2(0100);
-   SUBTYPE t_val_variable IS VARCHAR2(2000);
+   SUBTYPE t_val_variable IS VARCHAR2(32000);
    --
    TYPE reg_table IS RECORD(
       nam_variable t_nam_variable,
