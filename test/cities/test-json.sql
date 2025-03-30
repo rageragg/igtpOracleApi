@@ -14,7 +14,7 @@ BEGIN
     --
     -- seleccionamos una ciudad
     json_city := igtp.json_api_k_city.get_json( 
-        p_city_co => 'MIR-CHVE',
+        p_id      => 22,
         p_result  => l_result
     );
     --
@@ -46,9 +46,11 @@ BEGIN
     --
     EXCEPTION 
         WHEN OTHERS THEN 
+            --
             IF l_result IS NULL THEN 
               l_result := SQLERRM;
             END IF;
+            --
             dbms_output.put_line( 'Error: ' || l_result );
     --
 END;

@@ -43,6 +43,72 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
         -- 
     END raise_error;
     --
+    -- selecciona una ciudad por su id
+    FUNCTION get_json(
+            p_id        cities.id%TYPE,
+            p_result    OUT VARCHAR2 
+        ) RETURN JSON_OBJECT_T IS
+        --
+        l_json_result   VARCHAR2(32767);
+        json_city       JSON_OBJECT_T;
+        l_city_co       cities.city_co%TYPE;
+        r_city          cities%ROWTYPE;
+        --
+        CURSOR c_data IS
+            SELECT json_object( 
+                    'id' VALUE a.id,
+                    'description' VALUE a.description,
+                    'city_co' VALUE a.city_co,
+                    'postal_co' VALUE a.postal_co,
+                    'telephone_co' VALUE a.telephone_co,
+                    'municipality_id' VALUE a.municipality_id,
+                    'locations' VALUE json_arrayagg(b.id ORDER BY b.id)
+                    FORMAT JSON
+                ) json
+              FROM cities a 
+              INNER JOIN locations b ON a.id = b.city_id
+              WHERE a.city_co = l_city_co
+             GROUP BY a.id, a.description, a.city_co, a.postal_co, 
+                      a.telephone_co, a.municipality_id;
+        --
+    BEGIN
+        --
+         IF NOT cfg_api_k_city.exist( p_id => p_id ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20002,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            --
+        END IF;
+        --
+        r_city      := cfg_api_k_city.get_record;
+        l_city_co   := r_city.city_co;
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_json_result;
+        CLOSE c_data;
+        --
+        json_city := JSON_OBJECT_T.parse( l_json_result );
+        --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
+        RETURN json_city;
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                RETURN NULL;
+                --
+    END get_json;        
+    --
+    -- selecciona una ciudad por su codigo
     FUNCTION get_json(
             p_city_co   cities.city_co%TYPE,
             p_result    OUT VARCHAR2 
@@ -67,6 +133,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
               WHERE a.city_co = p_city_co
              GROUP BY a.id, a.description, a.city_co, a.postal_co, 
                       a.telephone_co, a.municipality_id;
+        --
     BEGIN
         --
          IF NOT cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
