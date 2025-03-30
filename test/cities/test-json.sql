@@ -3,6 +3,7 @@ DECLARE
     -- datos del documento
     l_result        VARCHAR2(4096);
     json_city       JSON_OBJECT_T;
+    json_city_doc   JSON_OBJECT_T;
     l_json_result   JSON_OBJECT_T;
     l_locations     JSON_ARRAY_T;
     --
@@ -41,6 +42,21 @@ BEGIN
     ELSE
         --
         dbms_output.put_line( 'Result: ' || l_result );
+        --
+    END IF;
+    --
+    -- seleccionamos una ciudad
+    json_city_doc := igtp.prs_api_k_city.get_json( 
+        p_city_co => 'ZUL-MCBO',
+        p_result  => l_result
+    );
+    --
+        --
+    l_json_result := JSON_OBJECT_T.parse(l_result);
+    --
+    IF l_json_result.get_string('status') = 'OK' THEN 
+        --
+        dbms_output.put_line( 'JSON: ' || json_city_doc.stringify );
         --
     END IF;
     --

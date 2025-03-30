@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
     --
     ---------------------------------------------------------------------------
@@ -396,8 +395,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         g_doc_city.p_city_co            := l_obj.get_string('city_co');
         g_doc_city.p_description        := l_obj.get_string('description');
         g_doc_city.p_telephone_co       := l_obj.get_string('telephone_co');
-        g_doc_city.p_postal_co          := l_obj.get_string('p_postal_co');
-        g_doc_city.p_municipality_co    := l_obj.get_string('p_municipality_co');
+        g_doc_city.p_postal_co          := l_obj.get_string('postal_co');
+        g_doc_city.p_municipality_co    := l_obj.get_string('municipality_co');
         g_doc_city.p_slug               := l_obj.get_string('slug');
         g_doc_city.p_user_co            := l_obj.get_string('user_co');
         --
@@ -637,8 +636,8 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         g_doc_city.p_city_co            := l_obj.get_string('city_co');
         g_doc_city.p_description        := l_obj.get_string('description');
         g_doc_city.p_telephone_co       := l_obj.get_string('telephone_co');
-        g_doc_city.p_postal_co          := l_obj.get_string('p_postal_co');
-        g_doc_city.p_municipality_co    := l_obj.get_string('p_municipality_co');
+        g_doc_city.p_postal_co          := l_obj.get_string('postal_co');
+        g_doc_city.p_municipality_co    := l_obj.get_string('municipality_co');
         g_doc_city.p_slug               := l_obj.get_string('slug');
         g_doc_city.p_user_co            := l_obj.get_string('user_co');
         --
@@ -714,6 +713,69 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
                 ROLLBACK;
         --
     END delete_city;
+    --
+    -- get json based on city_api_doc
+    FUNCTION get_json(
+            p_city_co   IN cities.city_co%TYPE,
+            p_result    OUT VARCHAR2 
+        ) RETURN JSON_OBJECT_T IS   
+        --
+        l_json_result       JSON_OBJECT_T;
+        l_json_city         JSON_OBJECT_T;
+        l_json_city_result  JSON_OBJECT_T;
+        --
+    BEGIN 
+        --
+        l_json_city_result  := JSON_OBJECT_T.parse('{}');
+        --
+        -- seleccionamos una ciudad
+        l_json_city := igtp.json_api_k_city.get_json( 
+            p_city_co => p_city_co,
+            p_result  => p_result
+        );
+        --
+        l_json_result := JSON_OBJECT_T.parse(p_result);
+        --
+        IF l_json_result.get_string('status') = 'OK' THEN 
+            --
+            -- completamos los datos del registro ciudad
+            g_doc_city.p_city_co            := l_json_city.get_string('city_co');
+            g_doc_city.p_description        := l_json_city.get_string('description');
+            g_doc_city.p_telephone_co       := l_json_city.get_string('telephone_co');
+            g_doc_city.p_postal_co          := l_json_city.get_string('postal_co');
+            g_doc_city.p_slug               := l_json_city.get_string('slug');
+            g_doc_city.p_uuid               := l_json_city.get_string('uuid');
+            g_doc_city.p_nu_gps_lat         := l_json_city.get_string('nu_gps_lat');
+            g_doc_city.p_nu_gps_lon         := l_json_city.get_string('nu_gps_lon');
+            --
+            g_doc_city.p_municipality_co := cfg_api_k_municipality.get_record(
+                p_id => l_json_city.get_string('municipality_id') 
+            ).municipality_co;
+            --
+            g_doc_city.p_user_co := sec_api_k_user.get_record(
+                p_id => l_json_city.get_string('user_id') 
+            ).user_co;
+            --
+            l_json_city_result.put( 'city_co', g_doc_city.p_city_co );
+            l_json_city_result.put( 'description', g_doc_city.p_description );
+            l_json_city_result.put( 'telephone_co', g_doc_city.p_telephone_co );
+            l_json_city_result.put( 'postal_co', g_doc_city.p_postal_co );
+            l_json_city_result.put( 'municipality_co', g_doc_city.p_municipality_co );
+            l_json_city_result.put( 'uuid', g_doc_city.p_uuid );
+            l_json_city_result.put( 'slug', g_doc_city.p_slug );
+            l_json_city_result.put( 'user_co', g_doc_city.p_user_co );
+            l_json_city_result.put( 'p_nu_gps_lat', g_doc_city.p_nu_gps_lat );
+            l_json_city_result.put( 'p_nu_gps_lon', g_doc_city.p_nu_gps_lon );
+            --
+            -- TODO: Arreglo de localidades
+            --
+            p_result := '{ "status":"OK", "message":"SUCCESS" }';
+            --
+        END IF;
+        --
+        RETURN l_json_city_result;
+        --
+    END get_json;
     --
 BEGIN
     --

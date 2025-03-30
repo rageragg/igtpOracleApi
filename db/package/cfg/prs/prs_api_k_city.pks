@@ -101,5 +101,11 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
         p_result    OUT VARCHAR2 
     );
     --
+    -- get json based on city_api_doc
+    FUNCTION get_json(
+        p_city_co   IN cities.city_co%TYPE,
+        p_result    OUT VARCHAR2 
+    ) RETURN JSON_OBJECT_T;
+    --
 END prs_api_k_city;
 /
