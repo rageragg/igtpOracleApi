@@ -1,0 +1,104 @@
+CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package JSON_API_K_CITY (Process)
+    --  REFERENCIAS
+    --  NOMBRE                          TIPO
+    --  =============================== =======================================
+    --
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    ---------------------------------------------------------------------------
+    --
+    g_hay_error                     BOOLEAN;
+    g_msg_error                     VARCHAR2(512);
+    g_cod_error                     NUMBER;
+    --
+    e_exist_city_code               EXCEPTION;
+    e_no_exist_city_code            EXCEPTION;
+    --
+    PRAGMA exception_init( e_exist_city_code, -20003 );
+    PRAGMA exception_init( e_no_exist_city_code, -20004 );
+    --
+    -- raise_error 
+    PROCEDURE raise_error( 
+            p_cod_error NUMBER,
+            p_msg_error VARCHAR2
+        ) IS 
+    BEGIN 
+        --
+        -- TODO: regionalizacion de mensajes
+        g_cod_error := p_cod_error;
+        g_hay_error := TRUE;
+        --
+        g_msg_error := prs_api_k_language.f_message( 
+            p_language_co => sys_k_global.geter(sys_k_constant.K_FIELD_LANGUAGE_CO),
+            p_context     => K_PROCESS,
+            p_error_co    => g_cod_error 
+        );
+        --
+        g_msg_error := nvl(g_msg_error, p_msg_error );
+        --
+        raise_application_error(g_cod_error, g_msg_error );
+        -- 
+    END raise_error;
+    --
+    FUNCTION get_json(
+            p_city_co   cities.city_co%TYPE,
+            p_result    OUT VARCHAR2 
+        ) RETURN JSON_OBJECT_T IS
+        --
+        l_json_result   VARCHAR2(32767);
+        json_city       JSON_OBJECT_T;
+        --
+        CURSOR c_data IS
+            SELECT json_object( 
+                    'id' VALUE a.id,
+                    'description' VALUE a.description,
+                    'city_co' VALUE a.city_co,
+                    'postal_co' VALUE a.postal_co,
+                    'telephone_co' VALUE a.telephone_co,
+                    'municipality_id' VALUE a.municipality_id,
+                    'locations' VALUE json_arrayagg(b.id ORDER BY b.id)
+                    FORMAT JSON
+                ) json
+              FROM cities a 
+              INNER JOIN locations b ON a.id = b.city_id
+              WHERE a.city_co = p_city_co
+             GROUP BY a.id, a.description, a.city_co, a.postal_co, 
+                      a.telephone_co, a.municipality_id;
+    BEGIN
+        --
+         IF NOT cfg_api_k_city.exist( p_city_co => p_city_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20002,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            --
+        END IF;
+        --
+        OPEN c_data;
+        FETCH c_data INTO l_json_result;
+        CLOSE c_data;
+        --
+        json_city := JSON_OBJECT_T.parse( l_json_result );
+        --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
+        RETURN json_city;
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                RETURN NULL;
+                --
+    END get_json;
+    --
+END json_api_k_city;

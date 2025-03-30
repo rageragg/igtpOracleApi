@@ -56,6 +56,7 @@ begin
     -- procesando el objeto JSON_ARRAY locations
     if data.has('locations') then 
         --
+        -- se clona el array JSON para evitar que se modifique el original
         locations := data.get_array('locations').clone;
         dbms_output.put_line(locations.to_string);
         --
