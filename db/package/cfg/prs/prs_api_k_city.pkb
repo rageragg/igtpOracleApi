@@ -723,6 +723,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         l_json_result       JSON_OBJECT_T;
         l_json_city         JSON_OBJECT_T;
         l_json_city_result  JSON_OBJECT_T;
+        l_locations         JSON_ARRAY_T;
         --
     BEGIN 
         --
@@ -756,18 +757,23 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
                 p_id => l_json_city.get_string('user_id') 
             ).user_co;
             --
-            l_json_city_result.put( 'city_co', g_doc_city.p_city_co );
-            l_json_city_result.put( 'description', g_doc_city.p_description );
+            l_json_city_result.put( 'p_city_co', g_doc_city.p_city_co );
+            l_json_city_result.put( 'p_description', g_doc_city.p_description );
             l_json_city_result.put( 'telephone_co', g_doc_city.p_telephone_co );
-            l_json_city_result.put( 'postal_co', g_doc_city.p_postal_co );
-            l_json_city_result.put( 'municipality_co', g_doc_city.p_municipality_co );
-            l_json_city_result.put( 'uuid', g_doc_city.p_uuid );
-            l_json_city_result.put( 'slug', g_doc_city.p_slug );
-            l_json_city_result.put( 'user_co', g_doc_city.p_user_co );
+            l_json_city_result.put( 'p_telephone_co', g_doc_city.p_postal_co );
+            l_json_city_result.put( 'p_municipality_co', g_doc_city.p_municipality_co );
+            l_json_city_result.put( 'p_uuid', g_doc_city.p_uuid );
+            l_json_city_result.put( 'p_slug', g_doc_city.p_slug );
+            l_json_city_result.put( 'p_user_co', g_doc_city.p_user_co );
             l_json_city_result.put( 'p_nu_gps_lat', g_doc_city.p_nu_gps_lat );
             l_json_city_result.put( 'p_nu_gps_lon', g_doc_city.p_nu_gps_lon );
             --
-            -- TODO: Arreglo de localidades
+            -- procesando el objeto JSON_ARRAY l_locations
+            IF l_json_city.has('locations') THEN 
+                --
+                l_json_city_result.put( 'p_locations', l_json_city.get_array('locations').clone );
+                --
+            END IF;
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';
             --

@@ -7,6 +7,8 @@ DECLARE
     l_json_result   JSON_OBJECT_T;
     l_locations     JSON_ARRAY_T;
     --
+    l_municipality  municipalities%ROWTYPE;
+    --
 BEGIN 
     --
     dbms_output.put_line( 'Inicio de TEST Ciudades');
@@ -51,12 +53,30 @@ BEGIN
         p_result  => l_result
     );
     --
-        --
     l_json_result := JSON_OBJECT_T.parse(l_result);
     --
     IF l_json_result.get_string('status') = 'OK' THEN 
         --
         dbms_output.put_line( 'JSON: ' || json_city_doc.stringify );
+        --
+        IF json_city_doc.has('p_locations') THEN 
+            --
+            l_locations := json_city_doc.get_array('p_locations');
+            --
+            FOR i in 0..l_locations.get_size-1 LOOP
+                --
+                l_municipality := cfg_api_k_municipality.get_record( 
+                    p_id => l_locations.get(i).to_number
+                );
+                --
+                dbms_output.put_line( 
+                    'Location: (' || l_locations.get(i).to_string || ') ' || 
+                    l_municipality.municipality_co || ' - ' || l_municipality.description 
+                );
+                --
+            END LOOP;
+            --
+        END IF;
         --
     END IF;
     --
