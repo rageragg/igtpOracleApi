@@ -103,7 +103,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_slug              IN cities.slug%TYPE DEFAULT NULL,
             p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
             p_created_at        IN OUT cities.created_at%TYPE, 
-            p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
+            p_updated_at        IN OUT cities.updated_at%TYPE
         ) IS
         --
     BEGIN
@@ -118,6 +118,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         --
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
+        END IF;
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
         END IF;
         --
         INSERT INTO igtp.cities(
@@ -158,6 +162,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_rec.created_at := sysdate;
         END IF;
         --
+        IF p_rec.updated_at IS NULL THEN 
+            p_rec.updated_at := sysdate;
+        END IF;
+        --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
         END IF;
@@ -185,7 +193,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             p_slug              IN cities.slug%TYPE DEFAULT NULL,
             p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
             p_created_at        IN OUT cities.created_at%TYPE, 
-            p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
+            p_updated_at        IN OUT cities.updated_at%TYPE
         ) IS
     BEGIN
         --
@@ -196,6 +204,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
         END IF;
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
+        END IF;        
         --
         UPDATE igtp.cities 
         SET city_co         = p_city_co,
@@ -208,7 +220,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_city IS
             slug            = p_slug,
             user_id         = p_user_id,
             created_at      = p_created_at,
-            updated_at      = sysdate
+            updated_at      = p_updated_at
         WHERE id = p_id;
         --
     END upd;

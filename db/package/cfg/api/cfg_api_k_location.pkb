@@ -105,7 +105,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_slug              IN locations.slug%TYPE DEFAULT NULL, 
             p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
             p_created_at        IN OUT locations.created_at%TYPE,
-            p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
+            p_updated_at        IN OUT locations.updated_at%TYPE
         ) IS   
     BEGIN
         --
@@ -119,6 +119,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
+        END IF; 
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
         END IF; 
         --
         INSERT INTO locations(
@@ -159,6 +163,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
             p_rec.created_at := sysdate;
         END IF;
         --
+        IF p_rec.updated_at IS NULL THEN 
+            p_rec.updated_at := sysdate;
+        END IF;        
+        --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
         END IF; 
@@ -186,7 +194,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN OUT locations.created_at%TYPE,
-        p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
+        p_updated_at        IN OUT locations.updated_at%TYPE
         ) IS
         -- 
     BEGIN
@@ -197,7 +205,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
-        END IF;        
+        END IF;    
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
+        END IF;             
         --
         UPDATE locations 
         SET postal_co   = p_postal_co,

@@ -39,7 +39,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
         p_slug              IN cities.slug%TYPE DEFAULT NULL,
         p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
         p_created_at        IN OUT cities.created_at%TYPE, 
-        p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
+        p_updated_at        IN OUT cities.updated_at%TYPE 
     );
     --
     -- insert RECORD
@@ -58,7 +58,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_city IS
         p_slug              IN cities.slug%TYPE DEFAULT NULL,
         p_user_id           IN cities.user_id%TYPE DEFAULT NULL,
         p_created_at        IN OUT cities.created_at%TYPE, 
-        p_updated_at        IN cities.updated_at%TYPE DEFAULT NULL 
+        p_updated_at        IN OUT cities.updated_at%TYPE 
     );
     --
     -- update RECORD

@@ -39,7 +39,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN OUT locations.created_at%TYPE,
-        p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
+        p_updated_at        IN OUT locations.updated_at%TYPE
     );
     --
     -- insert RECORD
@@ -58,7 +58,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_location IS
         p_slug              IN locations.slug%TYPE DEFAULT NULL, 
         p_user_id           IN locations.user_id%TYPE DEFAULT NULL, 
         p_created_at        IN OUT locations.created_at%TYPE,
-        p_updated_at        IN locations.updated_at%TYPE DEFAULT NULL
+        p_updated_at        IN OUT locations.updated_at%TYPE
     );
     --
     -- update RECORD
