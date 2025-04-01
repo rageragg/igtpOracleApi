@@ -19,6 +19,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     g_msg_error                     VARCHAR2(512);
     g_cod_error                     NUMBER;
     g_rec_config                    configurations%ROWTYPE;
+    g_rec_city                      cities%ROWTYPE;
     g_rec_location                  locations%ROWTYPE;
     g_doc_location                  location_api_doc;
     g_rec_user                      igtp.users%ROWTYPE;
@@ -76,6 +77,72 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         );
         --
     END record_log; 
+    --
+    -- obteniendo el registro 
+    FUNCTION get_record(
+            p_location_co       locations.location_co%TYPE,
+            p_result            OUT VARCHAR2 
+        ) RETURN location_api_doc IS 
+    BEGIN 
+        --
+        -- validamos que el codigo de locacion exista
+        IF NOT igtp.cfg_api_k_location.exist( p_location_co => p_location_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20004,
+                p_msg_error => 'LOCATION CODE NOT FOUND'
+            );
+            --  
+        END IF;
+        --
+        -- obtenemos el registro de la locacion
+        g_rec_location := igtp.cfg_api_k_location.get_record;
+        --
+        g_doc_location.p_location_co := g_rec_location.location_co;
+        g_doc_location.p_description := g_rec_location.description;
+        g_doc_location.p_postal_co   := g_rec_location.postal_co;
+        g_doc_location.p_uuid        := g_rec_location.uuid;
+        g_doc_location.p_slug        := g_rec_location.slug;
+        g_doc_location.p_nu_gps_lat  := g_rec_location.nu_gps_lat;
+	    g_doc_location.p_nu_gps_lon  := g_rec_location.nu_gps_lon;
+        --
+        -- obtenemos el registro de la ciudad
+        g_rec_city := igtp.cfg_api_k_city.get_record( 
+            p_id => g_rec_city.municipality_id
+        );
+        --
+        g_doc_location.p_city_co     := g_rec_city.city_co;
+        --
+        -- obtenemos el registro del usuario
+        g_rec_user := igtp.sec_api_k_user.get_record( 
+            p_id => g_rec_city.user_id
+        );
+        --
+        g_doc_location.p_user_co     := g_rec_user.user_co;
+        --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
+        RETURN g_doc_location;
+        --
+        EXCEPTION
+            WHEN e_no_exist_location_code THEN 
+                --
+                p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                --
+                RETURN NULL;
+                -- 
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                RETURN NULL;
+                --
+        --
+    END get_record;
     --    
     -- create locations
     PROCEDURE create_location (

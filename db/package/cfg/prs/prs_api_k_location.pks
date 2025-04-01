@@ -17,6 +17,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_location IS
     --
     K_PROCESS    CONSTANT VARCHAR2(30)  := sys_k_constant.K_LOCATION_PROCESS;
     K_OWNER      CONSTANT VARCHAR2(20)  := sys_k_constant.K_OWNER_APP;
+    K_CONTEXT    CONSTANT VARCHAR2(30)  := sys_k_constant.K_LOCATION_CONTEXT;
     --
     TYPE location_api_doc IS RECORD(
         p_location_co       locations.location_co%TYPE DEFAULT NULL, 
@@ -29,6 +30,12 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_location IS
 	    p_nu_gps_lon 		locations.nu_gps_lon%TYPE DEFAULT NULL,  
         p_user_co           users.user_co%TYPE DEFAULT NULL
     );
+    --
+    -- obteniendo el registro 
+    FUNCTION get_record(
+        p_location_co       locations.location_co%TYPE,
+        p_result            OUT VARCHAR2 
+    ) RETURN location_api_doc;
     --
     -- create locations
     PROCEDURE create_location (
