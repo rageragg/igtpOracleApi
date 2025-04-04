@@ -36,7 +36,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
         p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
         p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
         p_created_at       IN OUT municipalities.created_at%TYPE, 
-        p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
+        p_updated_at       IN OUT municipalities.updated_at%TYPE
     );
     --
     -- insert RECORD
@@ -52,7 +52,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
         p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
         p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
         p_created_at       IN OUT municipalities.created_at%TYPE, 
-        p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
+        p_updated_at       IN OUT municipalities.updated_at%TYPE
     );
     --
     -- update RECORD
