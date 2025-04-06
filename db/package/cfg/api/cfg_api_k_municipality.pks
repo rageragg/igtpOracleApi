@@ -1,10 +1,10 @@
----------------------------------------------------------------------------
---  DDL for Package MUNICIPALITY API
---  MODIFICATIONS
---  DATE        AUTOR               DESCRIPTIONS
---  =========== =================== =======================================
----------------------------------------------------------------------------
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.cfg_api_k_municipality IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package MUNICIPALITY API
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    ---------------------------------------------------------------------------
     --
     K_PROCESS    CONSTANT VARCHAR2(30)  := 'CFG_API_K_MUNICIPALITY';
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';

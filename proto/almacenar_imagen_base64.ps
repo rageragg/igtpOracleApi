@@ -1,0 +1,123 @@
+CREATE OR REPLACE PROCEDURE almacenar_imagen_base64 (
+    p_id             IN NUMBER,
+    p_nombre_archivo IN VARCHAR2,
+    p_imagen_blob    IN BLOB
+) AS
+    l_clob         CLOB;
+    l_temp_clob    CLOB;
+    l_buffer_raw   RAW(24576);          -- Tamaño del buffer RAW (múltiplo de 3 para Base64)
+    l_buffer_vchar VARCHAR2(32767);     -- Buffer para texto Base64 intermedio
+    l_blob_offset  INTEGER := 1;
+    l_blob_len     INTEGER;
+    l_chunk_len    INTEGER := 18432;    -- Tamaño del chunk de lectura del BLOB (57*32*12 bytes = 18432, 
+                                        -- un múltiplo grande de 3)
+                                        -- Ajusta según sea necesario, debe ser <= 24576
+    l_raw_encoded  RAW(32767); -- RAW resultante de la codificación Base64
+    --
+BEGIN
+    --
+    IF p_imagen_blob IS NULL OR dbms_lob.getlength(p_imagen_blob) = 0 THEN
+        --
+        raise_application_error(-20001, 'El BLOB de entrada está vacío o es NULO.');
+        --
+    END IF;
+    --
+    l_blob_len := dbms_lob.getlength(p_imagen_blob);
+    --
+    -- Crear un CLOB temporal para construir el resultado
+    dbms_lob.createtemporary(
+        l_temp_clob, 
+        TRUE, 
+        DBMS_LOB.SESSION
+    );
+    --
+    -- Leer el BLOB en chunks, codificar a Base64 y añadir al CLOB temporal
+    WHILE l_blob_offset <= l_blob_len LOOP
+        -- Leer un chunk del BLOB a RAW
+        -- Determinar cuánto leer realmente en esta iteración
+        IF l_blob_len - l_blob_offset + 1 < l_chunk_len THEN
+            --
+            l_chunk_len := l_blob_len - l_blob_offset + 1;
+            --
+        ELSE
+            --
+            l_chunk_len := 18432; -- Reestablecer si se redujo en la última iteración
+            --
+        END IF;
+        --
+        -- Asegurarse de que l_chunk_len sea múltiplo de 3 si no es el último chunk
+        IF l_blob_offset + l_chunk_len <= l_blob_len THEN
+            --
+            l_chunk_len := floor(l_chunk_len / 3) * 3;
+            --
+            IF l_chunk_len = 0 THEN 
+                --
+                l_chunk_len := 3; 
+                --
+            END IF; -- Asegurar progreso mínimo
+            --
+        END IF;
+        --
+        -- Leer el chunk del BLOB
+        dbms_lob.read(
+            p_imagen_blob, 
+            l_chunk_len, 
+            l_blob_offset, 
+            l_buffer_raw
+        );
+        --
+        -- Codificar el chunk RAW a Base64 (devuelve RAW)
+        l_raw_encoded := utl_encode.base64_encode(
+            l_buffer_raw
+        );
+        --
+        -- Convertir el RAW codificado a VARCHAR2 para añadirlo al CLOB
+        l_buffer_vchar := utl_raw.cast_to_varchar2(
+            l_raw_encoded
+        );
+        --
+        -- Añadir al CLOB temporal
+        dbms_lob.writeappend(
+            l_temp_clob, 
+            length(l_buffer_vchar), 
+            l_buffer_vchar
+        );
+        --
+        -- Mover el offset para la siguiente lectura
+        l_blob_offset := l_blob_offset + l_chunk_len;
+        --
+    END LOOP;
+    --
+    -- Intentar actualizar primero, si no existe, insertar
+    UPDATE imagenes_en_texto_plsql
+       SET nombre_archivo = p_nombre_archivo,
+           imagen_clob    = l_temp_clob
+     WHERE id = p_id;
+    --
+    IF SQL%NOTFOUND THEN
+        --
+        INSERT INTO imagenes_en_texto_plsql (id, nombre_archivo, imagen_clob)
+        VALUES (p_id, p_nombre_archivo, l_temp_clob);
+        --
+    END IF;
+    --
+    -- Liberar el CLOB temporal
+    dbms_lob.freetemporary(
+        l_temp_clob
+    );
+    --
+    COMMIT; -- Opcional: decidir si hacer commit aquí o dejarlo al llamador
+    --
+    EXCEPTION
+        WHEN OTHERS THEN
+            --
+            -- Asegurarse de liberar el LOB temporal en caso de error
+            IF dbms_lob.istemporary(l_temp_clob) = 1 THEN
+                --
+                dbms_lob.freetemporary(l_temp_clob);
+                --
+            END IF;
+            --
+            RAISE; -- Relanzar la excepción
+    --
+END;

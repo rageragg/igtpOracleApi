@@ -1,11 +1,10 @@
----------------------------------------------------------------------------
---  DDL for Package MUNICIPALITY API
---  MODIFICATIONS
---  DATE        AUTOR               DESCRIPTIONS
---  =========== =================== =======================================
----------------------------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package MUNICIPALITY API
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    ---------------------------------------------------------------------------
     --
     g_record        municipalities%ROWTYPE;
     --
