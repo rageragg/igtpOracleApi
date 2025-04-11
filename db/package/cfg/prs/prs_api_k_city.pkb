@@ -126,7 +126,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             p_value     => get_json
         );
           --
-    END set_global;
+    END set_global; 
     --
     -- process events
     PROCEDURE process_event( p_event VARCHAR2 ) IS 
