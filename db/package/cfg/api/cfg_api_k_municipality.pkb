@@ -1,11 +1,10 @@
----------------------------------------------------------------------------
---  DDL for Package MUNICIPALITY API
---  MODIFICATIONS
---  DATE        AUTOR               DESCRIPTIONS
---  =========== =================== =======================================
----------------------------------------------------------------------------
-
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
+    ---------------------------------------------------------------------------
+    --  DDL for Package MUNICIPALITY API
+    --  MODIFICATIONS
+    --  DATE        AUTOR               DESCRIPTIONS
+    --  =========== =================== =======================================
+    ---------------------------------------------------------------------------
     --
     g_record        municipalities%ROWTYPE;
     --
@@ -21,7 +20,6 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     FUNCTION get_record( p_id IN municipalities.id%TYPE ) RETURN municipalities%ROWTYPE IS
         --
         l_data municipalities%ROWTYPE;
-        --
         --
         CURSOR c_data IS 
             SELECT * FROM igtp.municipalities WHERE id = p_id;
@@ -102,7 +100,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
             p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
             p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
             p_created_at       IN OUT municipalities.created_at%TYPE, 
-            p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
+            p_updated_at       IN OUT municipalities.updated_at%TYPE
         ) IS
         --     
     BEGIN
@@ -117,6 +115,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
         --
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
+        END IF;
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
         END IF;
         --
         INSERT INTO municipalities(
@@ -147,10 +149,6 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
     PROCEDURE ins ( p_rec  IN OUT municipalities%ROWTYPE ) IS 
     BEGIN 
         --
-        IF p_rec.created_at IS NULL THEN 
-            p_rec.created_at := sysdate;
-        END IF;
-        --
         IF p_rec.id IS NULL THEN 
             p_rec.id := inc_id;
         END IF;
@@ -158,6 +156,14 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
         IF p_rec.uuid IS NULL THEN 
             p_rec.uuid := sys_k_utils.f_uuid();
         END IF;    
+        --
+        IF p_rec.created_at IS NULL THEN 
+            p_rec.created_at := sysdate;
+        END IF;
+        --
+        IF p_rec.updated_at IS NULL THEN 
+            p_rec.updated_at := sysdate;
+        END IF;
         --
         INSERT INTO municipalities 
              VALUES p_rec
@@ -175,7 +181,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
             p_slug             IN municipalities.slug%TYPE DEFAULT NULL, 
             p_user_id          IN municipalities.user_id%TYPE DEFAULT NULL, 
             p_created_at       IN OUT municipalities.created_at%TYPE, 
-            p_updated_at       IN municipalities.updated_at%TYPE DEFAULT NULL
+            p_updated_at       IN OUT municipalities.updated_at%TYPE
         ) IS
     BEGIN
         --
@@ -185,6 +191,10 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_municipality IS
         --
         IF p_created_at IS NULL THEN 
             p_created_at := sysdate;
+        END IF;
+        --
+        IF p_updated_at IS NULL THEN 
+            p_updated_at := sysdate;
         END IF;
         --
         UPDATE municipalities 

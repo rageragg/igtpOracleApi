@@ -153,6 +153,6 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
                 --
                 RETURN NULL;
                 --
-    END get_json;
+    END get_json;   
     --
 END json_api_k_city;
