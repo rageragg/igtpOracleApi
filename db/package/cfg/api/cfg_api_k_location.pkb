@@ -23,7 +23,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         --
         CURSOR c_data IS 
-            SELECT * FROM igtp.locations WHERE id = p_id;
+            SELECT * 
+              FROM igtp.locations 
+             WHERE id = p_id;
         -- 
     BEGIN 
         --
@@ -42,7 +44,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         --
         --
         CURSOR c_data IS 
-            SELECT * FROM igtp.locations WHERE location_co = p_location_co;
+            SELECT * 
+              FROM igtp.locations 
+             WHERE location_co = p_location_co;
         -- 
     BEGIN 
         --
@@ -60,7 +64,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         l_data locations_api_tab;
         --
         CURSOR c_data IS 
-            SELECT * FROM igtp.locations ORDER BY K_ORDER_LIST;
+            SELECT * 
+              FROM igtp.locations 
+             ORDER BY K_ORDER_LIST;
         -- 
     BEGIN 
         --
@@ -212,18 +218,18 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.cfg_api_k_location IS
         END IF;             
         --
         UPDATE locations 
-        SET postal_co   = p_postal_co,
-            city_id     = p_city_id,
-            created_at  = p_created_at,
-            description = p_description,
-            nu_gps_lat  = p_nu_gps_lat,
-            location_co = p_location_co,
-            user_id     = p_user_id,
-            updated_at  = p_updated_at,
-            nu_gps_lon  = p_nu_gps_lon,
-            uuid        = p_uuid,
-            slug        = p_slug
-        WHERE id = p_id;
+           SET postal_co   = p_postal_co,
+               city_id     = p_city_id,
+               created_at  = p_created_at,
+               description = p_description,
+               nu_gps_lat  = p_nu_gps_lat,
+               location_co = p_location_co,
+               user_id     = p_user_id,
+               updated_at  = p_updated_at,
+               nu_gps_lon  = p_nu_gps_lon,
+               uuid        = p_uuid,
+               slug        = p_slug
+         WHERE id = p_id;
         --
     END upd;
     --
