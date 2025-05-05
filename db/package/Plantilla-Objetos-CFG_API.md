@@ -1,4 +1,4 @@
-Plantilla de Objetos CFG_API
+# Plantilla de Objetos CFG_API 
 ------------------------------------------------------------------------
     ---------------------------------------------------------------------------
     --  DDL for Package XXXXXX_API
@@ -7,11 +7,11 @@ Plantilla de Objetos CFG_API
     --  =========== =================== =======================================
     ---------------------------------------------------------------------------
     --
-    K_PROCESS    CONSTANT VARCHAR2(20);
-    K_OWNER      CONSTANT VARCHAR2(20);
-    K_TABLE_NAME CONSTANT VARCHAR2(30);
-    K_LIMIT_LIST CONSTANT PLS_INTEGER;
-    K_ORDER_LIST CONSTANT PLS_INTEGER;
+    **K_PROCESS**    CONSTANT VARCHAR2(20);
+    **K_OWNER**      CONSTANT VARCHAR2(20);
+    **K_TABLE_NAME** CONSTANT VARCHAR2(30);
+    **K_LIMIT_LIST** CONSTANT PLS_INTEGER;
+    **K_ORDER_LIST** CONSTANT PLS_INTEGER;
     --
     TYPE tabla_api_tab IS TABLE OF tabla%ROWTYPE;
     --
