@@ -17,6 +17,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
     e_exist_city_code               EXCEPTION;
     e_no_exist_city_code            EXCEPTION;
     --
+    -- tipo de tabla
+    TYPE t_city IS TABLE OF VARCHAR2(32767) INDEX BY PLS_INTEGER;
+    --
     PRAGMA exception_init( e_exist_city_code, -20003 );
     PRAGMA exception_init( e_no_exist_city_code, -20004 );
     --
@@ -41,7 +44,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
             ) json
           FROM cities a 
           INNER JOIN locations b ON a.id = b.city_id
-          WHERE a.id= pc_id
+          WHERE a.id = nvl( pc_id, a.id )
           GROUP BY a.id, a.description, a.city_co, a.postal_co, 
                    a.telephone_co, a.municipality_id, a.slug, a.uuid,
                    a.user_id, a.nu_gps_lat, a.nu_gps_lon;
@@ -154,5 +157,26 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
                 RETURN NULL;
                 --
     END get_json;   
+    --
+    -- devuelve una lista de ciudades en JSON
+    FUNCTION get_list(
+            p_result    OUT VARCHAR2 
+        ) RETURN JSON_ARRAY_T IS
+        --
+        l_json_result   VARCHAR2(32767);
+        json_list       JSON_ARRAY_T;
+        json_city       JSON_OBJECT_T;  
+        --
+    BEGIN
+        --
+        FOR r_data IN c_data( pc_id  => NULL ) LOOP
+            --
+            json_list.append(r_data.json);
+            --
+        END LOOP;
+        --
+        RETURN json_list;
+        --
+    END get_list;
     --
 END json_api_k_city;
