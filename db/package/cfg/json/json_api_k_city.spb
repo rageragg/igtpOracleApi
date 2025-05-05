@@ -164,8 +164,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
         ) RETURN JSON_ARRAY_T IS
         --
         l_json_result   VARCHAR2(32767);
-        json_list       JSON_ARRAY_T;
-        json_city       JSON_OBJECT_T;  
+        json_list       JSON_ARRAY_T; 
         --
     BEGIN
         --
