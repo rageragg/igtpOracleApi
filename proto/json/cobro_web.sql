@@ -16,6 +16,7 @@ DECLARE
     --
     -- pago
     TYPE t_pago IS RECORD (
+        guid           VARCHAR2(20),
         fechaPago      DATE,
         pagador        VARCHAR2(20),
         tipoPago       VARCHAR2(20),
@@ -44,6 +45,10 @@ DECLARE
         l_iso_date      VARCHAR2(50);
         --
     BEGIN
+        --
+        -- Inicializar la estructura de pago
+        -- identificador unico de la transaccion
+        p_pago.guid         := p_json_object.get_string('guid');
         --
         -- fechaPago
         l_iso_date          := p_json_object.get_string('fechaPago');
@@ -139,12 +144,16 @@ BEGIN
         p_pago        => r_pago
     );
     --
-    dbms_output.put_line( 'Fecha de Pago     : ' || r_pago.fechaPago );
-    dbms_output.put_line( 'Pagador           : ' || r_pago.pagador );  
-    dbms_output.put_line( 'Tipo de Pago      : ' || r_pago.tipoPago );
-    dbms_output.put_line( 'Referencia de Pago: ' || r_pago.referenciaPago );
-    dbms_output.put_line( 'Moneda            : ' || r_pago.moneda );    
-    dbms_output.put_line( 'Monto Total       : ' || r_pago.monto_total );
+    dbms_output.put_line( 
+        'GUID              : ' || r_pago.guid || chr(13) ||
+        'Fecha de Pago     : ' || r_pago.fechaPago || chr(13) ||
+        'Tipo de Pagador   : ' || l_json_object.get_string('tipoPagador') || chr(13) || 
+        'Pagador           : ' || r_pago.pagador || chr(13) ||
+        'Tipo de Pago      : ' || r_pago.tipoPago || chr(13) ||
+        'Referencia de Pago: ' || r_pago.referenciaPago || chr(13) ||
+        'Moneda            : ' || r_pago.moneda || chr(13) ||
+        'Monto Total       : ' || r_pago.monto_total 
+    );
     --
     IF r_pago.recibos.COUNT > 0 THEN 
         --
