@@ -25,4 +25,9 @@ CREATE OR REPLACE PACKAGE igtp.json_api_k_city IS
         p_result    OUT VARCHAR2 
     ) RETURN JSON_OBJECT_T;
     --
+    -- devuelve una lista de ciudades en JSON
+    FUNCTION get_list(
+        p_result    OUT VARCHAR2 
+    ) RETURN JSON_ARRAY_T;
+    --
 END json_api_k_city;

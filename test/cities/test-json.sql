@@ -5,7 +5,9 @@ DECLARE
     json_city       JSON_OBJECT_T;
     json_city_doc   JSON_OBJECT_T;
     l_json_result   JSON_OBJECT_T;
+    l_cities        JSON_ARRAY_T;
     l_locations     JSON_ARRAY_T;
+    l_element       JSON_ELEMENT_T;
     --
     l_municipality  municipalities%ROWTYPE;
     --
@@ -77,6 +79,29 @@ BEGIN
             END LOOP;
             --
         END IF;
+        --
+    END IF;
+    --
+    -- lista de json
+    l_cities := igtp.json_api_k_city.get_list( 
+        p_result => l_result
+    );
+    --
+    l_json_result := JSON_OBJECT_T.parse(l_result);
+    --
+    IF l_json_result.get_string('status') = 'OK' THEN 
+        --
+        DBMS_OUTPUT.PUT_LINE('Cantidad : ' || l_cities.get_size);
+        --
+        /*
+        FOR i IN 0 .. l_cities.get_size - 1 LOOP
+            l_element :=  l_cities.get(i);
+            DBMS_OUTPUT.PUT_LINE('Ciudad ' || (i+1) || ': ' || l_element.to_string);
+        END LOOP;
+        */
+    ELSE
+        --
+        dbms_output.put_line( 'Result: ' || l_result );
         --
     END IF;
     --

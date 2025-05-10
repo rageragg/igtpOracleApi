@@ -163,19 +163,33 @@ CREATE OR REPLACE PACKAGE BODY igtp.json_api_k_city IS
             p_result    OUT VARCHAR2 
         ) RETURN JSON_ARRAY_T IS
         --
+        json_city       JSON_OBJECT_T;
+        json_list       JSON_ARRAY_T := JSON_ARRAY_T();
         l_json_result   VARCHAR2(32767);
-        json_list       JSON_ARRAY_T; 
         --
     BEGIN
         --
         FOR r_data IN c_data( pc_id  => NULL ) LOOP
             --
-            json_list.append(r_data.json);
+            json_list.append( r_data.json );
             --
         END LOOP;
         --
+        p_result := '{ "status":"OK", "message":"SUCCESS" }';
+        --
         RETURN json_list;
         --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    --
+                    p_result := '{ "status":"ERROR", "message":"'|| SQLERRM ||'" }';
+                    --
+                END IF;
+                --
+                RETURN NULL;
+                --
     END get_list;
     --
 END json_api_k_city;
