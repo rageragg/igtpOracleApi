@@ -1,10 +1,11 @@
 GUID              : 595330
 Fecha de Pago     : 05-MAY-25
+Cuenta            : HSBC1
 Pagador           : 179
 Tipo de Pago      : TC
 Referencia de Pago: 903502
 Moneda            : CRC
-Monto Total       : 30000.96
+Monto Total       : 45000
 
 Poliza: 3022210116024
 Recibo: 5754239
@@ -12,4 +13,8 @@ Monto : 15000
 
 Poliza: 3022210116024
 Recibo: 5754240
+Monto : 15000
+
+Poliza: 3022210116024
+Recibo: 5754241
 Monto : 15000

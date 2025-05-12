@@ -7,23 +7,28 @@ DECLARE
     -- tipo de datos
     -- recibo
     TYPE t_recibo IS RECORD (
-        numPoliza VARCHAR2(20),
-        numRecibo VARCHAR2(20),
-        monto     NUMBER
+        numPoliza   VARCHAR2(20),
+        numRecibo   VARCHAR2(20),
+        monto       NUMBER,
+        valido      BOOLEAN   DEFAULT FALSE,
+        observacion VARCHAR2(2000)
     );
     --
     TYPE t_recibos IS TABLE OF t_recibo INDEX BY PLS_INTEGER;
     --
     -- pago
     TYPE t_pago IS RECORD (
-        guid           VARCHAR2(20),
-        fechaPago      DATE,
-        pagador        VARCHAR2(20),
-        tipoPago       VARCHAR2(20),
-        referenciaPago VARCHAR2(20),
-        moneda         VARCHAR2(20),
-        monto_total    NUMBER,
-        recibos        t_recibos
+        guid            VARCHAR2(20),
+        fechaPago       DATE,
+        pagador         VARCHAR2(20),
+        tipoPago        VARCHAR2(20),
+        referenciaPago  VARCHAR2(20),
+        moneda          VARCHAR2(20),
+        cuenta          VARCHAR2(20),
+        monto_total     NUMBER,
+        recibos         t_recibos,
+        valido          BOOLEAN   DEFAULT FALSE,
+        observacion     VARCHAR2(2000)
     );
     --
     r_pago      t_pago;
@@ -48,52 +53,96 @@ DECLARE
         --
         -- Inicializar la estructura de pago
         -- identificador unico de la transaccion
-        p_pago.guid         := p_json_object.get_string('guid');
+        p_pago.guid             := p_json_object.get_string('guid');
         --
         -- fechaPago
-        l_iso_date          := p_json_object.get_string('fechaPago');
-        l_timestamp         := to_timestamp_tz(l_iso_date, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM');
-        p_pago.fechaPago    := cast(l_timestamp AS DATE);
+        l_iso_date              := p_json_object.get_string('fechaPago');
+        l_timestamp             := to_timestamp_tz(l_iso_date, 'YYYY-MM-DD"T"HH24:MI:SSTZH:TZM');
         --
-        -- pagador
-        p_pago.pagador := p_json_object.get_string('pagador');
-        --
-        -- tipoPago
-        p_pago.tipoPago := p_json_object.get_string('tipoPago');
-        --
-        -- referenciaPago
-        p_pago.referenciaPago := p_json_object.get_string('referenciaPago');
-        --
-        -- moneda
-        p_pago.moneda := p_json_object.get_string('moneda');
-        --
-        -- monto_total
-        p_pago.monto_total := p_json_object.get_number('montoTotal');
-        --
-        l_json_array := p_json_object.get_array('recibos');
+        p_pago.fechaPago        := cast(l_timestamp AS DATE);
+        p_pago.pagador          := p_json_object.get_string('pagador');
+        p_pago.tipoPago         := p_json_object.get_string('tipoPago');
+        p_pago.referenciaPago   := p_json_object.get_string('referenciaPago');
+        p_pago.moneda           := p_json_object.get_string('moneda');
+        p_pago.cuenta           := p_json_object.get_string('cuenta');
+        p_pago.monto_total      := p_json_object.get_number('montoTotal');
         --
         -- recibos
         l_recibos := t_recibos();
         --
-        -- Recorrer el array de recibos
-        FOR i IN 0 .. l_json_array.get_size - 1 LOOP
+        -- verificar si recibos existe
+        IF p_json_object.has('recibos') THEN
             --
-            l_element           := l_json_array.get(i);
-            l_json              := JSON_OBJECT_T.parse(l_element.stringify);
+            l_json_array            := p_json_object.get_array('recibos');
             --
-            -- Asignar valores a la estructura de recibo
-            l_recibo.numPoliza  := l_json.get_string('numPoliza');
-            l_recibo.numRecibo  := l_json.get_string('numRecibo');
-            l_recibo.monto      := l_json.get_number('monto');
+            -- Recorrer el array de recibos
+            FOR i IN 0 .. l_json_array.get_size - 1 LOOP
+                --
+                l_element           := l_json_array.get(i);
+                l_json              := JSON_OBJECT_T.parse(l_element.stringify);
+                --
+                -- Asignar valores a la estructura de recibo
+                l_recibo.numPoliza  := l_json.get_string('numPoliza');
+                l_recibo.numRecibo  := l_json.get_string('numRecibo');
+                l_recibo.monto      := l_json.get_number('monto');
+                --
+                l_recibos(i+1)      := l_recibo;
+                --
+            END LOOP;
             --
-            l_recibos(i+1)      := l_recibo;
+            p_pago.recibos := l_recibos;
             --
-        END LOOP;
-        --
-        p_pago.recibos := l_recibos;
-        --
+        END IF;   
+        --    
     END p_pago;
-
+    --
+    -- validacion de datos
+    PROCEDURE p_validador (
+            p_pago        IN OUT t_pago
+        ) IS
+        --
+        -- Validar el recibo
+        PROCEDURE p_validador_recibo( 
+            p_recibo IN OUT t_recibo
+        ) IS
+            --
+            l_num_recibo   VARCHAR2(20);
+            l_num_poliza   VARCHAR2(20);
+            l_monto        NUMBER;
+            --
+        BEGIN 
+            --
+            -- Validar el recibo
+            l_num_recibo   := p_recibo.numRecibo;
+            l_num_poliza   := p_recibo.numPoliza;
+            l_monto        := p_recibo.monto;
+            --
+        END p_validador_recibo;
+        --
+    BEGIN 
+        --
+        -- TODO: Validar los datos
+        -- 1. Validar cada recibo, que exista y asociado a la poliza, que este en EP o Remesado
+        -- 2. Validar el monto total de los recibos
+        --
+        IF p_pago.recibos.COUNT > 0 THEN 
+            --
+            FOR i IN 1 .. p_pago.recibos.COUNT LOOP
+                --
+                IF p_pago.recibos.EXISTS(i) THEN 
+                    --
+                    p_validador_recibo( 
+                        p_recibo => p_pago.recibos(i)
+                    );
+                    --
+                END IF;
+                --
+            END LOOP;
+            --
+        END IF;
+        --
+    END p_validador;
+    --
 BEGIN 
     --
     -- JSON data
@@ -105,7 +154,7 @@ BEGIN
         "pagador": "179",
         "tipoPago": "TC",
         "referenciaPago": "903502",
-        "montoTotal": 30000.96,
+        "montoTotal": 45000.00,
         "moneda": "CRC",
         "direccionIP": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
         "huellaNavegador": null,
@@ -130,6 +179,12 @@ BEGIN
                     "numRecibo": "5754240",
                     "tipoPago": "",
                     "monto": 15000.00
+                },
+                {
+                    "numPoliza": "3022210116024",
+                    "numRecibo": "5754241",
+                    "tipoPago": "",
+                    "monto": 15000.00
                 }
             ]
         }';
@@ -144,10 +199,16 @@ BEGIN
         p_pago        => r_pago
     );
     --
+    -- analisis de los datos:
+    -- TODO: Validar cada recibo exista y asociado a la poliza
+    p_validador (
+        p_pago  => r_pago
+    );
+    --
     dbms_output.put_line( 
         'GUID              : ' || r_pago.guid || chr(13) ||
         'Fecha de Pago     : ' || r_pago.fechaPago || chr(13) ||
-        'Tipo de Pagador   : ' || l_json_object.get_string('tipoPagador') || chr(13) || 
+        'Cuenta            : ' || r_pago.cuenta || chr(13) ||
         'Pagador           : ' || r_pago.pagador || chr(13) ||
         'Tipo de Pago      : ' || r_pago.tipoPago || chr(13) ||
         'Referencia de Pago: ' || r_pago.referenciaPago || chr(13) ||
