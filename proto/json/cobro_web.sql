@@ -73,11 +73,13 @@ DECLARE
         -- verificar si recibos existe
         IF p_json_object.has('recibos') THEN
             --
+            -- si existe, se toma el arreglo de recibos en formato JSON
             l_json_array            := p_json_object.get_array('recibos');
             --
             -- Recorrer el array de recibos
             FOR i IN 0 .. l_json_array.get_size - 1 LOOP
                 --
+                -- tomamos el elemento y lo sometemos a verificacion JSON como un Objeto
                 l_element           := l_json_array.get(i);
                 l_json              := JSON_OBJECT_T.parse(l_element.stringify);
                 --
@@ -116,6 +118,10 @@ DECLARE
             l_num_recibo   := p_recibo.numRecibo;
             l_num_poliza   := p_recibo.numPoliza;
             l_monto        := p_recibo.monto;
+            --
+            -- TODO: Validar que el recibo exista
+            -- TODO: Que este en situacion de EP o RE
+            -- TODO: Validar que el monto total coincida con la suma de lo pagado
             --
         END p_validador_recibo;
         --
@@ -213,7 +219,7 @@ BEGIN
         'Tipo de Pago      : ' || r_pago.tipoPago || chr(13) ||
         'Referencia de Pago: ' || r_pago.referenciaPago || chr(13) ||
         'Moneda            : ' || r_pago.moneda || chr(13) ||
-        'Monto Total       : ' || r_pago.monto_total 
+        'Monto Total       : ' || r_pago.monto_total || chr(13)
     );
     --
     IF r_pago.recibos.COUNT > 0 THEN 
