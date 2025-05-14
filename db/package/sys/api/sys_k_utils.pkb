@@ -20,6 +20,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
     FUNCTION pf_parameters_db( p_parameter IN VARCHAR2 ) RETURN VARCHAR2 IS 
         --
         l_value VARCHAR2(128);
+        --
     BEGIN  
         --
         IF g_source_parameters = sys_k_utils.K_SDBP_DEFAULT THEN 
@@ -237,10 +238,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
     END f_list_day_of_week;   
     --
     -- devuelve los segundos desde una fecha especifica
-    FUNCTION f_get_seconds (p_fecha DATE) RETURN NUMBER
-    IS
+    FUNCTION f_get_seconds (p_fecha DATE) RETURN NUMBER IS
+        --
         dFechaBase DATE := to_date('01011970','ddmmyyyy');
         nSegundo   NUMBER;
+        --
     BEGIN
         --
         IF p_fecha > dFechaBase THEN
@@ -261,20 +263,27 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
         l_mdata         igtp.sys_k_utils.data_map_tab;
         --
         CURSOR c_data IS 
-            SELECT column_name, data_type
-              FROM all_tab_columns 
-             WHERE owner       = p_owner
-               AND table_name  = p_table_name;
+            SELECT a.column_name, a.data_type, a.data_length, b.comments, a.column_id 
+              FROM all_tab_columns a
+              INNER JOIN all_col_comments b ON a.owner       = b.owner
+                                           AND a.table_name  = b.table_name
+                                           AND a.column_name = b.column_name
+             WHERE a.owner      = UPPER(p_owner) 
+               AND a.table_name = UPPER(p_table_name)
+             ORDER BY a.column_id;
         --  
     BEGIN 
         --
-        l_mdata.delete;
+        l_mdata.DELETE;
         --
         FOR r_data IN c_data LOOP
-          --
-          l_mdata(trim(r_data.column_name)).column_name := r_data.column_name;
-          l_mdata(trim(r_data.column_name)).data_type   := r_data.data_type;
-          --  
+            --
+            l_mdata(trim(r_data.column_name)).column_name := r_data.column_name;
+            l_mdata(trim(r_data.column_name)).data_type   := r_data.data_type;
+            l_mdata(trim(r_data.column_name)).data_length := r_data.data_length;
+            l_mdata(trim(r_data.column_name)).comments    := r_data.comments;
+            l_mdata(trim(r_data.column_name)).column_id   := r_data.column_id;
+            --  
         END LOOP;
         --
         RETURN l_mdata;

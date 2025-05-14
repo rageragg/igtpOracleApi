@@ -22,13 +22,16 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
     --
     -- tipos  
     TYPE data_map_rec IS RECORD(
+        column_id       NUMBER, 
         column_name     VARCHAR2(30),
         data_type       VARCHAR2(30),
+        data_length     NUMBER,
+        comments        VARCHAR2(4000),
         data_value      SYS.ANYDATA
     );
     --
     -- tabla de columnas de una determinada tabla
-    TYPE data_map_tab   IS TABLE OF data_map_rec INDEX BY VARCHAR2(30);
+    TYPE data_map_tab IS TABLE OF data_map_rec INDEX BY VARCHAR2(30);
     --
     -- Funcion que devuelve un identificador unico
     FUNCTION f_uuid RETURN VARCHAR2;

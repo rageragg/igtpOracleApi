@@ -1,0 +1,100 @@
+[
+  {
+    "column_name": "POPULATION",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": null,
+    "column_id": 14
+  },
+  {
+    "column_name": "ID",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": "Identificador correlativo unico",
+    "column_id": 1
+  },
+  {
+    "column_name": "CITY_CO",
+    "data_type": "VARCHAR2",
+    "data_length": 10,
+    "comments": "Codigo de la ciudad",
+    "column_id": 2
+  },
+  {
+    "column_name": "DESCRIPTION",
+    "data_type": "VARCHAR2",
+    "data_length": 80,
+    "comments": "Descripcion o nombre de la ciudad",
+    "column_id": 3
+  },
+  {
+    "column_name": "MUNICIPALITY_ID",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": "Codigo de la Municipalidad",
+    "column_id": 4
+  },
+  {
+    "column_name": "POSTAL_CO",
+    "data_type": "VARCHAR2",
+    "data_length": 10,
+    "comments": "Codigo Postal",
+    "column_id": 5
+  },
+  {
+    "column_name": "TELEPHONE_CO",
+    "data_type": "VARCHAR2",
+    "data_length": 3,
+    "comments": "Codigo discal telefonico",
+    "column_id": 6
+  },
+  {
+    "column_name": "SLUG",
+    "data_type": "VARCHAR2",
+    "data_length": 60,
+    "comments": "Forma especifica un lugar determinado de una pagina Web",
+    "column_id": 7
+  },
+  {
+    "column_name": "UUID",
+    "data_type": "VARCHAR2",
+    "data_length": 60,
+    "comments": "Identificador unico de la base de datos",
+    "column_id": 8
+  },
+  {
+    "column_name": "NU_GPS_LAT",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": null,
+    "column_id": 9
+  },
+  {
+    "column_name": "NU_GPS_LON",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": null,
+    "column_id": 10
+  },
+  {
+    "column_name": "USER_ID",
+    "data_type": "NUMBER",
+    "data_length": 22,
+    "comments": "Usuario que ha creado el registro",
+    "column_id": 11
+  },
+  {
+    "column_name": "CREATED_AT",
+    "data_type": "DATE",
+    "data_length": 7,
+    "comments": "Fecha de Creacion del registro",
+    "column_id": 12
+  },
+  {
+    "column_name": "UPDATED_AT",
+    "data_type": "DATE",
+    "data_length": 7,
+    "comments": "Fecha de Actualizacion del registro",
+    "column_id": 13
+  }
+]
