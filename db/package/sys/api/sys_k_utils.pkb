@@ -290,6 +290,41 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
         -- 
     END get_map_data;  
     --
+    -- devuelve una tabla con las columnas de una determinada tabla json
+    FUNCTION get_map_data_json( p_owner      VARCHAR2,
+                                p_table_name VARCHAR2
+                              ) RETURN CLOB IS
+        --
+        l_json_result CLOB;
+        --  
+    BEGIN 
+        --
+        SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'column_name' VALUE a.column_name,
+                    'data_type' VALUE a.data_type,
+                    'data_length' VALUE a.data_length,
+                    'comments' VALUE b.comments,
+                    'column_id' VALUE a.column_id 
+                )
+            ) AS data_json
+            INTO l_json_result
+            FROM all_tab_columns a
+            INNER JOIN all_col_comments b ON a.owner       = b.owner
+                                         AND a.table_name  = b.table_name
+                                         AND a.column_name = b.column_name
+            WHERE a.owner      = p_owner
+              AND a.table_name = p_table_name
+            ORDER BY a.column_id;
+        --
+        RETURN l_json_result;
+        -- 
+        EXCEPTION 
+            WHEN OTHERS THEN 
+                RETURN '{}';
+        --        
+    END get_map_data_json;                                  
+    --
     -- devuelve el valor del campo enviado 
     FUNCTION get_map_data_value( p_field VARCHAR2,
                                  p_mdata igtp.sys_k_utils.data_map_tab 

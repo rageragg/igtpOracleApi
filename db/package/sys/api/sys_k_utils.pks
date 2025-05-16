@@ -41,9 +41,9 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
     -- funcion que devuelve un cursor a partir de una lista separada por ','
     -- salida del cursor es { id, data }
     FUNCTION f_list_to_cursor( 
-            p_list      IN VARCHAR2, 
-            p_separator IN VARCHAR2 DEFAULT ',' 
-        ) RETURN sys_refcursor;
+        p_list      IN VARCHAR2, 
+        p_separator IN VARCHAR2 DEFAULT ',' 
+    ) RETURN sys_refcursor;
     --    
     --
     -- procedimiento que establece el los parametros de la instalacion
@@ -63,51 +63,66 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_utils AS
     FUNCTION f_k_nls_calendar RETURN VARCHAR2;
     --
     -- dia de la semana
-    FUNCTION f_day_of_week( p_date DATE ) RETURN NUMBER;
+    FUNCTION f_day_of_week( 
+      p_date DATE 
+    ) RETURN NUMBER;
     --
     -- lista de los dias de la semana
     FUNCTION f_list_day_of_week( p_date DATE ) RETURN sys_refcursor;
     --
     -- devuelve los segundos desde una fecha especifica
-    FUNCTION f_get_seconds (p_fecha DATE) RETURN NUMBER;
+    FUNCTION f_get_seconds (
+      p_fecha DATE
+    ) RETURN NUMBER;
     --
     -- devuelve una tabla con las columnas de una determinada tabla
-    FUNCTION get_map_data( p_owner      VARCHAR2,
-                           p_table_name VARCHAR2
-                         ) RETURN data_map_tab;
+    FUNCTION get_map_data( 
+      p_owner      VARCHAR2,
+      p_table_name VARCHAR2
+    ) RETURN data_map_tab;
+    --
+    -- devuelve una tabla con las columnas de una determinada tabla json
+    FUNCTION get_map_data_json( 
+      p_owner      VARCHAR2,
+      p_table_name VARCHAR2
+    ) RETURN CLOB;
     --
     -- devuelve el valor del campo enviado 
-    FUNCTION get_map_data_value( p_field VARCHAR2,
-                                 p_mdata igtp.sys_k_utils.data_map_tab 
-                               ) RETURN SYS.ANYDATA;
+    FUNCTION get_map_data_value( 
+      p_field VARCHAR2,
+      p_mdata igtp.sys_k_utils.data_map_tab 
+    ) RETURN SYS.ANYDATA;
     --
     -- devuelve el tipo del campo enviado 
-    FUNCTION get_map_data_type( p_field VARCHAR2,
-                                p_mdata igtp.sys_k_utils.data_map_tab 
-                              ) RETURN VARCHAR2;
+    FUNCTION get_map_data_type( 
+      p_field VARCHAR2,
+      p_mdata igtp.sys_k_utils.data_map_tab 
+    ) RETURN VARCHAR2;
     --
     -- TODO: NLS_NUMERIC_CHARACTERS
     -- 
     -- verifica si una tabla existe
-    FUNCTION f_table_exist( p_owner VARCHAR2, 
-                            p_table VARCHAR2
-                          ) RETURN BOOLEAN;
+    FUNCTION f_table_exist( 
+      p_owner VARCHAR2, 
+      p_table VARCHAR2
+    ) RETURN BOOLEAN;
     --
     -- devuelve un cursor de una determinada tabla 
-    FUNCTION f_get_refcursor( p_owner VARCHAR2, 
-                              p_table VARCHAR2,
-                              p_where VARCHAR2,
-                              p_order VARCHAR2
-                            ) RETURN SYS_REFCURSOR;
+    FUNCTION f_get_refcursor( 
+      p_owner VARCHAR2, 
+      p_table VARCHAR2,
+      p_where VARCHAR2,
+      p_order VARCHAR2
+    ) RETURN SYS_REFCURSOR;
     --
     -- manejo de log
     PROCEDURE record_log( 
-            p_context  IN VARCHAR2,
-            p_line     IN VARCHAR2,
-            p_raw      IN VARCHAR2,
-            p_result   IN VARCHAR,
-            p_clob     IN OUT CLOB
-        );
+        p_context  IN VARCHAR2,
+        p_line     IN VARCHAR2,
+        p_raw      IN VARCHAR2,
+        p_result   IN VARCHAR,
+        p_clob     IN OUT CLOB
+    );
     --
     -- devuelve el conjunto de caracteres
     FUNCTION f_character_set RETURN NVARCHAR2;
