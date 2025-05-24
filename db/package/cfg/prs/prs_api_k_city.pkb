@@ -276,7 +276,9 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             p_event =>  sys_k_constant.K_DB_EP_BF_INSERT
         );
         --
-        cfg_api_k_city.ins( p_rec => g_reg_city );
+        cfg_api_k_city.ins( 
+            p_rec => g_reg_city 
+        );
         --
         -- ejecucion de procesos posteriores a insertar
         process_event( 
@@ -350,8 +352,18 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         --
         g_reg_city.user_id          :=  g_reg_user.id;
         --
+        -- ejecucion de procesos previos a insertar
+        process_event( 
+            p_event =>  sys_k_constant.K_DB_EP_BF_INSERT
+        );
+        --
         cfg_api_k_city.ins( 
             p_rec => g_reg_city 
+        );
+        --
+        -- ejecucion de procesos posteriores a insertar
+        process_event( 
+            p_event =>  sys_k_constant.K_DB_EP_AF_INSERT
         );
         --
         p_rec.p_uuid    := g_reg_city.uuid;
@@ -501,7 +513,19 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             --
             g_reg_city.user_id          :=  g_reg_user.id;
             --
-            cfg_api_k_city.upd( p_rec => g_reg_city );
+            -- ejecucion de procesos previos a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_BF_UPDATE
+            );
+            --
+            cfg_api_k_city.upd( 
+                p_rec => g_reg_city
+            );
+            --
+            -- ejecucion de procesos posteriores a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_AF_UPDATE
+            );
             --
             COMMIT;
             --
@@ -576,7 +600,19 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             --
             g_reg_city.user_id          :=  g_reg_user.id;
             --
-            cfg_api_k_city.upd( p_rec => g_reg_city );
+            -- ejecucion de procesos previos a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_BF_UPDATE
+            );
+            --
+            cfg_api_k_city.upd( 
+                p_rec => g_reg_city 
+            );
+            --
+            -- ejecucion de procesos posteriores a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_AF_UPDATE
+            );
             --
             COMMIT;
             --
@@ -678,7 +714,19 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
             -- tomamos el registro encontrado
             g_reg_city := cfg_api_k_city.get_record;
             --
-            cfg_api_k_city.del( p_id => g_reg_city.id );
+            -- ejecucion de procesos previos a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_BF_DELETE
+            );
+            --
+            cfg_api_k_city.del( 
+                p_id => g_reg_city.id 
+            );
+            --
+            -- ejecucion de procesos posteriores a insertar
+            process_event( 
+                p_event =>  sys_k_constant.K_DB_EP_AF_DELETE
+            );
             --
             p_result := '{ "status":"OK", "message":"SUCCESS" }';
             --
