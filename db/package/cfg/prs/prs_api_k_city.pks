@@ -36,7 +36,7 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_city IS
     --
     -- obteniendo el registro 
     FUNCTION get_record(
-        p_city_co   cities.city_co%TYPE,
+        p_city_co           cities.city_co%TYPE,
         p_result            OUT VARCHAR2 
     ) RETURN city_api_doc;
     --

@@ -57,6 +57,12 @@ CREATE OR REPLACE PACKAGE igtp.prs_api_k_location IS
         p_result    OUT VARCHAR2  
     );
     --
+    -- create city by json
+    PROCEDURE create_location( 
+        p_json      IN OUT VARCHAR2,
+        p_result    OUT VARCHAR2
+    );
+    --
     -- update
     PROCEDURE update_location(
         p_location_co       IN locations.location_co%TYPE DEFAULT NULL, 

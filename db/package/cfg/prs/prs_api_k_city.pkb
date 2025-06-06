@@ -59,6 +59,26 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_city IS
         -- 
     END raise_error;
     --
+    -- manejo de log
+    PROCEDURE record_log( 
+            p_context  IN VARCHAR2,
+            p_line     IN VARCHAR2,
+            p_raw      IN VARCHAR2,
+            p_result   IN VARCHAR,
+            p_clob     IN OUT CLOB
+        ) IS 
+    BEGIN 
+        --
+        sys_k_utils.record_log( 
+            p_context   => sys_k_constant.K_CITY_LOAD_CONTEXT,
+            p_line      => p_line,
+            p_raw       => p_raw,
+            p_result    => p_result,
+            p_clob      => p_clob
+        );
+        --
+    END record_log; 
+    --
     -- validate all
     PROCEDURE validate_all IS 
     BEGIN 
