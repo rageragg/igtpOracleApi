@@ -77,7 +77,8 @@ IS
               FROM igtp.proccesses 
              WHERE proccess_co      = p_proccess_co
                AND context          = p_context
-               AND k_event_process  = p_k_event_process;
+               AND k_event_process  = p_k_event_process
+             ORDER BY sequence;
         -- 
     BEGIN 
         --
