@@ -36,6 +36,7 @@ COMMENT ON COLUMN "IGTP"."LANGUAGES"."DESCRIPTION" IS 'Descripcion del lenguaje'
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."DICCIONARY" IS 'Contenido JSON del diccionario';
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."CREATED_AT" IS 'Fecha de creacion';
 COMMENT ON COLUMN "IGTP"."LANGUAGES"."UPDATED_AT" IS 'Fecha de actualizacion';
+
 /
 
 /*

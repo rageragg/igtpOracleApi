@@ -1,0 +1,450 @@
+
+  CREATE OR REPLACE PACKAGE BODY MRD_K_ENVIO_MAIL is
+ --
+ /* --------------------- DESCRIPTION ----------------------
+ || Procedure for the sending of mails
+ */ --------------------------------------------------------
+ --
+ /* -------------------- VERSION = V 1.7.1-------------------- */
+ --
+ /* -------------------- MODIFICATIONS ---------------------
+ || 2011/05/10 - JARODRIGUEZW - 1.02 - (MS-2011-03-00340)
+ || Se modifica el formato de la fecha para que se muestre
+ || correctamente la zona horaria.
+ ||---------------------------------------------------------
+ || 2012/06/05 - HILARIO AQUINO - V 1.03
+ || Es una copia de trn_k_envio_mail...
+ || Se modifica el Content-Type de text/html a text/plain
+ || Se cambia el utl_smtp.write_raw_data por utl_smtp.write_data
+ ||---------------------------------------------------------
+ || 2012/06/22 - HILARIO AQUINO - V 1.04
+ || Se agrega la autenticacion de usuario para que el programa pueda
+ || enviar correos externos.
+ || --------------------------------------------------------
+ || 2013/07/01 - HILARIO AQUINO - V 1.05
+ || Se cambia llamados de trn_k_envio_mail a mrd_k_envio_mail.
+ || El proposito es corregir para poder enviar archivos adjuntos tipo *.pdf
+ || --------------------------------------------------------
+ || 2016/04/08 - Luis Daniel Andujar - V 1.06
+ || Se cambi� el HOST SMTP y este no es compatible con la autenticacion
+ || actual.se comento la parte de la autenticacion.
+ || --------------------------------------------------------
+ || Version:   1.7
+ || Responsbale:    Leomaris Reyes Rosario - LRR
+ || Descripci�n:    Agrega la tabla_respuesta_envio en la que se puede
+ ||                 guardar las respuestas obtenidas al enviar un correo y
+ ||                 las guarda en la tabla A5029825 por medio del procedimiento
+ ||                 gc_k_notificaciones_mrd.p_transacciones_correos.
+ || --------------------------------------------------------
+ || 2019/04/08 - Maximo Pena (PEMAXIM) - V 1.7.1
+ || Se cambia carga de email ya que estaba apuntando al destinatario
+ || tanto la copia como la copia oculta, tambien se elimino paquete
+ || y se agrego sinonimo. gc_k_notificaciones_mrd por gc_k_notificaciones.
+ || Se modifico forma de agregar el comentario en la version anterior.
+ /* --------------------------------------------------------
+ --
+ -- LRR V1.07
+ TYPE reg_respuesta_envio IS RECORD
+      (
+          num_secu        A5029825.NUM_SECU%TYPE,
+          tip_dest        A5029825.TIP_DESTINATARIO%TYPE,
+          cod_resp        A5029825.RESP_ENVIO%TYPE,
+          desc_resp       A5029825.RESP_ENVIO%TYPE ,
+          email           A5029825.EMAIL%TYPE
+      );
+ -- LRR V1.07
+/* TYPE tabla_respuesta_envio IS TABLE OF reg_respuesta_envio
+         INDEX BY BINARY_INTEGER;
+ */
+
+ p_resp             tabla_respuesta_envio;   -- LRR V1.7
+ l_num_sec          NUMBER:=1;               -- LRR V1.7
+ l_cod_cia          VARCHAR2(100);
+ l_cod_proceso      VARCHAR2(100);
+ l_cod_nota         VARCHAR2(100);
+ l_num_secuencia    VARCHAR2(100);
+ l_descripcion      VARCHAR2(100);
+PROCEDURE p_envio_mail ( p_host_smtp          VARCHAR2,
+                         p_puerto_smtp        PLS_INTEGER,
+                         p_dominio            VARCHAR2,
+                         p_remitente          VARCHAR2,
+                         p_nombre_remitente   VARCHAR2,
+                         p_prioridad          VARCHAR2,
+                         --p_tab_destinatario   trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
+                         p_tab_destinatario   t_tab_destinatarios,
+                         --p_tab_concopia       trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
+                         p_tab_concopia       t_tab_destinatarios,
+                         --p_tab_concopiaoculta trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
+                         p_tab_concopiaoculta t_tab_destinatarios,
+                         --p_tab_ficheros       trn_k_envio_mail.t_tab_ficheros,        ---V 1.05
+                         p_tab_ficheros       t_tab_ficheros,
+                         --p_tab_texto          trn_k_envio_mail.t_tab_texto,           ---V 1.05
+                         p_tab_texto          t_tab_texto,
+                         p_asunto             VARCHAR2)
+   IS
+   --
+   v_conexion   utl_smtp.connection;
+   v_servidor   VARCHAR2(256):= p_host_smtp; --'NOMBRE-SERVIDOR';
+   v_puerto     PLS_INTEGER  := p_puerto_smtp; -- 25;
+   v_dominio    VARCHAR2(256):= p_dominio; --'mapfre.com';
+   --
+   registro_encontrado BOOLEAN;
+   v_reply utl_smtp.reply;
+   v_mensaje VARCHAR2(1000);
+   --
+   v_crlf VARCHAR2(2) := CHR(13)||CHR(10);
+   v_file_handle utl_file.file_type;
+   --
+   l_val_param   g0000000.val_param%TYPE;
+   crlf               varchar2(2):= chr(13) || chr(10);
+   -- para adjuntar ficheros externos, deben ser abiertos y leidos con utl_file
+   ---V 1.04
+    l_cod_usr   varchar2(50):= trn_k_global.cod_usr;
+    l_Usr_Auth  Varchar2(50):= trn_k_ap101107.traer_propiedad(p_cod_usr         =>  l_cod_usr,
+                                             p_txt_nombre_variable      =>  'USUARIO.SMTP');
+
+    l_Pas_Auth  Varchar2(50):= trn_k_ap101107.traer_propiedad(p_cod_usr         =>  l_cod_usr,
+                                             p_txt_nombre_variable      =>  'CONTRASENA.SMTP');
+    ---V 1.04
+    ---V 1.05
+    boundary           constant varchar2(256) := 'CES.Boundary.DACA587499938898';
+    l_tipo_texto       boolean := false;
+    bfile_handle       bfile;
+    bfile_len          number;
+    pos                number;
+    read_bytes         number;
+    data               raw(200);
+    --FIN V 1.05
+--
+
+BEGIN
+   --
+   l_val_param := trn_k_g0000000.f_cod_iso_charset;
+   -- inicia conexion. Retorna una conexion smtp
+   v_mensaje := NULL;
+   v_conexion := utl_smtp.open_connection(v_servidor, v_puerto);
+   --
+   -- identifica el dominio del remitente
+   utl_smtp.helo (v_conexion, v_dominio);
+   --
+/*-----------------------------------------------------
+|| Eliminacion de la autenticacion a solicitud de Seguridad para enviar los correos a traves de
+|| otro servidor, V 1.06 LDA
+--------------Autenticacion  (V 1.04)
+  utl_smtp.command(v_conexion, 'AUTH LOGIN');
+  utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Usr_Auth))) );
+  utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Pas_Auth))) );
+--------------Fin Autenticacion...V 1.04
+-----------------------------------------------------*/
+
+-- arranca el mail, especifica el remitente
+    v_reply := utl_smtp.mail (v_conexion, p_remitente||'@'||v_dominio);
+--    dbms_output.put_line('1) Codigo: ' || v_reply.code || ' texto: ' || v_reply.text );
+--
+    BEGIN
+            l_cod_cia         := trn_k_global.devuelve('COD_CIA');
+            l_cod_proceso     := trn_k_global.devuelve('COD_PROCESO');
+            l_cod_nota        := trn_k_global.devuelve('COD_NOTA');
+            l_num_secuencia   := trn_k_global.devuelve('NUM_SECUENCIA');
+            l_descripcion     := trn_k_global.devuelve('NOM_DESC');
+    EXCEPTION WHEN OTHERS THEN
+            NULL;
+    END;
+-- especifica los destinatarios del para
+    FOR i IN 1..p_tab_destinatario.COUNT LOOP
+        v_reply := utl_smtp.rcpt (v_conexion, p_tab_destinatario(i));
+
+          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
+          p_resp(l_num_sec).num_secu        := l_num_secuencia;
+          p_resp(l_num_sec).tip_dest        := 'C';
+          p_resp(l_num_sec).cod_resp        := v_reply.code;
+          p_resp(l_num_sec).desc_resp       := v_reply.text;
+          p_resp(l_num_sec).email           := p_tab_destinatario(i);
+          l_num_sec:=+1;
+          --
+    END LOOP;
+-- especifica los destinatarios del cc
+    BEGIN
+      FOR i IN 1..p_tab_concopia.COUNT LOOP
+          v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopia(i));
+          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
+          p_resp(l_num_sec).num_secu        := l_num_secuencia;
+          p_resp(l_num_sec).tip_dest        := 'CC';
+          p_resp(l_num_sec).cod_resp        := v_reply.code;
+          p_resp(l_num_sec).desc_resp       := v_reply.text;
+          p_resp(l_num_sec).email           := p_tab_concopia(i);--V 1.7.1
+          l_num_sec:=+1;
+          --
+      END LOOP;
+      --
+      EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
+    END;
+-- especifica los destinatarios del cco
+    BEGIN
+      FOR i IN 1..p_tab_concopiaoculta.COUNT LOOP
+          v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopiaoculta(i));
+          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
+          p_resp(l_num_sec).num_secu        := l_num_secuencia;
+          p_resp(l_num_sec).tip_dest        := 'CCO';
+          p_resp(l_num_sec).cod_resp        := v_reply.code;
+          p_resp(l_num_sec).desc_resp       := v_reply.text;
+          p_resp(l_num_sec).email           := p_tab_concopiaoculta(i);--V 1.7.1
+          l_num_sec:=+1;
+      --
+      END LOOP;
+      EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
+    END;
+--
+-- comienza el cuerpo del mail
+--
+    v_reply := utl_smtp.open_data(v_conexion);
+--    dbms_output.put_line('5) Codigo: ' || v_reply.code || ' texto: ' || v_reply.text );
+-- envia cabeceras
+    v_mensaje := v_mensaje||'From: '||p_nombre_remitente||
+                 ' <'||p_remitente||'@'||v_dominio||'>';
+    --
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    v_mensaje := 'Date: '||TO_CHAR(CURRENT_TIMESTAMP,'dd Mon yy HH24:MI:SS tzhtzm');
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    v_mensaje := 'Subject: ' || p_asunto;
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    FOR i IN 1..p_tab_destinatario.COUNT LOOP
+        v_mensaje:= 'To: '||p_tab_destinatario(i);
+        utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    END LOOP;
+    --
+    FOR i IN 1..p_tab_concopia.COUNT LOOP
+        v_mensaje:= 'Cc: '||p_tab_concopia(i);
+        utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    END LOOP;
+-- marca la prioridad : 1, 2, 3, 4 o 5.
+    v_mensaje := 'X-Priority: '||p_prioridad;
+    utl_smtp.write_data(v_conexion, v_mensaje);
+    --
+    v_mensaje := 'Reply-To : '||p_remitente||'@'||v_dominio;
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    -- mime type
+    --V 1.05
+    --
+    v_mensaje := 'MIME-Version: 1.0';
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --v_mensaje := 'Content-Type: multipart/mixed; boundary=DMW.Boundary.605592468';
+    v_mensaje := 'Content-Type: multipart/mixed; boundary='||boundary||'';
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf||v_crlf);
+    --FIN V 1.05
+    v_mensaje := 'This is a multi-part message in MIME format.';
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf||v_crlf);
+    --V 1.05
+    --v_mensaje := '--DMW.Boundary.605592468';
+    v_mensaje := '--' || boundary;
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --FIN V 1.05
+    --
+    --V 1.03
+    --v_mensaje := 'Content-Type: text/html; charset='||l_val_param;
+    v_mensaje := 'Content-Type: text/plain; charset=US-ASCII';
+    --FIN V 1.03
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    v_mensaje := 'Content-Transfer-Encoding: quoted-printable';
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    v_mensaje := 'Content-Disposition: inline';
+    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    --
+    utl_smtp.write_data(v_conexion, v_crlf);
+    --
+-- envia el texto del mail
+    --
+    FOR i IN 1..p_tab_texto.COUNT LOOP
+        ---1.03
+        --utl_smtp.write_raw_data(v_conexion,
+                    --utl_raw.cast_to_raw(p_tab_texto(i)||v_crlf));
+        utl_smtp.write_data(v_conexion, p_tab_texto(i));
+        ---FIN 1.03
+           --         utl_raw.cast_to_raw(v_crlf||p_tab_texto(i)||v_crlf));
+--utl_smtp.write_raw_data(v_conexion, utl_raw.cast_to_raw(utl_tcp.CRLF ||
+--'This is � t�st m�il c�nt�ining sp�ci�l ch�racters.'));
+    --
+    END LOOP;
+    --
+    utl_smtp.write_data(v_conexion, v_crlf);
+    utl_smtp.write_data(v_conexion, v_crlf);
+    utl_smtp.write_data(v_conexion, v_crlf);
+--    dbms_output.put_line('6) Codigo: ' || v_reply.code || ' texto: ' || v_reply.text );
+-- adjunta los archivos pedidos por parametro
+    FOR i IN 1..p_tab_ficheros.COUNT LOOP
+      ---V 1.05
+      if InStr(p_tab_ficheros(i).tipo, 'text', 1) > 0 then
+        l_tipo_texto:= true;
+      end if;
+
+      v_mensaje:= crlf || '--' || boundary || crlf;
+      if l_tipo_texto then
+        v_mensaje:= v_mensaje || 'Content-Type: application/octet-stream; name=' || p_tab_ficheros(i).nombre || '' || crlf;
+        v_mensaje:= v_mensaje || 'Content-Disposition: attachment; filename=' || p_tab_ficheros(i).nombre || '' || crlf;
+        v_mensaje:= v_mensaje || 'Content-Transfer-Encoding: 7bit' || crlf || crlf;
+      else
+       -- v_mensaje:= v_mensaje || 'Content-Type: '|| p_tab_ficheros(i).tipo ||'; name=' || p_tab_ficheros(i).nombre || '' || crlf;
+        v_mensaje:= v_mensaje || 'Content-Disposition: attachment; filename=' || p_tab_ficheros(i).nombre || '' || crlf;
+        v_mensaje:= v_mensaje || 'Content-Transfer-Encoding: base64' || crlf || crlf;
+      end if;
+
+      utl_smtp.write_data(v_conexion, v_mensaje);
+      --
+      BEGIN
+        --
+       BEGIN -- LRR V1.7
+        if Not l_tipo_texto then
+            bfile_handle := bfilename(p_tab_ficheros(i).dir, p_tab_ficheros(i).nombre);
+--            bfile_handle := bfilename('FTP', p_tab_ficheros(i).nombre);
+            bfile_len := dbms_lob.getlength(bfile_handle);
+            pos := 1;
+            dbms_lob.open(bfile_handle, dbms_lob.lob_readonly);
+         else
+            v_file_handle := utl_file.fopen(location => p_tab_ficheros(i).dir,
+                                            --location => 'FTP',
+                                            filename => p_tab_ficheros(i).nombre,
+                                            open_mode=> 'r');
+         end if;
+       EXCEPTION WHEN OTHERS THEN
+                   /* LRR V1.7--------------------------------------------------*/
+                    IF l_cod_cia IS NOT NULL AND l_cod_proceso IS NOT NULL AND l_cod_nota IS NOT NULL THEN
+                       FOR i in 1..p_resp.COUNT LOOP
+--                         gc_k_notificaciones_mrd.p_transacciones_correos(--Se modifico porque tiene que usar el sinonimo. V 1.7.1
+                         gc_k_notificaciones.p_transacciones_correos(
+                                                'I'                    ,l_cod_cia ,
+                                                l_cod_proceso          ,l_cod_nota,
+                                                p_resp(i).tip_dest     ,'E',
+                                                p_resp(i).num_secu     ,
+                                                p_resp(i).email ,
+                                                '-','-'                    ,
+                                                l_descripcion          , SQLERRM) ;
+                       END LOOP;
+                    END IF;
+                  /********************************************************/
+    null;
+       END;
+         ---
+         loop
+           if not l_tipo_texto then
+             if pos + 57 - 1 > bfile_len then
+                read_bytes := bfile_len - pos + 1;
+             else
+                read_bytes := 57;
+             end if;
+             dbms_lob.read(bfile_handle, read_bytes, pos, data);
+             utl_smtp.write_raw_data(v_conexion, utl_encode.base64_encode(data));
+             pos := pos + 57;
+             if pos > bfile_len then
+                exit;
+             end if;
+            else
+               utl_file.get_line(v_file_handle, v_mensaje);
+               utl_smtp.write_data(v_conexion, v_mensaje || crlf);
+            end if;
+         end loop;
+         --
+         if not l_tipo_texto then
+            dbms_lob.close(bfile_handle);
+         else
+            utl_file.fclose(v_file_handle);
+         end if;
+         --
+      exception
+         when no_data_found then
+            null;
+      end;
+      utl_smtp.write_data(v_conexion, crlf);
+    END LOOP;
+      --
+      v_mensaje := crlf || '--' || boundary || '--' || crlf;
+      utl_smtp.write_data(v_conexion, v_mensaje);
+
+    /* LRR V1.7--------------------------------------------------*/
+      IF l_cod_cia IS NOT NULL AND l_cod_proceso IS NOT NULL AND l_cod_nota IS NOT NULL THEN
+         FOR i in 1..p_resp.COUNT LOOP
+           --gc_k_notificaciones_mrd.p_transacciones_correos(-- V 1.7.1
+           gc_k_notificaciones.p_transacciones_correos(
+                                  'I'                    ,l_cod_cia ,
+                                  l_cod_proceso          ,l_cod_nota,
+                                  p_resp(i).tip_dest     ,'S',
+                                  p_resp(i).num_secu     ,
+                                  p_resp(i).email ,
+                                  p_resp(i).cod_resp     ,
+                                  p_resp(i).desc_resp    ,
+                                  l_descripcion          ,
+                                  '-'                    );
+         END LOOP;
+      END IF;
+    /********************************************************/
+    utl_smtp.close_data(v_conexion);
+    utl_smtp.quit(v_conexion);
+EXCEPTION
+   --
+         WHEN utl_smtp.transient_error THEN
+        BEGIN
+            utl_smtp.quit(v_conexion);
+            EXCEPTION
+                  WHEN utl_smtp.transient_error OR
+                 utl_smtp.permanent_error THEN
+
+                     --LRR V1.7--------------------------------------------------
+                    IF l_cod_cia IS NOT NULL AND l_cod_proceso IS NOT NULL AND l_cod_nota IS NOT NULL THEN
+                       FOR i in 1..p_resp.COUNT LOOP
+                         --gc_k_notificaciones_mrd.p_transacciones_correos( --V 1.7.1
+                         gc_k_notificaciones.p_transacciones_correos(
+                                                'U'          ,l_cod_cia ,
+                                                l_cod_proceso,l_cod_nota,
+                                                '' ,'E',0,'','','', l_descripcion,
+                                                '-20000 - Fallo al enviar el mail '||sqlerrm) ;
+                       END LOOP;
+                    END IF;
+                  /********************************************************/
+
+                 NULL;
+        END;
+        RAISE_APPLICATION_ERROR(-20000,'Fallo al enviar el mail '||sqlerrm);
+   --
+   WHEN utl_smtp.permanent_error THEN
+        BEGIN
+            utl_smtp.quit(v_conexion);
+            EXCEPTION
+                  WHEN utl_smtp.transient_error OR
+                 utl_smtp.permanent_error THEN
+                     /* LRR V1.7--------------------------------------------------*/
+                        IF l_cod_cia IS NOT NULL AND l_cod_proceso IS NOT NULL AND l_cod_nota IS NOT NULL THEN
+                           FOR i in 1..p_resp.COUNT LOOP
+                               --gc_k_notificaciones_mrd.p_transacciones_correos(--V 1.7.1
+                               gc_k_notificaciones.p_transacciones_correos(
+                                                'U'          ,l_cod_cia ,
+                                                l_cod_proceso,l_cod_nota,
+                                                '' ,'E',0,'','','', l_descripcion,
+                                                '-20000 - Fallo al enviar el mail '||sqlerrm) ;
+                           END LOOP;
+                        END IF;
+                      /********************************************************/
+                 NULL;
+        END;
+        RAISE_APPLICATION_ERROR(-20000, 'Fallo permanente al enviar el mail '||sqlerrm);
+ WHEN   utl_smtp.invalid_operation THEN
+                /* LRR V1.7--------------------------------------------------*/
+                IF l_cod_cia IS NOT NULL AND l_cod_proceso IS NOT NULL AND l_cod_nota IS NOT NULL THEN
+                   FOR i in 1..p_resp.COUNT LOOP
+                       --gc_k_notificaciones_mrd.p_transacciones_correos(--V 1.7.1
+                       gc_k_notificaciones.p_transacciones_correos(
+                                        'U'          ,l_cod_cia ,
+                                        l_cod_proceso,l_cod_nota,
+                                        '' ,'E',0,'','', '',l_descripcion,
+                                        '-20000 - Fallo al enviar el mail '||sqlerrm) ;
+                   END LOOP;
+                END IF;
+              /********************************************************/
+        RAISE_APPLICATION_ERROR(-20000,'Operacion invalidada '||sqlerrm);
+END p_envio_mail;
+END mrd_k_envio_mail;
+/
