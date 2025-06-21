@@ -58,6 +58,62 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         -- 
     END raise_error;
     --
+    -- validate all
+    PROCEDURE validate_all IS 
+    BEGIN 
+        -- 
+        IF NOT cfg_api_k_city.exist( p_city_co => g_doclocation.p_city_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20001,
+                p_msg_error => 'INVALID CITY CODE'
+            );
+            -- 
+        ELSE 
+            --
+            g_rec_city := cfg_api_k_city.get_record;
+            --            
+        END IF;
+        --
+        IF NOT sec_api_k_user.exist( p_user_co =>  g_doc_city.p_user_co ) THEN
+            --
+            raise_error( 
+                p_cod_error => -20002,
+                p_msg_error => 'INVALID USER CODE'
+            );
+            -- 
+        ELSE 
+            --
+            g_reg_user := sec_api_k_user.get_record;
+            --            
+        END IF;
+        --
+    END validate_all;    
+    --
+    -- se establece los valores json
+    FUNCTION get_json RETURN VARCHAR2 IS 
+        --
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        l_obj   := json_object_t();
+        l_obj.put( 'id', g_rec_location.id );
+        l_obj.put( 'location_id', g_rec_location.location_co );
+        l_obj.put( 'description', g_rec_location.description );
+        l_obj.put( 'postal_co', g_rec_location.postal_co );
+        l_obj.put( 'city_id', g_rec_location.city_id );
+        l_obj.put( 'uuid', g_rec_location.uuid );
+        l_obj.put( 'slug', g_rec_location.slug );
+        l_obj.put( 'nu_gps_lat', g_rec_location.nu_gps_lat );
+        l_obj.put( 'nu_gps_lon', g_rec_location.nu_gps_lat );
+        l_obj.put( 'user_id', g_rec_location.user_id );
+        l_obj.put( 'created_at', g_rec_location.created_at );
+        --
+        RETURN l_obj.stringify;
+        --
+    END get_json;    
+    --
     -- manejo de log
     PROCEDURE record_log( 
             p_context  IN VARCHAR2,
@@ -77,6 +133,42 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         );
         --
     END record_log; 
+    --
+    -- establece los valores globales json
+    PROCEDURE set_global IS
+    BEGIN 
+        --
+        -- global format JSON
+        sys_k_global.p_seter(
+            p_variable  => sys_k_constant.K_LOCATION_JSON, 
+            p_value     => get_json
+        );
+          --
+    END set_global;     
+    --
+    -- process events
+    PROCEDURE process_event( p_event VARCHAR2 ) IS 
+        --
+        l_pay_load VARCHAR2(32000);
+        --
+    BEGIN 
+        --
+        l_pay_load := get_json;
+        --
+        -- TODO: establecer las variables globales
+        sys_k_global.p_seter(
+            p_variable  => 'PARAMETERS', 
+            p_value     => l_pay_load
+        );
+        --
+        -- TODO: procesos de eventos
+        prs_k_proccess.p_execute_event(
+            p_proccess_co       => K_PROCESS,
+            p_context           => K_CONTEXT,
+            p_k_event_process   => p_event
+        );
+        --
+    END process_event;    
     --
     -- obteniendo el registro 
     FUNCTION get_record(
