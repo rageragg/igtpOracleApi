@@ -117,8 +117,7 @@ IS
    crlf               varchar2(2):= chr(13) || chr(10);
    mesg               varchar2(32767);
    conn               UTL_SMTP.CONNECTION;
-   type varchar2_table is table of varchar2(256) index by
-binary_integer;
+   type varchar2_table is table of varchar2(256) index by binary_integer;
    file_array         varchar2_table;
    type_array         varchar2_table;
    i                  binary_integer;
@@ -141,7 +140,7 @@ binary_integer;
 
       FUNCTION lookup_unquoted_char(str  IN VARCHAR2,
                                     chrs IN VARCHAR2) RETURN
-pls_integer IS
+            pls_integer IS
          c            VARCHAR2(5);
          i            pls_integer;
          len          pls_integer;
@@ -198,11 +197,10 @@ pls_integer IS
    END;
 
    -- Procedure to split a file pathname into its directory path and
---file name
+   --file name
    -- components.
 
-   PROCEDURE split_path_name(file_path IN VARCHAR2, directory_path OUT
-VARCHAR2,
+   PROCEDURE split_path_name(file_path IN VARCHAR2, directory_path OUT VARCHAR2,
       file_name OUT VARCHAR2) IS
 
       pos number;
@@ -226,11 +224,10 @@ VARCHAR2,
 
    -- Procedure to append a file's contents to the e-mail
 
-   PROCEDURE append_file(directory_path IN VARCHAR2, file_name IN
-VARCHAR2,
+   PROCEDURE append_file(directory_path IN VARCHAR2, file_name IN VARCHAR2,
       file_type IN VARCHAR2, conn IN OUT UTL_SMTP.CONNECTION) IS
 
---      generated_name  varchar2(30) := 'EMAIL_FILES\CESDIR' || to_char(sysdate,'HH24MISS');
+      --      generated_name  varchar2(30) := 'EMAIL_FILES\CESDIR' || to_char(sysdate,'HH24MISS');
       generated_name  varchar2(30) := 'CESDIR' || to_char(sysdate,'HH24MISS');
       directory_name  varchar2(30);
       file_handle     utl_file.file_type;
@@ -425,11 +422,11 @@ them' || crlf ||
    if message is not null then
       mesg := '--' || boundary || crlf ||
          'Content-Type: text/plain; name=message.txt;
-charset=US-ASCII' ||
-          crlf ||
-         'Content-Disposition: inline; filename=message.txt' || crlf
-||
-         'Content-Transfer-Encoding: 7bit' || crlf || crlf;
+         charset=US-ASCII' ||
+                  crlf ||
+                  'Content-Disposition: inline; filename=message.txt' || crlf
+         ||
+                  'Content-Transfer-Encoding: 7bit' || crlf || crlf;
 
       utl_smtp.write_data(conn,mesg);
       if substr(message,1,1) = '/' then

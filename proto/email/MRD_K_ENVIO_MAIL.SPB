@@ -64,41 +64,38 @@
  l_cod_nota         VARCHAR2(100);
  l_num_secuencia    VARCHAR2(100);
  l_descripcion      VARCHAR2(100);
-PROCEDURE p_envio_mail ( p_host_smtp          VARCHAR2,
-                         p_puerto_smtp        PLS_INTEGER,
-                         p_dominio            VARCHAR2,
-                         p_remitente          VARCHAR2,
-                         p_nombre_remitente   VARCHAR2,
-                         p_prioridad          VARCHAR2,
-                         --p_tab_destinatario   trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
-                         p_tab_destinatario   t_tab_destinatarios,
-                         --p_tab_concopia       trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
-                         p_tab_concopia       t_tab_destinatarios,
-                         --p_tab_concopiaoculta trn_k_envio_mail.t_tab_destinatarios,   ---V 1.05
-                         p_tab_concopiaoculta t_tab_destinatarios,
-                         --p_tab_ficheros       trn_k_envio_mail.t_tab_ficheros,        ---V 1.05
-                         p_tab_ficheros       t_tab_ficheros,
-                         --p_tab_texto          trn_k_envio_mail.t_tab_texto,           ---V 1.05
-                         p_tab_texto          t_tab_texto,
-                         p_asunto             VARCHAR2)
-   IS
-   --
-   v_conexion   utl_smtp.connection;
-   v_servidor   VARCHAR2(256):= p_host_smtp; --'NOMBRE-SERVIDOR';
-   v_puerto     PLS_INTEGER  := p_puerto_smtp; -- 25;
-   v_dominio    VARCHAR2(256):= p_dominio; --'mapfre.com';
-   --
-   registro_encontrado BOOLEAN;
-   v_reply utl_smtp.reply;
-   v_mensaje VARCHAR2(1000);
-   --
-   v_crlf VARCHAR2(2) := CHR(13)||CHR(10);
-   v_file_handle utl_file.file_type;
-   --
-   l_val_param   g0000000.val_param%TYPE;
-   crlf               varchar2(2):= chr(13) || chr(10);
-   -- para adjuntar ficheros externos, deben ser abiertos y leidos con utl_file
-   ---V 1.04
+ --
+PROCEDURE p_envio_mail ( 
+      p_host_smtp          VARCHAR2,
+      p_puerto_smtp        PLS_INTEGER,
+      p_dominio            VARCHAR2,
+      p_remitente          VARCHAR2,
+      p_nombre_remitente   VARCHAR2,
+      p_prioridad          VARCHAR2,
+      p_tab_destinatario   t_tab_destinatarios,
+      p_tab_concopia       t_tab_destinatarios,
+      p_tab_concopiaoculta t_tab_destinatarios,
+      p_tab_ficheros       t_tab_ficheros,
+      p_tab_texto          t_tab_texto,
+      p_asunto             VARCHAR2
+    ) IS
+    --
+    v_conexion   utl_smtp.connection;
+    v_servidor   VARCHAR2(256):= p_host_smtp; --'NOMBRE-SERVIDOR';
+    v_puerto     PLS_INTEGER  := p_puerto_smtp; -- 25;
+    v_dominio    VARCHAR2(256):= p_dominio; --'mapfre.com';
+    --
+    registro_encontrado BOOLEAN;
+    v_reply utl_smtp.reply;
+    v_mensaje VARCHAR2(1000);
+    --
+    v_crlf VARCHAR2(2) := CHR(13)||CHR(10);
+    v_file_handle utl_file.file_type;
+    --
+    l_val_param   g0000000.val_param%TYPE;
+    crlf               varchar2(2):= chr(13) || chr(10);
+    -- para adjuntar ficheros externos, deben ser abiertos y leidos con utl_file
+    ---V 1.04
     l_cod_usr   varchar2(50):= trn_k_global.cod_usr;
     l_Usr_Auth  Varchar2(50):= trn_k_ap101107.traer_propiedad(p_cod_usr         =>  l_cod_usr,
                                              p_txt_nombre_variable      =>  'USUARIO.SMTP');
@@ -115,114 +112,123 @@ PROCEDURE p_envio_mail ( p_host_smtp          VARCHAR2,
     read_bytes         number;
     data               raw(200);
     --FIN V 1.05
---
-
+    --
 BEGIN
-   --
-   l_val_param := trn_k_g0000000.f_cod_iso_charset;
-   -- inicia conexion. Retorna una conexion smtp
-   v_mensaje := NULL;
-   v_conexion := utl_smtp.open_connection(v_servidor, v_puerto);
-   --
-   -- identifica el dominio del remitente
-   utl_smtp.helo (v_conexion, v_dominio);
-   --
-/*-----------------------------------------------------
-|| Eliminacion de la autenticacion a solicitud de Seguridad para enviar los correos a traves de
-|| otro servidor, V 1.06 LDA
---------------Autenticacion  (V 1.04)
-  utl_smtp.command(v_conexion, 'AUTH LOGIN');
-  utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Usr_Auth))) );
-  utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Pas_Auth))) );
---------------Fin Autenticacion...V 1.04
------------------------------------------------------*/
-
--- arranca el mail, especifica el remitente
-    v_reply := utl_smtp.mail (v_conexion, p_remitente||'@'||v_dominio);
---    dbms_output.put_line('1) Codigo: ' || v_reply.code || ' texto: ' || v_reply.text );
---
-    BEGIN
-            l_cod_cia         := trn_k_global.devuelve('COD_CIA');
-            l_cod_proceso     := trn_k_global.devuelve('COD_PROCESO');
-            l_cod_nota        := trn_k_global.devuelve('COD_NOTA');
-            l_num_secuencia   := trn_k_global.devuelve('NUM_SECUENCIA');
-            l_descripcion     := trn_k_global.devuelve('NOM_DESC');
-    EXCEPTION WHEN OTHERS THEN
-            NULL;
-    END;
--- especifica los destinatarios del para
-    FOR i IN 1..p_tab_destinatario.COUNT LOOP
-        v_reply := utl_smtp.rcpt (v_conexion, p_tab_destinatario(i));
-
-          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
-          p_resp(l_num_sec).num_secu        := l_num_secuencia;
-          p_resp(l_num_sec).tip_dest        := 'C';
-          p_resp(l_num_sec).cod_resp        := v_reply.code;
-          p_resp(l_num_sec).desc_resp       := v_reply.text;
-          p_resp(l_num_sec).email           := p_tab_destinatario(i);
-          l_num_sec:=+1;
-          --
-    END LOOP;
--- especifica los destinatarios del cc
-    BEGIN
-      FOR i IN 1..p_tab_concopia.COUNT LOOP
-          v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopia(i));
-          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
-          p_resp(l_num_sec).num_secu        := l_num_secuencia;
-          p_resp(l_num_sec).tip_dest        := 'CC';
-          p_resp(l_num_sec).cod_resp        := v_reply.code;
-          p_resp(l_num_sec).desc_resp       := v_reply.text;
-          p_resp(l_num_sec).email           := p_tab_concopia(i);--V 1.7.1
-          l_num_sec:=+1;
-          --
-      END LOOP;
-      --
-      EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
-    END;
--- especifica los destinatarios del cco
-    BEGIN
-      FOR i IN 1..p_tab_concopiaoculta.COUNT LOOP
-          v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopiaoculta(i));
-          -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
-          p_resp(l_num_sec).num_secu        := l_num_secuencia;
-          p_resp(l_num_sec).tip_dest        := 'CCO';
-          p_resp(l_num_sec).cod_resp        := v_reply.code;
-          p_resp(l_num_sec).desc_resp       := v_reply.text;
-          p_resp(l_num_sec).email           := p_tab_concopiaoculta(i);--V 1.7.1
-          l_num_sec:=+1;
-      --
-      END LOOP;
-      EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
-    END;
---
--- comienza el cuerpo del mail
---
-    v_reply := utl_smtp.open_data(v_conexion);
---    dbms_output.put_line('5) Codigo: ' || v_reply.code || ' texto: ' || v_reply.text );
--- envia cabeceras
-    v_mensaje := v_mensaje||'From: '||p_nombre_remitente||
-                 ' <'||p_remitente||'@'||v_dominio||'>';
+  --
+  l_val_param := trn_k_g0000000.f_cod_iso_charset;
+  -- inicia conexion. Retorna una conexion smtp
+  v_mensaje := NULL;
+  v_conexion := utl_smtp.open_connection(v_servidor, v_puerto);
+  --
+  -- identifica el dominio del remitente
+  utl_smtp.helo (v_conexion, v_dominio);
+  --
+  /*
+    || Eliminacion de la autenticacion a solicitud de Seguridad para enviar los correos a traves de
+    || otro servidor, V 1.06 LDA
+    utl_smtp.command(v_conexion, 'AUTH LOGIN');
+    utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Usr_Auth))) );
+    utl_smtp.command(v_conexion, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Pas_Auth))) );
+  */
+  -- arranca el mail, especifica el remitente
+  v_reply := utl_smtp.mail (v_conexion, p_remitente||'@'||v_dominio);
+  --
+  BEGIN
+      l_cod_cia         := trn_k_global.devuelve('COD_CIA');
+      l_cod_proceso     := trn_k_global.devuelve('COD_PROCESO');
+      l_cod_nota        := trn_k_global.devuelve('COD_NOTA');
+      l_num_secuencia   := trn_k_global.devuelve('NUM_SECUENCIA');
+      l_descripcion     := trn_k_global.devuelve('NOM_DESC');
+    EXCEPTION 
+      WHEN OTHERS THEN
+        NULL;
+  END;
+  --
+  -- especifica los destinatarios del para
+  FOR i IN 1..p_tab_destinatario.COUNT LOOP
     --
-    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    v_reply := utl_smtp.rcpt (v_conexion, p_tab_destinatario(i));
     --
-    v_mensaje := 'Date: '||TO_CHAR(CURRENT_TIMESTAMP,'dd Mon yy HH24:MI:SS tzhtzm');
-    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+    -- VLRR 1.7 - LLENA TABLA DE TRANSACCIONES DE CORREOS
+    p_resp(l_num_sec).num_secu        := l_num_secuencia;
+    p_resp(l_num_sec).tip_dest        := 'C';
+    p_resp(l_num_sec).cod_resp        := v_reply.code;
+    p_resp(l_num_sec).desc_resp       := v_reply.text;
+    p_resp(l_num_sec).email           := p_tab_destinatario(i);
+    l_num_sec:=+1;
     --
-    v_mensaje := 'Subject: ' || p_asunto;
-    utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
-    --
-    FOR i IN 1..p_tab_destinatario.COUNT LOOP
-        v_mensaje:= 'To: '||p_tab_destinatario(i);
-        utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
-    END LOOP;
+  END LOOP;
+  --
+  -- especifica los destinatarios del cc
+  BEGIN
     --
     FOR i IN 1..p_tab_concopia.COUNT LOOP
-        v_mensaje:= 'Cc: '||p_tab_concopia(i);
-        utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+      --
+      v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopia(i));
+      --
+      p_resp(l_num_sec).num_secu        := l_num_secuencia;
+      p_resp(l_num_sec).tip_dest        := 'CC';
+      p_resp(l_num_sec).cod_resp        := v_reply.code;
+      p_resp(l_num_sec).desc_resp       := v_reply.text;
+      p_resp(l_num_sec).email           := p_tab_concopia(i);--V 1.7.1
+      l_num_sec:=+1;
+      --
     END LOOP;
--- marca la prioridad : 1, 2, 3, 4 o 5.
-    v_mensaje := 'X-Priority: '||p_prioridad;
-    utl_smtp.write_data(v_conexion, v_mensaje);
+    --
+    EXCEPTION 
+      WHEN NO_DATA_FOUND THEN 
+        NULL;
+    --
+  END;
+  --
+  -- especifica los destinatarios del cco
+  BEGIN
+    --
+    FOR i IN 1..p_tab_concopiaoculta.COUNT LOOP
+      --
+      v_reply := utl_smtp.rcpt(v_conexion, p_tab_concopiaoculta(i));
+      --
+      p_resp(l_num_sec).num_secu        := l_num_secuencia;
+      p_resp(l_num_sec).tip_dest        := 'CCO';
+      p_resp(l_num_sec).cod_resp        := v_reply.code;
+      p_resp(l_num_sec).desc_resp       := v_reply.text;
+      p_resp(l_num_sec).email           := p_tab_concopiaoculta(i);--V 1.7.1
+      l_num_sec:=+1;
+      --
+    END LOOP;
+    --
+    EXCEPTION 
+      WHEN NO_DATA_FOUND THEN 
+        NULL;
+    --    
+  END;
+  --
+  -- comienza el cuerpo del mail
+  --
+  v_reply := utl_smtp.open_data(v_conexion);
+  -- 
+  -- envia cabeceras
+  v_mensaje := v_mensaje||'From: '||p_nombre_remitente||' <'||p_remitente||'@'||v_dominio||'>';
+  utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+  --
+  v_mensaje := 'Date: '||TO_CHAR(CURRENT_TIMESTAMP,'dd Mon yy HH24:MI:SS tzhtzm');
+  utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+  --
+  v_mensaje := 'Subject: ' || p_asunto;
+  utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+  --
+  FOR i IN 1..p_tab_destinatario.COUNT LOOP
+      v_mensaje:= 'To: '||p_tab_destinatario(i);
+      utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+  END LOOP;
+  --
+  FOR i IN 1..p_tab_concopia.COUNT LOOP
+      v_mensaje:= 'Cc: '||p_tab_concopia(i);
+      utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
+  END LOOP;
+  -- marca la prioridad : 1, 2, 3, 4 o 5.
+  v_mensaje := 'X-Priority: '||p_prioridad;
+  utl_smtp.write_data(v_conexion, v_mensaje);
     --
     v_mensaje := 'Reply-To : '||p_remitente||'@'||v_dominio;
     utl_smtp.write_data(v_conexion, v_mensaje||v_crlf);
@@ -258,17 +264,11 @@ BEGIN
     --
     utl_smtp.write_data(v_conexion, v_crlf);
     --
--- envia el texto del mail
+    -- envia el texto del mail
     --
     FOR i IN 1..p_tab_texto.COUNT LOOP
-        ---1.03
-        --utl_smtp.write_raw_data(v_conexion,
-                    --utl_raw.cast_to_raw(p_tab_texto(i)||v_crlf));
+      ----
         utl_smtp.write_data(v_conexion, p_tab_texto(i));
-        ---FIN 1.03
-           --         utl_raw.cast_to_raw(v_crlf||p_tab_texto(i)||v_crlf));
---utl_smtp.write_raw_data(v_conexion, utl_raw.cast_to_raw(utl_tcp.CRLF ||
---'This is � t�st m�il c�nt�ining sp�ci�l ch�racters.'));
     --
     END LOOP;
     --
