@@ -1,5 +1,6 @@
 declare
     --
+    -- el cursor para obtener los pilotos holandeses
     CURSOR c_dutch_drivers IS
         SELECT drv.*
           FROM f1data.drivers drv
@@ -14,7 +15,7 @@ BEGIN
     OPEN c_dutch_drivers;
     LOOP
         --
-        FETCH c_dutch_drivers BULK COLLECT INTO l_dutch_drivers LIMIT 500;
+        FETCH c_dutch_drivers BULK COLLECT INTO l_dutch_drivers LIMIT 1024;
         --   
         dbms_output.put_line( 
             '----- '|| to_char( l_dutch_drivers.count )|| ' -----'
@@ -22,11 +23,14 @@ BEGIN
         --
         if l_dutch_drivers.count > 0 then
             --
+            -- recorresmos los pilotos holandeses
             for indx in l_dutch_drivers.first .. l_dutch_drivers.last loop
                 --
                 dbms_output.put_line( 
                     l_dutch_drivers( indx ).forename || ' ' || l_dutch_drivers( indx ).surname
                 );
+                --
+                -- TODO: PROCESAR LOS REGISTROS
                 --
             end loop;
             --
