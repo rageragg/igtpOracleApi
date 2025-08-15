@@ -93,12 +93,20 @@ BEGIN
         --
         DBMS_OUTPUT.PUT_LINE('Cantidad : ' || l_cities.get_size);
         --
-        /*
         FOR i IN 0 .. l_cities.get_size - 1 LOOP
-            l_element :=  l_cities.get(i);
-            DBMS_OUTPUT.PUT_LINE('Ciudad ' || (i+1) || ': ' || l_element.to_string);
+            --
+            l_element := l_cities.get(i);
+            --
+            json_city := JSON_OBJECT_T.parse( 
+                l_cities.get_string(i)
+            );
+            --
+            dbms_output.put_line(
+                'Ciudad ' || (i+1) || ': ' || json_city.get_string('description')
+            );
+            --
         END LOOP;
-        */
+        --
     ELSE
         --
         dbms_output.put_line( 'Result: ' || l_result );
@@ -108,10 +116,6 @@ BEGIN
     EXCEPTION 
         WHEN OTHERS THEN 
             --
-            IF l_result IS NULL THEN 
-              l_result := SQLERRM;
-            END IF;
-            --
-            dbms_output.put_line( 'Error: ' || l_result );
+            dbms_output.put_line( 'Error: ' || SQLERRM );
     --
 END;
