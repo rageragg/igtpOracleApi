@@ -1,0 +1,4 @@
+customer_co;description;telephone_co;fax_co;email;address;type_customer;sector;category_co;fiscal_document_co;location_co;telephone_contact;name_contact;email_contact
+XXX-X1;ELIMINAR;+XXXXX-XXXXXXX;NULL;customer@gmail.com;UNA DIRECCION;M;FOOD AND DRINKS;C;J-XXXXXXX-X;BQTO-OES;+XXXXX-XXXXXXX;UN CONTACTO;contacto@gmail.com
+XXX-X2;ELIMINAR;+XXXXX-XXXXXXX;NULL;customer@gmail.com;UNA DIRECCION;M;FOOD AND DRINKS;C;J-XXXXXXX-X;BQTO-OES;+XXXXX-XXXXXXX;UN CONTACTO;contacto@gmail.com
+XXX-X3;ELIMINAR;+XXXXX-XXXXXXX;NULL;customer@gmail.com;UNA DIRECCION;M;FOOD AND DRINKS;C;J-XXXXXXX-X;BQTO-OES;+XXXXX-XXXXXXX;UN CONTACTO;contacto@gmail.com
