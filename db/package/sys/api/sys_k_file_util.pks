@@ -33,60 +33,76 @@ CREATE OR REPLACE PACKAGE sys_k_file_util IS
     SUBTYPE t_dir_sep   IS g_dir_sep_def%TYPE;
     --
     -- resolve filename
-    FUNCTION resolve_filename ( p_dir IN VARCHAR2,
-                                p_file_name IN VARCHAR2,
-                                p_os IN VARCHAR2 := g_os_windows
-                              ) RETURN VARCHAR2;
+    FUNCTION resolve_filename ( 
+        p_dir       IN VARCHAR2,
+        p_file_name IN VARCHAR2,
+        p_os        IN VARCHAR2 := g_os_windows
+    ) RETURN VARCHAR2;
     --                         
     -- extract filename
-    FUNCTION extract_filename ( p_file_name IN VARCHAR2,
-                                p_os IN VARCHAR2 := g_os_windows
-                              ) RETURN VARCHAR2;
+    FUNCTION extract_filename ( 
+        p_file_name IN VARCHAR2,
+        p_os        IN VARCHAR2 := g_os_windows
+    ) RETURN VARCHAR2;
     --                     
     -- get file extension    
-    FUNCTION get_file_ext (p_file_name IN VARCHAR2) RETURN VARCHAR2;
+    FUNCTION get_file_ext (
+        p_file_name IN VARCHAR2
+    ) RETURN VARCHAR2;
     --
     -- strip file extension
-    FUNCTION strip_file_ext (p_file_name IN VARCHAR2) RETURN VARCHAR2;
+    FUNCTION strip_file_ext (
+        p_file_name IN VARCHAR2
+    ) RETURN VARCHAR2;
     --                         
     -- get filename string (no whitespace)
-    FUNCTION get_filename_str ( p_str IN VARCHAR2,
-                                p_extension IN VARCHAR2 := null
-                              ) RETURN VARCHAR2;
+    FUNCTION get_filename_str ( 
+        p_str       IN VARCHAR2,
+        p_extension IN VARCHAR2 := null
+    ) RETURN VARCHAR2;
     --
     -- get BLOB from file
-    FUNCTION get_blob_from_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2
-                                ) RETURN BLOB;
+    FUNCTION get_blob_from_file (
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2
+    ) RETURN BLOB;
     --
     -- get CLOB from file
     FUNCTION get_clob_from_file (
-        p_directory_name IN VARCHAR2,
-        p_file_name IN VARCHAR2
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2
     ) RETURN CLOB;
     --
     -- save BLOB to file
-    procedure save_blob_to_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2,
-                                 p_blob IN BLOB);  
+    procedure save_blob_to_file (
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2,
+        p_blob              IN BLOB
+    );  
     --
     -- save CLOB to file
     PROCEDURE save_clob_to_file (
-        p_directory_name  IN VARCHAR2,
-        p_file_name       IN VARCHAR2,
-        p_clob            IN CLOB
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2,
+        p_clob              IN CLOB
     );  
     --
     -- save CLOB to file (raw)
-    procedure save_clob_to_file_raw (p_directory_name IN VARCHAR2,
-                                    p_file_name IN VARCHAR2,
-                                    p_clob IN CLOB);  
+    procedure save_clob_to_file_raw (
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2,
+        p_clob              IN CLOB
+    );  
     --                           
     -- does file exist?
-    FUNCTION file_exists (  p_directory_name IN VARCHAR2,
-                            p_file_name IN VARCHAR2) RETURN BOOLEAN;
+    FUNCTION file_exists (  
+        p_directory_name    IN VARCHAR2,
+        p_file_name         IN VARCHAR2
+    ) RETURN BOOLEAN;
     --
     -- format bytes
-    FUNCTION fmt_bytes (p_bytes IN number) RETURN VARCHAR2;
+    FUNCTION fmt_bytes (
+        p_bytes IN number
+    ) RETURN VARCHAR2;
     --
 END sys_k_file_util;
