@@ -1,6 +1,14 @@
 CREATE OR REPLACE PACKAGE sys_k_proccess IS
     --
-        --
+    /*
+        Purpose:      Package contains description proccesses 
+        Remarks:      
+        
+        Who     Date        Description
+        ------  ----------  --------------------------------
+        RAGE    01.01.2021  Created
+    */
+    --
     K_OWNER      CONSTANT VARCHAR2(20)  := 'IGTP';
     K_TABLE_NAME CONSTANT VARCHAR2(30)  := 'PROCCESSES';
     --

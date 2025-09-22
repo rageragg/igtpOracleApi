@@ -1,8 +1,8 @@
 --------------------------------------------------------
---  DDL for Sequence PROCESS_SEQ
+--  DDL for Sequence DOCUMENT_SEQ
 --------------------------------------------------------
 
-CREATE SEQUENCE  "IGTP"."PROCESS_SEQ"  
+CREATE SEQUENCE  "IGTP"."DOCUMENTS_SEQ"  
     MINVALUE 1 
     MAXVALUE 9999999999999999999999999999 
     INCREMENT BY 1 

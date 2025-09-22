@@ -1,20 +1,16 @@
---------------------------------------------------------
---  DDL for Package Body sys_k_dinamic
---------------------------------------------------------
-
-  CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_dinamic AS
-    ---------------------------------------------------------------------------
-    --  DDL for Package PRS_K_PROCCESS (Process)
-    --  REFERENCIAS
-    --  NOMBRE                          TIPO
-    --  =============================== =======================================
+CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_dinamic AS
     --
-    --  MODIFICATIONS
-    --  DATE        AUTOR               DESCRIPTIONS
-    --  =========== =================== =======================================
-    --                                  Permite realizar acciones dinamicas, tales como eje-
-    --                                  cuciones de procedimientos, sentencias, etc.
-    ---------------------------------------------------------------------------
+    /*
+        Purpose:      Package proccess dinamics 
+        Remarks:      
+        
+        Who     Date        Description
+        ------  ----------  ----------------------------------------------------
+        RAGE    01.01.2021  Created
+                            Permite realizar acciones dinamicas, tales como eje-
+                            cuciones de procedimientos, sentencias, etc.
+    */
+    --
     --
     /* --------------------------------------------------------
     || Aqui comienza la declaracion de tablas GLOBALES
@@ -1099,5 +1095,3 @@
     END f_open_cursor;
     --
 END sys_k_dinamic;
-
-/

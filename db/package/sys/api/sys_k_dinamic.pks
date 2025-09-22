@@ -1,16 +1,15 @@
 CREATE OR REPLACE NONEDITIONABLE PACKAGE igtp.sys_k_dinamic AS
-    ---------------------------------------------------------------------------
-    --  DDL for Package PRS_K_PROCCESS (Process)
-    --  REFERENCIAS
-    --  NOMBRE                          TIPO
-    --  =============================== =======================================
     --
-    --  MODIFICATIONS
-    --  DATE        AUTOR               DESCRIPTIONS
-    --  =========== =================== =======================================
-    --                                  Permite realizar acciones dinamicas, tales como eje-
-    --                                  cuciones de procedimientos, sentencias, etc.
-    ---------------------------------------------------------------------------
+    /*
+        Purpose:      Package proccess dinamics 
+        Remarks:      
+        
+        Who     Date        Description
+        ------  ----------  ----------------------------------------------------
+        RAGE    01.01.2021  Created
+                            Permite realizar acciones dinamicas, tales como eje-
+                            cuciones de procedimientos, sentencias, etc.
+    */
     --
     TYPE t_t_values IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
     TYPE c_return1 IS REF CURSOR;

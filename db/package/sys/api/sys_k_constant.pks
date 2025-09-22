@@ -1,5 +1,14 @@
 CREATE OR REPLACE PACKAGE sys_k_constant IS
     --
+    /*
+        Purpose:      Package contains constants 
+        Remarks:      
+        
+        Who     Date        Description
+        ------  ----------  --------------------------------
+        RAGE    01.01.2021  Created
+    */
+    --
     -- user OWNER IGTP
     K_OWNER_APP                 CONSTANT VARCHAR2(20) := 'IGTP';
     --
@@ -66,6 +75,30 @@ CREATE OR REPLACE PACKAGE sys_k_constant IS
     K_TYPE_PROCESS_PAYROLE      CONSTANT VARCHAR2(20) := 'PAYROLE';
     K_TYPE_PROCESS_ARCHIVING    CONSTANT VARCHAR2(20) := 'ARCHIVING';
     K_TYPE_PROCESS_INVOICING    CONSTANT VARCHAR2(20) := 'INVOICING';
+    --
+    -- type documents
+    K_TYPE_DOCUMENT_PDF         CONSTANT VARCHAR2(20) := 'PDF';
+    K_TYPE_DOCUMENT_TXT         CONSTANT VARCHAR2(20) := 'TXT';
+    K_TYPE_DOCUMENT_XLM         CONSTANT VARCHAR2(20) := 'XML';
+    K_TYPE_DOCUMENT_CSV         CONSTANT VARCHAR2(20) := 'CSV';
+    K_TYPE_DOCUMENT_XLS         CONSTANT VARCHAR2(20) := 'XLS'; 
+    K_TYPE_DOCUMENT_XLSX        CONSTANT VARCHAR2(20) := 'XLSX';
+    K_TYPE_DOCUMENT_JPG         CONSTANT VARCHAR2(20) := 'JPG'; 
+    K_TYPE_DOCUMENT_PNG         CONSTANT VARCHAR2(20) := 'PNG';
+    K_TYPE_DOCUMENT_BMP         CONSTANT VARCHAR2(20) := 'BMP'; 
+    K_TYPE_DOCUMENT_GIF         CONSTANT VARCHAR2(20) := 'GIF';
+    K_TYPE_DOCUMENT_TIFF        CONSTANT VARCHAR2(20) := 'TIFF';    
+    K_TYPE_DOCUMENT_MP4         CONSTANT VARCHAR2(20) := 'MP4'; 
+    K_TYPE_DOCUMENT_MOV         CONSTANT VARCHAR2(20) := 'MOV';
+    K_TYPE_DOCUMENT_AVI         CONSTANT VARCHAR2(20) := 'AVI'; 
+    K_TYPE_DOCUMENT_MKV         CONSTANT VARCHAR2(20) := 'MKV'; 
+    K_TYPE_DOCUMENT_WMV         CONSTANT VARCHAR2(20) := 'WMV';
+    K_TYPE_DOCUMENT_JSON        CONSTANT VARCHAR2(20) := 'JSON';
+    K_TYPE_DOCUMENT_DOC         CONSTANT VARCHAR2(20) := 'DOC'; 
+    K_TYPE_DOCUMENT_DOCX        CONSTANT VARCHAR2(20) := 'DOCX';
+    K_TYPE_DOCUMENT_RTF         CONSTANT VARCHAR2(20) := 'RTF'; 
+    K_TYPE_DOCUMENT_ODT         CONSTANT VARCHAR2(20) := 'ODT';
+    K_TYPE_DOCUMENT_HTML        CONSTANT VARCHAR2(20) := 'HTML';    
     --
     -- status proccess
     K_TYPE_ST_PRC_PLANNED       CONSTANT VARCHAR2(20) := 'PLANNED';

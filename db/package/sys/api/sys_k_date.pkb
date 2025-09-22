@@ -1,11 +1,10 @@
 
 CREATE OR REPLACE PACKAGE BODY sys_k_date IS
-    --------------------------------------------------------
-    --  DDL for Package sys_k_date
-    --------------------------------------------------------
+    --
     /*
         Purpose:    Package handles functionality related to DATE and time
-        Remarks:    
+        Remarks:
+            
         Who     DATE        Description
         ------  ----------  -------------------------------------
         MBR     19.09.2006  Created

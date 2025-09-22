@@ -1,6 +1,14 @@
 
-CREATE OR REPLACE PACKAGE BODY sys_k_proccess
-IS
+CREATE OR REPLACE PACKAGE BODY sys_k_proccess IS
+    --
+    /*
+        Purpose:      Package contains description proccesses 
+        Remarks:      
+        
+        Who     Date        Description
+        ------  ----------  --------------------------------
+        RAGE    01.01.2021  Created
+    */
     --
     g_record        proccesses%ROWTYPE;
     --

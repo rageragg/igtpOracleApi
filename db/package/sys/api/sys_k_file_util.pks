@@ -1,7 +1,9 @@
 CREATE OR REPLACE PACKAGE sys_k_file_util IS
+    --
     /*
         Purpose:      Package contains file utilities 
-        Remarks:      
+        Remarks: 
+
         Who     Date        Description
         ------  ----------  --------------------------------
         MBR     01.01.2005  Created
