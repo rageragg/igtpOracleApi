@@ -9,10 +9,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         MBR     18.01.2011  Added BLOB/CLOB operations
     */
     --
-    FUNCTION resolve_filename (p_dir IN VARCHAR2,
-                               p_file_name IN VARCHAR2,
-                               p_os IN VARCHAR2 := g_os_windows
-                              ) RETURN VARCHAR2 IS 
+    FUNCTION resolve_filename (
+            p_dir IN VARCHAR2,
+            p_file_name IN VARCHAR2,
+            p_os IN VARCHAR2 := g_os_windows
+        ) RETURN VARCHAR2 IS 
         --
         l_returnvalue t_file_name;
         --
@@ -56,9 +57,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
 
     END resolve_filename;
     --                            
-    FUNCTION extract_filename (p_file_name IN VARCHAR2,
-                               p_os IN VARCHAR2 := g_os_windows
-                              ) RETURN VARCHAR2 IS
+    FUNCTION extract_filename (
+            p_file_name IN VARCHAR2,
+            p_os IN VARCHAR2 := g_os_windows
+        ) RETURN VARCHAR2 IS
         --
         l_returnvalue    t_file_name;
         l_dir_sep        t_dir_sep;
@@ -145,8 +147,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END strip_file_ext;
     --
-    FUNCTION get_filename_str (p_str IN VARCHAR2,
-                               p_extension IN VARCHAR2 := null) RETURN VARCHAR2 IS
+    FUNCTION get_filename_str (
+            p_str       IN VARCHAR2,
+            p_extension IN VARCHAR2 := null
+        ) RETURN VARCHAR2 IS
         --
         l_returnvalue t_file_name;
         --
@@ -162,8 +166,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END get_filename_str;
     --
-    FUNCTION get_blob_from_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2) RETURN BLOB IS
+    FUNCTION get_blob_from_file (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2
+        ) RETURN BLOB IS
         --
         l_bfile          bfile;
         l_returnvalue    BLOB;
@@ -211,14 +217,14 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         dbms_lob.fileopen (l_bfile, dbms_lob.file_readonly);
         --
         dbms_lob.loadclobfromfile(
-                    dest_lob        => l_returnvalue,
-                    src_bfile       => l_bfile,
-                    amount          => dbms_lob.lobmaxsize,
-                    dest_offset     => l_dest_offset,
-                    src_offset      => l_src_offset,
-                    bfile_csid      => l_bfile_csid,
-                    lang_context    => l_lang_context,
-                    warning         => l_warning
+            dest_lob        => l_returnvalue,
+            src_bfile       => l_bfile,
+            amount          => dbms_lob.lobmaxsize,
+            dest_offset     => l_dest_offset,
+            src_offset      => l_src_offset,
+            bfile_csid      => l_bfile_csid,
+            lang_context    => l_lang_context,
+            warning         => l_warning
         );
         --
         dbms_lob.fileclose (l_bfile);
@@ -238,9 +244,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END get_clob_from_file;
     --
-    PROCEDURE save_blob_to_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2,
-                                 p_blob in BLOB) IS
+    PROCEDURE save_blob_to_file (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2,
+            p_blob              IN BLOB
+        ) IS
         --
         l_file      utl_file.file_type;
         l_buffer    RAW(32767);
@@ -274,9 +282,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END save_blob_to_file;  
     --
-    PROCEDURE save_clob_to_file (p_directory_name IN VARCHAR2,
-                                 p_file_name IN VARCHAR2,
-                                 p_clob IN CLOB) IS
+    PROCEDURE save_clob_to_file (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2,
+            p_clob              IN CLOB
+        ) IS
         --
         l_file      utl_file.file_type;
         l_buffer    VARCHAR2(32767);
@@ -310,9 +320,11 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END save_clob_to_file;  
     --
-    PROCEDURE save_clob_to_file_raw (p_directory_name IN VARCHAR2,
-                                     p_file_name IN VARCHAR2,
-                                     p_clob in CLOB) IS
+    PROCEDURE save_clob_to_file_raw (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2,
+            p_clob              IN CLOB
+        ) IS
         --
         l_file       utl_file.file_type;
         l_chunk_size PLS_INTEGER := 3000;
@@ -340,8 +352,10 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
     END save_clob_to_file_raw;  
     --
-    FUNCTION file_exists (p_directory_name IN VARCHAR2,
-                          p_file_name IN VARCHAR2) RETURN BOOLEAN IS
+    FUNCTION file_exists (
+            p_directory_name    IN VARCHAR2,
+            p_file_name         IN VARCHAR2
+        ) RETURN BOOLEAN IS
         --
         l_length      number;
         l_block_size  number; 
