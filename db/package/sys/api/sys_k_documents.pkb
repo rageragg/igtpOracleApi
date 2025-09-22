@@ -247,7 +247,7 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_documents IS
         END IF;        
         --
         UPDATE igtp.documents 
-        SET document_co         = p_document_co,
+        SET document_co     = p_document_co,
             description     = p_description,
             telephone_co    = p_telephone_co,
             postal_co       = p_postal_co,
