@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE sys_k_documents IS
     --
-    /*
+    /* 
         Purpose:      Package contains description documents 
         Remarks:      
         
