@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     g_rec_city                      cities%ROWTYPE;
     g_rec_location                  locations%ROWTYPE;
     g_doc_location                  location_api_doc;
-    g_rec_user                      igtp.users%ROWTYPE;
+    g_rec_user                      users%ROWTYPE;
     --
     -- excepciones
     e_validate_city                 EXCEPTION;
@@ -62,7 +62,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
     PROCEDURE validate_all IS 
     BEGIN 
         -- 
-        IF NOT cfg_api_k_city.exist( p_city_co => g_doclocation.p_city_co ) THEN
+        IF NOT cfg_api_k_city.exist( p_city_co => g_doc_location.p_city_co ) THEN
             --
             raise_error( 
                 p_cod_error => -20001,
@@ -75,7 +75,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             --            
         END IF;
         --
-        IF NOT sec_api_k_user.exist( p_user_co =>  g_doc_city.p_user_co ) THEN
+        IF NOT sec_api_k_user.exist( p_user_co =>  g_doc_location.p_user_co ) THEN
             --
             raise_error( 
                 p_cod_error => -20002,
@@ -84,7 +84,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
             -- 
         ELSE 
             --
-            g_reg_user := sec_api_k_user.get_record;
+            g_rec_user := sec_api_k_user.get_record;
             --            
         END IF;
         --
@@ -340,7 +340,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         -- 
     END create_location;
     --  
-    -- insert RECORD
+    -- create RECORD
     PROCEDURE create_location( 
             p_rec       IN OUT location_api_doc,
             p_result    OUT VARCHAR2  
@@ -442,6 +442,51 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                 --
                 ROLLBACK;
         --    
+    END create_location;
+    --
+    -- create location by json
+    PROCEDURE create_location( 
+            p_json      IN OUT VARCHAR2,
+            p_result    OUT VARCHAR2
+        ) IS 
+        --
+        l_obj       json_object_t;
+        --
+    BEGIN 
+        --
+        -- analizamos los datos JSON
+        l_obj   := json_object_t.parse(p_json);
+        --
+        -- completamos los datos del registro locacion
+        g_doc_location.p_location_co       := l_obj.get_string('location_co');
+        g_doc_location.p_description       := l_obj.get_string('description');
+        g_doc_location.p_postal_co         := l_obj.get_string('postal_co');
+        g_doc_location.p_city_co           := l_obj.get_string('city_co');
+        g_doc_location.p_uuid              := l_obj.get_string('uuid');
+        g_doc_location.p_slug              := l_obj.get_string('slug');
+        g_doc_location.p_nu_gps_lat        := l_obj.get_number('nu_gps_lat');
+        g_doc_location.p_nu_gps_lon        := l_obj.get_number('nu_gps_lon');
+        g_doc_location.p_user_co           := l_obj.get_string('user_co');
+        --
+        create_location( 
+            p_rec       => g_doc_location,
+            p_result    => p_result
+        );
+        --
+        l_obj.put('slug', g_doc_location.p_slug);
+        l_obj.put('uuid', g_doc_location.p_uuid);
+        p_json := l_obj.stringify; 
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                --
+                IF p_result IS NULL THEN 
+                    p_result :=  '{ "status":"ERROR", "message":"'||SQLERRM||'" }';
+                END IF;
+                --
+                ROLLBACK;
+                --
+        --
     END create_location;
     --  
     -- update
@@ -763,6 +808,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         l_directory_outdir  VARCHAR2(30)    := sys_k_constant.K_OUT_DIRECTORY;
         l_file_name         VARCHAR2(128);
         l_user_code         VARCHAR2(10);
+        l_separator         VARCHAR2(5)     := sys_k_constant.K_SEMICOLON_SEPARATOR;
         l_data              CLOB;
         l_log               CLOB;
         l_obj               json_object_t;
@@ -782,7 +828,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
                    c006 nu_gps_lon
               FROM sys_k_csv_util.clob_to_csv (
                         p_csv_clob  => l_data,
-                        p_separator => ';',
+                        p_separator => l_separator,
                         p_skip_rows => 1
                    );
         --
@@ -794,6 +840,7 @@ CREATE OR REPLACE PACKAGE BODY igtp.prs_api_k_location IS
         -- completamos los datos del registro customer
         l_file_name := l_obj.get_string('file_name');
         l_user_code := l_obj.get_string('user_name');
+        l_separator := nvl( l_obj.get_string('separator'), l_separator );
         --
         IF l_file_name IS NOT NULL THEN 
             --
