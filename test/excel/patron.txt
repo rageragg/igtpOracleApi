@@ -1,0 +1,62 @@
+header_string
+open_workbook
+
+    open_document_properties
+        LastAuthor
+        Created
+        LastSaved
+        Version
+    close_document_properties
+
+    open_excel_workbook
+        WindowHeight
+        WindowWidth
+        WindowTopX
+        WindowTopY
+        AcceptLabelsInFormulas
+        ProtectStructure
+        ProtectWindows
+    close_excel_workbook
+
+    open_styles
+        for i in 1..nStyles loop
+            open_style
+                Alignment 
+                Borders
+                Font
+                Interior
+                NumberFormat
+                Protection
+                Interior
+            close_style
+        end loop
+    close_styles
+
+    open_worksheet
+
+        open_table
+
+            for i in 1..nColumns loop
+                open_column
+                close_column
+            end loop
+
+            for i in 1..nRows loop
+                open_row
+                for i in 1..nCells loop
+                    open_data
+                    close_data 
+                end loop 
+                close_row
+            end loop
+
+        close_table
+
+        open_worksheet_options
+            open_protect_objects
+            close_protect_objects
+        close_worksheet_options
+    
+    close_worksheet
+
+close_workbook

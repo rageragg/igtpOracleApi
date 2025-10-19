@@ -42,7 +42,7 @@
             <NumberFormat ss:Format="#,##0.00"/>
         </Style>
         <Style ss:ID="Estilo1">
-            <Font ss:FontName="Arial" 
+            <Font   ss:FontName="Arial" 
                     ss:Size="10"  
                     ss:Color="White"  
                     ss:Bold="1"  

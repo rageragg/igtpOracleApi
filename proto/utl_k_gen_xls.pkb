@@ -214,14 +214,14 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
         BEGIN
             --
             -- verificamos que el archivo no este abierto
-            IF NOT utl_file.is_open (g_file) THEN       
+            IF NOT utl_file.is_open(g_file) THEN       
                 --
                 g_file := utl_file.fopen( p_directory, p_file_name , 'w', 16384) ;
                 --
             END IF;
             --
             EXCEPTION
-                WHEN utl_file.write_error THEN
+                WHEN utl_file.WRITE_ERROR THEN
                     RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Error de Escritura. VerIFique si el archivo ya esta abierto o los permisos al directorio'
@@ -231,12 +231,12 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                         -20101 , 
                         'UTL_FILE - No pudo abrir archivo u operar en el. VerIFique si el archivo ya esta abierto'
                     );
-                WHEN utl_file.invalid_path THEN
+                WHEN utl_file.INVALID_PATH THEN
                     RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Ruta invalida. VerIFique que el directorio es valido y que tiene acceso'
                     );
-                WHEN others THEN
+                WHEN OTHERS THEN
                     RAISE_APPLICATION_ERROR( 
                         -20101 , 
                         'UTL_FILE - Error Generico.'
@@ -394,7 +394,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     FUNCTION header_string RETURN VARCHAR2 IS 
     BEGIN
         --
-        RETURN '<?xml version="1.0"  encoding="ISO-8859-1"?>'||
+        RETURN '<?xml version="1.0" encoding="ISO-8859-1"?>'||
                '<?mso-application progid="Excel.Sheet"?>'||
                '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"'||
                'xmlns:o="urn:schemas-microsoft-com:office:office"'||
