@@ -29,9 +29,9 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     --
     -- tipo hoja de trabajo
     TYPE rec_worksheets IS RECORD ( 
-        w       VARCHAR2(30) , 
-        whdr    VARCHAR2(300), 
-        wftr    VARCHAR2(2000) 
+        w       VARCHAR2(30),   -- nombre de la hoja 
+        whdr    VARCHAR2(300),  -- etiqueta de inicio de hoja
+        wftr    VARCHAR2(2000)  -- etiqueta opciones de la hoja y cierre
     );
     --
     TYPE tbl_worksheets IS TABLE OF rec_worksheets  INDEX BY BINARY_INTEGER ;
@@ -41,13 +41,13 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     --
     -- tipo de celda
     TYPE rec_cell_data IS RECORD  ( 
-        r       NUMBER , 
-        c       NUMBER , 
-        v       VARCHAR2(2000) ,
-        s       VARCHAR2(30) , 
-        w       VARCHAR2(100), 
-        dt      typecell, 
-        merg    pls_integer 
+        r       NUMBER ,            -- fila
+        c       NUMBER ,            -- columna
+        v       VARCHAR2(2000) ,    -- valor
+        s       VARCHAR2(30) ,      -- estilo
+        w       VARCHAR2(100),      -- hoja de trabajo
+        dt      typecell,           -- tipo de dato 
+        merg    pls_integer         -- cantidad de celdas a unir
     );
     --
     TYPE tbl_cell_data IS TABLE OF rec_cell_data INDEX BY binary_INTEGER ;
@@ -57,9 +57,9 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     --
     -- tipo de columna
     TYPE rec_columns_data IS RECORD( 
-        c NUMBER, 
-        wd NUMBER, 
-        w VARCHAR2(30)  
+        c   NUMBER,         -- indice de columna
+        wd  NUMBER,         -- ancho de columna
+        w   VARCHAR2(30)    -- hoja de trabajo    
     ) ;
     --
     TYPE tbl_columns_data IS TABLE OF rec_columns_data Index BY BINARY_INTEGER ;
@@ -69,9 +69,9 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     --
     -- tipo de fila
     TYPE rec_rows_data IS RECORD( 
-        r NUMBER, 
-        ht NUMBER , 
-        w VARCHAR2(30) 
+        r   NUMBER,         -- indice de fila
+        ht  NUMBER ,        -- altura de fila
+        w   VARCHAR2(30)    -- hoja de trabajo
     ) ;
     --
     TYPE tbl_rows_data IS TABLE OF rec_rows_data Index BY BINARY_INTEGER ;
