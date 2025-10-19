@@ -133,13 +133,13 @@ CREATE OR REPLACE PACKAGE utl_k_gen_xls IS
   */
   DEBUG_FLAG     BOOLEAN := FALSE;
   --
-  T_ENTERO       CONSTANT PLS_INTEGER:= 1;
-  T_NUMERICO     CONSTANT PLS_INTEGER:= 2;
-  T_MONEDA       CONSTANT PLS_INTEGER:= 3;
-  T_ALFANUMERICO CONSTANT PLS_INTEGER:= 4;
-  T_FECHA        CONSTANT PLS_INTEGER:= 5;
+  T_INTEGER      CONSTANT PLS_INTEGER:= 1;
+  T_NUMERIC      CONSTANT PLS_INTEGER:= 2;
+  T_CURRENCY     CONSTANT PLS_INTEGER:= 3;
+  T_ALFANUMERIC  CONSTANT PLS_INTEGER:= 4;
+  T_DATE         CONSTANT PLS_INTEGER:= 5;
   T_FORMULA      CONSTANT PLS_INTEGER:= 6;
-  T_NUM_MASCARA  CONSTANT PLS_INTEGER:= 7;
+  T_NUM_MASK     CONSTANT PLS_INTEGER:= 7;
   --
   SUBTYPE typecell IS PLS_INTEGER RANGE 1..7;
   --
@@ -202,10 +202,8 @@ CREATE OR REPLACE PACKAGE utl_k_gen_xls IS
     p_worksheet_name  IN VARCHAR2,
     p_value           IN VARCHAR2
   );
- 
   --
-
- /*
+  /*
     Establece el valor en la celda, segun el tipo de datos
       Parametros:
         p_row             : Fila en la hoja del documento
@@ -230,7 +228,7 @@ CREATE OR REPLACE PACKAGE utl_k_gen_xls IS
     p_type_cell       IN typecell,
     p_style           IN VARCHAR2 DEFAULT NULL
   );
-   --
+  --
   /*
     Cierra el documento y libera recursos
   */

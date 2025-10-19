@@ -1,0 +1,95 @@
+{
+    "meta": {
+        "type": "Excel XML Spreadsheet",
+        "description": "Estructura basica de un archivo XML para Excel",
+        "author": "igtp",
+        "date": "2024-06-10",
+        "version": "1.0"
+    },
+    "tags": [
+        "Workbook", "DocumentProperties", "Styles", "Style",
+        "Worksheet", "Table", "Row", "Cell", "Data",
+        "NumberFormat", "Font", "Interior", "Alignment",
+        "Borders", "Border", "Protection", "ExcelWorkbook",
+        "WindowHeight", "WindowWidth", "WindowTopX", "WindowTopY",
+        "AcceptLabelsInFormulas", "ProtectStructure", "ProtectWindows",
+        "WorksheetOptions", "ProtectObjects", "ProtectScenarios"
+    ],
+    "properties": [
+        "version",
+        "encoding",
+        "xmlns",
+        "xmlns:o",
+        "xmlns:x",
+        "xmlns:ss",
+        "xmlns:html",
+        "ss:ID",
+        "ss:Name",
+        "ss:Format",
+        "ss:Color", 
+        "ss:FontName",
+        "ss:Size",
+        "ss:Index",
+        "ss:Type",
+        "ss:AutoFitWidth",  
+        "ss:Width",
+        "ss:Horizontal",
+        "ss:Vertical",
+        "ss:Bold",
+        "ss:Italic",    
+        "ss:Underline",
+        "ss:Pattern"    
+    ],
+    "xml": {
+        "version": "property",
+        "encoding": "property"
+    },
+    "mso-application": {
+        "progid": "property"
+    },
+    "Workbook": {
+        "xmlns": {
+            "o": "urn:schemas-microsoft-com:office:office",
+            "x": "urn:schemas-microsoft-com:office:excel",
+            "ss": "urn:schemas-microsoft-com:office:spreadsheet",
+            "html": "http://www.w3.org/TR/REC-html40"
+        },
+        "DocumentProperties": {
+            "xmlns": "urn:schemas-microsoft-com:office:office",
+            "lastAuthor": {
+                "text": "igtp"
+            },
+            "created": {
+                "text": "2007-05-10T04:00:57Z"
+            },
+            "lastSaved": {
+                "text": "2007-05-10T04:00:57Z"
+            },
+            "version": {
+                "text": "11.5606"
+            }
+        },
+        "ExcelWorkbook": {
+            "xmlns": "urn:schemas-microsoft-com:office:excel",
+            "WindowHeight": {
+                "text": "9300"
+            },
+            "WindowWidth": {
+                "text": "15135"
+            },
+            "WindowTopX": {
+                "text": "120"
+            },
+            "WindowTopY": {
+                "text": "120"
+            },
+            "AcceptLabelsInFormulas": {},
+            "ProtectStructure": {
+                "text": "False"
+            },
+            "ProtectWindows": {
+                "text": "False"
+            }
+        }
+    }
+}

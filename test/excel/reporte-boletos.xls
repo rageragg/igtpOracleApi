@@ -1,67 +1,102 @@
-<?xml version="1.0"  encoding="ISO-8859-1"?><?mso-application progid="Excel.Sheet"?>
-            <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-            xmlns:o="urn:schemas-microsoft-com:office:office"
-            xmlns:x="urn:schemas-microsoft-com:office:excel"
-            xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
-            xmlns:html="http://www.w3.org/TR/REC-html40">
-            <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-            <LastAuthor>a</LastAuthor>
-            <Created>1996-10-14T23:33:28Z</Created>
-            <LastSaved>2007-05-10T04:00:57Z</LastSaved>
-            <Version>11.5606</Version>
-            </DocumentProperties>
-            <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-            <WindowHeight>9300</WindowHeight>
-            <WindowWidth>15135</WindowWidth>
-            <WindowTopX>120</WindowTopX>
-            <WindowTopY>120</WindowTopY>
-            <AcceptLabelsInFormulas/>
-            <ProtectStructure>False</ProtectStructure>
-            <ProtectWindows>False</ProtectWindows>
-            </ExcelWorkbook>
-            <Styles>
-            <Style ss:ID="Default" ss:Name="Normal">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:html="http://www.w3.org/TR/REC-html40">
+    <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+        <LastAuthor>a</LastAuthor>
+        <Created>1996-10-14T23:33:28Z</Created>
+        <LastSaved>2007-05-10T04:00:57Z</LastSaved>
+        <Version>11.5606</Version>
+    </DocumentProperties>
+    <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+        <WindowHeight>9300</WindowHeight>
+        <WindowWidth>15135</WindowWidth>
+        <WindowTopX>120</WindowTopX>
+        <WindowTopY>120</WindowTopY>
+        <AcceptLabelsInFormulas/>
+        <ProtectStructure>False</ProtectStructure>
+        <ProtectWindows>False</ProtectWindows>
+    </ExcelWorkbook>
+    <Styles>
+        <Style ss:ID="Default" ss:Name="Normal">
             <Alignment ss:Vertical="Bottom"/>
             <Borders/>
             <Font/>
             <Interior/>
             <NumberFormat/>
             <Protection/>
-            </Style>
-            <Style ss:ID="s999" ss:Name="Moneda">
+        </Style>
+        <Style ss:ID="s999" ss:Name="Moneda">
             <NumberFormat ss:Format="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>
-            </Style>
-            <Style ss:ID="s99" ss:Parent="s999">
+        </Style>
+        <Style ss:ID="s99" ss:Parent="s999">
             <Font ss:FontName="Arial"/>
-            </Style>
-            <Style ss:ID="s98">
+        </Style>
+        <Style ss:ID="s98">
             <NumberFormat ss:Format="Short Date"/>
-            </Style>
-            <Style ss:ID="s97">
+        </Style>
+        <Style ss:ID="s97">
             <NumberFormat ss:Format="#,##0.00"/>
-            </Style>
- <Style ss:ID="Estilo1">  <Font ss:FontName="Arial"  ss:Size="10"  ss:Color="White"  ss:Bold="1"  ss:Italic="1"  ss:Underline="Single" /> <Interior ss:Color="Gray" ss:Pattern="Solid"/> </Style>
- <Style ss:ID="Normal_Right">  <Font  ss:Size="10"  ss:Color="Black" /> <Interior/><Alignment ss:Horizontal="Right" /> </Style>
- <Style ss:ID="Normal_Left">  <Font  ss:Size="10"  ss:Color="Black" /> <Interior/><Alignment ss:Horizontal="Left" /> </Style>
- </Styles>
- <Worksheet ss:Name="datos"> 
-<Table x:FullColumns="1"  x:FullRows="1">
- <Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="200"/> 
- <Row ss:Index="1">
-<Cell ss:Index="1" ss:StyleID="Estilo1" ><Data ss:Type="String">TITULO REPORTE</Data></Cell>
-  </Row>
- <Row ss:Index="2">
-<Cell  ss:Index="1" ss:StyleID="Estilo1" ><Data ss:Type="String">BOLETOS</Data></Cell>
-<Cell ss:Index="2" ss:StyleID="Estilo1" ><Data ss:Type="String">PESO</Data></Cell>
-  </Row>
- <Row ss:Index="3">
-<Cell  ss:Index="1" ss:StyleID="Normal_Left" ><Data ss:Type="String">12523-2255</Data></Cell>
-<Cell ss:Index="2" ss:StyleID="s97"><Data ss:Type="Number">750,7</Data></Cell>
-  </Row>
- <Row ss:Index="4">
-<Cell  ss:Index="1" ss:StyleID="Normal_Left" ><Data ss:Type="String">2532-2555</Data></Cell>
-<Cell ss:Index="2" ss:StyleID="s97"><Data ss:Type="Number">685,5</Data></Cell>
-  </Row>
-  </Table>
-<WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel"><ProtectObjects>False</ProtectObjects><ProtectScenarios>False</ProtectScenarios></WorksheetOptions></Worksheet>
+        </Style>
+        <Style ss:ID="Estilo1">
+            <Font ss:FontName="Arial" 
+                    ss:Size="10"  
+                    ss:Color="White"  
+                    ss:Bold="1"  
+                    ss:Italic="1"  
+                    ss:Underline="Single"/> 
+            <Interior ss:Color="Gray" ss:Pattern="Solid"/> 
+        </Style>
+        <Style ss:ID="Normal_Right">  
+            <Font  ss:Size="10"  ss:Color="Black" /> 
+            <Interior/>
+            <Alignment ss:Horizontal="Right" /> 
+        </Style>
+        <Style ss:ID="Normal_Left">  
+            <Font  ss:Size="10"  ss:Color="Black" /> 
+            <Interior/>
+            <Alignment ss:Horizontal="Left" /> 
+        </Style>
+    </Styles>
+    <Worksheet ss:Name="datos"> 
+        <Table x:FullColumns="1"  x:FullRows="1">
+            <Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="200"/> 
+            <Row ss:Index="1">
+                <Cell ss:Index="1" ss:StyleID="Estilo1" >
+                    <Data ss:Type="String">TITULO REPORTE</Data>
+                </Cell>
+            </Row>
+            <Row ss:Index="2">
+                <Cell  ss:Index="1" ss:StyleID="Estilo1" >
+                    <Data ss:Type="String">BOLETOS</Data>
+                </Cell>
+                <Cell ss:Index="2" ss:StyleID="Estilo1" >
+                    <Data ss:Type="String">PESO</Data>
+                </Cell>
+            </Row>
+            <Row ss:Index="3">
+                <Cell  ss:Index="1" ss:StyleID="Normal_Left" >
+                    <Data ss:Type="String">12523-2255</Data>
+                </Cell>
+                <Cell ss:Index="2" ss:StyleID="s97">
+                    <Data ss:Type="Number">750,7</Data>
+                </Cell>
+            </Row>
+            <Row ss:Index="4">
+                <Cell ss:Index="1" ss:StyleID="Normal_Left" >
+                    <Data ss:Type="String">2532-2555</Data>
+                </Cell> 
+                <Cell ss:Index="2" ss:StyleID="s97">
+                    <Data ss:Type="Number">685,5</Data>
+                </Cell>
+            </Row>
+        </Table>
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
 </Workbook>
