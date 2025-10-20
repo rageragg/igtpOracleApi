@@ -1,0 +1,167 @@
+open_file
+{
+    -- creamos el log temporal
+    dbms_lob.createtemporary(
+        lob_loc => l_log,
+        cache   => FALSE
+    );
+}
+
+header_string
+    { 
+        dbms_lob.append( p_clob, l_str );
+    }
+
+open_workbook
+    {
+        dbms_lob.append( p_clob, l_str );
+    }
+
+    open_document_properties
+        {
+            dbms_lob.append( p_clob, l_str );
+            --
+            -- datos variables 
+            --
+            LastAuthor
+            Created
+            LastSaved
+            Version
+        }
+
+    close_document_properties
+        {
+            dbms_lob.append( p_clob, l_str );
+        }
+
+    open_excel_workbook
+        {
+            dbms_lob.append( p_clob, l_str );
+            WindowHeight
+            WindowWidth
+            WindowTopX
+            WindowTopY
+            AcceptLabelsInFormulas
+            ProtectStructure
+            ProtectWindows
+        }
+
+    close_excel_workbook
+        {
+            dbms_lob.append( p_clob, l_str );
+        }
+
+    open_styles
+        {
+            dbms_lob.append( p_clob, l_str );
+            --
+            -- se interpreta que (Styles) es una tabla plsql con los estilos por defecto y por el usuario
+            --
+            for i in 1..nStyles loop
+                open_style
+                    {
+                        dbms_lob.append( p_clob, l_str );
+                        Alignment 
+                        Borders
+                        Font
+                        Interior
+                        NumberFormat
+                        Protection
+                        Interior
+                    }
+                close_style
+                    {
+                        dbms_lob.append( p_clob, l_str );
+                    }
+            end loop
+        }
+
+    close_styles
+        {
+            dbms_lob.append( p_clob, l_str );
+        }
+
+    proccess_worksheets
+        {
+            for i in 1..nworksheeks loop
+                open_worksheet
+                    {
+                        dbms_lob.append( p_clob, l_str );
+                        open_table
+                            {
+                                for i in 1..nColumns loop
+                                    open_column
+                                        {
+                                             dbms_lob.append( p_clob, l_str );
+                                        }
+                                    close_column
+                                        {
+                                             dbms_lob.append( p_clob, l_str );
+                                        }
+                                end loop
+
+                                for i in 1..nRows loop
+                                    open_row
+                                        {
+                                            for i in 1..nCells loop
+                                                open_data
+                                                    {
+                                                        dbms_lob.append( p_clob, l_str );
+                                                    }
+                                                close_data 
+                                                    {
+                                                        dbms_lob.append( p_clob, l_str );
+                                                    }
+                                            end loop 
+                                        }
+                                    close_row
+                                        {
+                                             dbms_lob.append( p_clob, l_str );
+                                        }
+                                end loop
+                            }
+
+                        close_table
+                            {
+                                dbms_lob.append( p_clob, l_str );
+                            }
+
+                        open_worksheet_options
+                            {
+                                dbms_lob.append( p_clob, l_str );
+                                open_protect_objects
+                                    {
+                                        dbms_lob.append( p_clob, l_str );
+                                    }
+                                close_protect_objects
+                                    {
+                                        dbms_lob.append( p_clob, l_str );
+                                    }
+                            }
+                        close_worksheet_options
+                        {
+                            dbms_lob.append( p_clob, l_str );
+                        }
+                    }
+                    
+                close_worksheet
+                    {
+                        dbms_lob.append( p_clob, l_str );
+                    }
+            end loop
+        }
+
+close_workbook
+    {
+         dbms_lob.append( p_clob, l_str );
+    }
+
+close_file
+    {
+
+        save_clob_to_file()
+        
+        dbms_lob.freetemporary (
+                        lob_loc => l_log
+                    ); 
+    }

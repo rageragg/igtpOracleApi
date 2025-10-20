@@ -32,6 +32,8 @@ CREATE OR REPLACE PACKAGE sys_k_string_util AS
     g_crlf                         CONSTANT VARCHAR2(2) := g_carriage_return || g_line_feed;
     g_tab                          CONSTANT VARCHAR2(1) := chr(9);
     g_ampersand                    CONSTANT VARCHAR2(1) := chr(38); 
+    g_new_page                     CONSTANT VARCHAR2(1) := chr(12);
+    g_double_quote                 CONSTANT VARCHAR2(1) := chr(34); 
     --
     g_html_entity_carriage_return  CONSTANT VARCHAR2(5) := chr(38) || '#13;';
     g_html_nbsp                    CONSTANT VARCHAR2(6) := chr(38) || 'nbsp;'; 

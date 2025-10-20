@@ -290,7 +290,7 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
         l_file      utl_file.file_type;
         l_buffer    VARCHAR2(32767);
-        l_amount    BINARY_INTEGER := 8000;
+        l_amount    BINARY_INTEGER := 8192;
         l_pos       INTEGER := 1;
         l_clob_len  INTEGER;
         --
