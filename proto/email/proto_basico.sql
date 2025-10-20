@@ -80,19 +80,19 @@ BEGIN
                   '</body></html>'  || l_crlf;
     --
     -- Abrir conexión SMTP
-    l_conn := UTL_SMTP.OPEN_CONNECTION(l_mailhost, l_port);
-    UTL_SMTP.HELO(l_conn, l_mailhost);
+    l_conn := utl_smtp.open_connection(l_mailhost, l_port);
+    utl_smtp.helo(l_conn, l_mailhost);
     --
     utl_smtp.command(l_conn, 'AUTH LOGIN');
     utl_smtp.command(l_conn, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Usr_Auth))) );
     utl_smtp.command(l_conn, utl_raw.cast_to_varchar2( utl_encode.base64_encode( utl_raw.cast_to_raw( l_Pas_Auth))) );
     --
     -- Especificar remitente y destinatario
-    UTL_SMTP.MAIL(l_conn, l_sender);
-    UTL_SMTP.RCPT(l_conn, l_recipient);
+    utl_smtp.mail(l_conn, l_sender);
+    utl_smtp.rcpt(l_conn, l_recipient);
 
     -- Iniciar el cuerpo del mensaje
-    UTL_SMTP.OPEN_DATA(l_conn);
+    utl_smtp.open_data(l_conn);
 
     -- Escribir cabeceras y cuerpo
     UTL_SMTP.WRITE_DATA(l_conn, 'From: ' || l_sender || l_crlf);
