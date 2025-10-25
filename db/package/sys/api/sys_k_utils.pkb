@@ -368,11 +368,11 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
     FUNCTION get_map_data_rec_by_id( 
         p_column_id VARCHAR2,
         p_mdata     igtp.sys_k_utils.data_map_tab 
-    ) RETURN data_map_rec IS    
-        --
-        l_result    data_map_rec;
-        l_field     VARCHAR2(30);
-        --
+        ) RETURN data_map_rec IS    
+            --
+            l_result    data_map_rec;
+            l_field     VARCHAR2(30);
+            --
     BEGIN
         --
         l_result := NULL;

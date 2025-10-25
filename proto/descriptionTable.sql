@@ -8,8 +8,14 @@ DECLARE
         VERSION: 1.0     
     */
     --
-    l_owner         VARCHAR2(100) := 'IGTP';
-    l_table_name    VARCHAR2(100) := 'CITIES';
+    l_owner         VARCHAR2(100)   := 'IGTP';
+    l_table_name    VARCHAR2(100)   := 'CITIES';
+    l_sql_query     VARCHAR2(16384) := '';
+    l_sql_select    VARCHAR2(8192)  := 'SELECT ';
+    l_sql_fields    VARCHAR2(1024)  := '';
+    l_sql_from      VARCHAR2(1024)  := ' FROM ';
+    l_sql_where     VARCHAR2(1024)  := ' WHERE ';
+    l_sql_order     VARCHAR2(512)   := ' ORDER BY 1';
     --
     -- estructuras de datos del diccionario de datos
     l_data_map_rec  igtp.sys_k_utils.data_map_rec;
@@ -127,17 +133,30 @@ BEGIN
             p_column_id => l_sorted_keys(l_idx),
             p_mdata     => l_data_map_tab 
         );
-        -- mostrar la informacion
-        dbms_output.put_line(
-            'Columna: ' || l_data_map_rec.column_name ||
-            ' | Tipo: ' || l_data_map_rec.data_type ||
-            ' | Longitud: ' || l_data_map_rec.data_length ||
-            ' | Comentario: ' || l_data_map_rec.comments ||
-            ' | ID: ' || l_data_map_rec.column_id
-        );
+        --
+        -- armar cadena de salida
+        l_sql_fields := l_sql_fields || l_data_map_rec.column_name;
         --
         l_idx := l_sorted_keys.NEXT(l_idx);
         --
+        IF l_idx IS NOT NULL THEN
+            --
+            l_sql_fields := l_sql_fields || ', ';
+            --
+        END IF;
+        --
     END LOOP;
+    --
+    -- mostrar la informacion
+    l_sql_query := l_sql_select || 
+                   l_sql_fields || 
+                   l_sql_from || 
+                   l_owner || '.' || 
+                   l_table_name || 
+                   l_sql_order;
+    --
+    dbms_output.put_line(
+        l_sql_query
+    );
     --
 END;
