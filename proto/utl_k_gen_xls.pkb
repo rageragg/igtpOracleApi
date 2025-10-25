@@ -75,7 +75,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
     ) ;
     --
     TYPE tbl_rows_data IS TABLE OF rec_rows_data Index BY BINARY_INTEGER ;
-    g_rows      tbl_ROWS_data ;
+    g_rows      tbl_rows_data ;
     g_null_rows tbl_rows_data ;
     g_row_count NUMBER ;
     --
@@ -426,7 +426,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
                ' <Protection/>'||
                '</Style>'||
                '<Style ss:ID="s999" ss:Name="Moneda">'||
-               ' <NumberFormat ss:Format="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>'||
+               ' <NumberFormat ss:Format="_('||chr(38)||'quot;$'||chr(38)||'quot;* #,##0.00_);_('||chr(38)||'quot;$'||chr(38)||'quot;* \(#,##0.00\);_('||chr(38)||'quot;$'||chr(38)||'quot;* '||chr(38)||'quot;-'||chr(38)||'quot;??_);_(@_)"/>'||
                '</Style>'||
                '<Style ss:ID="s99" ss:Parent="s999">'||
                ' <Font ss:FontName="Arial"/>'||
@@ -480,7 +480,7 @@ CREATE OR REPLACE PACKAGE BODY utl_k_gen_xls IS
             <Protection/>
             </Style>
             <Style ss:ID="s999" ss:Name="Moneda">
-            <NumberFormat ss:Format="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>
+            <NumberFormat ss:Format="_('||chr(38)||'quot;$'||chr(38)||'quot;* #,##0.00_);_('||chr(38)||'quot;$'||chr(38)||'quot;* \(#,##0.00\);_('||chr(38)||'quot;$'||chr(38)||'quot;* '||chr(38)||'quot;-'||chr(38)||'quot;??_);_(@_)"/>
             </Style>
             <Style ss:ID="s99" ss:Parent="s999">
             <Font ss:FontName="Arial"/>
