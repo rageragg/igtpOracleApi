@@ -1,8 +1,7 @@
+CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
 --------------------------------------------------------
 --  DDL for Package Body sys_k_utils
 --------------------------------------------------------
-
-CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
     --
     -- VERSION: 1.00.00
     /* --------------------------------
@@ -364,6 +363,43 @@ CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY igtp.sys_k_utils AS
         RETURN l_type;
         --
     END get_map_data_type;   
+    --
+    -- devuelve el registro completo del campo enviado
+    FUNCTION get_map_data_rec_by_id( 
+        p_column_id VARCHAR2,
+        p_mdata     igtp.sys_k_utils.data_map_tab 
+    ) RETURN data_map_rec IS    
+        --
+        l_result    data_map_rec;
+        l_field     VARCHAR2(30);
+        --
+    BEGIN
+        --
+        l_result := NULL;
+        --
+        l_field := p_mdata.FIRST;
+        --
+        WHILE l_field IS NOT NULL LOOP 
+            --
+            IF p_mdata.exists( p_mdata(l_field).column_name ) THEN 
+                --
+                IF p_mdata(l_field).column_id = p_column_id THEN 
+                    --
+                    l_result :=  p_mdata(l_field);
+                    --
+                    EXIT;
+                    --    
+                END IF;
+                --    
+            END IF;
+            --
+            l_field := p_mdata.NEXT(l_field);
+            --
+        END LOOP;
+        --
+        RETURN l_result;
+        --
+    END get_map_data_rec_by_id;
     --
     -- verifica si una tabla existe
     FUNCTION f_table_exist( p_owner VARCHAR2, 
