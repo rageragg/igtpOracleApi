@@ -39,7 +39,7 @@ CREATE OR REPLACE PACKAGE sys_k_proccess IS
     --
     -- insert proccess by document
     PROCEDURE ins (
-        p_id                IN proccesses.id%TYPE,
+        p_id                IN OUT proccesses.id%TYPE,
         p_process_co        IN proccesses.proccess_co%TYPE DEFAULT NULL,
         p_context           IN proccesses.context%TYPE DEFAULT NULL,
         p_description       IN proccesses.description%TYPE DEFAULT NULL,
@@ -48,8 +48,8 @@ CREATE OR REPLACE PACKAGE sys_k_proccess IS
         p_object_of_process IN proccesses.object_of_process%TYPE DEFAULT NULL,
         p_k_mca_inh         IN proccesses.k_mca_inh%TYPE DEFAULT NULL,
         p_user_id           IN proccesses.user_id%TYPE DEFAULT NULL,
-        p_created_at        IN proccesses.created_at%TYPE DEFAULT NULL,
-        p_updated_at        IN proccesses.updated_at%TYPE DEFAULT NULL 
+        p_created_at        IN OUT proccesses.created_at%TYPE,
+        p_updated_at        IN OUT proccesses.updated_at%TYPE
     );
     --
     -- update
