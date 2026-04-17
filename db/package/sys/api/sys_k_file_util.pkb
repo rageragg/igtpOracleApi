@@ -259,7 +259,6 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
     BEGIN
         --
         l_blob_len := dbms_lob.getlength (p_blob);
-        --
         l_file := utl_file.fopen (p_directory_name, p_file_name, g_file_mode_write_byte, 32767);
         --
         WHILE l_pos < l_blob_len LOOP
