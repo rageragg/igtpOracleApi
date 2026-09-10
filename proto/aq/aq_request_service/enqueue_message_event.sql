@@ -16,10 +16,16 @@ BEGIN
     --
     json_content.put('client_id', '2023-0001');
     json_content.put('client_name', 'Transportes del Norte S.A.');
+    json_content.put('client_email', 'cliente@correo.com');
+    json_content.put('client_phone', '+58 412-1234567');
+    --
+    json_content.put('service_request_id', 'SR-2024-001');
+    json_content.put('service_request_status', 'Pending');
+    json_content.put('service_request_priority', 'High');
     json_content.put('service_type', 'Logistics');
     json_content.put('service_description', 'Solicitud de servicio de transporte de carga, desde Barquisimeto hacia a Caracas.');
     json_content.put('service_date', '2024-06-15'); 
-    json_content.put('type_cargo', 'Refrigerated Goods');
+    json_content.put('type_cargo', 'Carga Alimentaria Refrigerada');
     json_content.put('cargo_weight', '1500 kg');
     json_content.put('origin_address', 'Av. Libertador, Barquisimeto, Lara, Venezuela');
     json_content.put('destination_address', 'Av. Libertador, Caracas, Venezuela');
