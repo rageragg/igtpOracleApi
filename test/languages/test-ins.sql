@@ -1,7 +1,7 @@
 declare
     /* TEST 
      * Proceso de Inclusion de lenguaje de mensajeria
-     *
+     * hola mundo
     */
     --
     l_json      VARCHAR2(2048);
