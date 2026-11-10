@@ -334,7 +334,13 @@ CREATE OR REPLACE PACKAGE BODY sys_k_file_util IS
         --
         FOR i in 1 .. ceil (length( p_clob ) / l_chunk_size) LOOP
             --
-            utl_file.put_raw (l_file, utl_raw.cast_to_raw (substr(p_clob, ( i - 1 ) * l_chunk_size + 1, l_chunk_size )));
+            utl_file.put_raw (
+                l_file,
+                utl_raw.cast_to_raw (
+                    substr(p_clob, ( i - 1 ) * l_chunk_size + 1, l_chunk_size )
+                )
+            );
+            --
             utl_file.fflush(l_file);
             --
         END LOOP; 

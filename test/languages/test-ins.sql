@@ -1,7 +1,6 @@
 declare
     /* TEST 
      * Proceso de Inclusion de lenguaje de mensajeria
-     * Daniel Peña
     */
     --
     l_json      VARCHAR2(2048);
