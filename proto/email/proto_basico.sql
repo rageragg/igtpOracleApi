@@ -1,8 +1,10 @@
 /*
-    Para usar el paquete UTL_SMTP de Oracle y enviar correos electrónicos desde la base de datos, debes tener en cuenta las siguientes consideraciones de configuración:
+    Para usar el paquete UTL_SMTP de Oracle y enviar correos electrónicos desde la base de datos, debes tener en cuenta 
+    las siguientes consideraciones de configuración:
 
     1. Permisos de Red (ACL)
-    Oracle restringe el acceso a la red desde la base de datos por seguridad. Debes crear una Access Control List (ACL) para permitir que el usuario de la base de datos acceda al servidor SMTP.
+    Oracle restringe el acceso a la red desde la base de datos por seguridad. Debes crear una Access Control List (ACL) 
+    para permitir que el usuario de la base de datos acceda al servidor SMTP.
 
     Ejemplo:
 
@@ -15,6 +17,7 @@
     Debes conocer el host y puerto del servidor SMTP.
     Si el servidor requiere autenticación, deberás implementar el protocolo AUTH LOGIN manualmente (UTL_SMTP no soporta autenticación TLS/SSL nativa).
     Si el servidor SMTP está fuera de tu red, asegúrate de que la base de datos tenga acceso de red a ese host y puerto.
+    
     4. Directorio para Adjuntos
     Si vas a enviar archivos adjuntos, debes tener un DIRECTORY Oracle creado y permisos de lectura para el usuario de la base de datos.
 

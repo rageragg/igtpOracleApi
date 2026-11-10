@@ -248,7 +248,7 @@ UTL_HTTP.SET_WALLET('system:', NULL);
 > **Opción B**: Crear un Oracle Wallet físico (Método Tradicional)
 Si tu servidor requiere un Wallet manual debido a políticas estrictas o versiones específicas de TLS, sigue estos pasos desde la consola del servidor de base de datos (con el usuario de sistema oracle): [rostantechnologies](https://rostantechnologies.com/blog/oracle-database/oracle-wallet-https-ssl-integration-oracle-database-utl-http)
     
-1. Descargar el certificado raíz del sitio destinoEntra a la URL (https://clienteexterno.com) desde un navegador o usa openssl para guardar el certificado raíz e intermedio de la entidad emisora (CA) en formato .cer o .pem. Pásalos al servidor de base de datos. [rostantechnologies](https://rostantechnologies.com/blog/oracle-database/oracle-wallet-https-ssl-integration-oracle-database-utl-http)
+1. Descargar el certificado raíz del sitio destino, Entra a la URL (https://clienteexterno.com) desde un navegador o usa openssl para guardar el certificado raíz e intermedio de la entidad emisora (CA) en formato .cer o .pem. Pásalos al servidor de base de datos. [rostantechnologies](https://rostantechnologies.com/blog/oracle-database/oracle-wallet-https-ssl-integration-oracle-database-utl-http)
     
 2. Crear el directorio y el Wallet vacío (vía terminal de Linux/Windows) [rostantechnologies](https://rostantechnologies.com/blog/oracle-database/oracle-wallet-https-ssl-integration-oracle-database-utl-http)
 
@@ -268,7 +268,7 @@ orapki wallet create -wallet /opt/oracle/my_wallet -password "MiPasswordSecreto1
 orapki wallet add -wallet /opt/oracle/my_wallet -password "MiPasswordSecreto123" -trusted_cert -cert /ruta/certificado_raiz.crt
 ```
 
-4. Otorgar accesos a nivel de base de datosDebes registrar el Wallet en la base de datos y darle permisos al usuario de la aplicación para utilizarlo: [forums Oracle](https://forums.oracle.com/ords/apexds/post/do-you-use-dbms-network-acl-admin-assign-wallet-acl-5816)
+4. Otorgar accesos a nivel de base de datos. Debes registrar el Wallet en la base de datos y darle permisos al usuario de la aplicación para utilizarlo: [forums Oracle](https://forums.oracle.com/ords/apexds/post/do-you-use-dbms-network-acl-admin-assign-wallet-acl-5816)
 
 ``` SQL
 -- Ejecutado como SYSDBA

@@ -103,6 +103,8 @@ DECLARE
         --
     BEGIN
         --
+        -- ! OBSERVAR EL TRATAMIENTO DE TOKEN ";;"
+        --
         -- eliminamos los datos iniciales
         g_data_freigth.DELETE;
         --
@@ -111,10 +113,16 @@ DECLARE
             --
             IF g_data_file.EXISTS(i) THEN   
                 --
+                -- ! TRATAR EL TOKEN AQUI
+                -- TODO: REVISAR TOKEN "trata-token.sql en proto"
+                g_data_file(i) := replace(g_data_file(i),';;',';NULL;')
+                --
                 -- leemos las columnas
                 FOR reg IN c_datos(g_data_file(i)) LOOP
                     --
-                    reg.dato := trim(reg.dato);
+                    reg.dato := trim(
+                        replace( reg.dato, 'NULL', ' ')
+                    );
                     --
                     IF reg.rownum = 1 THEN 
                         --
